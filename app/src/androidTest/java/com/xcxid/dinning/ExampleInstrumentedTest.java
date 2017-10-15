@@ -1,4 +1,4 @@
-package com.xcxid.dinning;
+package com.linmama.dinning;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.xcxid.dinning", appContext.getPackageName());
+        assertEquals("com.linmama.dinning", appContext.getPackageName());
     }
 }

@@ -16,7 +16,7 @@
             android:layout_marginLeft="10dp"
             android:src="@mipmap/icon_back" />
 
-        <com.xcxid.dinning.widget.ClearEditText
+        <com.linmama.dinning.widget.ClearEditText
             android:id="@+id/etSearch"
             style="@style/ClearEditText"
             android:layout_width="0dp"

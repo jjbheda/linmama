@@ -1,4 +1,4 @@
-package com.xcxid.dinning;
+package com.linmama.dinning;
 
 import org.junit.Test;
 

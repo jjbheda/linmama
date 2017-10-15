@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.xcxid.dinning">
+    package="com.linmama.dinning">
 
     <permission
-        android:name="com.xcxid.dinning.permission.JPUSH_MESSAGE"
+        android:name="com.linmama.dinning.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.xcxid.dinning.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="com.linmama.dinning.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -38,7 +38,7 @@
     <!--腾讯地图 SDK 要求的权限(结束)-->
 
     <application
-        android:name=".XcxidApplication"
+        android:name="com.linmama.dinning.XcxidApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -46,7 +46,7 @@
         android:theme="@style/AppTheme"
         tools:replace="icon, label">
         <activity
-            android:name=".login.LoginActivity"
+            android:name="com.linmama.dinning.login.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,48 +55,48 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".home.MainActivity"
+            android:name="com.linmama.dinning.home.MainActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".order.neu.timepick.TimePickerActivity"
+            android:name="com.linmama.dinning.order.neu.timepick.TimePickerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".order.neu.detail.NewOrderDetailActivity"
+            android:name="com.linmama.dinning.order.neu.detail.NewOrderDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".order.taking.detail.TakingOrderDetailActivity"
+            android:name="com.linmama.dinning.order.taking.detail.TakingOrderDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".order.remind.detail.RemindOrderDetailActivity"
+            android:name="com.linmama.dinning.order.remind.detail.RemindOrderDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".order.quit.detail.QuitOrderDetailActivity"
+            android:name="com.linmama.dinning.order.quit.detail.QuitOrderDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".order.pay.detail.NonPayOrderDetailActivity"
+            android:name="com.linmama.dinning.order.pay.detail.NonPayOrderDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".goods.search.SearchCategoryActivity"
+            android:name="com.linmama.dinning.goods.search.SearchCategoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".bluetooth.CheckBTActivity"
+            android:name="com.linmama.dinning.bluetooth.CheckBTActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".setting.login.ModifyLoginPwdActivity"
+            android:name="com.linmama.dinning.setting.login.ModifyLoginPwdActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".setting.operate.ModifyOperatePwdActivity"
+            android:name="com.linmama.dinning.setting.operate.ModifyOperatePwdActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".setting.advice.AdviceActivity"
+            android:name="com.linmama.dinning.setting.advice.AdviceActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".setting.complete.CompleteOrderListActivity"
+            android:name="com.linmama.dinning.setting.complete.CompleteOrderListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".setting.complete.detail.CompletedOrderDetailActivity"
+            android:name="com.linmama.dinning.setting.complete.detail.CompletedOrderDetailActivity"
             android:screenOrientation="portrait"/>
-        <service android:name=".receiver.ReceiveOrderService" />
+        <service android:name="com.linmama.dinning.receiver.ReceiveOrderService" />
 
         <!-- Required SDK核心功能-->
         <activity
@@ -107,11 +107,11 @@
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.xcxid.dinning" />
+                <category android:name="com.linmama.dinning" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".base.MapActivity"/>
+        <activity android:name="com.linmama.dinning.base.MapActivity"/>
         <!-- Required  SDK核心功能-->
         <service
             android:name="cn.jpush.android.service.DownloadService"
@@ -141,7 +141,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
-                <category android:name="com.xcxid.dinning" />
+                <category android:name="com.linmama.dinning" />
             </intent-filter>
 
         </service>
@@ -152,7 +152,7 @@
             android:enabled="true">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
-                <category android:name="com.xcxid.dinning" />
+                <category android:name="com.linmama.dinning" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -181,11 +181,11 @@
                 <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> &lt;!&ndash;Required  用户接收SDK通知栏信息的intent&ndash;&gt;-->
                 <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> &lt;!&ndash;Required  用户打开自定义通知栏的intent&ndash;&gt;-->
                 <!--<action android:name="cn.jpush.android.intent.CONNECTION" />&lt;!&ndash; 接收网络变化 连接/断开 since 1.6.3 &ndash;&gt;-->
-                <!--<category android:name="com.xcxid.dinning" />-->
+                <!--<category android:name="com.linmama.dinning" />-->
             <!--</intent-filter>-->
         <!--</receiver>-->
 
-        <receiver android:name=".receiver.WarnAlarmReceiver"
+        <receiver android:name="com.linmama.dinning.receiver.WarnAlarmReceiver"
             android:exported="false"
             android:enabled="true">
             <intent-filter>
@@ -195,7 +195,7 @@
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
                 <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <category android:name="com.xcxid.dinning" />
+                <category android:name="com.linmama.dinning" />
             </intent-filter>
         </receiver>
 

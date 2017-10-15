@@ -15,7 +15,7 @@
             style="@style/ToolBarTitleStyle" />
     </android.support.v7.widget.Toolbar>
 
-    <com.xcxid.dinning.widget.ClearEditText
+    <com.linmama.dinning.widget.ClearEditText
         android:id="@+id/updateOldPwd"
         style="@style/ClearEditText"
         android:layout_marginTop="60dp"
@@ -25,7 +25,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
 
-    <com.xcxid.dinning.widget.ClearEditText
+    <com.linmama.dinning.widget.ClearEditText
         android:id="@+id/updateNewPwd"
         style="@style/ClearEditText"
         android:layout_marginTop="25dp"
@@ -35,7 +35,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
 
-    <com.xcxid.dinning.widget.ClearEditText
+    <com.linmama.dinning.widget.ClearEditText
         android:id="@+id/updateConfirmPwd"
         style="@style/ClearEditText"
         android:layout_marginTop="25dp"

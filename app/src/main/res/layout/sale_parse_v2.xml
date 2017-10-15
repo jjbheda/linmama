@@ -130,7 +130,7 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <com.xcxid.dinning.widget.SettingItem
+    <com.linmama.dinning.widget.SettingItem
         android:id="@+id/history_business_count"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -139,7 +139,7 @@
         app:setRightIcon="@mipmap/icon_right_arrow"
         app:setTitle="@string/history_business_count" />
 
-    <com.xcxid.dinning.widget.SettingItem
+    <com.linmama.dinning.widget.SettingItem
         android:id="@+id/dishes_parse"
         android:layout_width="match_parent"
         android:layout_height="50dp"

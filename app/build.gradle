@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "23.0.3"
     defaultConfig {
-        applicationId "com.xcxid.dinning"
+        applicationId "com.linmama.dinning"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 3

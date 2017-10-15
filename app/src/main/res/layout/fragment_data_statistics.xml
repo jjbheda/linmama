@@ -6,7 +6,7 @@
     android:background="@color/colorSettingBg"
     android:orientation="vertical">
 
-    <com.xcxid.dinning.widget.SalesItem
+    <com.linmama.dinning.widget.SalesItem
         android:id="@+id/itemToday"
         style="@style/MatchWrap"
         android:layout_marginTop="20dp"
@@ -14,21 +14,21 @@
         app:salesOnline="@string/data_online_sales_title"
         app:salesToday="@string/data_today_sales_title" />
 
-    <com.xcxid.dinning.widget.SalesItem
+    <com.linmama.dinning.widget.SalesItem
         android:id="@+id/itemYestoday"
         style="@style/MatchWrap"
         app:salesBar="@string/data_bar_sales_title"
         app:salesOnline="@string/data_online_sales_title"
         app:salesToday="@string/data_yestoday_sales_title" />
 
-    <com.xcxid.dinning.widget.SalesItem
+    <com.linmama.dinning.widget.SalesItem
         android:id="@+id/itemMonth"
         style="@style/MatchWrap"
         app:salesBar="@string/data_bar_sales_title"
         app:salesOnline="@string/data_online_sales_title"
         app:salesToday="@string/data_month_sales_title" />
 
-    <com.xcxid.dinning.widget.SalesItem
+    <com.linmama.dinning.widget.SalesItem
         android:id="@+id/itemLastMonth"
         style="@style/MatchWrap"
         app:salesBar="@string/data_bar_sales_title"

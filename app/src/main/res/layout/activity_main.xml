@@ -4,7 +4,7 @@
     style="@style/BothMatch"
     android:orientation="vertical"
     android:keepScreenOn="true"
-    tools:context="com.xcxid.dinning.home.MainActivity">
+    tools:context="com.linmama.dinning.com.linmama.dinning.home.MainActivity">
 
     <FrameLayout
         android:id="@+id/content"

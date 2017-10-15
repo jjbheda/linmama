@@ -10,7 +10,7 @@
         android:layout_marginTop="60dp"
         android:src="@mipmap/login_logo" />
 
-    <com.xcxid.dinning.widget.ClearEditText
+    <com.linmama.dinning.widget.ClearEditText
         android:id="@+id/loginName"
         style="@style/ClearEditText"
         android:layout_below="@id/loginLogo"
@@ -19,7 +19,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
 
-    <com.xcxid.dinning.widget.ClearEditText
+    <com.linmama.dinning.widget.ClearEditText
         android:id="@+id/loginPwd"
         style="@style/ClearEditText"
         android:layout_below="@id/loginName"

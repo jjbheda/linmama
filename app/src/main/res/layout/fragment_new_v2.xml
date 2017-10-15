@@ -41,7 +41,7 @@
         android:layout_weight="5"
         android:background="@color/colorSettingBg">
 
-        <com.xcxid.dinning.widget.GetMoreListView
+        <com.linmama.dinning.widget.GetMoreListView
             android:id="@+id/lvNewOrder"
             style="@style/OrderListStyle"/>
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>

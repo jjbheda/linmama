@@ -101,7 +101,7 @@
                     android:text="@string/set_open" />
             </RelativeLayout>
 
-            <com.xcxid.dinning.widget.SettingItem
+            <com.linmama.dinning.widget.SettingItem
                 android:id="@+id/siPos"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -111,7 +111,7 @@
                 app:setSubTitle="@string/set_item1_disconnect"
                 app:setTitle="@string/set_item1" />
 
-            <com.xcxid.dinning.widget.SettingItem
+            <com.linmama.dinning.widget.SettingItem
                 android:id="@+id/siRemind"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -120,7 +120,7 @@
                 app:setRightIcon="@mipmap/icon_on"
                 app:setTitle="@string/set_item2" />
 
-            <com.xcxid.dinning.widget.SettingItem
+            <com.linmama.dinning.widget.SettingItem
                 android:id="@+id/siAutoReceiveOrder"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -129,7 +129,7 @@
                 app:setRightIcon="@mipmap/icon_on"
                 app:setTitle="@string/set_item9" />
 
-            <com.xcxid.dinning.widget.SettingItem
+            <com.linmama.dinning.widget.SettingItem
                 android:id="@+id/siAutoPrint"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -138,7 +138,7 @@
                 app:setRightIcon="@mipmap/icon_on"
                 app:setTitle="@string/set_item10" />
 
-            <com.xcxid.dinning.widget.SettingItem
+            <com.linmama.dinning.widget.SettingItem
                 android:id="@+id/siUpdateLoginPwd"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -147,7 +147,7 @@
                 app:setRightIcon="@mipmap/icon_right_arrow"
                 app:setTitle="@string/set_item3" />
 
-            <com.xcxid.dinning.widget.SettingItem
+            <com.linmama.dinning.widget.SettingItem
                 android:id="@+id/siUpdateOperatePwd"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -156,7 +156,7 @@
                 app:setRightIcon="@mipmap/icon_right_arrow"
                 app:setTitle="@string/set_item4" />
 
-            <com.xcxid.dinning.widget.SettingItem
+            <com.linmama.dinning.widget.SettingItem
                 android:id="@+id/siCompleteOrder"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -165,7 +165,7 @@
                 app:setRightIcon="@mipmap/icon_right_arrow"
                 app:setTitle="@string/order_tab_item6" />
 
-            <com.xcxid.dinning.widget.SettingItem
+            <com.linmama.dinning.widget.SettingItem
                 android:id="@+id/siFeedBack"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -174,7 +174,7 @@
                 app:setRightIcon="@mipmap/icon_right_arrow"
                 app:setTitle="@string/set_item5" />
 
-            <com.xcxid.dinning.widget.SettingItem
+            <com.linmama.dinning.widget.SettingItem
                 android:id="@+id/siService"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -183,7 +183,7 @@
                 app:setRightIcon="@mipmap/icon_right_arrow"
                 app:setTitle="@string/set_item6" />
 
-            <com.xcxid.dinning.widget.SettingItem
+            <com.linmama.dinning.widget.SettingItem
                 android:id="@+id/siVersion"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
