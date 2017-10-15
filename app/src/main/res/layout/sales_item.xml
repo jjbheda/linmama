@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/todaySales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/data_today_sales"
+        android:textColor="@color/colorOrderText"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/llStatics"
+        style="@style/MatchWrap"
+        android:layout_below="@id/todaySales"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/olSales"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/data_online_sales"
+            android:textColor="@color/colorOrderText"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/barSales"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/data_bar_sales"
+            android:textColor="@color/colorOrderText"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/llStatics"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorMenuItemDivider"/>
+
+</RelativeLayout>

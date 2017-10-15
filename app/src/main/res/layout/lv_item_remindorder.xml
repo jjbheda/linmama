@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:background="@android:color/white"
+    android:paddingBottom="10dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <TextView
+        android:id="@+id/tvRemindTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@android:color/white"
+        android:text="@string/remind_order_remind" />
+
+    <ImageView
+        android:id="@+id/ivRemindIcon"
+        style="@style/OrderTypeIcon"
+        android:layout_below="@id/tvRemindTime"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/icon_online" />
+
+    <TextView
+        android:id="@+id/tvRemindDesk"
+        style="@style/OrderDeskNum"
+        android:layout_below="@id/tvRemindTime"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/ivRemindIcon"
+        android:text="@string/order_kind_appoint"
+        android:textColor="@color/colorOrderTake" />
+
+    <TextView
+        android:id="@+id/tvRemindPerson"
+        style="@style/OrderDiningNum"
+        android:layout_below="@id/tvRemindTime"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/tvRemindDesk"
+        android:text="3人" />
+
+    <TextView
+        android:id="@+id/tvRemindWay"
+        style="@style/OrderDiningNum"
+        android:layout_below="@id/tvRemindTime"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/tvRemindPerson"
+        android:text="@string/new_order_way1" />
+
+    <TextView
+        android:id="@+id/tvRemindSerial"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/ivRemindIcon"
+        android:text="@string/new_order_serial" />
+
+    <TextView
+        android:id="@+id/tvRemindDatetime"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/tvRemindSerial"
+        android:text="@string/new_order_datetime" />
+
+    <TextView
+        android:id="@+id/tvRemindOther"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/tvRemindDatetime"
+        android:text="@string/new_order_in_store_time"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnRemindHandle"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/order_take_bg"
+        android:textSize="16sp"
+        android:textColor="@color/colorOrderTake"
+        android:text="@string/remind_order_remind_unknown" />
+
+</RelativeLayout>

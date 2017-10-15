@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/BothMatch"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:id="@+id/total_order_category"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
+
+        <TextView
+            android:id="@+id/newOrderAllTv"
+            style="@style/TextViewCategoryStyle"
+            android:text="@string/category_order_all"
+            />
+
+        <TextView
+            android:id="@+id/newOrderSaleTv"
+            style="@style/TextViewCategoryStyle"
+            android:text="@string/category_order_sale"
+            />
+
+        <TextView
+            style="@style/TextViewCategoryStyle"
+            android:text="@string/category_order_store"
+            />
+
+    </LinearLayout>
+
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/ptr_new"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:background="@color/colorSettingBg">
+
+        <com.xcxid.dinning.widget.GetMoreListView
+            android:id="@+id/lvNewOrder"
+            style="@style/OrderListStyle"/>
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+
+
+</LinearLayout>

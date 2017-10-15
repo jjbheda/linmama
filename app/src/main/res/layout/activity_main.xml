@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BothMatch"
+    android:orientation="vertical"
+    android:keepScreenOn="true"
+    tools:context="com.xcxid.dinning.home.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorSettingBg" />
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layTabOrder"
+            style="@style/HomeTabLay">
+
+            <ImageView
+                android:id="@+id/imgTabOrder"
+                style="@style/HomeTabImg"
+                android:src="@drawable/tab_order_selector" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layTabGoods"
+            style="@style/HomeTabLay">
+
+            <ImageView
+                android:id="@+id/imgTabGoods"
+                style="@style/HomeTabImg"
+                android:src="@drawable/tab_manager_selector" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layTabData"
+            style="@style/HomeTabLay">
+
+            <ImageView
+                android:id="@+id/imgTabData"
+                style="@style/HomeTabImg"
+                android:src="@drawable/tab_data_selector" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layTabSettings"
+            style="@style/HomeTabLay">
+
+            <ImageView
+                android:id="@+id/imgTabSettings"
+                style="@style/HomeTabImg"
+                android:src="@drawable/tab_setting_selector" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    style="@style/BothMatch"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/detailTitle"
+        style="@style/ToolBarStyle"
+        app:navigationIcon="@mipmap/icon_back">
+
+        <TextView
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/order_detail" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        style="@style/BothMatch"
+        android:scrollbars="none">
+
+        <RelativeLayout style="@style/BothMatch">
+
+            <ImageView
+                android:id="@+id/ivDetailIcon"
+                style="@style/OrderTypeIcon"
+                android:src="@mipmap/icon_online" />
+
+            <TextView
+                android:id="@+id/tvDetailDesk"
+                style="@style/OrderDeskNum"
+                android:layout_toRightOf="@id/ivDetailIcon"
+                android:text="@string/order_kind_appoint"
+                android:textColor="@color/colorOrderDeskNum" />
+
+            <TextView
+                android:id="@+id/tvDetailPerson"
+                style="@style/OrderDiningNum"
+                android:layout_toRightOf="@id/tvDetailDesk"
+                android:text="3人" />
+
+            <TextView
+                android:id="@+id/tvDetailWay"
+                style="@style/OrderDiningNum"
+                android:layout_toRightOf="@id/tvDetailPerson"
+                android:text="@string/new_order_way1" />
+
+            <TextView
+                android:id="@+id/tvDetailType"
+                style="@style/OrderDiningNum"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:text="@string/order_tab_item1"
+                android:textColor="@color/colorOrderAppoint" />
+
+            <TextView
+                android:id="@+id/tvDetailSerial"
+                style="@style/OrderSerialNum"
+                android:layout_below="@id/ivDetailIcon"
+                android:text="@string/new_order_serial" />
+
+            <TextView
+                android:id="@+id/tvDetailDatetime"
+                style="@style/OrderSerialNum"
+                android:layout_below="@id/tvDetailSerial"
+                android:text="@string/new_order_datetime" />
+
+            <TextView
+                android:id="@+id/tvDetailPayChannel"
+                style="@style/OrderSerialNum"
+                android:layout_below="@id/tvDetailDatetime"
+                android:text="@string/new_order_pay_way" />
+
+            <TextView
+                android:id="@+id/tvDetailOther"
+                style="@style/OrderSerialNum"
+                android:layout_below="@id/tvDetailPayChannel"
+                android:text="@string/new_order_in_store_time"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvDetailAmount"
+                style="@style/OrderAmountNum"
+                android:layout_below="@id/tvDetailOther"
+                android:text="@string/order_money" />
+
+            <TextView
+                android:id="@+id/tvDetailPayStatus"
+                style="@style/OrderDiningNum"
+                android:layout_below="@id/tvDetailOther"
+                android:layout_toRightOf="@id/tvDetailAmount"
+                android:text="@string/new_order_pay1" />
+
+            <TextView
+                android:id="@+id/tvDetailRemark"
+                style="@style/OrderSerialNum"
+                android:layout_below="@id/tvDetailAmount"
+                android:text="@string/order_remark"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvDetailInvoice"
+                style="@style/OrderSerialNum"
+                android:layout_below="@id/tvDetailRemark"
+                android:text="@string/order_invoice"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/sepline"
+                style="@style/SepLineStyle"
+                android:layout_below="@id/tvDetailInvoice" />
+
+            <LinearLayout
+                android:id="@+id/llOrderItem"
+                style="@style/MatchWrap"
+                android:layout_below="@id/sepline"
+                android:orientation="vertical" />
+
+            <Button
+                android:id="@+id/btnTake"
+                style="@style/ClearEditText"
+                android:layout_below="@id/llOrderItem"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="200dp"
+                android:background="@drawable/btn_ok_bg"
+                android:text="@string/order_take"
+                android:textColor="@android:color/white"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/btnCancel"
+                style="@style/ClearEditText"
+                android:layout_below="@id/btnTake"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/btn_cancel_bg"
+                android:text="@string/order_cancel"
+                android:textColor="@color/colorOrderText"
+                android:visibility="invisible" />
+
+            <LinearLayout
+                android:id="@+id/llNonPay"
+                style="@style/MatchWrap"
+                android:layout_below="@id/llOrderItem"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="200dp"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <Button
+                    android:id="@+id/btnReceive"
+                    style="@style/ClearEditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_ok_bg"
+                    android:text="@string/order_take"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/btnQuit"
+                    style="@style/ClearEditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_cancel_bg"
+                    android:text="@string/order_cancel"
+                    android:textColor="@color/colorOrderText" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnConfirm"
+                style="@style/ClearEditText"
+                android:layout_below="@id/llNonPay"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/btn_confirm_bg"
+                android:text="@string/order_ok"
+                android:textColor="@android:color/white"
+                android:visibility="visible" />
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

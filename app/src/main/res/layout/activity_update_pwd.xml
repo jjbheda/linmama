@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    style="@style/BothMatch"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        app:navigationIcon="@mipmap/icon_back"
+        style="@style/ToolBarStyle">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/ToolBarTitleStyle" />
+    </android.support.v7.widget.Toolbar>
+
+    <com.xcxid.dinning.widget.ClearEditText
+        android:id="@+id/updateOldPwd"
+        style="@style/ClearEditText"
+        android:layout_marginTop="60dp"
+        android:hint="@string/set_update_oldpwd"
+        android:textColorHint="@color/colorOrderText"
+        android:inputType="textPassword"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <com.xcxid.dinning.widget.ClearEditText
+        android:id="@+id/updateNewPwd"
+        style="@style/ClearEditText"
+        android:layout_marginTop="25dp"
+        android:hint="@string/set_update_newpwd"
+        android:textColorHint="@color/colorOrderText"
+        android:inputType="textPassword"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <com.xcxid.dinning.widget.ClearEditText
+        android:id="@+id/updateConfirmPwd"
+        style="@style/ClearEditText"
+        android:layout_marginTop="25dp"
+        android:hint="@string/set_update_confirmpwd"
+        android:textColorHint="@color/colorOrderText"
+        android:inputType="textPassword"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <Button
+        android:id="@+id/updateOk"
+        style="@style/ClearEditText"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/login_button_selector"
+        android:enabled="false"
+        android:text="@string/set_update_ok"
+        android:textColor="@android:color/white" />
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/BothMatch"
+    android:id="@+id/content">
+
+    <ListView
+        android:id="@+id/tabWidget"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/category_tab_bg"
+        android:divider="@color/colorWindowBg"
+        android:dividerHeight="1dp"
+        android:layout_toRightOf="@id/tabWidget" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:divider="@color/colorMenuItemDivider"
+        android:dividerHeight="1dp"
+        android:layout_toRightOf="@id/tabWidget" />
+</RelativeLayout>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:background="@android:color/white"
+    android:paddingBottom="10dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+        android:id="@+id/ivTakeIcon"
+        style="@style/OrderTypeIcon"
+        android:src="@mipmap/icon_online" />
+
+    <TextView
+        android:id="@+id/tvTakeDesk"
+        style="@style/OrderDeskNum"
+        android:layout_toRightOf="@id/ivTakeIcon"
+        android:text="@string/order_kind_appoint"
+        android:textColor="@color/colorOrderDeskNum" />
+
+    <TextView
+        android:id="@+id/tvTakePerson"
+        style="@style/OrderDiningNum"
+        android:layout_toRightOf="@id/tvTakeDesk" />
+
+    <TextView
+        android:id="@+id/tvTakeWay"
+        style="@style/OrderDiningNum"
+        android:layout_toRightOf="@id/tvTakePerson"
+        android:text="@string/new_order_way1" />
+
+    <TextView
+        android:id="@+id/tvTakeSerial"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/ivTakeIcon"
+        android:text="@string/new_order_serial" />
+
+    <TextView
+        android:id="@+id/tvTakeDatetime"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/tvTakeSerial"
+        android:text="@string/new_order_datetime" />
+
+    <TextView
+        android:id="@+id/tvTakeAmount"
+        style="@style/OrderAmountNum"
+        android:layout_below="@id/tvTakeDatetime"
+        android:text="@string/order_money" />
+
+    <TextView
+        android:id="@+id/tvTakePayStatus"
+        style="@style/OrderDiningNum"
+        android:layout_below="@id/tvTakeDatetime"
+        android:layout_toRightOf="@id/tvTakeAmount"
+        android:text="@string/new_order_pay1" />
+
+    <Button
+        android:id="@+id/btnTakePos"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/order_ok_bg"
+        android:drawablePadding="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/taking_order_pos"
+        android:textColor="@color/colorOrderDeskNum"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnTakeComplete"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/btnTakePos"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/order_take_bg"
+        android:drawablePadding="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/taking_order_complete"
+        android:textColor="@color/colorOrderTake"
+        android:textSize="16sp" />
+</RelativeLayout>

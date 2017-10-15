@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tvName"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:gravity="center"
+    android:background="@drawable/tab_indicator"
+    android:textColor="@color/colorLoginEdit"
+    android:textSize="14sp"
+    android:text="@string/app_name"/>

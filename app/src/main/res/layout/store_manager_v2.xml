@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              style="@style/BothMatch"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/titleGoods"
+        style="@style/ToolBarStyle">
+
+        <TextView
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/tab_item3_title"/>
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        >
+
+        <ImageView
+            android:id="@+id/icon_shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/baobao"/>
+
+        <TextView
+            style="@style/TextViewNewOrderNotes"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/icon_shop_name"
+            android:gravity="center"
+            android:text="东东包东关店"
+            />
+
+
+        <LinearLayout
+            android:id="@+id/connect_status_lt"
+            android:layout_toLeftOf="@+id/on_sale_lt"
+            style="@style/shop_manage_lt">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_has_connect"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                style="@style/TextViewNewOrderNotes"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:textColor="#259B24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已连接"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/on_sale_lt"
+            style="@style/shop_manage_lt"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_on_sale"
+                android:layout_gravity="center"/>
+
+            <TextView
+                style="@style/TextViewNewOrderNotes"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:textColor="#FFC000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="营业中"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+    <View style="@style/SepShopManagerLineStyle"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/turnover_tag"
+                android:layout_alignParentTop="true"
+                style="@style/TextViewShopManager"
+                android:text="今日营业额"/>
+        <TextView
+            android:layout_below="@+id/turnover_tag"
+            android:id="@+id/today_turnover"
+            style="@style/TextViewShopManagerSaleData"
+            android:text="1543"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/today_order_tag"
+                android:layout_alignParentTop="true"
+                style="@style/TextViewShopManager"
+                android:text="今日订单"/>
+            <TextView
+                android:layout_below="@+id/today_order_tag"
+                android:id="@+id/today_order_tv"
+                style="@style/TextViewShopManagerSaleData"
+                android:text="43"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/balance_tag"
+                android:layout_alignParentTop="true"
+                style="@style/TextViewShopManager"
+                android:text="可用余额"/>
+            <TextView
+                android:layout_below="@+id/balance_tag"
+                android:id="@+id/balance_tv"
+                style="@style/TextViewShopManagerSaleData"
+                android:textColor="#FF9800"
+                android:text="879"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <View style="@style/SepShopManagerLineStyle"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="15dp">
+
+            <ImageView
+                android:id="@+id/goods_tag"
+                style="@style/BothWrap"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/icon_goods_tag"/>
+
+            <TextView
+                style="@style/TextViewShopManagerCategory"
+                android:layout_below="@+id/goods_tag"
+                android:text="商品"/>
+
+        </RelativeLayout>
+
+        <View
+            style="@style/SepVerticalLineStyle"
+            />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="15dp">
+
+            <ImageView
+                android:id="@+id/comment_tag"
+                style="@style/BothWrap"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/icon_comment_tag"/>
+
+            <TextView
+                style="@style/TextViewShopManagerCategory"
+                android:layout_below="@+id/comment_tag"
+                android:text="评价"/>
+        </RelativeLayout>
+
+        <View style="@style/SepVerticalLineStyle"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="15dp">
+
+            <ImageView
+                android:id="@+id/account_tag"
+                style="@style/BothWrap"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/icon_acount_tag"/>
+
+            <TextView
+                style="@style/TextViewShopManagerCategory"
+                android:layout_below="@+id/account_tag"
+                android:text="对账"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View style="@style/SepShopManagerLineStyle"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:paddingTop="15dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/sale_parse_tag"
+                style="@style/BothWrap"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/icon_sale_parse"/>
+
+            <TextView
+                style="@style/TextViewShopManagerCategory"
+                android:layout_below="@+id/sale_parse_tag"
+                android:text="营业分析"/>
+        </RelativeLayout>
+        <View
+            style="@style/SepVerticalLineStyle"
+            />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:paddingTop="15dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/wallet_tag"
+                style="@style/BothWrap"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/icon_wallet_tag"/>
+
+            <TextView
+                style="@style/TextViewShopManagerCategory"
+                android:layout_below="@+id/wallet_tag"
+                android:text="钱包"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="15dp">
+        </RelativeLayout>
+
+        <View
+            style="@style/SepVerticalLineStyle"
+            />
+    </LinearLayout>
+    <View style="@style/SepShopManagerLineStyle"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:paddingTop="15dp"
+            android:gravity="center">
+
+        </RelativeLayout>
+        <View style="@style/SepVerticalLineStyle"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="15dp"
+            android:gravity="center">
+        </RelativeLayout>
+        <View style="@style/SepVerticalLineStyle"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:paddingTop="15dp"
+            android:gravity="center">
+        </RelativeLayout>
+    </LinearLayout>
+    <View style="@style/SepShopManagerLineStyle"/>
+</LinearLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/BothMatch"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar style="@style/ToolBarStyle">
+
+        <TextView
+            android:id="@+id/takeoutTitle"
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/tab_item1" />
+    </android.support.v7.widget.Toolbar>
+
+    <RadioGroup
+        android:id="@+id/orderGroup"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/newOrder"
+            style="@style/OrderTabItem"
+            android:text="@string/takeout_tab_item1" />
+
+        <RadioButton
+            android:id="@+id/takingOrder"
+            style="@style/OrderTabItem"
+            android:text="@string/takeout_tab_item2" />
+
+        <RadioButton
+            android:id="@+id/remindOrder"
+            style="@style/OrderTabItem"
+            android:text="@string/takeout_tab_item3" />
+
+        <RadioButton
+            android:id="@+id/quitOrder"
+            style="@style/OrderTabItem"
+            android:text="@string/takeout_tab_item4" />
+
+        <RadioButton
+            android:id="@+id/payOrder"
+            style="@style/OrderTabItem"
+            android:text="@string/takeout_tab_item5" />
+    </RadioGroup>
+
+    <android.support.v4.view.ViewPager
+        android:id="@android:id/content"
+        style="@style/BothMatch" />
+</LinearLayout>

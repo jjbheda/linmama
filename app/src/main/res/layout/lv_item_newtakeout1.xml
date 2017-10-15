@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:background="@android:color/white"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical"
+    android:paddingBottom="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <TextView
+            android:id="@+id/newTakeoutDeskNum"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorOrderDeskNum"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/newTakeoutProcess"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_toRightOf="@id/newTakeoutDeskNum"
+            android:gravity="center"
+            android:text="@string/takeout_title_process"
+            android:textColor="@color/colorOrderAppoint"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/newTakeoutOrderTime"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_below="@id/newTakeoutProcess"
+            android:layout_toRightOf="@id/newTakeoutDeskNum"
+            android:gravity="center"
+            android:text="@string/takeout_order_time"
+            android:textColor="@color/colorOrderText"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/newTakeoutFoldStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@mipmap/takeout_instore_fold"
+            android:gravity="center_horizontal"
+            android:text="@string/takeout_order_instore_yes"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorOrderDeskNum" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/newTakeoutPayway"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/takeout_payway"
+            android:textColor="@color/colorOrderText"/>
+
+        <TextView
+            android:id="@+id/newTakeoutDiningway"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/takeout_diningway"
+            android:textColor="@color/colorOrderText"/>
+
+        <TextView
+            android:id="@+id/newTakeoutGoods"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/newTakeoutPayway"
+            android:text="@string/takeout_goods"
+            android:textColor="@color/colorOrderText"/>
+
+        <TextView
+            android:id="@+id/newTakeoutFold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/newTakeoutPayway"
+            android:text="@string/takeout_unfold"
+            android:textColor="@color/colorOrderText"/>
+        <LinearLayout
+            android:id="@+id/newTakeoutList"
+            style="@style/MatchWrap"
+            android:layout_below="@id/newTakeoutGoods"
+            android:orientation="vertical" />
+
+    </RelativeLayout>
+</LinearLayout>

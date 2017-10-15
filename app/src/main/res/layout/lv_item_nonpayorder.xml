@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:background="@android:color/white"
+    android:paddingBottom="10dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+        android:id="@+id/ivNonPayIcon"
+        style="@style/OrderTypeIcon"
+        android:src="@mipmap/icon_online" />
+
+    <TextView
+        android:id="@+id/tvNonPayDesk"
+        style="@style/OrderDeskNum"
+        android:layout_toRightOf="@id/ivNonPayIcon"
+        android:text="@string/order_kind_appoint"
+        android:textColor="@color/colorOrderDeskNum" />
+
+    <TextView
+        android:id="@+id/tvNonPayPerson"
+        style="@style/OrderDiningNum"
+        android:layout_toRightOf="@id/tvNonPayDesk"
+        android:text="3人" />
+
+    <TextView
+        android:id="@+id/tvNonPayWay"
+        style="@style/OrderDiningNum"
+        android:layout_toRightOf="@id/tvNonPayPerson"
+        android:text="@string/new_order_way1" />
+
+    <TextView
+        android:id="@+id/tvNonPaySerial"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/ivNonPayIcon"
+        android:text="@string/new_order_serial" />
+
+    <TextView
+        android:id="@+id/tvNonPayDatetime"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/tvNonPaySerial"
+        android:text="@string/new_order_datetime" />
+
+    <TextView
+        android:id="@+id/tvNonPayOther"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/tvNonPayDatetime"
+        android:text="@string/new_order_pay_way" />
+
+    <TextView
+        android:id="@+id/tvNonPayAmount"
+        style="@style/OrderAmountNum"
+        android:layout_below="@id/tvNonPayOther"
+        android:text="@string/order_money" />
+
+    <TextView
+        android:id="@+id/tvNonPayPayStatus"
+        style="@style/OrderDiningNum"
+        android:layout_alignBottom="@id/tvNonPayAmount"
+        android:layout_below="@id/tvNonPayOther"
+        android:layout_toRightOf="@id/tvNonPayAmount"
+        android:textColor="@color/colorOrderAppoint"
+        android:text="@string/new_order_pay2" />
+
+    <Button
+        android:id="@+id/btnNonPayTake"
+        style="@style/OrderConfirm"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="@string/order_ok" />
+
+    <Button
+        android:id="@+id/btnNonPayCancel"
+        style="@style/OrderCancel"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/btnNonPayTake"
+        android:text="@string/order_cancel"
+        android:visibility="gone"/>
+</RelativeLayout>

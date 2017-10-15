@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:background="@android:color/white"
+    android:paddingBottom="10dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+        android:id="@+id/ivNewIcon2"
+        style="@style/OrderTypeIcon"
+        android:src="@mipmap/icon_online" />
+
+    <TextView
+        android:id="@+id/tvNewDesk2"
+        style="@style/OrderDeskNum"
+        android:layout_toRightOf="@id/ivNewIcon2"
+        android:textColor="@color/colorOrderDeskNum"
+        android:text="@string/order_kind_appoint" />
+
+    <TextView
+        android:id="@+id/tvNewPerson2"
+        style="@style/OrderDiningNum"
+        android:layout_toRightOf="@id/tvNewDesk2"
+        android:text="3人" />
+
+    <TextView
+        android:id="@+id/tvNewWay2"
+        style="@style/OrderDiningNum"
+        android:layout_toRightOf="@id/tvNewPerson2"
+        android:text="@string/new_order_way1" />
+
+    <TextView
+        android:id="@+id/tvNewSerial2"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/ivNewIcon2"
+        android:text="@string/new_order_serial" />
+
+    <TextView
+        android:id="@+id/tvNewDatetime2"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/tvNewSerial2"
+        android:text="@string/new_order_datetime" />
+
+    <TextView
+        android:id="@+id/tvNewOther2"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/tvNewDatetime2"
+        android:text="@string/new_order_pay_way" />
+
+    <TextView
+        android:id="@+id/tvNewAmount2"
+        style="@style/OrderAmountNum"
+        android:layout_below="@id/tvNewOther2"
+        android:text="@string/order_money" />
+
+    <TextView
+        android:id="@+id/tvNewPayStatus2"
+        style="@style/OrderDiningNum"
+        android:layout_below="@id/tvNewOther2"
+        android:layout_toRightOf="@id/tvNewAmount2"
+        android:text="@string/new_order_pay1" />
+
+
+    <Button
+        android:id="@+id/btnNewCancel2"
+        style="@style/OrderCancelSml"
+        android:layout_alignParentRight="true"
+        android:text="@string/order_cancel" />
+
+    <Button
+        android:id="@+id/btnNewTake2"
+        style="@style/OrderTakeSml"
+        android:layout_toLeftOf="@id/btnNewCancel2"
+        android:text="@string/order_take" />
+
+    <Button
+        android:id="@+id/btnNewOK2"
+        style="@style/OrderOK"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/btnNewCancel2"
+        android:text="@string/order_ok" />
+</RelativeLayout>

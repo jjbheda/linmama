@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ptr_quit"
+    style="@style/BothMatch"
+    android:background="@color/colorSettingBg">
+
+    <ListView
+        android:id="@+id/lvQuitOrder"
+        style="@style/OrderListStyle" />
+</in.srain.cube.views.ptr.PtrClassicFrameLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/ivFoodIcon"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_margin="10dp"
+        android:src="@mipmap/ic_load" />
+
+    <TextView
+        android:id="@+id/tvFoodName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/ivFoodIcon"
+        android:textColor="#353535"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvOnSale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvFoodName"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/ivFoodIcon"
+        android:textColor="@color/colorOrderTake"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btnSoldOut"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/order_refuse_bg"
+        android:text="下架"
+        android:textColor="@color/colorOrderAppoint" />
+</RelativeLayout>

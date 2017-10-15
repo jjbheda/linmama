@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorOrderNormal">#888888</color>
+    <color name="colorOrderSelected">#fc918b</color>
+    <color name="colorOrderDeskNum">#f39d12</color>
+    <color name="colorOrderText">#7d7d7d</color>
+    <color name="colorOrderTake">#09ba08</color>
+    <color name="colorOrderAppoint">#fd5a51</color>
+    <color name="colorOrderSkip">#e5e5e5</color>
+    <color name="colorOrderSelect">#fbfbfb</color>
+    <color name="colorOrderSelectStroke">#c6c6c6</color>
+
+    <color name="colorOnSaleTabBg">#f9f7f8</color>
+    <color name="colorMenuItemDivider">#dfdfdf</color>
+
+    <color name="break_line">#DDD</color>
+    <color name="gray_bg_color">#EBEBEB</color>
+    <color name="gray_txt_color">#606060</color>
+    <color name="colorPickerSelected">#333333</color>
+
+    <color name="colorPrimary">#9b5e37</color>
+    <color name="colorPrimaryDark">#4C2D1A</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorLoginEdit">#353535</color>
+    <color name="colorSettingBg">#f5f5f5</color>
+    <color name="colorMenuTabBg">#f5f5f7</color>
+    <color name="colorWindowBg">#e8e8e8</color>
+    <color name="background_holo_dark">#ff000000</color>
+    <color name="commonWhile">#ffffff</color>
+    <color name="background_holo_light">#fff3f3f3</color>
+    <color name="bright_foreground_holo_dark">@color/background_holo_light</color>
+    <color name="bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
+    <color name="bright_foreground_inverse_holo_dark">@color/bright_foreground_holo_light</color>
+    <color name="bright_foreground_holo_light">@color/background_holo_dark</color>
+
+    <color name="trans">#00000000</color>
+    <color name="alertdialog_line">#c6c6c6</color>
+    <color name="actionsheet_blue">#037BFF</color>
+    <color name="actionsheet_red">#FD4A2E</color>
+    <color name="actionsheet_gray">#8F8F8F</color>
+</resources>

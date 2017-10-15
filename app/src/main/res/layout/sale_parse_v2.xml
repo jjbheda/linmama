@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    style="@style/BothMatch"
+    android:background="#F4F2F3">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/titleGoods"
+        style="@style/ToolBarStyle"
+        app:navigationIcon="@mipmap/icon_close">
+
+        <TextView
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/sale_parce"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:background="#ffffff"
+        >
+
+        <TextView
+           style="@style/TextViewSaleParse"
+           android:text="今日营业统计"
+            />
+
+        <TextView
+            android:id="@+id/today_date"
+            style="@style/TextViewSaleParseGrey"
+            android:text="2017-05-26"
+            android:layout_marginLeft="15dp"
+            />
+        </LinearLayout>
+    <View  style="@style/SepShopManagerLineStyle"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/turnover_tag"
+                android:layout_alignParentTop="true"
+                style="@style/TextViewSaleParseGreyCommon"
+                android:text="营业额"/>
+            <TextView
+                android:layout_below="@+id/turnover_tag"
+                android:id="@+id/today_turnover"
+                style="@style/TextViewSaleParseGreyBold"
+                android:text="￥ 1590.00"/>
+
+            <TextView
+                android:layout_below="@+id/today_turnover"
+                android:id="@+id/yestoday_turnover"
+                style="@style/TextViewSaleParse14sp"
+                android:text="昨日￥1590.00"/>
+        </RelativeLayout>
+        <View
+            style="@style/SepVerticalLineStyle"
+            />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/effective_order_tag"
+                android:layout_alignParentTop="true"
+                style="@style/TextViewSaleParseGreyCommon"
+                android:text="有效订单数"/>
+            <TextView
+                android:layout_below="@+id/effective_order_tag"
+                android:id="@+id/effective_order"
+                style="@style/TextViewSaleParseGreyBold"
+                android:text="46"/>
+
+            <TextView
+                android:layout_below="@+id/effective_order"
+                android:id="@+id/effective_order_price"
+                style="@style/TextViewSaleParse14sp"
+                android:text="客单价￥34.57"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <View  style="@style/SepShopManagerLineStyle"/>
+    <LinearLayout
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/invalid_order_tag"
+                android:layout_alignParentTop="true"
+                style="@style/TextViewSaleParseGreyCommon"
+                android:text="无效订单数"/>
+            <TextView
+                android:layout_below="@+id/invalid_order_tag"
+                android:id="@+id/invalid_order"
+                style="@style/TextViewSaleParseGreyBold"
+                android:text="2"/>
+
+            <TextView
+                android:layout_below="@+id/invalid_order"
+                android:id="@+id/loss_tag"
+                style="@style/TextViewSaleParse14sp"
+                android:text="预计损失￥80"/>
+        </RelativeLayout>
+        <View
+            style="@style/SepVerticalLineStyle"
+            />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.xcxid.dinning.widget.SettingItem
+        android:id="@+id/history_business_count"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        app:setRightIcon="@mipmap/icon_right_arrow"
+        app:setTitle="@string/history_business_count" />
+
+    <com.xcxid.dinning.widget.SettingItem
+        android:id="@+id/dishes_parse"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="1dp"
+        android:background="#ffffff"
+        app:setRightIcon="@mipmap/icon_right_arrow"
+        app:setTitle="@string/dishes_parse" />
+</LinearLayout>

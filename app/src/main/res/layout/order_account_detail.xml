@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/BothMatch"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar style="@style/ToolBarStyle">
+
+        <TextView
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/order_account_detail" />
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp">
+        <TextView
+            android:id="@+id/turnover_tag"
+            android:layout_alignParentTop="true"
+            style="@style/TextViewSaleParseGreyCommon"
+            android:textColor="#999999"
+            android:textSize="14sp"
+            android:text="05/18账单"/>
+        <TextView
+            android:layout_below="@+id/turnover_tag"
+            android:id="@+id/today_turnover"
+            style="@style/TextViewSaleParseGreyBold"
+            android:textSize="24sp"
+            android:layout_marginTop="30dp"
+            android:text="￥ 1590.00"/>
+
+        <TextView
+            android:layout_below="@+id/today_turnover"
+            android:id="@+id/yestoday_turnover"
+            style="@style/TextViewSaleParse14sp"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:text="已汇入"/>
+    </RelativeLayout>
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/colorOrderSelected"
+        app:tabMinWidth="500dp"
+        app:tabMode="fixed"
+        android:background="#F0EEEF"
+        app:tabSelectedTextColor="@color/colorOrderSelected"
+        app:tabTextColor="@color/colorOrderText">
+
+        <android.support.design.widget.TabItem
+            style="@style/MatchWrap"
+            android:text="正常单\n17910"
+           />
+
+        <android.support.design.widget.TabItem
+            style="@style/MatchWrap"
+            android:text="调整单\n0.00" />
+
+    </android.support.design.widget.TabLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="#D7D7D7"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        >
+
+        <TextView
+            style="@style/TextViewNewOrderDetailCommon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center|left"
+            android:text="正常单"/>
+
+        <TextView
+            style="@style/TextViewNewOrderDetailCommon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center|right"
+            android:text="共65单，+1791.00"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        >
+
+        <TextView
+            style="@style/TextViewOrderDetailGrey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="接单序号"/>
+
+        <TextView
+            style="@style/TextViewOrderDetailGrey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="类型"/>
+
+        <TextView
+            style="@style/TextViewOrderDetailGrey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="left|center_vertical"
+            android:text="订单号"/>
+
+        <TextView
+            style="@style/TextViewOrderDetailGrey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="right|center_vertical"
+            android:text="结算金额"/>
+
+    </LinearLayout>
+    <View
+        style="@style/LineView"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        >
+
+        <TextView
+            style="@style/TextViewOrderDetailGrey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="#66"/>
+
+        <TextView
+            style="@style/TextViewOrderDetailGrey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="普通单"/>
+
+        <TextView
+            style="@style/TextViewOrderDetailGrey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="left|center_vertical"
+            android:singleLine="true"
+            android:text="12011112221141111"/>
+
+        <TextView
+            style="@style/TextViewOrderDetailGrey"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="right|center_vertical"
+            android:text="+11.00"/>
+
+    </LinearLayout>
+
+    <View
+        style="@style/LineView"
+        />
+
+</LinearLayout>

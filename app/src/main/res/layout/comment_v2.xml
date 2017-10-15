@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              style="@style/BothMatch"
+              android:background="#F4F2F3"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/titleGoods"
+        style="@style/ToolBarStyle"
+        app:navigationIcon="@mipmap/icon_back">
+
+        <TextView
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/res_comment"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/baobao"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="3.04"
+            android:paddingLeft="15dp"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/total_score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextViewCommentRed"
+                android:text="综合评分3.4"
+                android:gravity="left"
+                />
+            <TextView
+                android:id="@+id/score_detail"
+                android:gravity="left"
+                android:layout_below="@+id/total_score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextViewComment16sp"
+                android:layout_marginTop="15dp"
+                android:text="商家评分3.4   配送评分3.2"
+                />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>
+

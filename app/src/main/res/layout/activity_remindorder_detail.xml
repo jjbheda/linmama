@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    style="@style/BothMatch"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/detailTitle"
+        style="@style/ToolBarStyle"
+        app:navigationIcon="@mipmap/icon_back">
+
+        <TextView
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/order_detail" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        style="@style/BothMatch"
+        android:scrollbars="none">
+
+        <RelativeLayout style="@style/BothMatch">
+
+            <TextView
+                android:id="@+id/tvRemindTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:padding="5dp"
+                android:background="@drawable/btn_ok_bg"
+                android:text="@string/remind_order_remind"
+                android:textColor="@android:color/white" />
+
+            <ImageView
+                android:id="@+id/ivDetailIcon"
+                style="@style/OrderTypeIcon"
+                android:layout_below="@id/tvRemindTime"
+                android:src="@mipmap/icon_online" />
+
+            <TextView
+                android:id="@+id/tvDetailDesk"
+                style="@style/OrderDeskNum"
+                android:layout_below="@id/tvRemindTime"
+                android:layout_toRightOf="@id/ivDetailIcon"
+                android:text="@string/order_kind_appoint"
+                android:textColor="@color/colorOrderDeskNum" />
+
+            <TextView
+                android:id="@+id/tvDetailPerson"
+                style="@style/OrderDiningNum"
+                android:layout_below="@id/tvRemindTime"
+                android:layout_toRightOf="@id/tvDetailDesk"
+                android:text="3人" />
+
+            <TextView
+                android:id="@+id/tvDetailWay"
+                style="@style/OrderDiningNum"
+                android:layout_below="@id/tvRemindTime"
+                android:layout_toRightOf="@id/tvDetailPerson"
+                android:text="@string/new_order_way1" />
+
+            <TextView
+                android:id="@+id/tvDetailType"
+                style="@style/OrderDiningNum"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/tvRemindTime"
+                android:layout_marginRight="10dp"
+                android:text="@string/order_tab_item3"
+                android:textColor="@color/colorOrderAppoint" />
+
+            <TextView
+                android:id="@+id/tvDetailSerial"
+                style="@style/OrderSerialNum"
+                android:layout_below="@id/ivDetailIcon"
+                android:text="@string/new_order_serial" />
+
+            <TextView
+                android:id="@+id/tvDetailDatetime"
+                style="@style/OrderSerialNum"
+                android:layout_below="@id/tvDetailSerial"
+                android:text="@string/new_order_datetime" />
+
+            <TextView
+                android:id="@+id/tvDetailPayChannel"
+                style="@style/OrderSerialNum"
+                android:layout_below="@id/tvDetailDatetime"
+                android:text="@string/new_order_pay_way" />
+
+            <TextView
+                android:id="@+id/tvDetailOther"
+                style="@style/OrderSerialNum"
+                android:layout_below="@id/tvDetailPayChannel"
+                android:text="@string/new_order_in_store_time"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/sepline"
+                style="@style/SepLineStyle"
+                android:layout_below="@id/tvDetailOther" />
+
+            <LinearLayout
+                android:id="@+id/llOrderItem"
+                style="@style/MatchWrap"
+                android:layout_below="@id/sepline"
+                android:orientation="vertical" />
+
+            <Button
+                android:id="@+id/btnHanle"
+                style="@style/ClearEditText"
+                android:layout_below="@id/llOrderItem"
+                android:layout_marginTop="240dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/btn_ok_bg"
+                android:text="@string/remind_order_remind_unknown"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,186 @@
+<resources>
+    <string name="app_name">小不点商户</string>
+
+    <string name="login">进入商家版</string>
+    <string name="login_name">用户名</string>
+    <string name="login_password">请输入密码</string>
+    <string name="login_usercode">输入用户编号</string>
+
+    <string name="tab_item1">待处理</string>
+    <string name="tab_item2">订单查询</string>
+    <string name="tab_item3">店铺管理</string>
+    <string name="tab_item4">设置</string>
+
+
+    <string name="tab_item1_title">小不点商户外卖版</string>
+    <string name="tab_item2_title_01">近两日</string>
+    <string name="tab_item2_title_02">选择日期</string>
+    <string name="tab_item3_title">店铺管理</string>
+    <string name="tab_item4_title">设置</string>
+
+    <string name="order_tab_item1">新订单</string>
+    <string name="order_tab_item2">预约单</string>
+    <string name="order_tab_item3">进行中</string>
+    <string name="order_tab_item4">退款</string>
+    <string name="order_tab_item5">未支付</string>
+    <string name="order_tab_item6">已完成订单</string>
+
+    <string name="order_detail">订单详情</string>
+    <string name="order_take">接单</string>
+    <string name="order_cancel">取消</string>
+    <string name="order_ok">确认支付</string>
+    <string name="order_kind_on">来客单</string>
+    <string name="order_kind_appoint">预约单</string>
+    <string name="order_money">¥%s</string>
+    <string name="order_instore_time">顾客到店时间:</string>
+    <string name="order_order_time">备菜提醒时间:</string>
+    <string name="order_order_time_setting">设置备菜时间</string>
+    <string name="order_order_time_set">备菜提醒时间:%s</string>
+    <string name="order_detail_ok">确定</string>
+    <string name="order_detail_skip">跳过</string>
+    <string name="order_remark">备注:%s</string>
+    <string name="order_invoice">发票信息:%s</string>
+
+    <string name="new_order_way1">(堂食)</string>
+    <string name="new_order_way2">(外带)</string>
+    <string name="new_order_serial">订单编号:%s</string>
+    <string name="new_order_datetime">下单时间:%s</string>
+    <string name="new_order_person">%d人</string>
+    <string name="new_order_pay1">(已支付)</string>
+    <string name="new_order_pay2">(未支付)</string>
+    <string name="new_order_in_store_time">到店时间:%s</string>
+    <string name="new_order_pay_way">支付方式:%s</string>
+    <string name="new_order_pay_way1">在线支付</string>
+    <string name="new_order_pay_way2">吧台支付</string>
+
+    <string name="taking_order_pos">打印小票</string>
+    <string name="taking_order_cancel_ring">取消提醒</string>
+    <string name="taking_order_ok">确认支付</string>
+    <string name="taking_order_complete">完成订单</string>
+    <string name="taking_order_remind">备菜提醒:%s</string>
+
+    <string name="remind_order_remind">顾客%s催单啦!</string>
+    <string name="remind_order_remind_time">顾客将于%s到店!请及时备菜</string>
+    <string name="remind_order_remind_known">已知晓</string>
+    <string name="remind_order_remind_unknown">知晓</string>
+
+    <string name="quit_order_num">%d份</string>
+
+    <string name="goods_tab_item1">在售</string>
+    <string name="goods_tab_item2">已下架</string>
+    <string name="goods_all_onsale">全部上架</string>
+    <string name="goods_search_item">输入关键字搜索菜品</string>
+    <string name="goods_search">搜索</string>
+    <string name="goods_search_noresult">无此搜索结果</string>
+
+    <string name="data_today">今日</string>
+    <string name="data_yesterday">昨日</string>
+    <string name="data_month">本月</string>
+    <string name="data_lastmonth">上月</string>
+    <string name="data_rank">排名</string>
+    <string name="data_category">菜品</string>
+    <string name="data_salenum">销量</string>
+
+    <string name="data_tab_item1">营业统计</string>
+    <string name="data_tab_item2">销售排行</string>
+    <string name="data_today_sales_title">今日营业额:</string>
+    <string name="data_today_sales">今日营业额:%s元</string>
+    <string name="data_yestoday_sales_title">昨日营业额:</string>
+    <string name="data_yestoday_sales">昨日营业额:%s元</string>
+    <string name="data_month_sales_title">本月营业额:</string>
+    <string name="data_month_sales">本月营业额:%s元</string>
+    <string name="data_lastmonth_sales_title">上月营业额:</string>
+    <string name="data_lastmonth_sales">上月营业额:%s元</string>
+    <string name="data_online_sales_title">在线支付:</string>
+    <string name="data_online_sales">在线支付:%s元</string>
+    <string name="data_bar_sales_title">吧台支付:</string>
+    <string name="data_bar_sales">吧台支付:%s元</string>
+
+    <string name="set_item1">小票机</string>
+    <string name="set_item2">订单语音提醒</string>
+    <string name="set_item3">修改登录密码</string>
+    <string name="set_item4">设置操作密码</string>
+    <string name="set_item5">投诉建议</string>
+    <string name="set_item6">客服电话</string>
+    <string name="set_item7">退出登录</string>
+    <string name="set_item8">版本更新</string>
+    <string name="set_item9">自动接单</string>
+    <string name="set_item10">自动打印</string>
+    <string name="set_item0">店铺状态</string>
+    <string name="set_open">开始营业</string>
+    <string name="set_open_status">营业中</string>
+    <string name="set_close">打烊</string>
+    <string name="set_close_status">停止营业</string>
+    <string name="set_item1_disconnect">未连接</string>
+    <string name="set_item1_connect">已连接</string>
+
+    <string name="set_update_oldpwd">旧密码</string>
+    <string name="set_update_newpwd">新密码</string>
+    <string name="set_update_confirmpwd">确认密码</string>
+    <string name="set_update_ok">确认</string>
+    <string name="set_submit">提交</string>
+
+    <string name="set_bt_printernum">出票张数</string>
+
+    <string name="set_search_device">搜索设备</string>
+    <string name="bluetooth_not_available">您的设备不支持蓝牙</string>
+    <string name="picasso_load_url">https://api.xcxid.com/%s</string>
+
+    <string name="pop_done">完成</string>
+    <string name="pop_cancel">取消</string>
+
+    <!--***** Takeout *****-->
+    <string name="takeout_tab_item1">新订单</string>
+    <string name="takeout_tab_item2">预约单</string>
+    <string name="takeout_tab_item3">进行中</string>
+    <string name="takeout_tab_item4">催单</string>
+    <string name="takeout_tab_item5">退款</string>
+
+    <string name="takeout_title_process">等待处理</string>
+    <string name="takeout_order_time">下单时间%s</string>
+    <string name="takeout_order_instore_yes">堂点</string>
+    <string name="takeout_order_instore_no">外卖</string>
+    <string name="takeout_payway">支付方式:%s</string>
+    <string name="takeout_diningway">%s人</string>
+    <string name="takeout_goods">商品(%s)</string>
+    <string name="takeout_unfold">展开</string>
+    <string name="takeout_fold">收起</string>
+    <string name="takeout_order_income">本单预计收入</string>
+    <string name="takeout_order_serial">单号:%s</string>
+    <string name="takeout_order_cancel">取消</string>
+    <string name="takeout_order_receive">确认订单</string>
+    <string name="takeout_delivery_time">送达时间:%s</string>
+    <string name="takeout_order_nums">第%s次下单</string>
+    <string name="takeout_did_pay">顾客实付</string>
+
+
+    <string name="category_order_all">全部</string>
+    <string name="category_order_sale">外卖</string>
+    <string name="category_order_store">堂点</string>
+
+    <!--店铺管理-->
+    <string name="sale_parce">营业分析</string>
+    <string name="history_business_count">历史营业统计</string>
+    <string name="dishes_parse">菜品分析</string>
+
+    <string name="my_bill">我的账单</string>
+    <string name="order_account_detail">账单明细</string>
+    <string name="wallet">钱包</string>
+    <string name="correlation_card">绑卡</string>
+    <string name="account_name">开户名</string>
+    <string name="id_name">身份证</string>
+    <string name="bank_name">开户银行</string>
+    <string name="bank_city">开户行城市</string>
+    <string name="bank_branch">开户支行</string>
+    <string name="bank_car_num">银行卡号</string>
+    <string name="phone_num">手机号</string>
+    <string name="deposit_record">提现记录</string>
+
+
+    <string name="res_comment">餐厅评价</string>
+
+
+
+
+
+</resources>

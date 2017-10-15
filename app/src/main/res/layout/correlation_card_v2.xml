@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              style="@style/BothMatch"
+              android:background="#e4e4e4"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/titleGoods"
+        style="@style/ToolBarStyle"
+        app:navigationIcon="@mipmap/icon_back">
+
+        <TextView
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/correlation_card"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/account_name"
+                style="@style/TextViewMybill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="15dp"
+                android:text="@string/account_name"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@null"
+                android:gravity="left|center_vertical"
+                android:hint="黄可以"
+                android:paddingLeft="10dp"
+                android:textColorHint="@color/actionsheet_gray"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <View style="@style/LineViewSingle"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/id_name"
+                style="@style/TextViewMybill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="15dp"
+                android:text="@string/id_name"/>
+
+            <EditText
+                android:id="@+id/editText"
+                style="@style/TextViewMybill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@null"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/icon_close"
+                android:gravity="left|center_vertical"
+                android:hint="411481198512122222"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColorHint="@color/actionsheet_gray"/>
+
+        </LinearLayout>
+
+        <View style="@style/LineViewSingle"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/bank_name"
+                style="@style/TextViewMybill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/takeout_instore_unfold"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/bank_name"/>
+        </LinearLayout>
+        <View style="@style/LineViewSingle"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/bank_city"
+                style="@style/TextViewMybill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/takeout_instore_unfold"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/bank_city"/>
+        </LinearLayout>
+
+        <View style="@style/LineViewSingle"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/bank_branch"
+                style="@style/TextViewMybill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="15dp"
+                android:text="@string/bank_branch"/>
+
+            <EditText
+                android:id="@+id/bank_branch_editText"
+                style="@style/TextViewMybill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@null"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/icon_close"
+                android:drawableLeft="@mipmap/icon_search"
+                android:gravity="left|center_vertical"
+                android:hint="搜索"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColorHint="@color/actionsheet_gray"/>
+
+        </LinearLayout>
+        <View style="@style/LineViewSingle"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/bank_car_num"
+                style="@style/TextViewMybill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="15dp"
+                android:text="@string/bank_car_num"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@null"
+                android:gravity="left|center_vertical"
+                android:hint=""
+                android:paddingLeft="10dp"
+                android:textColorHint="@color/actionsheet_gray"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <View style="@style/LineViewSingle"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/phone_num"
+                style="@style/TextViewMybill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="15dp"
+                android:text="@string/phone_num"/>
+
+            <EditText
+                android:id="@+id/phone_num_editText"
+                style="@style/TextViewMybill"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@null"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/quest_icon"
+                android:gravity="left|center_vertical"
+                android:hint="银行预留的手机号"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColorHint="@color/actionsheet_gray"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextViewMybill"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="15dp"
+                android:text="附件上传"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="15dp">
+
+                <ImageView
+                    android:id="@+id/goods_tag"
+                    style="@style/BothWrap"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/id_card_positive"/>
+
+                <TextView
+                    style="@style/TextViewShopManagerCategory"
+                    android:layout_below="@+id/goods_tag"
+                    android:text="身份证正面"/>
+
+            </RelativeLayout>
+
+            <View
+                style="@style/SepVerticalLineStyle"
+                />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="15dp">
+
+                <ImageView
+                    android:id="@+id/comment_tag"
+                    style="@style/BothWrap"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/id_card_nage"/>
+
+                <TextView
+                    style="@style/TextViewShopManagerCategory"
+                    android:layout_below="@+id/comment_tag"
+                    android:text="身份证背面"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

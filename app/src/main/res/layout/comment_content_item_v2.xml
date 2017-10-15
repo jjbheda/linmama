@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              style="@style/BothMatch"
+              android:background="#F4F2F3"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/titleGoods"
+        style="@style/ToolBarStyle"
+        app:navigationIcon="@mipmap/icon_back">
+
+        <TextView
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/res_comment"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="15dp">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/baobao"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3.04"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp">
+
+            <RelativeLayout
+                android:id="@+id/name_rt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:id="@+id/name"
+                    style="@style/TextViewContentItemgrey16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="wenmou"/>
+
+                <TextView
+                    android:id="@+id/total_score"
+                    style="@style/TextViewContentItemgrey16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingRight="15dp"
+                    android:text="综合评分3.4"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name_rt"
+                >
+
+                <LinearLayout
+                    android:id="@+id/store_comment_lt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RatingBar
+                        android:id="@+id/score_detail"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="4"/>
+
+                    <TextView
+                        android:id="@+id/store_content"
+                        style="@style/TextViewContentItem16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:paddingRight="15dp"
+                        android:text="综合评分3.4"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/store_comment_lt"
+                    android:orientation="horizontal">
+
+                    <RatingBar
+                        android:id="@+id/dispatch_rb"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="4"/>
+
+                    <TextView
+                        style="@style/TextViewContentItem16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:paddingRight="15dp"
+                        android:text="配送评价"
+                        />
+                </LinearLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        />
+
+    <TextView
+        android:id="@+id/comment_tv"
+        style="@style/TextViewContentItem18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:text="味道正宗，菜花有点咸了"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       >
+
+        <Button
+            android:layout_toLeftOf="@+id/btnCommit"
+            android:id="@+id/btnNewCancel2"
+            style="@style/CommentOK"
+            android:text="删除"/>
+        <Button
+            android:id="@+id/btnCommit"
+            style="@style/CommentOK"
+            android:layout_alignParentRight="true"
+            android:text="通过"/>
+    </RelativeLayout>
+</LinearLayout>
+

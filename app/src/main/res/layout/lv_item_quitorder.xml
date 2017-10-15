@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:background="@android:color/white"
+    android:paddingBottom="10dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+        android:id="@+id/ivQuitIcon"
+        style="@style/OrderTypeIcon"
+        android:src="@mipmap/icon_online" />
+
+    <TextView
+        android:id="@+id/tvQuitDesk"
+        style="@style/OrderDeskNum"
+        android:layout_toRightOf="@id/ivQuitIcon"
+        android:text="@string/order_kind_appoint"
+        android:textColor="@color/colorOrderDeskNum" />
+
+    <TextView
+        android:id="@+id/tvQuitPerson"
+        style="@style/OrderDiningNum"
+        android:layout_toRightOf="@id/tvQuitDesk"
+        android:text="3人" />
+
+    <TextView
+        android:id="@+id/tvQuitWay"
+        style="@style/OrderDiningNum"
+        android:layout_toRightOf="@id/tvQuitPerson"
+        android:text="@string/new_order_way1" />
+
+    <TextView
+        android:id="@+id/tvQuitSerial"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/ivQuitIcon"
+        android:text="@string/new_order_serial" />
+
+    <TextView
+        android:id="@+id/tvQuitDatetime"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/tvQuitSerial"
+        android:text="@string/new_order_datetime" />
+
+    <View
+        android:id="@+id/sepLine"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/tvQuitDatetime"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorOrderNormal" />
+
+    <LinearLayout
+        android:id="@+id/llRefund"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sepLine"
+        android:orientation="vertical" />
+</RelativeLayout>

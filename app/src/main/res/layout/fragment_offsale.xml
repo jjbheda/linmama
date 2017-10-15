@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
+    style="@style/BothMatch"
+    android:background="@color/colorWindowBg"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btnOnAll"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:background="@drawable/order_take_bg"
+        android:text="全部上架"
+        android:textColor="@color/colorOrderTake" />
+
+    <ListView
+        android:id="@+id/offListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/colorMenuItemDivider"
+        android:dividerHeight="1dp" />
+</LinearLayout>

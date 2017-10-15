@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/BothMatch"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar style="@style/ToolBarStyle">
+
+        <TextView
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/tab_item3" />
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        style="@style/MatchWrap"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/colorOrderSelected"
+        app:tabMinWidth="500dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/colorOrderSelected"
+        app:tabTextColor="@color/colorOrderText">
+
+        <android.support.design.widget.TabItem
+            style="@style/MatchWrap"
+            android:text="@string/data_tab_item1" />
+
+        <android.support.design.widget.TabItem
+            style="@style/MatchWrap"
+            android:text="@string/data_tab_item2" />
+
+    </android.support.design.widget.TabLayout>
+
+    <FrameLayout
+        android:id="@android:id/content"
+        style="@style/BothMatch" />
+</LinearLayout>

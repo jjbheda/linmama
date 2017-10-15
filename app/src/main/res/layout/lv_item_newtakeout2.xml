@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:background="@android:color/white"
+    android:descendantFocusability="blocksDescendants"
+    android:paddingBottom="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <TextView
+            android:id="@+id/newTakeoutDeskNum"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorOrderTake"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/newTakeoutProcess"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_toRightOf="@id/newTakeoutDeskNum"
+            android:gravity="center"
+            android:text="@string/takeout_title_process"
+            android:textColor="@color/colorOrderTake"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/newTakeoutOrderTime"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_below="@id/newTakeoutProcess"
+            android:layout_toRightOf="@id/newTakeoutDeskNum"
+            android:gravity="center"
+            android:text="@string/takeout_order_time"
+            android:textColor="@color/colorOrderText"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/newTakeoutFoldStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@mipmap/takeout_outstore_fold"
+            android:gravity="center_horizontal"
+            android:text="@string/takeout_order_instore_no"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorOrderTake" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              style="@style/BothMatch"
+              android:background="#F4F2F3"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:gravity="center_vertical|left"
+        android:orientation="horizontal"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp">
+
+        <View
+            style="@style/SepVerticalLineStyle"
+            />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:paddingLeft="15dp">
+
+            <TextView
+                android:id="@+id/turnover_tag"
+                style="@style/TextViewWithDrawRecordCommon"
+                android:layout_alignParentTop="true"
+                android:gravity="left"
+                android:text="提现金额"/>
+
+            <TextView
+                android:id="@+id/today_turnover"
+                style="@style/TextViewSaleParse16sp"
+                android:layout_below="@+id/turnover_tag"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="2014-10-11 02:34：00"/>
+
+            <TextView
+                android:id="@+id/yestoday_turnover"
+                style="@style/TextViewSaleParse16sp"
+                android:layout_below="@+id/today_turnover"
+                android:gravity="left"
+                android:text="成功"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/effective_order_tag"
+                style="@style/TextViewWithDrawRecordRed"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="￥ 115.9"/>
+
+            <TextView
+                android:id="@+id/effective_order"
+                style="@style/TextViewWithDrawRecordBlue"
+                android:layout_below="@+id/effective_order_tag"
+                android:text="申请"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

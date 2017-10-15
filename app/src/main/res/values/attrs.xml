@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SettingItem">
+        <attr name="setTitle" format="string"/>
+        <attr name="setLeftIcon" format="reference" />
+        <attr name="setRightIcon" format="reference" />
+        <attr name="setSubTitle" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="SalesItem">
+        <attr name="salesToday" format="string"/>
+        <attr name="salesOnline" format="string" />
+        <attr name="salesBar" format="string" />
+    </declare-styleable>
+
+</resources>

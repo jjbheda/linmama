@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    style="@style/BothMatch"
+    android:background="@color/colorSettingBg"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar style="@style/ToolBarStyle">
+
+        <TextView
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/tab_item4" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        style="@style/BothMatch"
+        android:scrollbars="none">
+
+        <LinearLayout
+            style="@style/MatchWrap"
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
+
+            <RelativeLayout
+                style="@style/MatchWrap"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/white">
+
+                <ImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:src="@mipmap/icon_setting_logo" />
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/ivAvatar"
+                    android:text="@string/app_name"
+                    android:textColor="@color/colorLoginEdit"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@mipmap/icon_right_arrow"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/white">
+
+                <ImageView
+                    android:id="@+id/openIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:src="@mipmap/icon_storestatus" />
+
+                <TextView
+                    android:id="@+id/openTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/openIcon"
+                    android:text="@string/set_item0"
+                    android:textColor="@color/colorLoginEdit"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/openStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/openTitle"
+                    android:text="@string/set_item0"
+                    android:textColor="@color/colorOrderText"
+                    android:textSize="14sp" />
+
+
+                <Button
+                    android:id="@+id/btnOpen"
+                    style="@style/OrderTakeSml"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/set_open" />
+            </RelativeLayout>
+
+            <com.xcxid.dinning.widget.SettingItem
+                android:id="@+id/siPos"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                app:setLeftIcon="@mipmap/icon_pos"
+                app:setRightIcon="@mipmap/icon_right_arrow"
+                app:setSubTitle="@string/set_item1_disconnect"
+                app:setTitle="@string/set_item1" />
+
+            <com.xcxid.dinning.widget.SettingItem
+                android:id="@+id/siRemind"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                app:setLeftIcon="@mipmap/icon_ring"
+                app:setRightIcon="@mipmap/icon_on"
+                app:setTitle="@string/set_item2" />
+
+            <com.xcxid.dinning.widget.SettingItem
+                android:id="@+id/siAutoReceiveOrder"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                app:setLeftIcon="@mipmap/icon_auto_receive"
+                app:setRightIcon="@mipmap/icon_on"
+                app:setTitle="@string/set_item9" />
+
+            <com.xcxid.dinning.widget.SettingItem
+                android:id="@+id/siAutoPrint"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                app:setLeftIcon="@mipmap/icon_auto_print"
+                app:setRightIcon="@mipmap/icon_on"
+                app:setTitle="@string/set_item10" />
+
+            <com.xcxid.dinning.widget.SettingItem
+                android:id="@+id/siUpdateLoginPwd"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                app:setLeftIcon="@mipmap/icon_login_pwd"
+                app:setRightIcon="@mipmap/icon_right_arrow"
+                app:setTitle="@string/set_item3" />
+
+            <com.xcxid.dinning.widget.SettingItem
+                android:id="@+id/siUpdateOperatePwd"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                app:setLeftIcon="@mipmap/icon_setting_pwd"
+                app:setRightIcon="@mipmap/icon_right_arrow"
+                app:setTitle="@string/set_item4" />
+
+            <com.xcxid.dinning.widget.SettingItem
+                android:id="@+id/siCompleteOrder"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                app:setLeftIcon="@mipmap/icon_complete"
+                app:setRightIcon="@mipmap/icon_right_arrow"
+                app:setTitle="@string/order_tab_item6" />
+
+            <com.xcxid.dinning.widget.SettingItem
+                android:id="@+id/siFeedBack"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                app:setLeftIcon="@mipmap/icon_feed"
+                app:setRightIcon="@mipmap/icon_right_arrow"
+                app:setTitle="@string/set_item5" />
+
+            <com.xcxid.dinning.widget.SettingItem
+                android:id="@+id/siService"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                app:setLeftIcon="@mipmap/icon_service"
+                app:setRightIcon="@mipmap/icon_right_arrow"
+                app:setTitle="@string/set_item6" />
+
+            <com.xcxid.dinning.widget.SettingItem
+                android:id="@+id/siVersion"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                app:setLeftIcon="@mipmap/icon_version"
+                app:setRightIcon="@mipmap/icon_right_arrow"
+                app:setTitle="@string/set_item8" />
+
+            <TextView
+                android:id="@+id/tvLogout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:text="@string/set_item7"
+                android:textColor="@color/colorOrderAppoint"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

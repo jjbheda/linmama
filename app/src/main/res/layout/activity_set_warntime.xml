@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    style="@style/BothMatch"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolTitle"
+        style="@style/ToolBarStyle"
+        app:navigationIcon="@mipmap/icon_back">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/order_order_time_setting" />
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/tvInStore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolTitle"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/order_instore_time"
+        android:textColor="#666666"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvInStoreTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolTitle"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_toRightOf="@id/tvInStore"
+        android:textColor="#666666"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnSetWarnTime"
+        style="@style/ClearEditText"
+        android:layout_below="@id/tvInStore"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_select_bg"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="@string/order_order_time"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/btnSkip"
+        style="@style/ClearEditText"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/btn_cancel_bg"
+        android:text="@string/order_detail_skip"
+        android:textColor="@color/colorOrderText" />
+
+    <Button
+        android:id="@+id/btnOk"
+        style="@style/ClearEditText"
+        android:layout_above="@id/btnSkip"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_ok_bg"
+        android:text="@string/order_detail_ok"
+        android:textColor="@android:color/white" />
+</RelativeLayout>

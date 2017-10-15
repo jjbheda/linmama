@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:background="@android:color/white"
+    android:paddingBottom="10dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+        android:id="@+id/ivCompleteIcon"
+        style="@style/OrderTypeIcon"
+        android:src="@mipmap/icon_online" />
+
+    <TextView
+        android:id="@+id/tvCompleteDesk"
+        style="@style/OrderDeskNum"
+        android:layout_toRightOf="@id/ivCompleteIcon"
+        android:text="@string/order_kind_appoint"
+        android:textColor="@color/colorOrderDeskNum" />
+
+    <TextView
+        android:id="@+id/tvCompletePerson"
+        style="@style/OrderDiningNum"
+        android:layout_toRightOf="@id/tvCompleteDesk" />
+
+    <TextView
+        android:id="@+id/tvCompleteWay"
+        style="@style/OrderDiningNum"
+        android:layout_toRightOf="@id/tvCompletePerson"
+        android:text="@string/new_order_way1" />
+
+    <TextView
+        android:id="@+id/tvCompleteSerial"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/ivCompleteIcon"
+        android:text="@string/new_order_serial" />
+
+    <TextView
+        android:id="@+id/tvCompleteDatetime"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/tvCompleteSerial"
+        android:text="@string/new_order_datetime" />
+
+    <TextView
+        android:id="@+id/tvCompleteAmount"
+        style="@style/OrderAmountNum"
+        android:layout_below="@id/tvCompleteDatetime"
+        android:text="@string/order_money" />
+
+    <TextView
+        android:id="@+id/tvCompletePayStatus"
+        style="@style/OrderDiningNum"
+        android:layout_below="@id/tvCompleteDatetime"
+        android:layout_toRightOf="@id/tvCompleteAmount"
+        android:text="@string/new_order_pay1" />
+
+    <Button
+        android:id="@+id/btnCompletePos"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/order_ok_bg"
+        android:drawablePadding="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/taking_order_pos"
+        android:textColor="@color/colorOrderDeskNum"
+        android:textSize="16sp" />
+
+</RelativeLayout>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              style="@style/BothMatch"
+              android:background="#F4F2F3"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/titleGoods"
+        style="@style/ToolBarStyle"
+        app:navigationIcon="@mipmap/icon_back">
+
+        <TextView
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/sale_parce"/>
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            style="@style/BothMatch"
+            android:orientation="vertical"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:background="#ffffff"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                >
+
+                <TextView
+                    style="@style/TextViewWithdrawCashCommon"
+                    android:layout_alignParentLeft="true"
+                    android:text="提现银行"
+                    />
+
+                <TextView
+                    android:id="@+id/today_date"
+                    style="@style/TextViewWithdrawCashGrey"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_marginLeft="15dp"
+                    android:text="尚未绑卡"
+                    />
+            </RelativeLayout>
+
+            <View style="@style/SepShopManagerLineStyle"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:background="#ffffff"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                >
+
+                <TextView
+                    style="@style/TextViewWithdrawCashCommon"
+                    android:layout_alignParentLeft="true"
+                    android:text="提现金额"
+                    />
+
+                <TextView
+                    android:id="@+id/withdrawNum"
+                    style="@style/TextViewWithdrawCashGrey"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="15dp"
+                    android:drawableRight="@null"
+                    android:text="可提现余额0.00元"
+                    />
+            </RelativeLayout>
+
+            <View style="@style/SepShopManagerLineStyle"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="#ffffff"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp">
+
+                <TextView
+                    style="@style/TextViewWithdrawCashCommon"
+                    android:layout_alignParentLeft="true"
+                    android:text="￥0.00"
+                    android:textColor="#999999"
+                    android:textSize="18sp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="30dp"
+                android:background="#ffffff"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp">
+
+                <TextView
+                    style="@style/TextViewWithdrawCashCommon"
+                    android:layout_alignParentRight="true"
+                    android:text="全部提现"
+                    android:textColor="@color/actionsheet_red"
+                    android:textSize="18sp"/>
+            </RelativeLayout>
+
+            <View style="@style/SepShopManagerLineStyle"/>
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="#ffffff"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp">
+
+                <TextView
+                    style="@style/TextViewWithdrawCashCommon"
+                    android:layout_alignParentLeft="true"
+                    android:text="备注20字以内"
+                    android:textColor="#999999"
+                    android:textSize="18sp"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/TextViewSaleParseGrey"
+                    android:layout_marginBottom="10dp"
+                    android:text="说明："/>
+
+                <TextView
+                    style="@style/TextViewSaleParseGrey"
+                    android:layout_marginBottom="10dp"
+                    android:text="1.自银行处理之日起，1-2个工作日内到账"/>
+
+                <TextView
+                    style="@style/TextViewSaleParseGrey"
+                    android:layout_marginBottom="10dp"
+                    android:text="2.提现手续费按照0.01%收取"/>
+
+                <TextView
+                    style="@style/TextViewSaleParseGrey"
+                    android:layout_marginBottom="10dp"
+                    android:text="3.单笔最低500.00"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tvLogout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:background="#2CAF2B"
+                android:gravity="center"
+                android:text="@string/set_update_ok"
+                android:textColor="@color/commonWhile"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

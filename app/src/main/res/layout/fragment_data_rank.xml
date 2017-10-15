@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/BothMatch"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="@color/colorSettingBg" />
+
+    <RadioGroup
+        android:id="@+id/rankGroup"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rankToday"
+            style="@style/RankTabItem"
+            android:checked="true"
+            android:text="@string/data_today" />
+
+        <RadioButton
+            android:id="@+id/rankYesterday"
+            style="@style/RankTabItem"
+            android:text="@string/data_yesterday" />
+
+        <RadioButton
+            android:id="@+id/rankMonth"
+            style="@style/RankTabItem"
+            android:text="@string/data_month" />
+
+        <RadioButton
+            android:id="@+id/rankLastMonth"
+            style="@style/RankTabItem"
+            android:text="@string/data_lastmonth" />
+
+    </RadioGroup>
+
+    <LinearLayout
+        style="@style/MatchWrap"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorSettingBg"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/rank_item_bg"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/data_rank"
+            android:textColor="@color/colorLoginEdit"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rank_item_bg"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/data_category"
+            android:textColor="@color/colorLoginEdit"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/rank_item_bg"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/data_salenum"
+            android:textColor="@color/colorLoginEdit"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        style="@style/BothMatch" />
+</LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/content"
+    style="@style/BothMatch">
+
+    <ImageView
+        android:id="@+id/loginLogo"
+        style="@style/BothWrap"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@mipmap/login_logo" />
+
+    <com.xcxid.dinning.widget.ClearEditText
+        android:id="@+id/loginName"
+        style="@style/ClearEditText"
+        android:layout_below="@id/loginLogo"
+        android:layout_marginTop="40dp"
+        android:hint="@string/login_name"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <com.xcxid.dinning.widget.ClearEditText
+        android:id="@+id/loginPwd"
+        style="@style/ClearEditText"
+        android:layout_below="@id/loginName"
+        android:layout_marginTop="25dp"
+        android:hint="@string/login_password"
+        android:inputType="textPassword"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <Button
+        android:id="@+id/login"
+        style="@style/ClearEditText"
+        android:layout_below="@id/loginPwd"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/login_button_selector"
+        android:enabled="false"
+        android:text="@string/login"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/loginUsercode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:text="@string/login_usercode"
+        android:textSize="14sp"
+        android:textColor="@color/colorOrderAppoint" />
+</RelativeLayout>

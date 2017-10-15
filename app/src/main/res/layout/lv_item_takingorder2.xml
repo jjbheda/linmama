@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWrap"
+    android:background="@android:color/white"
+    android:descendantFocusability="blocksDescendants"
+    android:paddingBottom="10dp">
+
+    <ImageView
+        android:id="@+id/ivTakeIcon2"
+        style="@style/OrderTypeIcon"
+        android:src="@mipmap/icon_online" />
+
+    <TextView
+        android:id="@+id/tvTakeDesk2"
+        style="@style/OrderDeskNum"
+        android:layout_toRightOf="@id/ivTakeIcon2"
+        android:text="@string/order_kind_appoint"
+        android:textColor="@color/colorOrderDeskNum" />
+
+    <TextView
+        android:id="@+id/tvTakePerson2"
+        style="@style/OrderDiningNum"
+        android:layout_toRightOf="@id/tvTakeDesk2"
+        android:text="3人" />
+
+    <TextView
+        android:id="@+id/tvTakeWay2"
+        style="@style/OrderDiningNum"
+        android:layout_toRightOf="@id/tvTakePerson2"
+        android:text="@string/new_order_way1" />
+
+    <TextView
+        android:id="@+id/tvTakeSerial2"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/ivTakeIcon2"
+        android:text="@string/new_order_serial" />
+
+    <TextView
+        android:id="@+id/tvTakeDatetime2"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/tvTakeSerial2"
+        android:text="@string/new_order_datetime" />
+    <TextView
+        android:id="@+id/tvTakeOther2"
+        style="@style/OrderSerialNum"
+        android:layout_below="@id/tvTakeDatetime2"
+        android:text="@string/new_order_pay_way"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvTakeRemind2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTakeOther2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@mipmap/icon_warn_ring"
+        android:text="@string/taking_order_remind"
+        android:textColor="@color/colorOrderAppoint"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvTakeAmount2"
+        style="@style/OrderAmountNum"
+        android:layout_below="@id/tvTakeRemind2"
+        android:text="@string/order_money" />
+
+    <TextView
+        android:id="@+id/tvTakePayStatus2"
+        style="@style/OrderDiningNum"
+        android:layout_below="@id/tvTakeRemind2"
+        android:layout_toRightOf="@id/tvTakeAmount2"
+        android:text="@string/new_order_pay1" />
+
+    <Button
+        android:id="@+id/btnTakePos2"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="@drawable/order_cancel_bg"
+        android:text="@string/taking_order_pos"
+        android:textColor="#888888"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnTakeCancel2"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/btnTakePos2"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/order_cancel_bg"
+        android:drawableLeft="@mipmap/icon_cancel_ring"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/taking_order_cancel_ring"
+        android:textColor="@color/colorOrderText"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnTakeOK2"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/btnTakePos2"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/order_ok_bg"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/taking_order_ok"
+        android:textColor="@color/colorOrderDeskNum"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnTakeComplete2"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/btnTakeOK2"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/order_take_bg"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/taking_order_complete"
+        android:textColor="@color/colorOrderTake"
+        android:textSize="16sp" />
+</RelativeLayout>
