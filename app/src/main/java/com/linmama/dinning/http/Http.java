@@ -74,8 +74,12 @@ public class Http {
                     requestBuilder
                             .header("Authorization", "shop_token " + get("token", ""));
                 }
-                requestBuilder
-                        .header("Content-Type", "application/json")
+                if (!TextUtils.isEmpty((String) get("Cookie", ""))) {
+                    requestBuilder .header("Cookie", "PHPSESSID="+(String) get(Constants.COOKIE, ""));
+                }
+
+                requestBuilder.header("Content-Type", "application/json")
+
                         .header("Accept", "application/json")
                         .method(originalRequest.method(), originalRequest.body());
                 Request request = requestBuilder.build();

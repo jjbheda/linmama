@@ -3,13 +3,14 @@ package com.linmama.dinning.http;
 import com.linmama.dinning.bean.AppVersionBean;
 import com.linmama.dinning.bean.CancelBean;
 import com.linmama.dinning.bean.DataBean;
+import com.linmama.dinning.bean.LNewOrderBean;
+import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.LoginBean;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.SaleRankBean;
 import com.linmama.dinning.goods.category.MenuCategoryBean;
 import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.bean.CompleteOrderBean;
-import com.linmama.dinning.bean.NewOrderBean;
 import com.linmama.dinning.bean.NonPayOrderBean;
 import com.linmama.dinning.bean.QuitOrderBean;
 import com.linmama.dinning.bean.RedDotStatusBean;
@@ -38,13 +39,13 @@ import rx.Observable;
 public interface HttpService {
     //1	登录接口
     @FormUrlEncoded
-    @POST("shopUserTokenLogin/")
+    @POST("login/")
     Observable<BaseHttpResult<LoginBean>> login(@Field("username") String username,
                                                 @Field("password") String pwd);
 
     //2	新订单列表接口
-    @GET("newOrderList/")
-    Observable<BaseHttpResult<NewOrderBean>> getNewOrder(@Query("page") int page);
+    @POST("newOrderList/")
+    Observable<BaseHttpResult<List<LResultNewOrderBean>>> getNewOrder();
 
     //3	已接单列表接口
     @GET("receivedOrderList/")

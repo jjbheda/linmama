@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">小不点商户</string>
 
-    <string name="login">进入商家版</string>
+    <string name="login">进入商户版</string>
     <string name="login_name">用户名</string>
     <string name="login_password">请输入密码</string>
     <string name="login_usercode">输入用户编号</string>
@@ -11,6 +11,7 @@
     <string name="tab_item3">店铺管理</string>
     <string name="tab_item4">设置</string>
 
+    <string name="total_title">林妈妈早餐</string>
 
     <string name="tab_item1_title">小不点商户外卖版</string>
     <string name="tab_item2_title_01">近两日</string>
@@ -20,7 +21,7 @@
 
     <string name="order_tab_item1">新订单</string>
     <string name="order_tab_item2">预约单</string>
-    <string name="order_tab_item3">进行中</string>
+    <string name="order_tab_item3">当日单</string>
     <string name="order_tab_item4">退款</string>
     <string name="order_tab_item5">未支付</string>
     <string name="order_tab_item6">已完成订单</string>

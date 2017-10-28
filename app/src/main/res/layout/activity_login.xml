@@ -8,7 +8,7 @@
         style="@style/BothWrap"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:src="@mipmap/login_logo" />
+        android:src="@mipmap/logo" />
 
     <com.linmama.dinning.widget.ClearEditText
         android:id="@+id/loginName"
@@ -16,6 +16,7 @@
         android:layout_below="@id/loginLogo"
         android:layout_marginTop="40dp"
         android:hint="@string/login_name"
+        android:text="account123"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
 
@@ -25,6 +26,7 @@
         android:layout_below="@id/loginName"
         android:layout_marginTop="25dp"
         android:hint="@string/login_password"
+        android:text="123456"
         android:inputType="textPassword"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
@@ -47,6 +49,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:text="@string/login_usercode"
+        android:visibility="gone"
         android:textSize="14sp"
         android:textColor="@color/colorOrderAppoint" />
 </RelativeLayout>

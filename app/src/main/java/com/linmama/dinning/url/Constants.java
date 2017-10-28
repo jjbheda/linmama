@@ -9,7 +9,8 @@ public class Constants {
     public static String USERCODE = "usercode";
     public static String USERNAME = "username";
     public static String USER_FULLNAME = "userfullname";
-    public static String USERID = "userid";
+    public static String COOKIE = "Cookie";
+    public static String PASSWORD = "password";
     public static String TOKEN = "token";
     public static String VOICE_WARN = "voicewarn";
     public static String BT_ADDRESS = "btaddress";

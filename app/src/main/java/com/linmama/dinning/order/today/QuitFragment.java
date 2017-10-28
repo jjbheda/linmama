@@ -1,4 +1,4 @@
-package com.linmama.dinning.order.quit;
+package com.linmama.dinning.order.today;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.bean.RefundBean;
 import com.linmama.dinning.order.order.OrderFragment;
-import com.linmama.dinning.order.quit.detail.QuitOrderDetailActivity;
+import com.linmama.dinning.order.today.detail.TodayOrderDetailActivity;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.ActivityUtils;
 import com.linmama.dinning.utils.LogUtils;
@@ -35,9 +35,9 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * for company xcxid
  */
 
-public class QuitFragment extends BasePresenterFragment<QuitOrderPresenter> implements
-        QuitOrderContract.QuitOrderView, QuitOrderAdapter.IRefund, QuitOrderAdapter.IRefuse,
-        QuitOrderContract.RefundView, QuitOrderContract.RefuseRefundView, MyAlertDialog.ICallBack,
+public class QuitFragment extends BasePresenterFragment<TodayOrderPresenter> implements
+        TodayOrderContract.QuitOrderView, QuitOrderAdapter.IRefund, QuitOrderAdapter.IRefuse,
+        TodayOrderContract.RefundView, TodayOrderContract.RefuseRefundView, MyAlertDialog.ICallBack,
         AdapterView.OnItemClickListener {
     @BindView(R.id.lvQuitOrder)
     ListView mLvQuitOrder;
@@ -53,8 +53,8 @@ public class QuitFragment extends BasePresenterFragment<QuitOrderPresenter> impl
     private boolean isRefunded = false;
 
     @Override
-    protected QuitOrderPresenter loadPresenter() {
-        return new QuitOrderPresenter();
+    protected TodayOrderPresenter loadPresenter() {
+        return new TodayOrderPresenter();
     }
 
     @Override
@@ -205,7 +205,7 @@ public class QuitFragment extends BasePresenterFragment<QuitOrderPresenter> impl
         QuitOrderBean rb = (QuitOrderBean) mAdapter.getItem(i);
         Bundle data = new Bundle();
         data.putParcelable(Constants.ORDER_QUIT_DETAIL, rb);
-        ActivityUtils.startActivityForResult(this, QuitOrderDetailActivity.class, data, REQUEST_QUIT_ORDER_DETAIL);
+        ActivityUtils.startActivityForResult(this, TodayOrderDetailActivity.class, data, REQUEST_QUIT_ORDER_DETAIL);
     }
 
     @Override

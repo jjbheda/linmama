@@ -1,4 +1,4 @@
-package com.linmama.dinning.order.quit;
+package com.linmama.dinning.order.today;
 
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.bean.QuitOrderBean;
@@ -9,7 +9,7 @@ import java.util.List;
  * Created by jingkang on 2017/3/12
  */
 
-public class QuitOrderContract {
+public class TodayOrderContract {
     public interface QuitOrderView {
         void getQuitOrderSuccess(List<QuitOrderBean> list);
 

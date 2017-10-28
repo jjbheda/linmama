@@ -1,4 +1,4 @@
-package com.linmama.dinning.order.quit.detail;
+package com.linmama.dinning.order.today.detail;
 
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.bean.OrderDetailBean;
@@ -7,7 +7,7 @@ import com.linmama.dinning.bean.OrderDetailBean;
  * Created by jingkang on 2017/3/14
  */
 
-public class QuitDetailContract {
+public class TodayDetailContract {
     public interface QuitDetailView {
         void getQuitDetailSuccess(OrderDetailBean bean);
 

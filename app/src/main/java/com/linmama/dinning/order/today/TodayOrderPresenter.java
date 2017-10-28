@@ -1,4 +1,4 @@
-package com.linmama.dinning.order.quit;
+package com.linmama.dinning.order.today;
 
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.mvp.IModel;
@@ -15,9 +15,9 @@ import java.util.List;
  * Created by jingkang on 2017/3/12
  */
 
-public class QuitOrderPresenter extends BasePresenter<QuitFragment> implements
-        QuitOrderContract.QuitOrderPresenter, QuitOrderContract.RefuseRefundPresenter,
-        QuitOrderContract.RefundPresenter {
+public class TodayOrderPresenter extends BasePresenter<QuitFragment> implements
+        TodayOrderContract.QuitOrderPresenter, TodayOrderContract.RefuseRefundPresenter,
+        TodayOrderContract.RefundPresenter {
     @Override
     public HashMap<String, IModel> getiModelMap() {
         return loadModelMap(new QuitListModel(), new RefuseRefundModel(), new RefundModel());

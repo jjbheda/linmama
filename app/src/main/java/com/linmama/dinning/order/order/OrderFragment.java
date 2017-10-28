@@ -27,7 +27,7 @@ import com.linmama.dinning.R;
 import com.linmama.dinning.bean.RedDotStatusBean;
 import com.linmama.dinning.goods.category.MenuCategoryResultsBean;
 import com.linmama.dinning.order.pay.NonPayFragment;
-import com.linmama.dinning.order.quit.QuitFragment;
+import com.linmama.dinning.order.today.QuitFragment;
 import com.linmama.dinning.widget.BadgeView;
 
 import java.util.ArrayList;
@@ -221,13 +221,13 @@ public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> 
             case R.id.newOrder:
                 mViewPager.setCurrentItem(0, true);
                 break;
-            case R.id.takingOrder:
+            case R.id.takingOrder:          //预约单
                 mViewPager.setCurrentItem(1, true);
                 break;
             case R.id.remindOrder:
                 mViewPager.setCurrentItem(2, true);
                 break;
-            case R.id.quitOrder:
+            case R.id.quitOrder:            //当日单
                 mViewPager.setCurrentItem(3, true);
                 break;
             case R.id.payOrder:

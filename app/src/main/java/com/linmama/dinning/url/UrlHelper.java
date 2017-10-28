@@ -6,7 +6,7 @@ package com.linmama.dinning.url;
  */
 public class UrlHelper {
 //    public static String BASE_URL = "http://106.14.28.154:8000/api/";
-    public static String BASE_URL = "https://api.xcxid.com/api/";
+    public static String BASE_URL = "https://www.crazier.top/api/app/";
 
     public static String STATIC_FAIL = "fail";
     public static String STATIC_EMPTY = "empty";

@@ -1,4 +1,4 @@
-package com.linmama.dinning.order.quit.detail;
+package com.linmama.dinning.order.today.detail;
 
 import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.bean.DataBean;
@@ -14,8 +14,8 @@ import java.util.HashMap;
  * Created by jingkang on 2017/3/14
  */
 
-public class QuitOrderDetailPresenter extends BasePresenter<QuitOrderDetailActivity> implements
-        QuitDetailContract.QuitDetailPresenter, QuitDetailContract.RefundPresenter, QuitDetailContract.RefuseRefundPresenter {
+public class TodayOrderDetailPresenter extends BasePresenter<TodayOrderDetailActivity> implements
+        TodayDetailContract.QuitDetailPresenter, TodayDetailContract.RefundPresenter, TodayDetailContract.RefuseRefundPresenter {
     @Override
     public HashMap<String, IModel> getiModelMap() {
         return loadModelMap(new OrderDetailModel(), new RefuseRefundModel(), new RefundModel());

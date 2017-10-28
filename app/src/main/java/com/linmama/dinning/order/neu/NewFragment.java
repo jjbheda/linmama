@@ -10,13 +10,14 @@ import android.widget.AdapterView;
 
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.CancelBean;
+import com.linmama.dinning.bean.LNewOrderBean;
+import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.order.neu.timepick.TimePickerActivity;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.NewOrderAdapter;
-import com.linmama.dinning.bean.NewOrderBean;
 import com.linmama.dinning.bean.OrderItemsBean;
 import com.linmama.dinning.bean.ResultsBean;
 import com.linmama.dinning.bean.ResultsBeanNew;
@@ -59,7 +60,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
     private NewOrderAdapter mAdapter;
     private INewHint mNewHint;
     private INewReceiveOrder mNewReceiveOrder;
-    private List<ResultsBeanNew> mResults;
+    private List<LResultNewOrderBean> mResults;
     private MyAlertDialog mAlert;
     private int selectPosition = -1;
     private static final int REQUEST_SET_WARN_TIME = 0x10;
@@ -130,7 +131,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_SET_WARN_TIME && null != data) {
             String orderId = data.getStringExtra(Constants.ORDER_ID);
             if (!TextUtils.isEmpty(orderId) && null != mResults) {
-                for (ResultsBeanNew rb : mResults) {
+                for (LResultNewOrderBean rb : mResults) {
                     if (String.valueOf(rb.id).equals(orderId)) {
                         mResults.remove(rb);
                         if (null != mResults && null != mNewHint) {
@@ -150,7 +151,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_NEW_ORDER_DETAIL && null != data) {
             String orderId = data.getStringExtra(Constants.ORDER_ID);
             if (!TextUtils.isEmpty(orderId) && null != mResults) {
-                for (ResultsBeanNew rb : mResults) {
+                for (LResultNewOrderBean rb : mResults) {
                     if (String.valueOf(rb.id).equals(orderId)) {
                         mResults.remove(rb);
                         if (null != mResults && null != mNewHint) {
@@ -174,18 +175,18 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         LogUtils.d("onEditText", text);
         mAlert.dismiss();
         mAlert = null;
-        ResultsBeanNew rb = null;
+        LResultNewOrderBean rb = null;
         if (null != mResults && selectPosition >= 0) {
             rb = mResults.get(selectPosition);
         }
         if (null != rb && null != mPresenter) {
             showDialog("加载中...");
-            mPresenter.okOrder(String.valueOf(rb.id), text);
+//            mPresenter.okOrder(String.valueOf(rb.id), text);
         }
     }
 
     @Override
-    public void getNewOrderSuccess(NewOrderBean bean) {
+    public void getNewOrderSuccess(List<LResultNewOrderBean> bean) {
         dismissDialog();
         if (currentPage == 1 && mPtrNew.isRefreshing()) {
             mPtrNew.refreshComplete();
@@ -193,13 +194,12 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
             mResults.clear();
         }
-        if (TextUtils.isEmpty(bean.getNext())) {
+//        if (TextUtils.isEmpty(bean.getNext())) {
             mLvNewOrder.setNoMore();
-        } else {
-            mLvNewOrder.setHasMore();
-        }
-        if (null != bean && null != bean.getResults()) {
-            List<ResultsBeanNew> results = bean.getResults();
+//        } else {
+//            mLvNewOrder.setHasMore();
+//        }
+            List<LResultNewOrderBean> results = bean;
             mResults.addAll(results);
             LogUtils.d("Results", results.size() + "");
 //            if (null != mNewHint) {
@@ -218,7 +218,6 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                     mLvNewOrder.getMoreComplete();
                 }
             }
-        }
     }
 
     @Override
@@ -266,15 +265,10 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
     @Override
     public void takeOrder(int position) {
         LogUtils.d("confirmOrder", position + "");
-        ResultsBeanNew rb = mResults.get(position);
+        LResultNewOrderBean rb = mResults.get(position);
         if (null == rb) {
             ViewUtils.showSnack(mPtrNew, "订单不存在");
             return;
-        }
-        if (rb.pay_status.equals("1")) {
-            isPayed = false;
-        } else if (rb.pay_status.equals("2")) {
-            isPayed = true;
         }
 //        if (rb.is_in_store()) {
 //            mPrintingBean = rb;
@@ -320,7 +314,6 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 //            }
 //        } else {
             Bundle data = new Bundle();
-            data.putParcelable(Constants.APPOINT_ORDER, rb);
             ActivityUtils.startActivityForResult(this, TimePickerActivity.class, data, REQUEST_SET_WARN_TIME);
 //        }
     }
@@ -335,7 +328,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
             }
         }
         ViewUtils.showSnack(mPtrNew, "接单成功");
-        for (ResultsBeanNew rb : mResults) {
+        for (LResultNewOrderBean rb : mResults) {
             if (String.valueOf(rb.id).equals(orderId)) {
                 mResults.remove(rb);
                 if (null != mResults && null != mNewHint) {
@@ -371,7 +364,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         if (null != bean && !TextUtils.isEmpty(bean.getMsg())) {
             ViewUtils.showSnack(mPtrNew, bean.getMsg());
         }
-        for (ResultsBeanNew rb : mResults) {
+        for (LResultNewOrderBean rb : mResults) {
             if (String.valueOf(rb.id).equals(orderId)) {
                 mResults.remove(rb);
                 if (null != mResults && null != mNewHint) {
@@ -397,7 +390,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
     public void okOrderSuccess(String orderId) {
         dismissDialog();
         ViewUtils.showSnack(mPtrNew, "确认支付");
-        for (ResultsBeanNew rb : mResults) {
+        for (LResultNewOrderBean rb : mResults) {
             if (String.valueOf(rb.id).equals(orderId)) {
                 mResults.remove(rb);
                 if (null != mResults && null != mNewHint) {
@@ -425,9 +418,9 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        ResultsBeanNew rb = mResults.get(i);
+        LResultNewOrderBean rb = mResults.get(i);
         Bundle data = new Bundle();
-        data.putParcelable(Constants.ORDER_NEW_DETAIL, rb);
+//        data.putParcelable(Constants.ORDER_NEW_DETAIL, rb);
         ActivityUtils.startActivityForResult(this, NewOrderDetailActivity.class, data, REQUEST_NEW_ORDER_DETAIL);
     }
 

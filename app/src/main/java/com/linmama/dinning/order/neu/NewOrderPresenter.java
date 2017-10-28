@@ -1,11 +1,12 @@
 package com.linmama.dinning.order.neu;
 
 import com.linmama.dinning.bean.CancelBean;
+import com.linmama.dinning.bean.LNewOrderBean;
+import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.order.model.OrderDetailModel;
 import com.linmama.dinning.base.BasePresenter;
-import com.linmama.dinning.bean.NewOrderBean;
 import com.linmama.dinning.order.model.CancelOrderModel;
 import com.linmama.dinning.order.model.NewOrderModel;
 import com.linmama.dinning.order.model.OKOrderModel;
@@ -13,6 +14,7 @@ import com.linmama.dinning.order.model.ReceiveOrderModel;
 import com.linmama.dinning.utils.LogUtils;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class NewOrderPresenter extends BasePresenter<NewFragment> implements
         NewOrderContract.NewOrderPresenter, NewOrderContract.ReceiveOrderPresenter,
@@ -25,7 +27,7 @@ public class NewOrderPresenter extends BasePresenter<NewFragment> implements
         ((NewOrderModel) getiModelMap().get("NewOrderList")).getNewOrder(page, new NewOrderModel.NewOrderHint() {
 
             @Override
-            public void successNewOrder(NewOrderBean bean) {
+            public void successNewOrder(List<LResultNewOrderBean> bean) {
                 if (null == getIView())
                     return;
                 getIView().getNewOrderSuccess(bean);

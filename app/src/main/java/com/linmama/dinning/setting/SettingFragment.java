@@ -284,7 +284,7 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
                     public void onClick(View view) {
                         SpUtils.remove(Constants.USERNAME);
                         SpUtils.remove(Constants.TOKEN);
-                        SpUtils.remove(Constants.USERID);
+                        SpUtils.remove(Constants.PASSWORD);
                         SpUtils.remove(Constants.BT_ADDRESS);
                         ActivityUtils.startActivity(mActivity, LoginActivity.class);
 //                        Intent i = new Intent(mActivity, LoginActivity.class);

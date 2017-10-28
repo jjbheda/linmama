@@ -64,13 +64,13 @@
             android:name="com.linmama.dinning.order.neu.detail.NewOrderDetailActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.linmama.dinning.order.today.detail.TodayOrderDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.linmama.dinning.order.taking.detail.TakingOrderDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.linmama.dinning.order.remind.detail.RemindOrderDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.linmama.dinning.order.quit.detail.QuitOrderDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.linmama.dinning.order.pay.detail.NonPayOrderDetailActivity"

@@ -149,10 +149,10 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
     public void login(View view) {
         String userserver = (String) SpUtils.get(Constants.USER_SERVER, "");
         String usercode = (String) SpUtils.get(Constants.USERCODE, "");
-        if (TextUtils.isEmpty(userserver) || TextUtils.isEmpty(usercode)) {
-            ViewUtils.showSnack(findViewById(android.R.id.content), "未进行用户验证");
-            return;
-        }
+//        if (TextUtils.isEmpty(userserver) || TextUtils.isEmpty(usercode)) {
+//            ViewUtils.showSnack(findViewById(android.R.id.content), "未进行用户验证");
+//            return;
+//        }
         showDialog("登录中...");
         if (!checkNull()) {
             LoginModel login = new LoginModel();
@@ -200,8 +200,11 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
         if (!TextUtils.isEmpty(loginBean.getUsername())) {
             SpUtils.put(Constants.USERNAME, loginBean.getUsername());
         }
-        if (!TextUtils.isEmpty(loginBean.getUser_id())) {
-            SpUtils.put(Constants.USERID, loginBean.getUser_id());
+        if (!TextUtils.isEmpty(loginBean.getPassword())) {
+            SpUtils.put(Constants.PASSWORD, loginBean.getPassword());
+        }
+        if (!TextUtils.isEmpty(loginBean.getSession_id())) {
+            SpUtils.put(Constants.COOKIE, loginBean.getSession_id());
         }
         if (!TextUtils.isEmpty(loginBean.getToken())) {
             SpUtils.put(Constants.TOKEN, loginBean.getToken());

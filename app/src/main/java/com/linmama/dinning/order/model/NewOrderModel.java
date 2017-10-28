@@ -2,12 +2,17 @@ package com.linmama.dinning.order.model;
 
 import android.support.annotation.NonNull;
 
+import com.linmama.dinning.bean.LNewOrderBean;
+import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.XcxidApplication;
 import com.linmama.dinning.base.BaseModel;
-import com.linmama.dinning.bean.NewOrderBean;
 import com.linmama.dinning.except.ApiException;
+import com.linmama.dinning.url.Constants;
+import com.linmama.dinning.utils.SpUtils;
+
+import java.util.List;
 
 public class NewOrderModel extends BaseModel {
 
@@ -15,12 +20,11 @@ public class NewOrderModel extends BaseModel {
 
         if (hint == null)
             throw new RuntimeException("NewOrderHint cannot be null.");
-
-        httpService.getNewOrder(page)
-                .compose(new CommonTransformer<NewOrderBean>())
-                .subscribe(new CommonSubscriber<NewOrderBean>(XcxidApplication.getInstance()) {
+        httpService.getNewOrder()
+                .compose(new CommonTransformer<List<LResultNewOrderBean>>())
+                .subscribe(new CommonSubscriber<List<LResultNewOrderBean>>(XcxidApplication.getInstance()) {
                     @Override
-                    public void onNext(NewOrderBean bean) {
+                    public void onNext(List<LResultNewOrderBean> bean) {
                         hint.successNewOrder(bean);
                     }
 
@@ -28,12 +32,13 @@ public class NewOrderModel extends BaseModel {
                     public void onError(ApiException e) {
                         super.onError(e);
                         hint.failNewOrder(e.getMessage());
+
                     }
                 });
     }
 
     public interface NewOrderHint {
-        void successNewOrder(NewOrderBean bean);
+        void successNewOrder(List<LResultNewOrderBean> bean);
 
         void failNewOrder(String failMsg);
     }

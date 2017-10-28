@@ -225,7 +225,6 @@
     <style name="OrderListStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginTop">10dp</item>
         <item name="android:divider">@color/colorSettingBg</item>
         <item name="android:dividerHeight">10dp</item>
     </style>

@@ -1,4 +1,4 @@
-package com.linmama.dinning.order.quit.detail;
+package com.linmama.dinning.order.today.detail;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,17 +10,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.linmama.dinning.R;
 import com.linmama.dinning.base.BasePresenterActivity;
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.bean.OrderDetailBean;
+import com.linmama.dinning.bean.OrderItemsBean;
+import com.linmama.dinning.bean.QuitOrderBean;
 import com.linmama.dinning.bean.QuitOrderInfoBean;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.ViewUtils;
-import com.linmama.dinning.widget.QuitOrderRefundItem;
-import com.linmama.dinning.R;
-import com.linmama.dinning.bean.OrderItemsBean;
-import com.linmama.dinning.bean.QuitOrderBean;
 import com.linmama.dinning.widget.MyAlertDialog;
+import com.linmama.dinning.widget.QuitOrderRefundItem;
 
 import java.util.List;
 
@@ -30,9 +30,9 @@ import butterknife.BindView;
  * Created by jingkang on 2017/3/13
  */
 
-public class QuitOrderDetailActivity extends BasePresenterActivity<QuitOrderDetailPresenter> implements
-        QuitDetailContract.QuitDetailView, QuitDetailContract.RefundView,
-        QuitDetailContract.RefuseRefundView, MyAlertDialog.ICallBack {
+public class TodayOrderDetailActivity extends BasePresenterActivity<TodayOrderDetailPresenter> implements
+        TodayDetailContract.QuitDetailView, TodayDetailContract.RefundView,
+        TodayDetailContract.RefuseRefundView, MyAlertDialog.ICallBack {
     @BindView(R.id.content)
     RelativeLayout content;
     @BindView(R.id.detailTitle)
@@ -59,8 +59,8 @@ public class QuitOrderDetailActivity extends BasePresenterActivity<QuitOrderDeta
     private boolean isRefunded;
 
     @Override
-    protected QuitOrderDetailPresenter loadPresenter() {
-        return new QuitOrderDetailPresenter();
+    protected TodayOrderDetailPresenter loadPresenter() {
+        return new TodayOrderDetailPresenter();
     }
 
     @Override
@@ -185,21 +185,21 @@ public class QuitOrderDetailActivity extends BasePresenterActivity<QuitOrderDeta
             if (isrefunded) {
                 mRedundId = redundId;
                 isRefunded = true;
-                mAlert = new MyAlertDialog(QuitOrderDetailActivity.this).builder()
+                mAlert = new MyAlertDialog(TodayOrderDetailActivity.this).builder()
                         .setTitle("请输入操作密码")
                         .setEditHint("操作密码")
                         .setEditInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
                         .setNegativeButton("取消", null)
-                        .setConfirmButton("确定", QuitOrderDetailActivity.this);
+                        .setConfirmButton("确定", TodayOrderDetailActivity.this);
                 mAlert.show();
             } else {
                 mRedundId = redundId;
                 isRefunded = false;
-                mAlert = new MyAlertDialog(QuitOrderDetailActivity.this).builder()
+                mAlert = new MyAlertDialog(TodayOrderDetailActivity.this).builder()
                         .setTitle("请输入忽略理由")
                         .setEditHint("忽略理由")
                         .setNegativeButton("取消", null)
-                        .setConfirmButton("确定", QuitOrderDetailActivity.this);
+                        .setConfirmButton("确定", TodayOrderDetailActivity.this);
                 mAlert.show();
             }
         }
