@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.bean.SarchItemBean;
 import com.linmama.dinning.except.ApiException;
@@ -21,7 +21,7 @@ public class SearchCategoryModel extends BaseModel {
 
         httpService.searchMenuItem(keyword)
                 .compose(new CommonTransformer<SarchItemBean>())
-                .subscribe(new CommonSubscriber<SarchItemBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<SarchItemBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(SarchItemBean bean) {
                         hint.successSearchCategory(bean);

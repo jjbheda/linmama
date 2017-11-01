@@ -6,6 +6,9 @@ package com.linmama.dinning.base;
 public class BaseHttpResult<T> {
     private String status;
     private Object errors_info;
+    public int per_page = 0;
+    public int current_page = 0;
+    public int last_page = 0;
     private T data;
 
     public String getStatus() {

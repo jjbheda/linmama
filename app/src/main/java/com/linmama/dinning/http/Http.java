@@ -2,7 +2,7 @@ package com.linmama.dinning.http;
 
 import android.text.TextUtils;
 
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.url.UrlHelper;
 import com.linmama.dinning.BuildConfig;
@@ -96,13 +96,13 @@ public class Http {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
-                if (!NetworkUtil.isNetworkAvailable(XcxidApplication.getInstance())) {
+                if (!NetworkUtil.isNetworkAvailable(LmamaApplication.getInstance())) {
                     request = request.newBuilder()
                             .cacheControl(CacheControl.FORCE_CACHE)
                             .build();
                 }
                 Response response = chain.proceed(request);
-                if (NetworkUtil.isNetworkAvailable(XcxidApplication.getInstance())) {
+                if (NetworkUtil.isNetworkAvailable(LmamaApplication.getInstance())) {
                     int maxAge = 0;
                     // 有网络时, 设置缓存超时时间0个小时, 意思就是不读取缓存数据, 只对get有用, post没有缓冲
                     response.newBuilder()
@@ -129,7 +129,7 @@ public class Http {
             synchronized (Http.class) {
                 if (retrofit == null) {
                     // Setting the size and route of cache
-                    File cacheFile = new File(XcxidApplication.getInstance().getCacheDir(), "cache");
+                    File cacheFile = new File(LmamaApplication.getInstance().getCacheDir(), "cache");
                     Cache cache = new Cache(cacheFile, 1024 * 1024 * 50);
 
                     OkHttpClient.Builder builder = new OkHttpClient

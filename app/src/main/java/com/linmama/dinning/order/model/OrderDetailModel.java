@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.except.ApiException;
 
@@ -21,7 +21,7 @@ public class OrderDetailModel extends BaseModel {
         }
         httpService.getOrderDetail(orderId)
                 .compose(new CommonTransformer<OrderDetailBean>())
-                .subscribe(new CommonSubscriber<OrderDetailBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<OrderDetailBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(OrderDetailBean bean) {
                         hint.successOrderDetail(bean);

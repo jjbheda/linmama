@@ -2,7 +2,7 @@ package com.linmama.dinning.data.rank;
 
 import android.support.annotation.NonNull;
 
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.bean.SaleRankBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
@@ -23,7 +23,7 @@ public class SaleMonthRankModel extends BaseModel {
 
         httpService.getMonthSalesRank(year, month)
                 .compose(new CommonTransformer<SaleRankBean>())
-                .subscribe(new CommonSubscriber<SaleRankBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<SaleRankBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(SaleRankBean bean) {
                         hint.successSaleMonthRank(bean);

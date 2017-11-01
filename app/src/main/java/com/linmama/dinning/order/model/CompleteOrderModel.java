@@ -3,7 +3,7 @@ package com.linmama.dinning.order.model;
 import android.support.annotation.NonNull;
 
 import com.linmama.dinning.transformer.CommonTransformer;
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.except.ApiException;
@@ -20,7 +20,7 @@ public class CompleteOrderModel extends BaseModel {
 
         httpService.completeOrder(orderId)
                 .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(DataBean bean) {
                         hint.successComplete(orderId);

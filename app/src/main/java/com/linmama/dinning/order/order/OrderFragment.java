@@ -1,5 +1,6 @@
 package com.linmama.dinning.order.order;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,10 +9,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,15 +23,14 @@ import android.widget.TextView;
 
 import com.linmama.dinning.adapter.MenuCategoryAdapter;
 import com.linmama.dinning.adapter.OrderAdapter;
+import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.order.neu.NewFragment;
-import com.linmama.dinning.order.remind.RemindFragment;
+import com.linmama.dinning.order.ordersearch.OrderSearchActivity;
 import com.linmama.dinning.order.taking.TakingFragment;
 import com.linmama.dinning.R;
-import com.linmama.dinning.bean.RedDotStatusBean;
 import com.linmama.dinning.goods.category.MenuCategoryResultsBean;
-import com.linmama.dinning.order.pay.NonPayFragment;
-import com.linmama.dinning.order.today.QuitFragment;
+import com.linmama.dinning.order.today.TodayFragment;
 import com.linmama.dinning.widget.BadgeView;
 
 import java.util.ArrayList;
@@ -41,22 +44,40 @@ import butterknife.ButterKnife;
  * for company xcxid
  */
 
-public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> implements
+public class OrderFragment extends BasePresenterFragment implements
         RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener, View.OnClickListener,
-        NewFragment.INewHint, RemindFragment.IRemindHint, RedDotStatusContract.RedDotStatusView,
-        NonPayFragment.INonPayHint, NewFragment.INewReceiveOrder, QuitFragment.IRefundHint {
+        NewFragment.INewHint,
+        NewFragment.INewReceiveOrder {
+    @BindView(R.id.toolBar_common)
+    Toolbar mToolBar_common;
+    @BindView(R.id.toolBar_taking)
+    Toolbar mToolBar_taking;
     @BindView(R.id.orderGroup)
     RadioGroup mOrderGroup;
     @BindView(R.id.newOrder)
     RadioButton mNewOrder;
+
+    @BindView(R.id.icon_today_search)
+    ImageView mIconTodaySearch;
+
+    @BindView(R.id.icon_taking_search)
+    ImageView mIconTakingSearch;
+
     @BindView(R.id.takingOrder)
     RadioButton mTakingOrder;
-    @BindView(R.id.remindOrder)
-    RadioButton mRemindOrder;
-    @BindView(R.id.quitOrder)
-    RadioButton mQuitOrder;
-    @BindView(R.id.payOrder)
-    RadioButton mPayOrder;
+
+    @BindView(R.id.todayOrder)
+    RadioButton mTodayOrder;
+
+    @BindView(R.id.order_today_title_tv)
+    RadioButton mTodayTitleOrder;
+
+    @BindView(R.id.order_tomorrow_title_tv)
+    RadioButton mTomorrowTitleOrder;
+
+    @BindView(R.id.order_all_title_tv)
+    RadioButton mAllTitleOrder;
+
     @BindView(android.R.id.content)
     ViewPager mViewPager;
 
@@ -65,24 +86,22 @@ public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> 
 
     private BadgeView mNewBadge;
     private BadgeView mRemindBadge;
-    private BadgeView mRefundBadge;
-    private BadgeView mNonpayBadge;
 
     private NewFragment mNewFragment;
     private TakingFragment mTakingFragment;
-    private RemindFragment mRemindFragment;
-    private QuitFragment mQuitFragment;
-    private NonPayFragment mNonPayFragment;
+    private TodayFragment mTodayFragment;
     private MessageReceiver mMessageReceiver;
     public static boolean isForeground = false;
     public static String NEWORDER_REFRESH_ACTION = "com.xcxid.dining.refreshneworder";
 
     private MenuCategoryAdapter mCategorydapter;
     private TextView lastSelectView;
+    private AppCompatActivity appCompatActivity;
 
     @Override
-    protected RedDotStatusPresenter loadPresenter() {
-        return new RedDotStatusPresenter();
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        appCompatActivity = (AppCompatActivity) context;
     }
 
     @Override
@@ -100,20 +119,12 @@ public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> 
         if (null == mTakingFragment) {
             mTakingFragment = new TakingFragment();
         }
-        if (null == mRemindFragment) {
-            mRemindFragment = new RemindFragment();
-        }
-        if (null == mQuitFragment) {
-            mQuitFragment = new QuitFragment();
-        }
-        if (null == mNonPayFragment) {
-            mNonPayFragment = new NonPayFragment();
+        if (null == mTodayFragment) {
+            mTodayFragment = new TodayFragment();
         }
         mFragmentList.add(mNewFragment);
         mFragmentList.add(mTakingFragment);
-        mFragmentList.add(mRemindFragment);
-        mFragmentList.add(mQuitFragment);
-        mFragmentList.add(mNonPayFragment);
+        mFragmentList.add(mTodayFragment);
         mAdapter.setFragments(mFragmentList);
         mViewPager.setAdapter(mAdapter);
 //        mViewPager.setOffscreenPageLimit(4);
@@ -125,15 +136,20 @@ public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> 
         mOrderGroup.setOnCheckedChangeListener(this);
         mNewOrder.setOnClickListener(this);
         mTakingOrder.setOnClickListener(this);
-        mRemindOrder.setOnClickListener(this);
-        mQuitOrder.setOnClickListener(this);
-        mPayOrder.setOnClickListener(this);
+        mTodayOrder.setOnClickListener(this);
+
+        mTodayTitleOrder.setOnClickListener(this);
+        mTomorrowTitleOrder.setOnClickListener(this);
+        mAllTitleOrder.setOnClickListener(this);
+
+        mIconTodaySearch.setOnClickListener(this);
+        mIconTakingSearch.setOnClickListener(this);
+
         mViewPager.addOnPageChangeListener(this);
     }
 
     @Override
     protected void initData() {
-        mPresenter.getRedDotStatus();
         List<MenuCategoryResultsBean> results = new ArrayList<>();
         MenuCategoryResultsBean allMenu = new MenuCategoryResultsBean();
         allMenu.setId(0);
@@ -158,9 +174,7 @@ public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> 
                    showDialog("加载中...");
                    itemBackChanged(view);
                    dismissDialog();
-
                }
-
             }
         });
     }
@@ -192,18 +206,15 @@ public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> 
         switch (position) {
             case 0:
                 mOrderGroup.check(R.id.newOrder);
+                hideTileTaking(false);
                 break;
             case 1:
                 mOrderGroup.check(R.id.takingOrder);
+                showTileTaking();
                 break;
             case 2:
-                mOrderGroup.check(R.id.remindOrder);
-                break;
-            case 3:
-                mOrderGroup.check(R.id.quitOrder);
-                break;
-            case 4:
-                mOrderGroup.check(R.id.payOrder);
+                mOrderGroup.check(R.id.todayOrder);
+                hideTileTaking(true);
                 break;
             default:
                 break;
@@ -224,14 +235,25 @@ public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> 
             case R.id.takingOrder:          //预约单
                 mViewPager.setCurrentItem(1, true);
                 break;
-            case R.id.remindOrder:
+            case R.id.todayOrder:  //当日单
                 mViewPager.setCurrentItem(2, true);
                 break;
-            case R.id.quitOrder:            //当日单
-                mViewPager.setCurrentItem(3, true);
+            case R.id.icon_today_search:
+                Intent intent = new Intent(appCompatActivity, OrderSearchActivity.class);
+                Bundle args = new Bundle();
+                args.putInt("OrderType",0);
+                intent.putExtras(args);
+                appCompatActivity.startActivity(intent);
                 break;
-            case R.id.payOrder:
-                mViewPager.setCurrentItem(4, true);
+            case R.id.icon_taking_search:
+                Intent intent2 = new Intent(appCompatActivity, OrderSearchActivity.class);
+                Bundle args2 = new Bundle();
+                args2.putInt("OrderType",1);
+                intent2.putExtras(args2);
+                appCompatActivity.startActivity(intent2);
+                break;
+
+            default:
                 break;
         }
     }
@@ -267,17 +289,11 @@ public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> 
         }
     }
 
-    @Override
-    public void remindHint() {
-        int badgeCount = mRemindBadge.getBadgeCount();
-        setRemindCount(badgeCount - 1);
-    }
-
     private void setRemindCount(int count) {
         if (null == mRemindBadge) {
             mRemindBadge = new BadgeView(mActivity);
         }
-        mRemindBadge.setTargetView(mRemindOrder);
+        mRemindBadge.setTargetView(mTodayOrder);
         if (count == 0) {
             mRemindBadge.setVisibility(View.GONE);
         } else {
@@ -285,57 +301,6 @@ public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> 
         }
     }
 
-    @Override
-    public void nonPayHint() {
-        int badgeCount = mNonpayBadge.getBadgeCount();
-        setNonPayCount(badgeCount - 1);
-    }
-
-    private void setNonPayCount(int count) {
-        if (null == mNonpayBadge) {
-            mNonpayBadge = new BadgeView(mActivity);
-        }
-        mNonpayBadge.setTargetView(mPayOrder);
-        if (count == 0) {
-            mNonpayBadge.setVisibility(View.GONE);
-        } else {
-            mNonpayBadge.setBadgeCount(count);
-        }
-    }
-
-    @Override
-    public void refundHint(int count) {
-        setRefundCount(count);
-    }
-
-    private void setRefundCount(int count) {
-        if (null == mRefundBadge) {
-            mRefundBadge = new BadgeView(mActivity);
-        }
-        mRefundBadge.setTargetView(mQuitOrder);
-        if (count == 0) {
-            mRefundBadge.setVisibility(View.GONE);
-        } else {
-            mRefundBadge.setBadgeCount(count);
-        }
-    }
-
-    @Override
-    public void getRedDotStatusSuccess(RedDotStatusBean bean) {
-        int newCount = bean.getNew_order_count();
-        setNewHint(newCount);
-        int remindCount = bean.getOrder_warn_count();
-        setRemindCount(remindCount);
-        int nonpayCount = bean.getNon_payment_order_count();
-        setNonPayCount(nonpayCount);
-        int refundCount = bean.getRefund_application_count();
-        setRefundCount(refundCount);
-    }
-
-    @Override
-    public void getRedDotStatusFail(String failMsg) {
-
-    }
 
     @Override
     public void notifyReceiveOrder() {
@@ -346,9 +311,7 @@ public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> 
 
     @Override
     public void notifyNonPayOrder() {
-        if (null != mNonPayFragment) {
-            mNonPayFragment.refresh();
-        }
+
     }
 
     public void registerMessageReceiver() {
@@ -368,13 +331,17 @@ public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> 
     }
 
     @Override
+    protected BasePresenter loadPresenter() {
+        return null;
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         mActivity.unregisterReceiver(mMessageReceiver);
     }
 
     public class MessageReceiver extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             if (NEWORDER_REFRESH_ACTION.equals(intent.getAction())) {
@@ -384,4 +351,21 @@ public class OrderFragment extends BasePresenterFragment<RedDotStatusPresenter> 
             }
         }
     }
+    /**
+     * 预约单 标题栏显示
+     */
+    public void showTileTaking(){
+        mToolBar_common.setVisibility(View.GONE);
+        mToolBar_taking.setVisibility(View.VISIBLE);
+    }
+
+    public void hideTileTaking(boolean showSearchIcon){
+        mToolBar_common.setVisibility(View.VISIBLE);
+        mToolBar_taking.setVisibility(View.GONE);
+        if (showSearchIcon)
+            mIconTodaySearch.setVisibility(View.VISIBLE);
+        else
+            mIconTodaySearch.setVisibility(View.INVISIBLE);
+    }
+
 }

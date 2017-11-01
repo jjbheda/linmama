@@ -7,37 +7,40 @@ import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
+import com.linmama.dinning.bean.QuitOrderBean;
 import com.linmama.dinning.except.ApiException;
 
 import java.util.List;
 
-public class TakingOrderModel extends BaseModel {
+/**
+ * Created by jingkang on 2017/3/12
+ */
 
-    public void getTakingOrder(int page, @NonNull final TakingOrderHint hint) {
+public class TodayListModel extends BaseModel {
 
-        if (hint == null)
-            throw new RuntimeException("TakingOrderHint cannot be null.");
+    public static void getReceivedOrder(int page,@NonNull final TodayOrderHint hint) {
+        if (null == hint)
+            throw new RuntimeException("QuitOrderHint cannot be null");
 
-        httpService.getReceivedOrder(page,1,"2")
+        httpService.getReceivedOrder(page,0,"0")
                 .compose(new CommonTransformer<List<TakingOrderBean>>())
                 .subscribe(new CommonSubscriber<List<TakingOrderBean>>(LmamaApplication.getInstance()) {
                     @Override
-                    public void onNext(List<TakingOrderBean> bean) {
-                        hint.successInfo(bean);
+                    public void onNext(List<TakingOrderBean> list) {
+                        hint.successTodayOrder(list);
                     }
 
                     @Override
                     public void onError(ApiException e) {
                         super.onError(e);
-                        hint.failInfo(e.getMessage());
+                        hint.failTodayOrder(e.getMessage());
                     }
                 });
     }
 
-    public interface TakingOrderHint {
-        void successInfo(List<TakingOrderBean> bean);
+    public interface TodayOrderHint {
+        void successTodayOrder(List<TakingOrderBean> list);
 
-        void failInfo(String failMsg);
+        void failTodayOrder(String failMsg);
     }
-
 }

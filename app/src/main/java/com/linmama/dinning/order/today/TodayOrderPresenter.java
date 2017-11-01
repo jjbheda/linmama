@@ -1,12 +1,17 @@
 package com.linmama.dinning.order.today;
 
 import com.linmama.dinning.bean.DataBean;
+import com.linmama.dinning.bean.OrderDetailBean;
+import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.mvp.IModel;
-import com.linmama.dinning.order.model.QuitListModel;
+import com.linmama.dinning.order.model.OrderDetailModel;
+import com.linmama.dinning.order.model.TakingOrderModel;
+import com.linmama.dinning.order.model.TodayListModel;
 import com.linmama.dinning.order.model.RefundModel;
 import com.linmama.dinning.order.model.RefuseRefundModel;
 import com.linmama.dinning.base.BasePresenter;
-import com.linmama.dinning.bean.QuitOrderBean;
+import com.linmama.dinning.order.taking.TakingOrderContract;
+import com.linmama.dinning.utils.LogUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,12 +20,11 @@ import java.util.List;
  * Created by jingkang on 2017/3/12
  */
 
-public class TodayOrderPresenter extends BasePresenter<QuitFragment> implements
-        TodayOrderContract.QuitOrderPresenter, TodayOrderContract.RefuseRefundPresenter,
-        TodayOrderContract.RefundPresenter {
+public class TodayOrderPresenter extends BasePresenter<TodayFragment> implements
+        TodayOrderContract.TodayOrderPresenter, TodayOrderContract.PrintPresenter {
     @Override
     public HashMap<String, IModel> getiModelMap() {
-        return loadModelMap(new QuitListModel(), new RefuseRefundModel(), new RefundModel());
+        return loadModelMap(new TodayListModel(), new RefuseRefundModel(), new RefundModel());
     }
 
     @Override
@@ -33,71 +37,50 @@ public class TodayOrderPresenter extends BasePresenter<QuitFragment> implements
     }
 
     @Override
-    public void getQuitOrder() {
+    public void getTodayOrder(int page ) {
         if (null == getIView())
             return;
-        ((QuitListModel) getiModelMap().get("QuitOrderList")).getQuitList(
-                new QuitListModel.QuitOrderHint() {
+        TodayListModel.getReceivedOrder(page, new TodayListModel.TodayOrderHint() {
                     @Override
-                    public void successQuitOrder(List<QuitOrderBean> list) {
+                    public void successTodayOrder(List<TakingOrderBean> list) {
                         if (null == getIView())
                             return;
-                        getIView().getQuitOrderSuccess(list);
+                        getIView().getTodayOrderSuccess(list);
                     }
 
                     @Override
-                    public void failQUitOrder(String failMsg) {
+                    public void failTodayOrder(String failMsg) {
                         if (null == getIView())
                             return;
-                        getIView().getQuitOrderFail(failMsg);
+                        LogUtils.e("LoginPresenter.failNewOrder", failMsg);
+                        getIView().getTodayOrderFail(failMsg);
                     }
                 }
+
         );
     }
+
 
     @Override
-    public void refund(String refundId, String operation_password) {
+    public void getPrintData(int orderId) {
         if (null == getIView())
             return;
-        ((RefundModel) getiModelMap().get("Refund")).refund(refundId, operation_password,
-                new RefundModel.RefundHint() {
+        ((OrderDetailModel) getiModelMap().get("PrintData")).getOrderDetail(orderId,
+                new OrderDetailModel.OrderDetailHint() {
                     @Override
-                    public void successRefund(DataBean bean) {
+                    public void successOrderDetail(OrderDetailBean bean) {
                         if (null == getIView())
                             return;
-                        getIView().refundSuccess(bean);
+                        getIView().getPrintDataSuccess(bean);
                     }
 
                     @Override
-                    public void failRefund(String failMsg) {
+                    public void failOrderDetail(String failMsg) {
                         if (null == getIView())
                             return;
-                        getIView().refundFail(failMsg);
+                        getIView().getPrintDataFail(failMsg);
                     }
-                }
-        );
+                });
     }
 
-    @Override
-    public void refuseRefund(String refundId, String reason) {
-        if (null == getIView())
-            return;
-        ((RefuseRefundModel) getiModelMap().get("RefuseRefund")).refuseRefund(refundId, reason,
-                new RefuseRefundModel.RefuseRefundHint() {
-                    @Override
-                    public void successRefuseRefund(DataBean bean) {
-                        if (null == getIView())
-                            return;
-                        getIView().refuseRefundSuccess(bean);
-                    }
-
-                    @Override
-                    public void failRefuseRefund(String failMsg) {
-                        if (null == getIView())
-                            return;
-                        getIView().refuseRefundFail(failMsg);
-                    }
-                }
-        );
-    }
 }

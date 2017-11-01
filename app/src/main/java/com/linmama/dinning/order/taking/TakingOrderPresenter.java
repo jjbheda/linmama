@@ -1,16 +1,17 @@
 package com.linmama.dinning.order.taking;
 
 import com.linmama.dinning.bean.OrderDetailBean;
+import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.order.model.CompleteOrderModel;
 import com.linmama.dinning.order.model.OrderDetailModel;
 import com.linmama.dinning.order.model.TakingOrderModel;
 import com.linmama.dinning.base.BasePresenter;
-import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.order.model.OKOrderModel;
 import com.linmama.dinning.utils.LogUtils;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class TakingOrderPresenter extends BasePresenter<TakingFragment> implements
         TakingOrderContract.TakingOrderPresenter, TakingOrderContract.ConfirmPayPresenter,
@@ -23,7 +24,7 @@ public class TakingOrderPresenter extends BasePresenter<TakingFragment> implemen
         ((TakingOrderModel) getiModelMap().get("TakingOrder")).getTakingOrder(page, new TakingOrderModel.TakingOrderHint() {
 
             @Override
-            public void successInfo(TakingOrderBean bean) {
+            public void successInfo(List<TakingOrderBean> bean) {
                 if (null == getIView())
                     return;
                 getIView().getTakingOrderSuccess(bean);

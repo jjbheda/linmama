@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class OrderAdapter extends FragmentPagerAdapter {
 
     private ArrayList<Fragment> mFragments;
-    private String[] mTitles = {"新单", "已接单", "提醒", "退单", "未支付"};
+    private String[] mTitles = {"新订单", "预约单", "当日单"};
 
     public OrderAdapter(FragmentManager fm) {
         super(fm);

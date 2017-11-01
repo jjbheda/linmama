@@ -3,22 +3,20 @@ package com.linmama.dinning.http;
 import com.linmama.dinning.bean.AppVersionBean;
 import com.linmama.dinning.bean.CancelBean;
 import com.linmama.dinning.bean.DataBean;
-import com.linmama.dinning.bean.LNewOrderBean;
 import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.LoginBean;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.SaleRankBean;
+import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.goods.category.MenuCategoryBean;
 import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.bean.CompleteOrderBean;
 import com.linmama.dinning.bean.NonPayOrderBean;
 import com.linmama.dinning.bean.QuitOrderBean;
-import com.linmama.dinning.bean.RedDotStatusBean;
 import com.linmama.dinning.bean.RemindBean;
 import com.linmama.dinning.bean.SaleReportBean;
 import com.linmama.dinning.bean.SarchItemBean;
 import com.linmama.dinning.bean.StoreSettingsBean;
-import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.UserServerBean;
 import com.linmama.dinning.goods.item.MenuItemBean;
 
@@ -42,14 +40,26 @@ public interface HttpService {
     @POST("login/")
     Observable<BaseHttpResult<LoginBean>> login(@Field("username") String username,
                                                 @Field("password") String pwd);
-
     //2	新订单列表接口
     @POST("newOrderList/")
     Observable<BaseHttpResult<List<LResultNewOrderBean>>> getNewOrder();
 
-    //3	已接单列表接口
-    @GET("receivedOrderList/")
-    Observable<BaseHttpResult<TakingOrderBean>> getReceivedOrder(@Query("page") int page);
+    //3	预约单列表接口     order_type：1预约单 0 当日单  range 0今天 1 明天 2全部
+    @FormUrlEncoded
+    @POST("pendingOrderList/")
+    Observable<BaseHttpResult<List<TakingOrderBean>>> getReceivedOrder(@Query("page") int page, @Field("order_type") int order_type
+            , @Field("search") String search);
+
+    //	预约单列表接口     order_type：1预约单 0 当日单  range 0今天 1 明天 2全部
+    @FormUrlEncoded
+    @POST("pendingOrderList/")
+    Observable<BaseHttpResult<List<TakingOrderBean>>> orderingQuery(@Query("page") int page, @Field("order_type") int order_type
+            , @Field("range") String range);
+
+    //确认订单
+    @FormUrlEncoded
+    @POST("ensureOrder/")
+    Observable<BaseHttpResult> commitOrder(@Field("id") String id);
 
     //4	提醒列表接口
     @GET("orderWarnList/")
@@ -68,10 +78,10 @@ public interface HttpService {
     @POST("receivingOrder/")
     Observable<BaseHttpResult<DataBean>> receivingOrder(@Field("order_id") String order_id);
 
-    //8	取消订单接口
+    //8	取消订单接口 Id: id//返回的订单id  Type：0 新订单中取消订单  1 预约单和当日单中取消取订单
     @FormUrlEncoded
     @POST("cancelOrder/")
-    Observable<BaseHttpResult<CancelBean>> cancelOrder(@Field("order_id") String order_id, @Field("reason") String reason);
+    Observable<BaseHttpResult> cancelOrder(@Field("id") String id,@Field("type") int type);
 
     //9	确认支付接口
     @FormUrlEncoded
@@ -168,10 +178,6 @@ public interface HttpService {
     //27	获取店铺打烊状态
     @GET("storeSettings/")
     Observable<BaseHttpResult<StoreSettingsBean>> getStoreSettings();
-
-    //28	获取订单状态
-    @GET("redDotStatus/")
-    Observable<BaseHttpResult<RedDotStatusBean>> getRedDotStatus();
 
     //32	月销售额排行
     @GET("monthSalesRanking/")

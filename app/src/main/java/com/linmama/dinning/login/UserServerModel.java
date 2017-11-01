@@ -2,7 +2,7 @@ package com.linmama.dinning.login;
 
 import android.support.annotation.NonNull;
 
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.http.HttpService;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.subscriber.CommonSubscriber;
@@ -32,7 +32,7 @@ public class UserServerModel implements IModel {
         HttpService httpService = retrofit.create(HttpService.class);
         httpService.getUserServer(usercode)
                 .compose(new CommonTransformer<UserServerBean>())
-                .subscribe(new CommonSubscriber<UserServerBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<UserServerBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(UserServerBean bean) {
                         hint.successServer(bean);

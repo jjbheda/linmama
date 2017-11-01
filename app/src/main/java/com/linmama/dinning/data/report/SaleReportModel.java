@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.bean.SaleReportBean;
 import com.linmama.dinning.except.ApiException;
@@ -22,7 +22,7 @@ public class SaleReportModel extends BaseModel {
 
         httpService.turnoverReport()
                 .compose(new CommonTransformer<SaleReportBean>())
-                .subscribe(new CommonSubscriber<SaleReportBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<SaleReportBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(SaleReportBean bean) {
                         hint.successSaleReport(bean);

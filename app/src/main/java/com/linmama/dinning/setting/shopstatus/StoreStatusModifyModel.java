@@ -2,7 +2,7 @@ package com.linmama.dinning.setting.shopstatus;
 
 import android.support.annotation.NonNull;
 
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
@@ -21,7 +21,7 @@ public class StoreStatusModifyModel extends BaseModel {
 
         httpService.openOrClose(opFlag)
                 .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(DataBean bean) {
                         hint.successStoreStatusModify(bean);

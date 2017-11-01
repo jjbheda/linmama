@@ -14,8 +14,7 @@ import butterknife.ButterKnife;
  * Created by jingkang on 2017/3/5
  */
 
-public abstract class BasePresenterActivity<P extends BasePresenter> extends AppCompatActivity implements
-        IView {
+public abstract class BasePresenterActivity<P extends BasePresenter> extends AppCompatActivity implements IView {
     protected View view;
     protected P mPresenter;
     private ProgressDialog mLoadingDialog;

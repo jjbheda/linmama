@@ -3,13 +3,15 @@ package com.linmama.dinning.order.taking;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 
+import java.util.List;
+
 /**
  * 契约类,定义登录用到的一些接口方法
  */
 public class TakingOrderContract {
 
     public interface TakingOrderView {
-        void getTakingOrderSuccess(TakingOrderBean bean);
+        void getTakingOrderSuccess(List<TakingOrderBean> bean);
 
         void getTakingOrderFail(String failMsg);
     }

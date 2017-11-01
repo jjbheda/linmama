@@ -33,15 +33,6 @@
             style="@style/OrderTabItem"
             android:text="@string/takeout_tab_item3" />
 
-        <RadioButton
-            android:id="@+id/quitOrder"
-            style="@style/OrderTabItem"
-            android:text="@string/takeout_tab_item4" />
-
-        <RadioButton
-            android:id="@+id/payOrder"
-            style="@style/OrderTabItem"
-            android:text="@string/takeout_tab_item5" />
     </RadioGroup>
 
     <android.support.v4.view.ViewPager

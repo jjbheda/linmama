@@ -1,7 +1,9 @@
 package com.linmama.dinning.order.today;
 
 import com.linmama.dinning.bean.DataBean;
+import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.QuitOrderBean;
+import com.linmama.dinning.bean.TakingOrderBean;
 
 import java.util.List;
 
@@ -10,33 +12,21 @@ import java.util.List;
  */
 
 public class TodayOrderContract {
-    public interface QuitOrderView {
-        void getQuitOrderSuccess(List<QuitOrderBean> list);
+    public interface TodayOrderView {
+        void getTodayOrderSuccess(List<TakingOrderBean> list);
+        void getTodayOrderFail(String failMsg);
+    }
+    public interface PrintView {
+        void getPrintDataSuccess(OrderDetailBean bean);
 
-        void getQuitOrderFail(String failMsg);
+        void getPrintDataFail(String failMsg);
     }
 
-    public interface RefuseRefundView {
-        void refuseRefundSuccess(DataBean bean);
-
-        void refuseRefundFail(String failMsg);
+    public interface TodayOrderPresenter {
+        void getTodayOrder(int page);
     }
 
-    public interface RefundView {
-        void refundSuccess(DataBean bean);
-
-        void refundFail(String failMsg);
-    }
-
-    public interface QuitOrderPresenter {
-        void getQuitOrder();
-    }
-
-    public interface RefuseRefundPresenter {
-        void refuseRefund(String refundId, String reason);
-    }
-
-    public interface RefundPresenter {
-        void refund(String refundId, String operation_password);
+    public interface PrintPresenter {
+        void getPrintData(int orderId);
     }
 }

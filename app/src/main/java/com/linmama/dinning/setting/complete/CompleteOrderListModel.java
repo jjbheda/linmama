@@ -2,7 +2,7 @@ package com.linmama.dinning.setting.complete;
 
 import android.support.annotation.NonNull;
 
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.bean.CompleteOrderBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
@@ -21,7 +21,7 @@ public class CompleteOrderListModel extends BaseModel {
 
         httpService.getCompletedOrderList(page)
                 .compose(new CommonTransformer<CompleteOrderBean>())
-                .subscribe(new CommonSubscriber<CompleteOrderBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<CompleteOrderBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(CompleteOrderBean bean) {
                         hint.successCompleteListOrder(bean);

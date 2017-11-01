@@ -3,16 +3,18 @@ package com.linmama.dinning.order.neu;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.linmama.dinning.base.BasePresenterFragment;
-import com.linmama.dinning.bean.CancelBean;
-import com.linmama.dinning.bean.LNewOrderBean;
 import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.OrderDetailBean;
+import com.linmama.dinning.bean.OrderGoodBean;
+import com.linmama.dinning.bean.OrderOrderMenuBean;
+import com.linmama.dinning.bean.OrderPickupTimeBean;
+import com.linmama.dinning.bean.OrderPlace;
+import com.linmama.dinning.bean.OrderUser;
 import com.linmama.dinning.order.neu.timepick.TimePickerActivity;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
@@ -20,9 +22,7 @@ import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.NewOrderAdapter;
 import com.linmama.dinning.bean.OrderItemsBean;
 import com.linmama.dinning.bean.ResultsBean;
-import com.linmama.dinning.bean.ResultsBeanNew;
 import com.linmama.dinning.bluetooth.PrintDataService;
-import com.linmama.dinning.order.neu.detail.NewOrderDetailActivity;
 import com.linmama.dinning.order.order.OrderFragment;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.ActivityUtils;
@@ -45,10 +45,10 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * for company xcxid
  */
 public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implements
-        NewOrderContract.NewOrderView, NewOrderContract.ReceiveOrderView, NewOrderContract.CancelOrderView,
-        NewOrderContract.OKOrderView, NewOrderAdapter.ITakeOrder, NewOrderAdapter.ICancelOrder,
-        NewOrderAdapter.IOKOrder, MyAlertDialog.ICallBack, AdapterView.OnItemClickListener,
+        NewOrderContract.NewOrderView, NewOrderContract.ReceiveOrderView,
+        NewOrderAdapter.ITakeOrder,MyAlertDialog.ICallBack, AdapterView.OnItemClickListener,
         NewOrderContract.PrintView, GetMoreListView.OnGetMoreListener {
+    public boolean IsTest = false;
     @BindView(R.id.lvNewOrder)
     GetMoreListView mLvNewOrder;
 //    @BindView(R.id.newOrderAllTv)
@@ -200,6 +200,48 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 //            mLvNewOrder.setHasMore();
 //        }
             List<LResultNewOrderBean> results = bean;
+
+            if (IsTest){
+                LResultNewOrderBean model = new LResultNewOrderBean();
+                model.remark = "少放糖";
+                OrderOrderMenuBean menuBean = new OrderOrderMenuBean();
+                menuBean.date = "周二";
+                OrderGoodBean goodBean = new OrderGoodBean();
+                goodBean.amount = 3;
+                goodBean.name = "西红柿炒蛋";
+                goodBean.total_price = "20";
+                menuBean.goods_list .add(goodBean);
+                model.order_list.add(menuBean);
+                OrderPickupTimeBean pickupTimeBean = new OrderPickupTimeBean();
+                pickupTimeBean.pickup_date = "2017-09-19";
+                pickupTimeBean.pickup_start_time = "08:00";
+                pickupTimeBean.pickup_end_time = "10:00";
+                model.pickup_list.add(pickupTimeBean);
+                 OrderPlace place = new OrderPlace();
+                 place.place_address = "建国桥菜市场02号";
+                 place.place_name = "西城区";
+                 place.place_type = "0";
+                 model.place = place;
+
+                 OrderUser user = new OrderUser();
+                 user.user_name = "张三";
+                 user.user_tel = "13900000000";
+                 model.user = user;
+                model.serial_number ="No20171010224933576179"; //订单号
+                model.id = "2"; //订单ID
+                model.amount = 3;  //商品总数
+                model.is_for_here = "1";
+                model.order_type = "0"; //1预约单 0当日单
+                model.is_ensure_order = "1"; //1已接单 0未接单
+                model.pay_amount = "0.2"; //"0.07", //支付金额
+                model.order_datetime_bj = "2017-10-10 22:49:33"; //下单日期
+
+                results.add(model);
+            }
+
+
+
+
             mResults.addAll(results);
             LogUtils.d("Results", results.size() + "");
 //            if (null != mNewHint) {
@@ -208,8 +250,6 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
             if (null == mAdapter) {
                 mAdapter = new NewOrderAdapter(mActivity, mResults);
                 mAdapter.setTakeOrder(this);
-                mAdapter.setCancelOrder(this);
-                mAdapter.setOkOrder(this);
                 mLvNewOrder.setAdapter(mAdapter);
                 mLvNewOrder.setOnItemClickListener(this);
             } else {
@@ -234,33 +274,6 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         }
     }
 
-    @Override
-    public void cancelOrder(final int position) {
-        LogUtils.d("cancelOrder", position + "");
-        new MyAlertDialog(mActivity).builder()
-                .setTitle("确认取消该订单吗?")
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确认", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showDialog("加载中...");
-                        mPresenter.cancelOrder(String.valueOf(mResults.get(position).id), "本店暂无法处理此订单请谅解");
-                    }
-                }).show();
-    }
-
-    @Override
-    public void okOrder(int position) {
-        LogUtils.d("okOrder", position + "");
-        selectPosition = position;
-        mAlert = new MyAlertDialog(mActivity).builder()
-                .setTitle("请输入操作密码")
-                .setEditHint("操作密码")
-                .setEditInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                .setNegativeButton("取消", null)
-                .setConfirmButton("确定", NewFragment.this);
-        mAlert.show();
-    }
 
     @Override
     public void takeOrder(int position) {
@@ -359,69 +372,11 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
     }
 
     @Override
-    public void cancelOrderSuccess(String orderId, CancelBean bean) {
-        dismissDialog();
-        if (null != bean && !TextUtils.isEmpty(bean.getMsg())) {
-            ViewUtils.showSnack(mPtrNew, bean.getMsg());
-        }
-        for (LResultNewOrderBean rb : mResults) {
-            if (String.valueOf(rb.id).equals(orderId)) {
-                mResults.remove(rb);
-                if (null != mResults && null != mNewHint) {
-                    mNewHint.newHint();
-                }
-                if (null != mAdapter) {
-                    mAdapter.notifyDataSetChanged();
-                }
-                return;
-            }
-        }
-    }
-
-    @Override
-    public void cancelOrderFail(String failMsg) {
-        dismissDialog();
-        if (!TextUtils.isEmpty(failMsg)) {
-            ViewUtils.showSnack(mPtrNew, failMsg);
-        }
-    }
-
-    @Override
-    public void okOrderSuccess(String orderId) {
-        dismissDialog();
-        ViewUtils.showSnack(mPtrNew, "确认支付");
-        for (LResultNewOrderBean rb : mResults) {
-            if (String.valueOf(rb.id).equals(orderId)) {
-                mResults.remove(rb);
-                if (null != mResults && null != mNewHint) {
-                    mNewHint.newHint();
-                }
-                if (null != mNewReceiveOrder) {
-                    mNewReceiveOrder.notifyReceiveOrder();
-                }
-                if (null != mAdapter) {
-                    mAdapter.notifyDataSetChanged();
-                }
-                return;
-            }
-        }
-        selectPosition = -1;
-    }
-
-    @Override
-    public void okOrderFail(String failMsg) {
-        dismissDialog();
-        if (!TextUtils.isEmpty(failMsg)) {
-            ViewUtils.showSnack(mPtrNew, failMsg);
-        }
-    }
-
-    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         LResultNewOrderBean rb = mResults.get(i);
         Bundle data = new Bundle();
 //        data.putParcelable(Constants.ORDER_NEW_DETAIL, rb);
-        ActivityUtils.startActivityForResult(this, NewOrderDetailActivity.class, data, REQUEST_NEW_ORDER_DETAIL);
+//        ActivityUtils.startActivityForResult(this, NewOrderDetailActivity.class, data, REQUEST_NEW_ORDER_DETAIL);
     }
 
     @Override

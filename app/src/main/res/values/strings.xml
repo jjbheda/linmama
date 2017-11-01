@@ -19,6 +19,10 @@
     <string name="tab_item3_title">店铺管理</string>
     <string name="tab_item4_title">设置</string>
 
+    <string name="tab_toolbar_taking_title_01">今日</string>
+    <string name="tab_toolbar_taking_title_02">明日</string>
+    <string name="tab_toolbar_taking_title_03">全部</string>
+
     <string name="order_tab_item1">新订单</string>
     <string name="order_tab_item2">预约单</string>
     <string name="order_tab_item3">当日单</string>
@@ -134,8 +138,6 @@
     <string name="takeout_tab_item1">新订单</string>
     <string name="takeout_tab_item2">预约单</string>
     <string name="takeout_tab_item3">进行中</string>
-    <string name="takeout_tab_item4">催单</string>
-    <string name="takeout_tab_item5">退款</string>
 
     <string name="takeout_title_process">等待处理</string>
     <string name="takeout_order_time">下单时间%s</string>
@@ -154,7 +156,7 @@
     <string name="takeout_order_nums">第%s次下单</string>
     <string name="takeout_did_pay">顾客实付</string>
 
-
+    <string name="order_search">收货人姓名、手机号或订单号</string>
     <string name="category_order_all">全部</string>
     <string name="category_order_sale">外卖</string>
     <string name="category_order_store">堂点</string>
@@ -176,12 +178,6 @@
     <string name="bank_car_num">银行卡号</string>
     <string name="phone_num">手机号</string>
     <string name="deposit_record">提现记录</string>
-
-
     <string name="res_comment">餐厅评价</string>
-
-
-
-
 
 </resources>

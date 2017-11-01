@@ -2,7 +2,7 @@ package com.linmama.dinning.order.model;
 
 import android.support.annotation.NonNull;
 
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.bean.RemindBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
@@ -21,7 +21,7 @@ public class RemindOrderModel extends BaseModel {
 
         httpService.getWarnOrder()
                 .compose(new CommonTransformer<RemindBean>())
-                .subscribe(new CommonSubscriber<RemindBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<RemindBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(RemindBean remindBean) {
                         remindOrderHint.successRemindOrder(remindBean);

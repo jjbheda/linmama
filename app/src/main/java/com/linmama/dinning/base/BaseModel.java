@@ -5,7 +5,7 @@ import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.http.Http;
 
 public class BaseModel implements IModel {
-    protected static HttpService httpService;
+    public static HttpService httpService;
 
     //初始化httpService
     static {

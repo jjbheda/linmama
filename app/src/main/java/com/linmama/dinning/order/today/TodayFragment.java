@@ -1,34 +1,31 @@
-package com.linmama.dinning.order.taking;
+package com.linmama.dinning.order.today;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.linmama.dinning.base.BasePresenterFragment;
-import com.linmama.dinning.bean.OrderDetailBean;
-import com.linmama.dinning.bean.TakingOrderBean;
-import com.linmama.dinning.url.Constants;
-import com.linmama.dinning.utils.ViewUtils;
-import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.TakingOrderAdapter;
+import com.linmama.dinning.base.BasePresenterFragment;
+import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.OrderItemsBean;
 import com.linmama.dinning.bean.ResultsBean;
+import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bluetooth.PrintDataService;
-import com.linmama.dinning.utils.ActivityUtils;
+import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.SpUtils;
+import com.linmama.dinning.utils.ViewUtils;
+import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.header.WindmillHeader;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -39,11 +36,9 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * for company xcxid
  */
 
-public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> implements
-        TakingOrderContract.TakingOrderView, TakingOrderContract.ConfirmPayView, TakingOrderContract.PrintView,
-        MyAlertDialog.ICallBack, TakingOrderAdapter.IOKOrder, TakingOrderAdapter.IPosOrder,
-        AdapterView.OnItemClickListener, GetMoreListView.OnGetMoreListener, TakingOrderAdapter.IComplete,
-        TakingOrderContract.CompleteOrderView{
+public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> implements
+        TodayOrderContract.TodayOrderView,TodayOrderContract.PrintView,TakingOrderAdapter.IPosOrder,
+        AdapterView.OnItemClickListener, GetMoreListView.OnGetMoreListener{
     @BindView(R.id.lvNewOrder)
     GetMoreListView mLvTakingOrder;
     @BindView(R.id.ptr_new)
@@ -58,8 +53,8 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     private static final int REQUEST_TAKE_ORDER_DETAIL = 0x20;
 
     @Override
-    protected TakingOrderPresenter loadPresenter() {
-        return new TakingOrderPresenter();
+    protected TodayOrderPresenter loadPresenter() {
+        return new TodayOrderPresenter();
     }
 
     @Override
@@ -84,7 +79,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                 if (null != mPresenter) {
 //                    showDialog("加载中...");
                     currentPage = 1;
-                    mPresenter.getTakingOrder(currentPage);
+                    mPresenter.getTodayOrder(currentPage);
                 }
             }
         });
@@ -111,7 +106,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     }
 
     @Override
-    public void getTakingOrderSuccess(List<TakingOrderBean> resultBeans) {
+    public void getTodayOrderSuccess(List<TakingOrderBean> resultBeans) {
         dismissDialog();
         if (currentPage == 1 && mPtrTaking.isRefreshing()) {
             mPtrTaking.refreshComplete();
@@ -131,9 +126,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
             if (null == mAdapter) {
                 mAdapter = new TakingOrderAdapter(mActivity, mResults);
 //            mAdapter.setCancelOrder(this);
-                mAdapter.setOkOrder(this);
-                mAdapter.setPosOrder(this);
-                mAdapter.setCompleteOrder(this);
                 mLvTakingOrder.setAdapter(mAdapter);
                 mLvTakingOrder.setOnItemClickListener(this);
             } else {
@@ -146,7 +138,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     }
 
     @Override
-    public void getTakingOrderFail(String failMsg) {
+    public void getTodayOrderFail(String failMsg) {
         dismissDialog();
         if (!TextUtils.isEmpty(failMsg)) {
             ViewUtils.showSnack(mPtrTaking, failMsg);
@@ -169,44 +161,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 //        }
 //    }
 
-    @Override
-    public void confirmPaySuccess(String orderId) {
-        dismissDialog();
-        ViewUtils.showSnack(mPtrTaking, "确认支付");
-        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-            ResultsBean rb = (ResultsBean) mAdapter.getItem(i);
-            if (String.valueOf(rb.getId()).equals(orderId)) {
-                rb.setPay_status("2");
-                mAdapter.notifyDataSetChanged();
-//                mAdapter.removeItem(i);
-//                selectPosition = -1;
-//                mPtrTaking.autoRefresh(true);
-                return;
-            }
-        }
-    }
-
-    @Override
-    public void confirmPayFail(String msg) {
-        dismissDialog();
-        if (!TextUtils.isEmpty(msg)) {
-            ViewUtils.showSnack(mPtrTaking, msg);
-        }
-    }
-
-    @Override
-    public void onEditText(String text) {
-        mAlert.dismiss();
-        mAlert = null;
-        ResultsBean rb = null;
-        if (selectPosition >= 0 && null != mAdapter.getItem(selectPosition)) {
-            rb = (ResultsBean) mAdapter.getItem(selectPosition);
-        }
-        if (null != rb) {
-            showDialog("加载中...");
-            mPresenter.confirmPayment(String.valueOf(rb.getId()), text);
-        }
-    }
 
 //    @Override
 //    public void cancelRingOrder(int position) {
@@ -224,17 +178,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 //        }
 //    }
 
-    @Override
-    public void okOrder(int position) {
-        selectPosition = position;
-        mAlert = new MyAlertDialog(mActivity).builder()
-                .setTitle("请输入操作密码")
-                .setEditHint("操作密码")
-                .setEditInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                .setNegativeButton("取消", null)
-                .setConfirmButton("确定", TakingFragment.this);
-        mAlert.show();
-    }
 
     @Override
     public void posOrder(final int position) {
@@ -419,7 +362,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     @Override
     public void onGetMore() {
         currentPage++;
-        mPresenter.getTakingOrder(currentPage);
+        mPresenter.getTodayOrder(currentPage);
     }
 
     @Override
@@ -427,47 +370,5 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         super.onDestroyView();
         currentPage = 1;
         mAdapter = null;
-    }
-
-    @Override
-    public void completeOrder(int position) {
-        final ResultsBean result = (ResultsBean) mAdapter.getItem(position);
-        if (result.getPay_status().equals("1")) {
-            new MyAlertDialog(mActivity).builder()
-                    .setMsg("顾客未支付，您确定要完成订单吗？")
-                    .setNegativeButton("取消", null)
-                    .setPositiveButton("确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            showDialog("加载中...");
-                            mPresenter.completeOrder(String.valueOf(result.getId()));
-                        }
-                    }).show();
-        } else {
-            showDialog("加载中...");
-            mPresenter.completeOrder(String.valueOf(result.getId()));
-        }
-    }
-
-    @Override
-    public void completeOrderSuccess(String orderId) {
-        dismissDialog();
-        ViewUtils.showSnack(mPtrTaking, "完成订单");
-        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-            ResultsBean rb = (ResultsBean) mAdapter.getItem(i);
-            if (String.valueOf(rb.getId()).equals(orderId)) {
-                mAdapter.removeItem(i);
-                mAdapter.notifyDataSetChanged();
-                return;
-            }
-        }
-    }
-
-    @Override
-    public void completeOrderFail(String failMsg) {
-        dismissDialog();
-        if (!TextUtils.isEmpty(failMsg)) {
-            ViewUtils.showSnack(mPtrTaking, failMsg);
-        }
     }
 }

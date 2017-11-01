@@ -1,13 +1,11 @@
 package com.linmama.dinning.order.neu;
 
 import com.linmama.dinning.bean.CancelBean;
-import com.linmama.dinning.bean.LNewOrderBean;
 import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.order.model.OrderDetailModel;
 import com.linmama.dinning.base.BasePresenter;
-import com.linmama.dinning.order.model.CancelOrderModel;
 import com.linmama.dinning.order.model.NewOrderModel;
 import com.linmama.dinning.order.model.OKOrderModel;
 import com.linmama.dinning.order.model.ReceiveOrderModel;
@@ -17,8 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NewOrderPresenter extends BasePresenter<NewFragment> implements
-        NewOrderContract.NewOrderPresenter, NewOrderContract.ReceiveOrderPresenter,
-        NewOrderContract.CancelOrderPresenter, NewOrderContract.OKOrderPresenter, NewOrderContract.PrintPresenter {
+        NewOrderContract.NewOrderPresenter, NewOrderContract.ReceiveOrderPresenter, NewOrderContract.PrintPresenter {
 
     @Override
     public void getNewOrder(int page) {
@@ -68,57 +65,12 @@ public class NewOrderPresenter extends BasePresenter<NewFragment> implements
         });
     }
 
-    @Override
-    public void cancelOrder(String orderId, String reason) {
-        if (null == getIView())
-            return;
-        ((CancelOrderModel) getiModelMap().get("CancelOrder")).cancelOrder(orderId, reason,  new CancelOrderModel
-                .CancelHint() {
-            @Override
-            public void successCancel(String orderId, CancelBean bean) {
-                if (null == getIView())
-                    return;
-                LogUtils.d("successCancel", "success");
-                getIView().cancelOrderSuccess(orderId, bean);
-            }
 
-            @Override
-            public void failCancel(String failMsg) {
-                if (null == getIView())
-                    return;
-                LogUtils.d("failCancel", "fail");
-                getIView().cancelOrderFail(failMsg);
-            }
-
-        });
-    }
-
-    @Override
-    public void okOrder(String orderId, String password) {
-        if (null == getIView())
-            return;
-        ((OKOrderModel) getiModelMap().get("OkOrder")).okOrder(orderId, password, new OKOrderModel
-                .OKHint() {
-            @Override
-            public void successOK(String orderId) {
-                if (null == getIView())
-                    return;
-                getIView().okOrderSuccess(orderId);
-            }
-
-            @Override
-            public void failOK(String failMsg) {
-                if (null == getIView())
-                    return;
-                getIView().okOrderFail(failMsg);
-            }
-        });
-    }
 
     @Override
     public HashMap<String, IModel> getiModelMap() {
         return loadModelMap(new NewOrderModel(), new ReceiveOrderModel(),
-                new CancelOrderModel(), new OKOrderModel(), new OrderDetailModel());
+             new OKOrderModel(), new OrderDetailModel());
     }
 
     @Override
@@ -126,9 +78,7 @@ public class NewOrderPresenter extends BasePresenter<NewFragment> implements
         HashMap<String, IModel> map = new HashMap<>();
         map.put("NewOrderList", models[0]);
         map.put("ReceiveOrder", models[1]);
-        map.put("CancelOrder", models[2]);
-        map.put("OkOrder", models[3]);
-        map.put("PrintData", models[4]);
+        map.put("PrintData", models[2]);
         return map;
     }
 

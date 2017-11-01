@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.goods.item.MenuItemBean;
@@ -21,7 +21,7 @@ public class OnSellMenuItemListModel extends BaseModel {
 
         httpService.getOnSellMenu(menuCategory)
                 .compose(new CommonTransformer<MenuItemBean>())
-                .subscribe(new CommonSubscriber<MenuItemBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<MenuItemBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(MenuItemBean bean) {
                         hint.successOnSellMenuItemList(bean);

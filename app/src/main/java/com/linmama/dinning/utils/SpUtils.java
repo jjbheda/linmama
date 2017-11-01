@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,7 +30,7 @@ public class SpUtils {
      */
     public static void put(String key, Object object) {
 
-        SharedPreferences sp = XcxidApplication.getInstance().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp = LmamaApplication.getInstance().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
@@ -60,7 +60,7 @@ public class SpUtils {
      * @return
      */
     public static Object get(String key, Object defaultObject) {
-        SharedPreferences sp = XcxidApplication.getInstance().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp = LmamaApplication.getInstance().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
 
         if (defaultObject instanceof String) {
@@ -81,7 +81,7 @@ public class SpUtils {
      * 移除某个key值已经对应的值
      */
     public static void remove(String key) {
-        SharedPreferences sp = XcxidApplication.getInstance().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp = LmamaApplication.getInstance().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(key);
@@ -92,7 +92,7 @@ public class SpUtils {
      * 清除所有数据
      */
     public static void clear() {
-        SharedPreferences sp = XcxidApplication.getInstance().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp = LmamaApplication.getInstance().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();
@@ -101,7 +101,7 @@ public class SpUtils {
 
 
     public static void setObject(String key, Object object) {
-        SharedPreferences sp = XcxidApplication.getInstance().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp = LmamaApplication.getInstance().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -133,7 +133,7 @@ public class SpUtils {
 
     @SuppressWarnings("unchecked")
     public static <T> T getObject(String key, Class<T> clazz) {
-        SharedPreferences sp = XcxidApplication.getInstance().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp = LmamaApplication.getInstance().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
 
         if (sp.contains(key)) {
@@ -174,7 +174,7 @@ public class SpUtils {
      * @return
      */
     public static Map<String, ?> getAll() {
-        SharedPreferences sp = XcxidApplication.getInstance().getSharedPreferences(FILE_NAME,
+        SharedPreferences sp = LmamaApplication.getInstance().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
         return sp.getAll();
     }

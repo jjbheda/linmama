@@ -4,7 +4,15 @@
         "source": "D:\\file\\xiaobudian\\linmama\\linmanma\\libWheel\\build\\intermediates\\bundles\\debug\\res\\drawable\\wheel_val.xml"
     },
     {
+        "merged": "D:\\file\\xiaobudian\\linmama\\linmanma_code\\linmanma\\libWheel\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\wheel_bg.xml",
+        "source": "D:\\file\\xiaobudian\\linmama\\linmanma_code\\linmanma\\libWheel\\build\\intermediates\\bundles\\debug\\res\\drawable\\wheel_bg.xml"
+    },
+    {
         "merged": "D:\\file\\xiaobudian\\linmama\\linmanma\\libWheel\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\wheel_bg.xml",
         "source": "D:\\file\\xiaobudian\\linmama\\linmanma\\libWheel\\build\\intermediates\\bundles\\debug\\res\\drawable\\wheel_bg.xml"
+    },
+    {
+        "merged": "D:\\file\\xiaobudian\\linmama\\linmanma_code\\linmanma\\libWheel\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\wheel_val.xml",
+        "source": "D:\\file\\xiaobudian\\linmama\\linmanma_code\\linmanma\\libWheel\\build\\intermediates\\bundles\\debug\\res\\drawable\\wheel_val.xml"
     }
 ]

@@ -3,11 +3,76 @@
     style="@style/BothMatch"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar style="@style/ToolBarStyle">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar_common"
+        style="@style/ToolBarStyle"
+        android:visibility="visible">
 
-        <TextView
-            style="@style/ToolBarTitleStyle"
-            android:text="@string/total_title" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/icon_today_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:src="@mipmap/icon_search" />
+
+            <TextView
+                style="@style/ToolBarTitleStyle"
+                android:layout_centerInParent="true"
+                android:text="@string/total_title" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar_taking"
+        style="@style/ToolBarTakingStyle"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="60dp"
+                android:background="#f5f5f5"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/order_today_title_tv"
+                    style="@style/OrderTabItem"
+                    android:checked="true"
+                    android:text="@string/tab_toolbar_taking_title_01" />
+
+                <RadioButton
+                    android:id="@+id/order_tomorrow_title_tv"
+                    style="@style/OrderTabItem"
+                    android:text="@string/tab_toolbar_taking_title_02" />
+
+                <RadioButton
+                    android:id="@+id/order_all_title_tv"
+                    style="@style/OrderTabItem"
+                    android:text="@string/tab_toolbar_taking_title_03" />
+            </RadioGroup>
+
+            <ImageView
+                android:id="@+id/icon_taking_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:src="@mipmap/icon_search" />
+        </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <RadioGroup
@@ -28,40 +93,29 @@
             android:text="@string/order_tab_item2" />
 
         <RadioButton
-            android:id="@+id/remindOrder"
+            android:id="@+id/todayOrder"
             style="@style/OrderTabItem"
             android:text="@string/order_tab_item3" />
 
-        <RadioButton
-            android:id="@+id/quitOrder"
-            style="@style/OrderTabItem"
-            android:visibility="gone"
-            android:text="@string/order_tab_item4" />
-
-        <RadioButton
-            android:id="@+id/payOrder"
-            android:visibility="gone"
-            style="@style/OrderTabItem"
-            android:text="@string/order_tab_item5" />
     </RadioGroup>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
+
         <ListView
             android:id="@+id/orderTabWidget"
             android:layout_width="60dp"
-            android:visibility="gone"
             android:layout_height="match_parent"
+            android:layout_toRightOf="@id/tabWidget"
             android:divider="@color/colorWindowBg"
             android:dividerHeight="1dp"
-            android:layout_toRightOf="@id/tabWidget" />
+            android:visibility="gone" />
 
 
         <android.support.v4.view.ViewPager
             android:id="@android:id/content"
-            android:layout_toRightOf="@+id/orderTabWidget"
-            style="@style/BothMatch"/>
+            style="@style/BothMatch"
+            android:layout_toRightOf="@+id/orderTabWidget" />
     </RelativeLayout>
 </LinearLayout>

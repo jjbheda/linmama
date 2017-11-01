@@ -5,7 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.text.TextUtils;
 
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.SpUtils;
@@ -121,10 +121,10 @@ public class PrintDataService {
                 outputStream.write(data, 0, data.length);
                 outputStream.flush();
             } catch (IOException e) {
-                ViewUtils.showToast(XcxidApplication.getInstance(), "发送失败");
+                ViewUtils.showToast(LmamaApplication.getInstance(), "发送失败");
             }
         } else {
-            ViewUtils.showToast(XcxidApplication.getInstance(), "设备未连接，请重新连接！");
+            ViewUtils.showToast(LmamaApplication.getInstance(), "设备未连接，请重新连接！");
         }
     }
 

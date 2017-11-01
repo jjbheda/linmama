@@ -2,7 +2,7 @@ package com.linmama.dinning.goods.model;
 
 import android.support.annotation.NonNull;
 
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.goods.item.MenuItemBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
@@ -20,7 +20,7 @@ public class OffMenuItemListModel extends BaseModel {
 
         httpService.getOffMenu()
                 .compose(new CommonTransformer<MenuItemBean>())
-                .subscribe(new CommonSubscriber<MenuItemBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<MenuItemBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(MenuItemBean bean) {
                         hint.successOffMenuItemList(bean);

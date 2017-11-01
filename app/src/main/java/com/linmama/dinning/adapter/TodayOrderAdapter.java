@@ -1,59 +1,42 @@
 package com.linmama.dinning.adapter;
 
-import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.linmama.dinning.LmamaApplication;
-import com.linmama.dinning.R;
-import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.bean.OrderGoodBean;
+import com.linmama.dinning.bean.QuitOrderInfoBean;
+import com.linmama.dinning.bean.RefundBean;
 import com.linmama.dinning.bean.TakingOrderBean;
-import com.linmama.dinning.except.ApiException;
-import com.linmama.dinning.subscriber.CommonSubscriber;
-import com.linmama.dinning.transformer.CommonTransformer;
-import com.linmama.dinning.utils.ContectUtils;
+import com.linmama.dinning.bean.TodayBean;
+import com.linmama.dinning.widget.QuitOrderRefundItem;
+import com.linmama.dinning.R;
+import com.linmama.dinning.bean.QuitOrderBean;
 
 import java.util.List;
 
 /**
  * Created by jingkang onOrOff 2017/3/6
  */
-public class TakingOrderAdapter extends BaseAdapter {
-    private final static int ITEM_TYPE1 = 0;
-    private final static int ITEM_TYPE2 = 1;
+public class TodayOrderAdapter extends BaseAdapter {
 
     private List<TakingOrderBean> mResults;
     private LayoutInflater mInflater;
-    private Activity mContext;
-    private IPosOrder mPosOrder;
-    //    private ICancelRingOrder mCancelRingOrder;
-    private IOKOrder mOkOrder;
-    private IComplete mCompleteOrder;
+    private Context mContext;
+    private IRefund mRefund;
+    private IRefuse mRefuse;
 
-    public TakingOrderAdapter(Activity context, List<TakingOrderBean> results) {
+    public TodayOrderAdapter(Context context, List<TakingOrderBean> results) {
         this.mContext = context;
         this.mResults = results;
         mInflater = LayoutInflater.from(context);
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 2;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        TakingOrderBean rb = mResults.get(position);
-        int type = ITEM_TYPE1;
-        return type;
     }
 
     @Override
@@ -69,13 +52,6 @@ public class TakingOrderAdapter extends BaseAdapter {
     @Override
     public long getItemId(int i) {
         return i;
-    }
-
-    public void removeItem(int i) {
-        TakingOrderBean rb = mResults.remove(i);
-        if (null != rb) {
-            this.notifyDataSetChanged();
-        }
     }
     LinearLayout shrintLt;
     @Override
@@ -97,12 +73,11 @@ public class TakingOrderAdapter extends BaseAdapter {
             holder1.tv_delivery_address = (TextView) view.findViewById(R.id.tv_delivery_address);
             holder1.order_goods_lt = (LinearLayout) view.findViewById(R.id.order_goods_lt);
             holder1.order_time_list = (LinearLayout) view.findViewById(R.id.order_time_list);
-            holder1.notes_msg_lt = (LinearLayout) view.findViewById(R.id.notes_msg_lt);
             view.setTag(holder1);
         } else {
             holder1 = (ViewHolder1) view.getTag();
         }
-        final TakingOrderBean bean = (TakingOrderBean) getItem(i);
+        TakingOrderBean bean = (TakingOrderBean) getItem(i);
         if (bean == null || holder1 == null) {
             return view;
         }
@@ -120,9 +95,6 @@ public class TakingOrderAdapter extends BaseAdapter {
         holder1.shrint_btn = (TextView) view.findViewById(R.id.shrint_tv);
         holder1.order_goods_lt = (LinearLayout) view.findViewById(R.id.order_goods_lt);
         holder1.goods_shrink_lt = (LinearLayout) view.findViewById(R.id.goods_shrink_lt);
-        holder1.phone_lt = (LinearLayout) view.findViewById(R.id.phone_lt);
-        holder1.ok = (TextView) view.findViewById(R.id.btnOrderCommit);
-        holder1.cancel = (TextView) view.findViewById(R.id.btnNewCancel2);
         LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         for (OrderGoodBean bean1 : bean.goods_list) {
             View lt_view = layoutInflater.inflate(R.layout.lv_item_goods_single, null);
@@ -134,13 +106,6 @@ public class TakingOrderAdapter extends BaseAdapter {
             tv_price.setText(bean1.total_price);
             holder1.order_goods_lt.addView(lt_view);
         }
-
-        if (holder1.tv_remark.equals("")) {
-            holder1.tv_remark.setVisibility(View.GONE);
-        } else {
-            holder1.tv_remark.setVisibility(View.VISIBLE);
-            holder1.tv_remark.setText(bean.remark);
-        }
         shrintLt = holder1.goods_shrink_lt;
         holder1.shrint_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,52 +115,6 @@ public class TakingOrderAdapter extends BaseAdapter {
                 } else {
                     shrintLt.setVisibility(View.VISIBLE);
                 }
-            }
-        });
-
-        holder1.phone_lt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!bean.user.user_tel.equals(""))
-                ContectUtils.onCall(mContext,bean.user.user_tel);
-            }
-        });
-
-        holder1.cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BaseModel.httpService.cancelOrder(bean.id+"",1). compose(new CommonTransformer())
-                        .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                            @Override
-                            public void onNext(String bean) {
-                                Toast.makeText(mContext,bean,Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onError(ApiException e) {
-                                super.onError(e);
-                                Toast.makeText(mContext,"取消订单失败",Toast.LENGTH_SHORT).show();
-                            }
-                        });;
-            }
-        });
-
-        holder1.ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BaseModel.httpService.commitOrder(bean.id+""). compose(new CommonTransformer())
-                        .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                            @Override
-                            public void onNext(String bean) {
-                                Toast.makeText(mContext,bean,Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onError(ApiException e) {
-                                super.onError(e);
-                                Toast.makeText(mContext,"确定订单失败",Toast.LENGTH_SHORT).show();
-                            }
-                        });;
             }
         });
         View lt_view = layoutInflater.inflate(R.layout.lv_item_ordertime_single, null);
@@ -221,34 +140,26 @@ public class TakingOrderAdapter extends BaseAdapter {
         LinearLayout order_goods_lt;
         LinearLayout order_time_list;
         LinearLayout goods_shrink_lt;
-        LinearLayout phone_lt;
         TextView tv_serial_number;
-        LinearLayout notes_msg_lt;
-        TextView cancel;
-        TextView ok;
+        Button take;
+        Button cancel;
+        Button ok;
     }
 
-    public void setPosOrder(IPosOrder posOrder) {
-        this.mPosOrder = posOrder;
+
+    public void setRefund(IRefund refund) {
+        this.mRefund = refund;
     }
 
-    public void setOkOrder(IOKOrder okOrder) {
-        this.mOkOrder = okOrder;
+    public void setRefuse(IRefuse refuse) {
+        this.mRefuse = refuse;
     }
 
-    public void setCompleteOrder(IComplete completeOrder) {
-        this.mCompleteOrder = completeOrder;
+    public interface IRefund {
+        void refund(int position, int item);
     }
 
-    public interface IPosOrder {
-        void posOrder(int position);
-    }
-
-    public interface IOKOrder {
-        void okOrder(int position);
-    }
-
-    public interface IComplete {
-        void completeOrder(int position);
+    public interface IRefuse {
+        void refuseRefund(int position, int item);
     }
 }

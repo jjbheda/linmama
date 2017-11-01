@@ -2,7 +2,7 @@ package com.linmama.dinning.login;
 
 import android.support.annotation.NonNull;
 
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.bean.LoginBean;
 import com.linmama.dinning.except.ApiException;
@@ -17,7 +17,7 @@ public class LoginModel extends BaseModel {
             throw new RuntimeException("LoginHint cannot be null.");
         httpService.login(username, pwd)
                 .compose(new CommonTransformer<LoginBean>())
-                .subscribe(new CommonSubscriber<LoginBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<LoginBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(LoginBean bean) {
                         hint.successLogin(bean);

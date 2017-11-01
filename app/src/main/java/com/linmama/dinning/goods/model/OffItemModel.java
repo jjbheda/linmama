@@ -1,6 +1,6 @@
 package com.linmama.dinning.goods.model;
 
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
@@ -19,7 +19,7 @@ public class OffItemModel extends BaseModel {
         }
         httpService.onOrOffItem(op_flag, item_id)
                 .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(DataBean bean) {
                         hint.successOffItem(bean, item_id);

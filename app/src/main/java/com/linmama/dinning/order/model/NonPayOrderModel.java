@@ -2,7 +2,7 @@ package com.linmama.dinning.order.model;
 
 import android.support.annotation.NonNull;
 
-import com.linmama.dinning.XcxidApplication;
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.bean.NonPayOrderBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
@@ -21,7 +21,7 @@ public class NonPayOrderModel extends BaseModel {
 
         httpService.getNonPayOrder()
                 .compose(new CommonTransformer<NonPayOrderBean>())
-                .subscribe(new CommonSubscriber<NonPayOrderBean>(XcxidApplication.getInstance()) {
+                .subscribe(new CommonSubscriber<NonPayOrderBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(NonPayOrderBean nonPayOrderBean) {
                         nonPayOrderHint.successNonPayOrder(nonPayOrderBean);
