@@ -55,4 +55,5 @@ dependencies {
     compile 'cn.jiguang.sdk:jpush:3.0.3'
     compile 'cn.jiguang.sdk:jcore:1.1.1'
     compile files('libs/TencentMapSDK_Raster_v_1.2.8_e45bcd0.jar')
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

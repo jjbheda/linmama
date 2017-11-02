@@ -21,21 +21,21 @@ public class TodayListModel extends BaseModel {
     public static void getReceivedOrder(int page,@NonNull final TodayOrderHint hint) {
         if (null == hint)
             throw new RuntimeException("QuitOrderHint cannot be null");
-
-        httpService.getReceivedOrder(page,0,"0")
-                .compose(new CommonTransformer<List<TakingOrderBean>>())
-                .subscribe(new CommonSubscriber<List<TakingOrderBean>>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(List<TakingOrderBean> list) {
-                        hint.successTodayOrder(list);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failTodayOrder(e.getMessage());
-                    }
-                });
+//
+//        httpService.getReceivedOrder(page,0,"0")
+//                .compose(new CommonTransformer<List<TakingOrderBean>>())
+//                .subscribe(new CommonSubscriber<List<TakingOrderBean>>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(List<TakingOrderBean> list) {
+//                        hint.successTodayOrder(list);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failTodayOrder(e.getMessage());
+//                    }
+//                });
     }
 
     public interface TodayOrderHint {

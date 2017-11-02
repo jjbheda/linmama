@@ -1,7 +1,9 @@
 package com.linmama.dinning.order.taking;
 
+import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.TakingOrderBean;
+import com.linmama.dinning.bean.TakingOrderMenuBean;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
 public class TakingOrderContract {
 
     public interface TakingOrderView {
-        void getTakingOrderSuccess(List<TakingOrderBean> bean);
+        void getTakingOrderSuccess(TakingOrderMenuBean bean);
 
         void getTakingOrderFail(String failMsg);
     }

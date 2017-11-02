@@ -71,8 +71,9 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
 
     @Override
     protected void initView() {
-        String username = (String) SpUtils.get(Constants.USERNAME, "");
-        mLoginName.setText(username);
+//     /   String username = (String) SpUtils.get(Constants.USERNAME, "");
+//        mLoginName.setText(username);
+        mLoginName.setText("account123");
     }
 
     @Override
@@ -90,16 +91,16 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String text = editable.toString();
-                if (text.length() > 0) {
-                    if (!TextUtils.isEmpty(getPwd())) {
-                        mLogin.setEnabled(true);
-                    } else {
-                        mLogin.setEnabled(false);
-                    }
-                } else {
-                    mLogin.setEnabled(false);
-                }
+//                String text = editable.toString();
+//                if (text.length() > 0) {
+//                    if (!TextUtils.isEmpty(getPwd())) {
+//                        mLogin.setEnabled(true);
+//                    } else {
+//                        mLogin.setEnabled(false);
+//                    }
+//                } else {
+//                    mLogin.setEnabled(false);
+//                }
             }
         });
 
@@ -116,16 +117,16 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String text = editable.toString();
-                if (text.length() > 0) {
-                    if (!TextUtils.isEmpty(getUserName())) {
-                        mLogin.setEnabled(true);
-                    } else {
-                        mLogin.setEnabled(false);
-                    }
-                } else {
-                    mLogin.setEnabled(false);
-                }
+//                String text = editable.toString();
+//                if (text.length() > 0) {
+//                    if (!TextUtils.isEmpty(getUserName())) {
+//                        mLogin.setEnabled(true);
+//                    } else {
+//                        mLogin.setEnabled(false);
+//                    }
+//                } else {
+//                    mLogin.setEnabled(false);
+//                }
             }
         });
     }
@@ -154,9 +155,9 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
 //            return;
 //        }
         showDialog("登录中...");
-        if (!checkNull()) {
+//        if (!checkNull()) {
             LoginModel login = new LoginModel();
-            login.login(getUserName(), getPwd(), new LoginModel.LoginHint() {
+            login.login("account123", getPwd(), new LoginModel.LoginHint() {
                 @Override
                 public void successLogin(LoginBean loginBean) {
                     LoginActivity.this.loginSuccess(loginBean);
@@ -167,7 +168,7 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
                     LoginActivity.this.loginFail(failMsg);
                 }
             });
-        }
+//        }
 //        mPresenter.login(getUserName(), getPwd());
     }
 

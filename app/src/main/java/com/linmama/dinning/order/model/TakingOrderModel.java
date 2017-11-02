@@ -2,7 +2,9 @@ package com.linmama.dinning.order.model;
 
 import android.support.annotation.NonNull;
 
+import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.bean.TakingOrderBean;
+import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.LmamaApplication;
@@ -19,10 +21,11 @@ public class TakingOrderModel extends BaseModel {
             throw new RuntimeException("TakingOrderHint cannot be null.");
 
         httpService.getReceivedOrder(page,1,"2")
-                .compose(new CommonTransformer<List<TakingOrderBean>>())
-                .subscribe(new CommonSubscriber<List<TakingOrderBean>>(LmamaApplication.getInstance()) {
+                .compose(new CommonTransformer<TakingOrderMenuBean>())
+                .subscribe(new CommonSubscriber<TakingOrderMenuBean>(LmamaApplication.getInstance()) {
                     @Override
-                    public void onNext(List<TakingOrderBean> bean) {
+                    public void onNext(TakingOrderMenuBean bean) {
+
                         hint.successInfo(bean);
                     }
 
@@ -31,11 +34,16 @@ public class TakingOrderModel extends BaseModel {
                         super.onError(e);
                         hint.failInfo(e.getMessage());
                     }
+
+                    @Override
+                    public void onCompleted() {
+
+                    }
                 });
     }
 
     public interface TakingOrderHint {
-        void successInfo(List<TakingOrderBean> bean);
+        void successInfo(TakingOrderMenuBean bean);
 
         void failInfo(String failMsg);
     }

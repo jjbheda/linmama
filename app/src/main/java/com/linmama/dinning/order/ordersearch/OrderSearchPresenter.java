@@ -14,7 +14,7 @@ import java.util.HashMap;
  * Created by jiangjingbo on 2017/10/30.
  */
 
-public class OrderSearchPresenter extends BasePresenter<OrderSearchActivity> {
+public class OrderSearchPresenter extends BasePresenter<OrderSearchActivity>  {
     @Override
     public HashMap<String, IModel> getiModelMap() {
         return loadModelMap(new OrderSearchModel());
@@ -26,4 +26,6 @@ public class OrderSearchPresenter extends BasePresenter<OrderSearchActivity> {
         map.put("OrderSearchModel", models[0]);
         return map;
     }
+
+
 }

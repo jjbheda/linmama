@@ -1,13 +1,13 @@
 package com.linmama.dinning.http;
 
 import com.linmama.dinning.bean.AppVersionBean;
-import com.linmama.dinning.bean.CancelBean;
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.LoginBean;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.SaleRankBean;
 import com.linmama.dinning.bean.TakingOrderBean;
+import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.goods.category.MenuCategoryBean;
 import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.bean.CompleteOrderBean;
@@ -19,6 +19,7 @@ import com.linmama.dinning.bean.SarchItemBean;
 import com.linmama.dinning.bean.StoreSettingsBean;
 import com.linmama.dinning.bean.UserServerBean;
 import com.linmama.dinning.goods.item.MenuItemBean;
+import com.linmama.dinning.shop.ShopBean;
 
 import java.util.List;
 
@@ -47,19 +48,23 @@ public interface HttpService {
     //3	预约单列表接口     order_type：1预约单 0 当日单  range 0今天 1 明天 2全部
     @FormUrlEncoded
     @POST("pendingOrderList/")
-    Observable<BaseHttpResult<List<TakingOrderBean>>> getReceivedOrder(@Query("page") int page, @Field("order_type") int order_type
+    Observable<BaseHttpResult<TakingOrderMenuBean>> getReceivedOrder(@Query("page") int page, @Field("order_type") int order_type
             , @Field("search") String search);
 
-    //	预约单列表接口     order_type：1预约单 0 当日单  range 0今天 1 明天 2全部
+    //处理中订单查询    order_type：1预约单 0 当日单  search 搜索条件 订单号、用户名、电话号码  page 默认1
     @FormUrlEncoded
-    @POST("pendingOrderList/")
-    Observable<BaseHttpResult<List<TakingOrderBean>>> orderingQuery(@Query("page") int page, @Field("order_type") int order_type
-            , @Field("range") String range);
+    @POST("receivedQuery/")
+    Observable<BaseHttpResult<List<TakingOrderBean>>> orderQuery(@Query("page") int page, @Field("order_type") int order_type
+            , @Field("search") String search);
 
     //确认订单
     @FormUrlEncoded
     @POST("ensureOrder/")
     Observable<BaseHttpResult> commitOrder(@Field("id") String id);
+
+    //店铺管理
+    @POST("baseData/")
+    Observable<BaseHttpResult<ShopBean>> getShopBaseData();
 
     //4	提醒列表接口
     @GET("orderWarnList/")

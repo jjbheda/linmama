@@ -7,17 +7,18 @@ import android.support.v7.app.AppCompatActivity;
 import com.linmama.dinning.R;
 import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.base.BasePresenterActivity;
+import com.linmama.dinning.goods.search.SearchCategoryPresenter;
 
 /**
  * Created by jiangjingbo on 2017/10/29.
  */
 
-public class OrderSearchActivity extends BasePresenterActivity {
+public class OrderSearchActivity extends BasePresenterActivity<OrderSearchPresenter> {
     private int orderType = 0;      //0 当日单   1预约单
 
     @Override
-    protected BasePresenter loadPresenter() {
-        return null;
+    protected OrderSearchPresenter loadPresenter() {
+        return new OrderSearchPresenter();
     }
 
     @Override

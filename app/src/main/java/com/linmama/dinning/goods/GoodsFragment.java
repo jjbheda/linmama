@@ -26,8 +26,7 @@ import butterknife.OnClick;
  * for company xcxid
  */
 
-public class GoodsFragment extends BaseFragment implements OffSaleFragment.IOnSaleNotify,
-        OnSaleFragment.IOffSaleNotify {
+public class GoodsFragment extends BaseFragment implements OffSaleFragment.IOnSaleNotify, OnSaleFragment.IOffSaleNotify {
     @BindView(R.id.etSearch)
     TextView mEtSearch;
     @BindView(R.id.tvSearch)

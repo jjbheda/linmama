@@ -8,9 +8,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.TakingOrderBean;
+import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
@@ -55,6 +57,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     private ResultsBean mPrintingBean = null;
     private List<TakingOrderBean> mResults;
     private int currentPage = 1;
+    private int last_page = 1;
     private static final int REQUEST_TAKE_ORDER_DETAIL = 0x20;
 
     @Override
@@ -111,7 +114,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     }
 
     @Override
-    public void getTakingOrderSuccess(List<TakingOrderBean> resultBeans) {
+    public void getTakingOrderSuccess(TakingOrderMenuBean resultBeans) {
         dismissDialog();
         if (currentPage == 1 && mPtrTaking.isRefreshing()) {
             mPtrTaking.refreshComplete();
@@ -119,14 +122,9 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
             mResults.clear();
         }
-//        if (TextUtils.isEmpty(takingOrderBean.getNext())) {
-//            mLvTakingOrder.setNoMore();
-//        } else {
-//            mLvTakingOrder.setHasMore();
-//        }
         if (null != resultBeans && null != resultBeans) {
             LogUtils.d("getTakingOrderSuccess", resultBeans.toString());
-            List<TakingOrderBean> results = resultBeans;
+            List<TakingOrderBean> results = resultBeans.data;
             mResults.addAll(results);
             if (null == mAdapter) {
                 mAdapter = new TakingOrderAdapter(mActivity, mResults);

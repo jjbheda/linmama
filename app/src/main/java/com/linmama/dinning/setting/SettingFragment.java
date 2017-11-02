@@ -72,18 +72,6 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     SettingItem siAutoReceiveOrder;
     @BindView(R.id.siAutoPrint)
     SettingItem siAutoPrint;
-    @BindView(R.id.siUpdateLoginPwd)
-    SettingItem siUpdateLoginPwd;
-    @BindView(R.id.siUpdateOperatePwd)
-    SettingItem siUpdateOperatePwd;
-    @BindView(R.id.siCompleteOrder)
-    SettingItem siCompleteOrder;
-    @BindView(R.id.siFeedBack)
-    SettingItem siFeedBack;
-    @BindView(R.id.siService)
-    SettingItem siService;
-    @BindView(R.id.siVersion)
-    SettingItem siVersion;
     @BindView(R.id.tvLogout)
     TextView tvLogout;
     @BindView(R.id.openStatus)
@@ -214,39 +202,6 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
         }
     }
 
-    @OnClick(R.id.siUpdateLoginPwd)
-    public void modifyLoginPwd(View view) {
-        ActivityUtils.startActivityForResult(this, ModifyLoginPwdActivity.class, REQUEST_MODIFY_LOGINPASSWORD);
-    }
-
-    @OnClick(R.id.siUpdateOperatePwd)
-    public void modifyOperatePwdiew(View view) {
-        ActivityUtils.startActivity(mActivity, ModifyOperatePwdActivity.class);
-    }
-
-    @OnClick(R.id.siCompleteOrder)
-    public void completeOrder(View view) {
-        ActivityUtils.startActivity(mActivity, CompleteOrderListActivity.class);
-    }
-
-    @OnClick(R.id.siFeedBack)
-    public void feedBack(View view) {
-        ActivityUtils.startActivity(mActivity, AdviceActivity.class);
-    }
-
-    @OnClick(R.id.siService)
-    public void phoneService(View view) {
-        new MyAlertDialog(mActivity).builder()
-                .setTitle("拨打客服电话")
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确定", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        callServiceTask();
-                    }
-                }).show();
-    }
-
     @AfterPermissionGranted(REQUEST_PERMISSION_CALL)
     private void callServiceTask() {
         if (EasyPermissions.hasPermissions(mActivity, Manifest.permission.CALL_PHONE)) {
@@ -260,17 +215,6 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
         Intent intent = new Intent(Intent.ACTION_CALL);
         Uri data = Uri.parse("tel:4000506390");
         intent.setData(data);
-        startActivity(intent);
-    }
-
-    @OnClick(R.id.siVersion)
-    public void checkVersion(View view) {
-//        showDialog("加载中...");
-//        mPresenter.getAppVersion("http://work.xcxid.com/api/checkAppVersion/");
-
-
-//        Toast.makeText(getActivity(),"!!",Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getActivity(), MapActivity.class);
         startActivity(intent);
     }
 

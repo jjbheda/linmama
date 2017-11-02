@@ -33,15 +33,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layTabGoods"
-            style="@style/HomeTabLay">
-
-            <ImageView
-                android:id="@+id/imgTabGoods"
-                style="@style/HomeTabImg"
-                android:src="@drawable/tab_manager_selector" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layTabData"
@@ -52,7 +43,15 @@
                 style="@style/HomeTabImg"
                 android:src="@drawable/tab_data_selector" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layTabGoods"
+            style="@style/HomeTabLay">
 
+            <ImageView
+                android:id="@+id/imgTabGoods"
+                style="@style/HomeTabImg"
+                android:src="@drawable/tab_manager_selector" />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/layTabSettings"
             style="@style/HomeTabLay">

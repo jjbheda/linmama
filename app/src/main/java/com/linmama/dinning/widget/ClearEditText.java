@@ -2,6 +2,7 @@ package com.linmama.dinning.widget;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.EditText;
 
 import com.linmama.dinning.R;
 
@@ -18,7 +18,7 @@ import com.linmama.dinning.R;
  * EditText with clear button
  * Created by jingkang on 15/9/22.
  */
-public class ClearEditText extends EditText implements View.OnFocusChangeListener, TextWatcher {
+public class ClearEditText extends AppCompatEditText implements View.OnFocusChangeListener, TextWatcher {
     private Drawable mClearDrawable;
     private boolean mHasFocus;
 

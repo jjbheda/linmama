@@ -1,7 +1,9 @@
 package com.linmama.dinning.order.taking;
 
+import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.TakingOrderBean;
+import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.order.model.CompleteOrderModel;
 import com.linmama.dinning.order.model.OrderDetailModel;
 import com.linmama.dinning.order.model.TakingOrderModel;
@@ -24,7 +26,7 @@ public class TakingOrderPresenter extends BasePresenter<TakingFragment> implemen
         ((TakingOrderModel) getiModelMap().get("TakingOrder")).getTakingOrder(page, new TakingOrderModel.TakingOrderHint() {
 
             @Override
-            public void successInfo(List<TakingOrderBean> bean) {
+            public void successInfo(TakingOrderMenuBean bean) {
                 if (null == getIView())
                     return;
                 getIView().getTakingOrderSuccess(bean);

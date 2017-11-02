@@ -138,59 +138,6 @@
                 app:setRightIcon="@mipmap/icon_on"
                 app:setTitle="@string/set_item10" />
 
-            <com.linmama.dinning.widget.SettingItem
-                android:id="@+id/siUpdateLoginPwd"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="1dp"
-                app:setLeftIcon="@mipmap/icon_login_pwd"
-                app:setRightIcon="@mipmap/icon_right_arrow"
-                app:setTitle="@string/set_item3" />
-
-            <com.linmama.dinning.widget.SettingItem
-                android:id="@+id/siUpdateOperatePwd"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="1dp"
-                app:setLeftIcon="@mipmap/icon_setting_pwd"
-                app:setRightIcon="@mipmap/icon_right_arrow"
-                app:setTitle="@string/set_item4" />
-
-            <com.linmama.dinning.widget.SettingItem
-                android:id="@+id/siCompleteOrder"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                app:setLeftIcon="@mipmap/icon_complete"
-                app:setRightIcon="@mipmap/icon_right_arrow"
-                app:setTitle="@string/order_tab_item6" />
-
-            <com.linmama.dinning.widget.SettingItem
-                android:id="@+id/siFeedBack"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="1dp"
-                app:setLeftIcon="@mipmap/icon_feed"
-                app:setRightIcon="@mipmap/icon_right_arrow"
-                app:setTitle="@string/set_item5" />
-
-            <com.linmama.dinning.widget.SettingItem
-                android:id="@+id/siService"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="1dp"
-                app:setLeftIcon="@mipmap/icon_service"
-                app:setRightIcon="@mipmap/icon_right_arrow"
-                app:setTitle="@string/set_item6" />
-
-            <com.linmama.dinning.widget.SettingItem
-                android:id="@+id/siVersion"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="1dp"
-                app:setLeftIcon="@mipmap/icon_version"
-                app:setRightIcon="@mipmap/icon_right_arrow"
-                app:setTitle="@string/set_item8" />
 
             <TextView
                 android:id="@+id/tvLogout"

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.linmama.dinning.base.BaseActivity;
-import com.linmama.dinning.goods.GoodsFragment;
+import com.linmama.dinning.shop.ShopManagerFragment;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.BuildConfig;
 import com.linmama.dinning.R;
@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity {
 
     private FragmentManager mManager;
     private OrderFragment mOrder;
-    private GoodsFragment mGoods;
+    private ShopManagerFragment mshops;
     private DataFragment mData;
     private SettingFragment mSetting;
     private long exitTime = 0;
@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity {
         }
         switchContent(mOrder);
 
-//        replaceContent(new OrderFragment());
+        replaceContent(new OrderFragment());
         resetSelected();
         imgTabOrder.setImageResource(R.mipmap.tab_order_selected);
         if (BuildConfig.DEBUG) {
@@ -130,12 +130,12 @@ public class MainActivity extends BaseActivity {
     protected void initListener() {
     }
 
-//    private void replaceContent(Fragment fragment) {
-//        FragmentTransaction transaction = mManager.beginTransaction();
-//        String tag = fragment.getClass().getName();
-//        transaction.replace(R.id.content, fragment, tag);
-//        transaction.commit();
-//    }
+    private void replaceContent(Fragment fragment) {
+        FragmentTransaction transaction = mManager.beginTransaction();
+        String tag = fragment.getClass().getName();
+        transaction.replace(R.id.content, fragment, tag);
+        transaction.commit();
+    }
 
     private void switchContent(Fragment fragment) {
         FragmentTransaction transaction = mManager.beginTransaction();
@@ -151,25 +151,25 @@ public class MainActivity extends BaseActivity {
 
     private void hideFragments(FragmentTransaction transaction) {
         String tag1 = OrderFragment.class.getName();
-        String tag2 = GoodsFragment.class.getName();
+        String tag2 = ShopManagerFragment.class.getName();
         String tag3 = DataFragment.class.getName();
         String tag4 = SettingFragment.class.getName();
         OrderFragment frag1 = (OrderFragment) mManager.findFragmentByTag(tag1);
         if (null != frag1) {
             transaction.hide(frag1);
         }
-//        GoodsFragment frag2 = (GoodsFragment) mManager.findFragmentByTag(tag2);
-//        if (null != frag2) {
-//            transaction.hide(frag2);
-//        }
-//        DataFragment frag3 = (DataFragment) mManager.findFragmentByTag(tag3);
-//        if (null != frag3) {
-//            transaction.hide(frag3);
-//        }
-//        SettingFragment frag4 = (SettingFragment) mManager.findFragmentByTag(tag4);
-//        if (null != frag4) {
-//            transaction.hide(frag4);
-//        }
+        ShopManagerFragment frag2 = (ShopManagerFragment) mManager.findFragmentByTag(tag2);
+        if (null != frag2) {
+            transaction.hide(frag2);
+        }
+        DataFragment frag3 = (DataFragment) mManager.findFragmentByTag(tag3);
+        if (null != frag3) {
+            transaction.hide(frag3);
+        }
+        SettingFragment frag4 = (SettingFragment) mManager.findFragmentByTag(tag4);
+        if (null != frag4) {
+            transaction.hide(frag4);
+        }
     }
 
     @OnClick(R.id.layTabOrder)
@@ -179,19 +179,19 @@ public class MainActivity extends BaseActivity {
         }
         switchContent(mOrder);
 
-//        replaceContent(new OrderFragment());
+        replaceContent(new OrderFragment());
         resetSelected();
         imgTabOrder.setImageResource(R.mipmap.tab_order_selected);
     }
 
     @OnClick(R.id.layTabGoods)
     public void showGoods(View view) {
-        if (null == mGoods) {
-            mGoods = new GoodsFragment();
+        if (null == mshops) {
+            mshops = new ShopManagerFragment();
         }
-        switchContent(mGoods);
+        switchContent(mshops);
 
-//        replaceContent(new GoodsFragment());
+        replaceContent(new ShopManagerFragment());
         resetSelected();
         imgTabGoods.setImageResource(R.mipmap.tab_manager_selected);
     }
@@ -203,7 +203,7 @@ public class MainActivity extends BaseActivity {
         }
         switchContent(mData);
 
-//        replaceContent(new DataFragment());
+        replaceContent(new DataFragment());
         resetSelected();
         imgTabData.setImageResource(R.mipmap.tab_data_selected);
     }
@@ -215,15 +215,15 @@ public class MainActivity extends BaseActivity {
         }
         switchContent(mSetting);
 
-//        replaceContent(new SettingFragment());
+        replaceContent(new SettingFragment());
         resetSelected();
         imgTabSettings.setImageResource(R.mipmap.tab_setting_selected);
     }
 
     private void resetSelected() {
         imgTabOrder.setImageResource(R.mipmap.tab_order);
-        imgTabGoods.setImageResource(R.mipmap.tab_manager);
         imgTabData.setImageResource(R.mipmap.tab_data);
+        imgTabGoods.setImageResource(R.mipmap.tab_manager);
         imgTabSettings.setImageResource(R.mipmap.tab_setting);
     }
 

@@ -28,6 +28,7 @@
             android:src="@mipmap/baobao"/>
 
         <TextView
+            android:id="@+id/shop_name_tv"
             style="@style/TextViewNewOrderNotes"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -74,6 +75,7 @@
                 android:layout_gravity="center"/>
 
             <TextView
+                android:id="@+id/shop_status"
                 style="@style/TextViewNewOrderNotes"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
@@ -103,10 +105,10 @@
                 style="@style/TextViewShopManager"
                 android:text="今日营业额"/>
         <TextView
+            android:id="@+id/today_revenues"
             android:layout_below="@+id/turnover_tag"
-            android:id="@+id/today_turnover"
             style="@style/TextViewShopManagerSaleData"
-            android:text="1543"/>
+            android:text=""/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -119,28 +121,12 @@
                 style="@style/TextViewShopManager"
                 android:text="今日订单"/>
             <TextView
-                android:layout_below="@+id/today_order_tag"
                 android:id="@+id/today_order_tv"
+                android:layout_below="@+id/today_order_tag"
                 style="@style/TextViewShopManagerSaleData"
-                android:text="43"/>
+                android:text=""/>
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/balance_tag"
-                android:layout_alignParentTop="true"
-                style="@style/TextViewShopManager"
-                android:text="可用余额"/>
-            <TextView
-                android:layout_below="@+id/balance_tag"
-                android:id="@+id/balance_tv"
-                style="@style/TextViewShopManagerSaleData"
-                android:textColor="#FF9800"
-                android:text="879"/>
-        </RelativeLayout>
     </LinearLayout>
     <View style="@style/SepShopManagerLineStyle"/>
 
@@ -178,20 +164,20 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:paddingTop="15dp">
+            android:paddingTop="15dp"
+            android:gravity="center">
 
             <ImageView
-                android:id="@+id/comment_tag"
+                android:id="@+id/sale_parse_tag"
                 style="@style/BothWrap"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:src="@mipmap/icon_comment_tag"/>
+                android:src="@mipmap/icon_sale_parse"/>
 
             <TextView
                 style="@style/TextViewShopManagerCategory"
-                android:layout_below="@+id/comment_tag"
-                android:text="评价"/>
+                android:layout_below="@+id/sale_parse_tag"
+                android:text="营业分析"/>
         </RelativeLayout>
 
         <View style="@style/SepVerticalLineStyle"/>
@@ -218,96 +204,5 @@
     </LinearLayout>
 
     <View style="@style/SepShopManagerLineStyle"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:paddingTop="15dp"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/sale_parse_tag"
-                style="@style/BothWrap"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:src="@mipmap/icon_sale_parse"/>
-
-            <TextView
-                style="@style/TextViewShopManagerCategory"
-                android:layout_below="@+id/sale_parse_tag"
-                android:text="营业分析"/>
-        </RelativeLayout>
-        <View
-            style="@style/SepVerticalLineStyle"
-            />
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:paddingTop="15dp"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/wallet_tag"
-                style="@style/BothWrap"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:src="@mipmap/icon_wallet_tag"/>
-
-            <TextView
-                style="@style/TextViewShopManagerCategory"
-                android:layout_below="@+id/wallet_tag"
-                android:text="钱包"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingTop="15dp">
-        </RelativeLayout>
-
-        <View
-            style="@style/SepVerticalLineStyle"
-            />
-    </LinearLayout>
-    <View style="@style/SepShopManagerLineStyle"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:paddingTop="15dp"
-            android:gravity="center">
-
-        </RelativeLayout>
-        <View style="@style/SepVerticalLineStyle"/>
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingTop="15dp"
-            android:gravity="center">
-        </RelativeLayout>
-        <View style="@style/SepVerticalLineStyle"/>
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:paddingTop="15dp"
-            android:gravity="center">
-        </RelativeLayout>
-    </LinearLayout>
-    <View style="@style/SepShopManagerLineStyle"/>
 </LinearLayout>
