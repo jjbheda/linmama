@@ -58,6 +58,10 @@
             android:name="com.linmama.dinning.home.MainActivity"
             android:screenOrientation="portrait"/>
         <activity
+            android:name="com.linmama.dinning.base.CommonActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name="com.linmama.dinning.order.neu.timepick.TimePickerActivity"
             android:screenOrientation="portrait" />
         <activity

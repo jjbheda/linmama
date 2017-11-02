@@ -136,6 +136,7 @@
         android:orientation="horizontal">
 
         <RelativeLayout
+            android:id="@+id/goods_rt"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
@@ -161,6 +162,7 @@
             />
 
         <RelativeLayout
+            android:id="@+id/shop_parse_rt"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
@@ -183,6 +185,7 @@
         <View style="@style/SepVerticalLineStyle"/>
 
         <RelativeLayout
+            android:id="@+id/reconciliation_rt"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"

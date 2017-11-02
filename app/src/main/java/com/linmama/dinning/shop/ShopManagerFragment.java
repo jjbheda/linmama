@@ -1,18 +1,27 @@
 package com.linmama.dinning.shop;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.R;
 import com.linmama.dinning.base.BaseFragment;
+import com.linmama.dinning.base.CommonActivity;
 import com.linmama.dinning.except.ApiException;
+import com.linmama.dinning.goods.GoodsFragment;
+import com.linmama.dinning.setting.complete.CompleteOrderListFragment;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.linmama.dinning.base.BaseModel.httpService;
 
@@ -34,9 +43,32 @@ public class ShopManagerFragment extends BaseFragment {
     ImageView mIconShop;
 
 
+    @BindView(R.id.goods_rt)
+    RelativeLayout mGoodsRt;
+    @BindView(R.id.shop_parse_rt)
+    RelativeLayout mShopParse;
+    @BindView(R.id.reconciliation_rt)
+    RelativeLayout mShopReconciliation;
+
     @Override
     protected int getLayoutResID() {
         return R.layout.store_manager_v2;
+    }
+
+    @OnClick(R.id.goods_rt)
+    public void turnToGoods(){
+//        FragmentManager fm = mActivity.getSupportFragmentManager();
+////        fm.beginTransaction().add(R.id.content, new GoodsFragment(), GoodsFragment.class.getName())
+////        .commit();
+//        GoodsFragment fragment = new GoodsFragment();
+//        final FragmentTransaction transaction = fm.beginTransaction();
+//        transaction.add(Window.ID_ANDROID_CONTENT, fragment, "GoodsFragment.class");
+//        transaction.addToBackStack(fragment.getClass().getName());
+//        transaction.commitAllowingStateLoss();
+
+        CommonActivity.start(mActivity,GoodsFragment.class,new Bundle());
+
+
     }
 
     @Override
@@ -69,6 +101,5 @@ public class ShopManagerFragment extends BaseFragment {
         mTodayOrderNum.setText(bean.total_ords+"");
         mShopName.setText(bean.shop_name);
         Picasso.with(mActivity).load(bean.shop_logo).placeholder(R.mipmap.baobao).into(mIconShop);
-
     }
 }
