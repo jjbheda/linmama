@@ -74,7 +74,6 @@ public class OffSaleItemAdapter extends BaseAdapter {
         }
         MenuItemResultsBean bean = mResults.get(i);
         holder.name.setText(bean.getName());
-        holder.num.setText(bean.getCode());
         holder.on.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,7 +83,7 @@ public class OffSaleItemAdapter extends BaseAdapter {
             }
         });
         Picasso.with(mContext)
-                .load(String.format(mContext.getResources().getString(R.string.picasso_load_url), bean.getSmall_image()))
+                .load(String.format(mContext.getResources().getString(R.string.picasso_load_url), bean.getThumbnail()))
                 .placeholder(R.mipmap.ic_load)
                 .error(R.mipmap.ic_load)
                 .into(holder.icon);

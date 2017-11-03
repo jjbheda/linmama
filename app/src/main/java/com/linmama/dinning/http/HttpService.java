@@ -8,7 +8,6 @@ import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.SaleRankBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
-import com.linmama.dinning.goods.category.MenuCategoryBean;
 import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.bean.CompleteOrderBean;
 import com.linmama.dinning.bean.NonPayOrderBean;
@@ -18,8 +17,10 @@ import com.linmama.dinning.bean.SaleReportBean;
 import com.linmama.dinning.bean.SarchItemBean;
 import com.linmama.dinning.bean.StoreSettingsBean;
 import com.linmama.dinning.bean.UserServerBean;
-import com.linmama.dinning.goods.item.MenuItemBean;
-import com.linmama.dinning.shop.ShopBean;
+import com.linmama.dinning.goods.category.MenuCategoryBean;
+import com.linmama.dinning.goods.item.MenuItemResultsBean;
+import com.linmama.dinning.shop.bean.ShopBean;
+import com.linmama.dinning.shop.bean.ShopSaleParseBean;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("pendingOrderList/")
     Observable<BaseHttpResult<TakingOrderMenuBean>> getReceivedOrder(@Query("page") int page, @Field("order_type") int order_type
-            , @Field("search") String search);
+            , @Field("range") String range);
 
     //处理中订单查询    order_type：1预约单 0 当日单  search 搜索条件 订单号、用户名、电话号码  page 默认1
     @FormUrlEncoded
@@ -65,6 +66,14 @@ public interface HttpService {
     //店铺管理
     @POST("baseData/")
     Observable<BaseHttpResult<ShopBean>> getShopBaseData();
+
+    //下架商品列表
+    @POST("undercarriage/")
+    Observable<BaseHttpResult<List<MenuItemResultsBean>>> getUnderCarriageData();
+
+    // 店铺管理-营业分析
+    @POST("businessAnalysis/")
+    Observable<BaseHttpResult<ShopSaleParseBean>> getShopParseBaseData();
 
     //4	提醒列表接口
     @GET("orderWarnList/")
@@ -121,15 +130,15 @@ public interface HttpService {
     Observable<BaseHttpResult<DataBean>> refusedRefund(@Field("refund_id") String refund_id, @Field("reason") String reason);
 
     //15	菜品分类列表接口
-    @GET("menuCategoryList/")
-    Observable<BaseHttpResult<MenuCategoryBean>> getMenuCategory();
+    @POST("category/")
+    Observable<BaseHttpResult<List<MenuCategoryBean>>> getMenuCategory();
 
     //16	在售菜品列表接口
     @GET("onSellMenuItemList/")
-    Observable<BaseHttpResult<MenuItemBean>> getOnSellMenu(@Query("menuCategory") int menuCategory);
+    Observable<BaseHttpResult<List<MenuItemResultsBean>>> getOnSellMenu(@Query("menuCategory") int menuCategory);
 
     @GET("onSellMenuItemList/")
-    Observable<BaseHttpResult<MenuItemBean>> getOnSellMenu();
+    Observable<BaseHttpResult<List<MenuItemResultsBean>>> getOnSellMenu();
 
     //17	菜品上架/下架接口
     @FormUrlEncoded
@@ -170,9 +179,6 @@ public interface HttpService {
     @GET("orderList/{id}/")
     Observable<BaseHttpResult<OrderDetailBean>> getOrderDetail(@Path("id") int orderId);
 
-    //25	所有已下架商品列表接口
-    @GET("offMenuItemList/")
-    Observable<BaseHttpResult<MenuItemBean>> getOffMenu();
 
     //26	营业/打烊开关接口
     //op_flag为操作标记，1代表开始营业，2代表打烊

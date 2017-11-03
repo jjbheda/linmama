@@ -5,9 +5,12 @@ import android.support.annotation.NonNull;
 import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.goods.item.MenuItemBean;
+import com.linmama.dinning.goods.item.MenuItemResultsBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.except.ApiException;
+
+import java.util.List;
 
 /**
  * Created by jingkang on 2017/3/11
@@ -18,12 +21,12 @@ public class OffMenuItemListModel extends BaseModel {
         if (hint == null)
             throw new RuntimeException("OffMenuItemListHint cannot be null!");
 
-        httpService.getOffMenu()
-                .compose(new CommonTransformer<MenuItemBean>())
-                .subscribe(new CommonSubscriber<MenuItemBean>(LmamaApplication.getInstance()) {
+        httpService.getUnderCarriageData()
+                .compose(new CommonTransformer<List<MenuItemResultsBean>>())
+                .subscribe(new CommonSubscriber<List<MenuItemResultsBean>>(LmamaApplication.getInstance()) {
                     @Override
-                    public void onNext(MenuItemBean bean) {
-                        hint.successOffMenuItemList(bean);
+                    public void onNext(List<MenuItemResultsBean> beans) {
+                        hint.successOffMenuItemList(beans);
                     }
 
                     @Override
@@ -35,7 +38,7 @@ public class OffMenuItemListModel extends BaseModel {
     }
 
     public interface OffMenuItemListHint {
-        void successOffMenuItemList(MenuItemBean bean);
+        void successOffMenuItemList(List<MenuItemResultsBean> beans);
 
         void failOffMenuItemList(String str);
     }

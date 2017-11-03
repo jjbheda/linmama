@@ -165,18 +165,18 @@ public class OrderFragment extends BasePresenterFragment implements
         results.add(allMenu);
         results.add(allMenu2);
         results.add(allMenu3);
-        mCategorydapter = new MenuCategoryAdapter(mActivity, results);
-        mTabWidget.setAdapter(mCategorydapter);
-        mTabWidget.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               if (position == 0 || position ==1) {
-                   showDialog("加载中...");
-                   itemBackChanged(view);
-                   dismissDialog();
-               }
-            }
-        });
+//        mCategorydapter = new MenuCategoryAdapter(mActivity, results);
+//        mTabWidget.setAdapter(mCategorydapter);
+//        mTabWidget.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//               if (position == 0 || position ==1) {
+//                   showDialog("加载中...");
+//                   itemBackChanged(view);
+//                   dismissDialog();
+//               }
+//            }
+//        });
     }
 
     @Override

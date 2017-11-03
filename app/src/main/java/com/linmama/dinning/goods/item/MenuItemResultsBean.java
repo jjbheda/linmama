@@ -6,10 +6,8 @@ package com.linmama.dinning.goods.item;
 
 public class MenuItemResultsBean {
     private int id;
-    private String code;
     private String name;
-    private String price;
-    private String small_image;
+    private String thumbnail;
 
     public int getId() {
         return id;
@@ -17,14 +15,6 @@ public class MenuItemResultsBean {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {
@@ -35,19 +25,12 @@ public class MenuItemResultsBean {
         this.name = name;
     }
 
-    public String getPrice() {
-        return price;
+
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getSmall_image() {
-        return small_image;
-    }
-
-    public void setSmall_image(String small_image) {
-        this.small_image = small_image;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

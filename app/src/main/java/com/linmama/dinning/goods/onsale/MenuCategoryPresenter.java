@@ -2,15 +2,16 @@ package com.linmama.dinning.goods.onsale;
 
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.goods.category.MenuCategoryBean;
+import com.linmama.dinning.goods.item.MenuItemResultsBean;
 import com.linmama.dinning.goods.model.OnSellMenuItemListModel;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.base.BasePresenter;
-import com.linmama.dinning.goods.item.MenuItemBean;
 import com.linmama.dinning.goods.model.MenuCategoryListModel;
 import com.linmama.dinning.goods.model.OffItemModel;
 import com.linmama.dinning.goods.model.OnAllSellMenuItemListModel;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by jingkang on 2017/3/11
@@ -42,7 +43,7 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
         ((MenuCategoryListModel) getiModelMap().get("MenuCategory")).getMenuCategoryList(
                 new MenuCategoryListModel.MenuCategoryListHint() {
                     @Override
-                    public void successMenuCategoryList(MenuCategoryBean bean) {
+                    public void successMenuCategoryList(List<MenuCategoryBean> bean) {
                         if (null == getIView())
                             return;
                         getIView().menuCategorySuccess(bean);
@@ -64,10 +65,10 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
         ((OnSellMenuItemListModel) getiModelMap().get("OnSellMenuItem")).getOnSellMenu(menuCategory,
                 new OnSellMenuItemListModel.OnSellMenuItemListHint() {
                     @Override
-                    public void successOnSellMenuItemList(MenuItemBean bean) {
+                    public void successOnSellMenuItemList(List<MenuItemResultsBean> beans) {
                         if (null == getIView())
                             return;
-                        getIView().sellMenuItemSuccess(bean);
+                        getIView().sellMenuItemSuccess(beans);
                     }
 
                     @Override
@@ -86,7 +87,7 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
         ((OnAllSellMenuItemListModel) getiModelMap().get("OnAllSellMenuItem")).getOnSellMenu(
                 new OnAllSellMenuItemListModel.OnAllSellMenuItemListHint() {
                     @Override
-                    public void successOnAllSellMenuItemList(MenuItemBean bean) {
+                    public void successOnAllSellMenuItemList(List<MenuItemResultsBean> bean) {
                         if (null == getIView())
                             return;
                         getIView().sellMenuItemSuccess(bean);

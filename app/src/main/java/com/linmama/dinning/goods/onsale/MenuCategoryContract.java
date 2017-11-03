@@ -1,8 +1,10 @@
 package com.linmama.dinning.goods.onsale;
 
-import com.linmama.dinning.goods.category.MenuCategoryBean;
 import com.linmama.dinning.bean.DataBean;
-import com.linmama.dinning.goods.item.MenuItemBean;
+import com.linmama.dinning.goods.category.MenuCategoryBean;
+import com.linmama.dinning.goods.item.MenuItemResultsBean;
+
+import java.util.List;
 
 /**
  * Created by jingkang on 2017/3/11
@@ -10,13 +12,13 @@ import com.linmama.dinning.goods.item.MenuItemBean;
 
 public class MenuCategoryContract {
     public interface MenuCategoryView {
-        void menuCategorySuccess(MenuCategoryBean bean);
+        void menuCategorySuccess(List<MenuCategoryBean> beans);
 
         void menuCategoryFail(String failMsg);
     }
 
     public interface OnSellMenuItemView {
-        void sellMenuItemSuccess(MenuItemBean bean);
+        void sellMenuItemSuccess(List<MenuItemResultsBean> beans);
 
         void sellMenuItemFail(String failMsg);
     }

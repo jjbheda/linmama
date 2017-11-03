@@ -15,6 +15,8 @@ import com.linmama.dinning.R;
 import com.linmama.dinning.goods.item.MenuItemBean;
 import com.linmama.dinning.utils.LogUtils;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -65,9 +67,9 @@ public class OffSaleFragment extends BasePresenterFragment<OffMenuItemListPresen
     }
 
     @Override
-    public void offMenuItemSuccess(MenuItemBean bean) {
-        if (null != bean && null != bean.getResults()) {
-            mAdapter = new OffSaleItemAdapter(mActivity, bean.getResults());
+    public void offMenuItemSuccess(List<MenuItemResultsBean> beans) {
+        if (null != beans ) {
+            mAdapter = new OffSaleItemAdapter(mActivity, beans);
             mOffListView.setAdapter(mAdapter);
             mAdapter.setOnOnItem(this);
         }

@@ -114,7 +114,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     }
 
     @Override
-    public void getTakingOrderSuccess(TakingOrderMenuBean resultBeans) {
+    public void getTakingOrderSuccess(TakingOrderMenuBean resultBean) {
         dismissDialog();
         if (currentPage == 1 && mPtrTaking.isRefreshing()) {
             mPtrTaking.refreshComplete();
@@ -122,9 +122,11 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
             mResults.clear();
         }
-        if (null != resultBeans && null != resultBeans) {
-            LogUtils.d("getTakingOrderSuccess", resultBeans.toString());
-            List<TakingOrderBean> results = resultBeans.data;
+        last_page = resultBean.last_page;
+
+        if (null != resultBean && null != resultBean) {
+            LogUtils.d("getTakingOrderSuccess", resultBean.toString());
+            List<TakingOrderBean> results = resultBean.data;
             mResults.addAll(results);
             if (null == mAdapter) {
                 mAdapter = new TakingOrderAdapter(mActivity, mResults);
@@ -150,22 +152,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
             ViewUtils.showSnack(mPtrTaking, failMsg);
         }
     }
-
-//    @Override
-//    public void cancelWarnSuccess(DataBean bean, String orderId) {
-//        dismissDialog();
-//        ViewUtils.showSnack(mPtrTaking, "取消提醒");
-//        AlarmManagerUtils.cancelAlarm(mActivity, AlarmManagerUtils.ALARM_ACTION, Integer.parseInt(orderId));
-//        mPtrTaking.autoRefresh(true);
-//    }
-//
-//    @Override
-//    public void cancelWarnFail(String msg) {
-//        dismissDialog();
-//        if (!TextUtils.isEmpty(msg)) {
-//            ViewUtils.showSnack(mPtrTaking, msg);
-//        }
-//    }
 
     @Override
     public void confirmPaySuccess(String orderId) {
@@ -205,22 +191,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
             mPresenter.confirmPayment(String.valueOf(rb.getId()), text);
         }
     }
-
-//    @Override
-//    public void cancelRingOrder(int position) {
-//        ResultsBean rb = null;
-//        if (null != mAdapter.getItem(position)) {
-//            rb = (ResultsBean) mAdapter.getItem(position);
-//        }
-//        List<OrderWarnsBean> warns = null;
-//        if (rb != null) {
-//            warns = rb.getOrderWarms();
-//        }
-//        if (null != warns && warns.size() > 0) {
-//            showDialog("加载中...");
-//            mPresenter.cancelWarn(String.valueOf(warns.get(0).getId()));
-//        }
-//    }
 
     @Override
     public void okOrder(int position) {
@@ -416,6 +386,9 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 
     @Override
     public void onGetMore() {
+        if (currentPage == last_page){
+            return;
+        }
         currentPage++;
         mPresenter.getTakingOrder(currentPage);
     }

@@ -2,6 +2,9 @@ package com.linmama.dinning.goods.offsale;
 
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.goods.item.MenuItemBean;
+import com.linmama.dinning.goods.item.MenuItemResultsBean;
+
+import java.util.List;
 
 /**
  * Created by jingkang on 2017/3/11
@@ -9,7 +12,7 @@ import com.linmama.dinning.goods.item.MenuItemBean;
 
 public class OffMenuItemListContract {
     public interface OffMenuItemView {
-        void offMenuItemSuccess(MenuItemBean bean);
+        void offMenuItemSuccess(List<MenuItemResultsBean> bean);
 
         void offMenuItemFail(String failMsg);
     }

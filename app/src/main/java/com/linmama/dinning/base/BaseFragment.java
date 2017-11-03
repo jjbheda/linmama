@@ -1,6 +1,7 @@
 package com.linmama.dinning.base;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseFragment extends Fragment {
     protected FragmentActivity mActivity;
+    private ProgressDialog mLoadingDialog;
 
     @Override
     public void onAttach(Context context) {
@@ -43,4 +45,18 @@ public abstract class BaseFragment extends Fragment {
     protected abstract void initView();
 
     protected abstract void initListener();
+
+    protected void showDialog(String msg) {
+        if (null != mLoadingDialog && mLoadingDialog.isShowing()) {
+            mLoadingDialog.dismiss();
+        }
+        mLoadingDialog = ProgressDialog.show(mActivity, "请稍后", msg, false, true);
+        mLoadingDialog.show();
+    }
+
+    protected void dismissDialog() {
+        if (null != mLoadingDialog && mLoadingDialog.isShowing()) {
+            mLoadingDialog.dismiss();
+        }
+    }
 }

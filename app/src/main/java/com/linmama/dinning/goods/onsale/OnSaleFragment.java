@@ -18,7 +18,6 @@ import com.linmama.dinning.adapter.MenuCategoryAdapter;
 import com.linmama.dinning.adapter.OnSaleItemAdapter;
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.goods.category.MenuCategoryResultsBean;
-import com.linmama.dinning.goods.item.MenuItemBean;
 import com.linmama.dinning.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -100,14 +99,10 @@ public class OnSaleFragment extends BasePresenterFragment<MenuCategoryPresenter>
     }
 
     @Override
-    public void menuCategorySuccess(MenuCategoryBean bean) {
-        if (null != bean && null != bean.getResults()) {
-            List<MenuCategoryResultsBean> results = new ArrayList<>();
-            MenuCategoryResultsBean allMenu = new MenuCategoryResultsBean();
-            allMenu.setId(0);
-            allMenu.setName("全部");
-            results.add(allMenu);
-            results.addAll(bean.getResults());
+    public void menuCategorySuccess(List<MenuCategoryBean> beans) {
+        if (null != beans && null != beans) {
+            List<MenuCategoryBean> results = new ArrayList<>();
+            results.addAll(beans);
             mCategorydapter = new MenuCategoryAdapter(mActivity, results);
             mTabWidget.setAdapter(mCategorydapter);
             mTabWidget.setOnItemClickListener(mTabClickListener);
@@ -123,10 +118,10 @@ public class OnSaleFragment extends BasePresenterFragment<MenuCategoryPresenter>
     }
 
     @Override
-    public void sellMenuItemSuccess(MenuItemBean bean) {
+    public void sellMenuItemSuccess(List<MenuItemResultsBean> beans) {
         dismissDialog();
-        if (null != bean && null != bean.getResults()) {
-            mSaleAdapter = new OnSaleItemAdapter(mActivity, bean.getResults());
+        if (null != beans ) {
+            mSaleAdapter = new OnSaleItemAdapter(mActivity, beans);
             mListView.setAdapter(mSaleAdapter);
             mSaleAdapter.setOnOffItem(this);
         }

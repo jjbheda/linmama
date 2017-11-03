@@ -2,12 +2,14 @@ package com.linmama.dinning.goods.offsale;
 
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.goods.item.MenuItemBean;
+import com.linmama.dinning.goods.item.MenuItemResultsBean;
 import com.linmama.dinning.goods.model.OnItemModel;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.goods.model.OffMenuItemListModel;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by jingkang on 2017/3/11
@@ -34,10 +36,10 @@ public class OffMenuItemListPresenter extends BasePresenter<OffSaleFragment> imp
             return;
         ((OffMenuItemListModel) getiModelMap().get("OffMenuItemList")).getOffMenu(new OffMenuItemListModel.OffMenuItemListHint() {
             @Override
-            public void successOffMenuItemList(MenuItemBean bean) {
+            public void successOffMenuItemList(List<MenuItemResultsBean> beans) {
                 if (null == getIView())
                     return;
-                getIView().offMenuItemSuccess(bean);
+                getIView().offMenuItemSuccess(beans);
             }
 
             @Override

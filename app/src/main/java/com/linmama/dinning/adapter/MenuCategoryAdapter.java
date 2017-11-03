@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.linmama.dinning.R;
-import com.linmama.dinning.goods.category.MenuCategoryResultsBean;
+import com.linmama.dinning.goods.category.MenuCategoryBean;
 
 import java.util.List;
 
@@ -17,10 +17,10 @@ import java.util.List;
  */
 
 public class MenuCategoryAdapter extends BaseAdapter {
-    private List<MenuCategoryResultsBean> mResults;
+    private List<MenuCategoryBean> mResults;
     private LayoutInflater mInflater;
 
-    public MenuCategoryAdapter(Context context, List<MenuCategoryResultsBean> results) {
+    public MenuCategoryAdapter(Context context, List<MenuCategoryBean> results) {
         this.mResults = results;
         mInflater = LayoutInflater.from(context);
     }
@@ -51,8 +51,8 @@ public class MenuCategoryAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        MenuCategoryResultsBean bean = mResults.get(i);
-        holder.name.setText(bean.getName());
+        MenuCategoryBean bean = mResults.get(i);
+        holder.name.setText(bean.name);
         return view;
     }
 

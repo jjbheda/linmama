@@ -79,12 +79,12 @@
                 android:text="有效订单数"/>
             <TextView
                 android:layout_below="@+id/effective_order_tag"
-                android:id="@+id/effective_order"
+                android:id="@+id/effective_order_num"
                 style="@style/TextViewSaleParseGreyBold"
                 android:text="46"/>
 
             <TextView
-                android:layout_below="@+id/effective_order"
+                android:layout_below="@+id/effective_order_num"
                 android:id="@+id/effective_order_price"
                 style="@style/TextViewSaleParse14sp"
                 android:text="客单价￥34.57"/>
@@ -109,13 +109,13 @@
                 android:text="无效订单数"/>
             <TextView
                 android:layout_below="@+id/invalid_order_tag"
-                android:id="@+id/invalid_order"
+                android:id="@+id/invalid_order_num"
                 style="@style/TextViewSaleParseGreyBold"
                 android:text="2"/>
 
             <TextView
-                android:layout_below="@+id/invalid_order"
-                android:id="@+id/loss_tag"
+                android:layout_below="@+id/invalid_order_num"
+                android:id="@+id/loss_num"
                 style="@style/TextViewSaleParse14sp"
                 android:text="预计损失￥80"/>
         </RelativeLayout>

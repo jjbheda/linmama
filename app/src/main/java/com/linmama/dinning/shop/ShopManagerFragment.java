@@ -1,10 +1,6 @@
 package com.linmama.dinning.shop;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,7 +11,7 @@ import com.linmama.dinning.base.BaseFragment;
 import com.linmama.dinning.base.CommonActivity;
 import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.goods.GoodsFragment;
-import com.linmama.dinning.setting.complete.CompleteOrderListFragment;
+import com.linmama.dinning.shop.bean.ShopBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.squareup.picasso.Picasso;
@@ -57,27 +53,23 @@ public class ShopManagerFragment extends BaseFragment {
 
     @OnClick(R.id.goods_rt)
     public void turnToGoods(){
-//        FragmentManager fm = mActivity.getSupportFragmentManager();
-////        fm.beginTransaction().add(R.id.content, new GoodsFragment(), GoodsFragment.class.getName())
-////        .commit();
-//        GoodsFragment fragment = new GoodsFragment();
-//        final FragmentTransaction transaction = fm.beginTransaction();
-//        transaction.add(Window.ID_ANDROID_CONTENT, fragment, "GoodsFragment.class");
-//        transaction.addToBackStack(fragment.getClass().getName());
-//        transaction.commitAllowingStateLoss();
-
         CommonActivity.start(mActivity,GoodsFragment.class,new Bundle());
+    }
 
-
+    @OnClick(R.id.shop_parse_rt)
+    public void turnToShopParse(){
+        CommonActivity.start(mActivity,ShopSaleParseFragment.class,new Bundle());
     }
 
     @Override
     protected void initView() {
+        showDialog("加载中...");
         httpService.getShopBaseData()
                 .compose(new CommonTransformer<ShopBean>())
                 .subscribe(new CommonSubscriber<ShopBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(ShopBean bean) {
+                        dismissDialog();
                         if (bean != null){
                             showUI(bean);
                         }
@@ -86,6 +78,7 @@ public class ShopManagerFragment extends BaseFragment {
                     @Override
                     public void onError(ApiException e) {
                         super.onError(e);
+                        dismissDialog();
                     }
                 });
     }

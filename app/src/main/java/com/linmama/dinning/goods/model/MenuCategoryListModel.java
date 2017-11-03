@@ -9,6 +9,8 @@ import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.except.ApiException;
 
+import java.util.List;
+
 /**
  * Created by jingkang on 2017/3/11
  */
@@ -20,11 +22,11 @@ public class MenuCategoryListModel extends BaseModel {
             throw new RuntimeException("MenuCategoryListHint cannot be null!");
 
         httpService.getMenuCategory()
-                .compose(new CommonTransformer<MenuCategoryBean>())
-                .subscribe(new CommonSubscriber<MenuCategoryBean>(LmamaApplication.getInstance()) {
+                .compose(new CommonTransformer<List<MenuCategoryBean>>())
+                .subscribe(new CommonSubscriber<List<MenuCategoryBean>>(LmamaApplication.getInstance()) {
                     @Override
-                    public void onNext(MenuCategoryBean bean) {
-                        hint.successMenuCategoryList(bean);
+                    public void onNext(List<MenuCategoryBean> beans) {
+                        hint.successMenuCategoryList(beans);
                     }
 
                     @Override
@@ -36,7 +38,7 @@ public class MenuCategoryListModel extends BaseModel {
     }
 
     public interface MenuCategoryListHint {
-        void successMenuCategoryList(MenuCategoryBean bean);
+        void successMenuCategoryList(List<MenuCategoryBean> beans);
 
         void failMenuCategoryList(String str);
     }
