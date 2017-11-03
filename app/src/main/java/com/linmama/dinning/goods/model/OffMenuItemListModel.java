@@ -4,8 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
-import com.linmama.dinning.goods.item.MenuItemBean;
-import com.linmama.dinning.goods.item.MenuItemResultsBean;
+import com.linmama.dinning.goods.onsale.ShopItemBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.except.ApiException;
@@ -22,10 +21,10 @@ public class OffMenuItemListModel extends BaseModel {
             throw new RuntimeException("OffMenuItemListHint cannot be null!");
 
         httpService.getUnderCarriageData()
-                .compose(new CommonTransformer<List<MenuItemResultsBean>>())
-                .subscribe(new CommonSubscriber<List<MenuItemResultsBean>>(LmamaApplication.getInstance()) {
+                .compose(new CommonTransformer<List<ShopItemBean>>())
+                .subscribe(new CommonSubscriber<List<ShopItemBean>>(LmamaApplication.getInstance()) {
                     @Override
-                    public void onNext(List<MenuItemResultsBean> beans) {
+                    public void onNext(List<ShopItemBean> beans) {
                         hint.successOffMenuItemList(beans);
                     }
 
@@ -38,7 +37,7 @@ public class OffMenuItemListModel extends BaseModel {
     }
 
     public interface OffMenuItemListHint {
-        void successOffMenuItemList(List<MenuItemResultsBean> beans);
+        void successOffMenuItemList(List<ShopItemBean> beans);
 
         void failOffMenuItemList(String str);
     }

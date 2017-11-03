@@ -7,7 +7,6 @@ import java.util.List;
  */
 
 public class MenuCategoryBean {
-
    public int id = 0;
    public String name = "";
 

@@ -1,8 +1,6 @@
 package com.linmama.dinning.goods.onsale;
 
-import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.goods.category.MenuCategoryBean;
-import com.linmama.dinning.goods.item.MenuItemResultsBean;
 
 import java.util.List;
 
@@ -18,13 +16,13 @@ public class MenuCategoryContract {
     }
 
     public interface OnSellMenuItemView {
-        void sellMenuItemSuccess(List<MenuItemResultsBean> beans);
+        void sellMenuItemSuccess(List<ShopItemBean> beans);
 
         void sellMenuItemFail(String failMsg);
     }
 
     public interface OffItemView {
-        void offItemSuccess(DataBean bean, String itemId);
+        void offItemSuccess(String msg);
 
         void offItemFail(String failMsg);
     }
@@ -39,6 +37,6 @@ public class MenuCategoryContract {
     }
 
     public interface OffItemPresenter {
-        void offItem(String op_flag, String item_id);
+        void offItem(int id);
     }
 }

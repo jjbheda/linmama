@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.linmama.dinning.R;
-import com.linmama.dinning.goods.item.MenuItemResultsBean;
+import com.linmama.dinning.goods.onsale.ShopItemBean;
 
 import java.util.List;
 
@@ -20,12 +20,12 @@ import java.util.List;
  */
 
 public class OffSaleItemAdapter extends BaseAdapter {
-    private List<MenuItemResultsBean> mResults;
+    private List<ShopItemBean> mResults;
     private LayoutInflater mInflater;
     private OnOnItem mOnOnItem;
     private Context mContext;
 
-    public OffSaleItemAdapter(Context context, List<MenuItemResultsBean> results) {
+    public OffSaleItemAdapter(Context context, List<ShopItemBean> results) {
         this.mContext = context;
         this.mResults = results;
         mInflater = LayoutInflater.from(context);
@@ -47,7 +47,7 @@ public class OffSaleItemAdapter extends BaseAdapter {
     }
 
     public void removeItem(int i) {
-        MenuItemResultsBean bean = mResults.remove(i);
+        ShopItemBean bean = mResults.remove(i);
         if (null != bean) {
             notifyDataSetChanged();
         }
@@ -72,13 +72,13 @@ public class OffSaleItemAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        MenuItemResultsBean bean = mResults.get(i);
+        final ShopItemBean bean = mResults.get(i);
         holder.name.setText(bean.getName());
         holder.on.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (null != mOnOnItem) {
-                    mOnOnItem.onItem(i);
+                    mOnOnItem.onItem(bean);
                 }
             }
         });
@@ -102,6 +102,6 @@ public class OffSaleItemAdapter extends BaseAdapter {
     }
 
     public interface OnOnItem {
-        void onItem(int position);
+        void onItem(ShopItemBean bean);
     }
 }

@@ -11,13 +11,10 @@ import android.widget.TextView;
 
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.goods.category.MenuCategoryBean;
-import com.linmama.dinning.goods.item.MenuItemResultsBean;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.MenuCategoryAdapter;
 import com.linmama.dinning.adapter.OnSaleItemAdapter;
-import com.linmama.dinning.bean.DataBean;
-import com.linmama.dinning.goods.category.MenuCategoryResultsBean;
 import com.linmama.dinning.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -67,11 +64,8 @@ public class OnSaleFragment extends BasePresenterFragment<MenuCategoryPresenter>
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 LogUtils.d("onItemSelected", String.valueOf(i));
                 showDialog("加载中...");
-                if (i == 0) {
-                    mPresenter.getOnAllSellMenu();
-                } else {
-                    mPresenter.getOnSellMenu(((MenuCategoryResultsBean) mCategorydapter.getItem(i)).getId());
-                }
+                MenuCategoryBean bean = (MenuCategoryBean)mCategorydapter.getItem(i);
+                mPresenter.getOnSellMenu(bean.id);
                 itemBackChanged(view);
             }
         };
@@ -118,7 +112,7 @@ public class OnSaleFragment extends BasePresenterFragment<MenuCategoryPresenter>
     }
 
     @Override
-    public void sellMenuItemSuccess(List<MenuItemResultsBean> beans) {
+    public void sellMenuItemSuccess(List<ShopItemBean> beans) {
         dismissDialog();
         if (null != beans ) {
             mSaleAdapter = new OnSaleItemAdapter(mActivity, beans);
@@ -134,23 +128,23 @@ public class OnSaleFragment extends BasePresenterFragment<MenuCategoryPresenter>
             ViewUtils.showSnack(mContent, failMsg);
         }
     }
-
+    int currentOffItemId = 0;
     @Override
-    public void offItem(int position) {
-        MenuItemResultsBean bean = (MenuItemResultsBean) mSaleAdapter.getItem(position);
+    public void offItem(ShopItemBean bean) {
         if (null != bean) {
             showDialog("加载中...");
-            mPresenter.offItem("2", String.valueOf(bean.getId()));
+            mPresenter.offItem(bean.getId());
+            currentOffItemId = bean.getId();
         }
     }
 
     @Override
-    public void offItemSuccess(DataBean bean, String itemId) {
+    public void offItemSuccess(String bean) {
         dismissDialog();
-        ViewUtils.showSnack(mContent, "下架成功");
+        ViewUtils.showSnack(mContent, bean);
         for (int i = 0; i < mSaleAdapter.getCount(); i++) {
-            MenuItemResultsBean item = (MenuItemResultsBean)mSaleAdapter.getItem(i);
-            if (itemId.equals(String.valueOf(item.getId()))) {
+            ShopItemBean item = (ShopItemBean)mSaleAdapter.getItem(i);
+            if (currentOffItemId == item.getId()) {
                 mSaleAdapter.removeItem(i);
                 if (null != mOffSaleNotify) {
                     mOffSaleNotify.offSaleNotify();

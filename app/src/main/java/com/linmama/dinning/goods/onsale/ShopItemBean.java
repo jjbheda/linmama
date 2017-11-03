@@ -1,10 +1,10 @@
-package com.linmama.dinning.goods.item;
+package com.linmama.dinning.goods.onsale;
 
 /**
  * Created by jingkang on 2017/3/11
  */
 
-public class MenuItemResultsBean {
+public class ShopItemBean {
     private int id;
     private String name;
     private String thumbnail;

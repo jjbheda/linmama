@@ -23,7 +23,7 @@ public class SearchCategoryContract {
     }
 
     public interface OffItemView {
-        void offItemSuccess(DataBean bean, String itemId);
+        void offItemSuccess(String msg);
 
         void offItemFail(String failMsg);
     }

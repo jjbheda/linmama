@@ -12,17 +12,17 @@ import com.linmama.dinning.except.ApiException;
  */
 
 public class OnItemModel extends BaseModel {
-    //op_flag为操作标记，1表示上架，2表示下架；
-    public void onItem(String op_flag, final String item_id, final OnItemHint hint) {
+
+    public void onItem(final int item_id, final OnItemHint hint) {
         if (null == hint) {
             throw new RuntimeException("OnItemHint cannot be null.");
         }
-        httpService.onOrOffItem(op_flag, item_id)
-                .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
+        httpService.upProduct(item_id)
+                .compose(new CommonTransformer())
+                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
                     @Override
-                    public void onNext(DataBean bean) {
-                        hint.successOnItem(bean, item_id);
+                    public void onNext(String bean) {
+                        hint.successOnItem(bean);
                     }
 
                     @Override
@@ -35,7 +35,7 @@ public class OnItemModel extends BaseModel {
     }
 
     public interface OnItemHint {
-        void successOnItem(DataBean bean, String itemId);
+        void successOnItem(String msg);
 
         void failOnItem(String failMsg);
     }

@@ -9,10 +9,9 @@ import android.widget.ListView;
 import com.linmama.dinning.adapter.OffSaleItemAdapter;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.DataBean;
-import com.linmama.dinning.goods.item.MenuItemResultsBean;
+import com.linmama.dinning.goods.onsale.ShopItemBean;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.R;
-import com.linmama.dinning.goods.item.MenuItemBean;
 import com.linmama.dinning.utils.LogUtils;
 
 import java.util.List;
@@ -67,7 +66,7 @@ public class OffSaleFragment extends BasePresenterFragment<OffMenuItemListPresen
     }
 
     @Override
-    public void offMenuItemSuccess(List<MenuItemResultsBean> beans) {
+    public void offMenuItemSuccess(List<ShopItemBean> beans) {
         if (null != beans ) {
             mAdapter = new OffSaleItemAdapter(mActivity, beans);
             mOffListView.setAdapter(mAdapter);
@@ -87,21 +86,19 @@ public class OffSaleFragment extends BasePresenterFragment<OffMenuItemListPresen
         LogUtils.d("onAllItems", "onAllItems");
         showDialog("加载中...");
         isOnAll = true;
-        mPresenter.onItem("1", "0");
+        mPresenter.onItem(0);
     }
-
+    int currentOnItemId = 0;
     @Override
-    public void onItem(int position) {
-        MenuItemResultsBean bean = (MenuItemResultsBean) mAdapter.getItem(position);
-        if (null != bean) {
+    public void onItem(ShopItemBean bean) {
             showDialog("加载中...");
             isOnAll = false;
-            mPresenter.onItem("1", String.valueOf(bean.getId()));
-        }
+            mPresenter.onItem(bean.getId());
+            currentOnItemId = bean.getId();
     }
 
     @Override
-    public void onItemSuccess(DataBean bean, String itemId) {
+    public void onItemSuccess(String msg) {
         dismissDialog();
         if (isOnAll) {
             mAdapter.clearItems();
@@ -111,8 +108,8 @@ public class OffSaleFragment extends BasePresenterFragment<OffMenuItemListPresen
         } else {
             ViewUtils.showSnack(mContent, "上架成功");
             for (int i = 0; i < mAdapter.getCount(); i++) {
-                MenuItemResultsBean item = (MenuItemResultsBean) mAdapter.getItem(i);
-                if (itemId.equals(String.valueOf(item.getId()))) {
+                ShopItemBean item = (ShopItemBean) mAdapter.getItem(i);
+                if (currentOnItemId == item.getId()) {
                     mAdapter.removeItem(i);
                     if (null != mOnSaleNotify) {
                         mOnSaleNotify.onSaleNotify();

@@ -18,7 +18,7 @@ import com.linmama.dinning.bean.SarchItemBean;
 import com.linmama.dinning.bean.StoreSettingsBean;
 import com.linmama.dinning.bean.UserServerBean;
 import com.linmama.dinning.goods.category.MenuCategoryBean;
-import com.linmama.dinning.goods.item.MenuItemResultsBean;
+import com.linmama.dinning.goods.onsale.ShopItemBean;
 import com.linmama.dinning.shop.bean.ShopBean;
 import com.linmama.dinning.shop.bean.ShopSaleParseBean;
 
@@ -67,9 +67,24 @@ public interface HttpService {
     @POST("baseData/")
     Observable<BaseHttpResult<ShopBean>> getShopBaseData();
 
+    //菜品分类下对应的菜品
+    @FormUrlEncoded
+    @POST("productList/")
+    Observable<BaseHttpResult<List<ShopItemBean>>> getProductlistById(@Field("id") int id);
+
     //下架商品列表
     @POST("undercarriage/")
-    Observable<BaseHttpResult<List<MenuItemResultsBean>>> getUnderCarriageData();
+    Observable<BaseHttpResult<List<ShopItemBean>>> getUnderCarriageData();
+
+    //下架商品列表
+    @FormUrlEncoded
+    @POST("underProduct/")
+    Observable<BaseHttpResult> underProduct(@Field("id") int id);
+
+    //上架商品列表
+    @FormUrlEncoded
+    @POST("upProduct/")
+    Observable<BaseHttpResult> upProduct(@Field("id") int id);
 
     // 店铺管理-营业分析
     @POST("businessAnalysis/")
@@ -135,16 +150,11 @@ public interface HttpService {
 
     //16	在售菜品列表接口
     @GET("onSellMenuItemList/")
-    Observable<BaseHttpResult<List<MenuItemResultsBean>>> getOnSellMenu(@Query("menuCategory") int menuCategory);
+    Observable<BaseHttpResult<List<ShopItemBean>>> getOnSellMenu(@Query("menuCategory") int menuCategory);
 
     @GET("onSellMenuItemList/")
-    Observable<BaseHttpResult<List<MenuItemResultsBean>>> getOnSellMenu();
+    Observable<BaseHttpResult<List<ShopItemBean>>> getOnSellMenu();
 
-    //17	菜品上架/下架接口
-    @FormUrlEncoded
-    @POST("onOrOffItem/")
-    Observable<BaseHttpResult<DataBean>> onOrOffItem(@Field("op_flag") String op_flag,
-        @Field("item_id") String item_id);
 
     //18	菜品搜索接口
     @GET("menuItemList/")

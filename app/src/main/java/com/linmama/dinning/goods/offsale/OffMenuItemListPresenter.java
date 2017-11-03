@@ -1,8 +1,6 @@
 package com.linmama.dinning.goods.offsale;
 
-import com.linmama.dinning.bean.DataBean;
-import com.linmama.dinning.goods.item.MenuItemBean;
-import com.linmama.dinning.goods.item.MenuItemResultsBean;
+import com.linmama.dinning.goods.onsale.ShopItemBean;
 import com.linmama.dinning.goods.model.OnItemModel;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.base.BasePresenter;
@@ -36,7 +34,7 @@ public class OffMenuItemListPresenter extends BasePresenter<OffSaleFragment> imp
             return;
         ((OffMenuItemListModel) getiModelMap().get("OffMenuItemList")).getOffMenu(new OffMenuItemListModel.OffMenuItemListHint() {
             @Override
-            public void successOffMenuItemList(List<MenuItemResultsBean> beans) {
+            public void successOffMenuItemList(List<ShopItemBean> beans) {
                 if (null == getIView())
                     return;
                 getIView().offMenuItemSuccess(beans);
@@ -52,16 +50,16 @@ public class OffMenuItemListPresenter extends BasePresenter<OffSaleFragment> imp
     }
 
     @Override
-    public void onItem(String op_flag, String item_id) {
+    public void onItem(int item_id) {
         if (null == getIView())
             return;
-        ((OnItemModel) getiModelMap().get("OnItem")).onItem(op_flag, item_id,
+        ((OnItemModel) getiModelMap().get("OnItem")).onItem( item_id,
                 new OnItemModel.OnItemHint() {
                     @Override
-                    public void successOnItem(DataBean bean, String itemId) {
+                    public void successOnItem(String msg) {
                         if (null == getIView())
                             return;
-                        getIView().onItemSuccess(bean, itemId);
+                        getIView().onItemSuccess(msg);
                     }
 
                     @Override

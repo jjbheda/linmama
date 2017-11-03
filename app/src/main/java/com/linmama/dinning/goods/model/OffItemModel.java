@@ -13,16 +13,16 @@ import com.linmama.dinning.except.ApiException;
 
 public class OffItemModel extends BaseModel {
 
-    public void offItem(String op_flag, final String item_id, final OffItemHint hint) {
+    public void offItem(int id, final OffItemHint hint) {
         if (null == hint) {
             throw new RuntimeException("OnItemHint cannot be null.");
         }
-        httpService.onOrOffItem(op_flag, item_id)
-                .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
+        httpService.underProduct(id)
+                .compose(new CommonTransformer())
+                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
                     @Override
-                    public void onNext(DataBean bean) {
-                        hint.successOffItem(bean, item_id);
+                    public void onNext(String bean) {
+                        hint.successOffItem(bean);
                     }
 
                     @Override
@@ -34,7 +34,7 @@ public class OffItemModel extends BaseModel {
     }
 
     public interface OffItemHint {
-        void successOffItem(DataBean bean, String itemId);
+        void successOffItem(String bean);
 
         void failOffItem(String failMsg);
     }

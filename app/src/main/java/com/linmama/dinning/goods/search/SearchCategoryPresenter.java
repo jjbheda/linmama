@@ -58,43 +58,43 @@ public class SearchCategoryPresenter extends BasePresenter<SearchCategoryActivit
     public void offItem(String op_flag, String item_id) {
         if (null == getIView())
             return;
-        ((OffItemModel) getiModelMap().get("OffItem")).offItem(op_flag, item_id,
-                new OffItemModel.OffItemHint() {
-                    @Override
-                    public void successOffItem(DataBean bean, String itemId) {
-                        if (null == getIView())
-                            return;
-                        getIView().offItemSuccess(bean, itemId);
-                    }
-
-                    @Override
-                    public void failOffItem(String failMsg) {
-                        if (null == getIView())
-                            return;
-                        getIView().offItemFail(failMsg);
-                    }
-                });
+//        ((OffItemModel) getiModelMap().get("OffItem")).offItem(op_flag, item_id,
+//                new OffItemModel.OffItemHint() {
+//                    @Override
+//                    public void successOffItem(String msg) {
+//                        if (null == getIView())
+//                            return;
+//                        getIView().offItemSuccess(msg);
+//                    }
+//
+//                    @Override
+//                    public void failOffItem(String failMsg) {
+//                        if (null == getIView())
+//                            return;
+//                        getIView().offItemFail(failMsg);
+//                    }
+//                });
     }
 
     @Override
     public void onItem(String op_flag, String item_id) {
         if (null == getIView())
             return;
-        ((OnItemModel) getiModelMap().get("OnItem")).onItem(op_flag, item_id,
-                new OnItemModel.OnItemHint() {
-                    @Override
-                    public void successOnItem(DataBean bean, String itemId) {
-                        if (null == getIView())
-                            return;
-                        getIView().onItemSuccess(bean, itemId);
-                    }
-
-                    @Override
-                    public void failOnItem(String failMsg) {
-                        if (null == getIView())
-                            return;
-                        getIView().onItemFail(failMsg);
-                    }
-                });
+//        ((OnItemModel) getiModelMap().get("OnItem")).onItem(op_flag, item_id,
+//                new OnItemModel.OnItemHint() {
+//                    @Override
+//                    public void successOnItem(DataBean bean, String itemId) {
+//                        if (null == getIView())
+//                            return;
+//                        getIView().onItemSuccess(bean, itemId);
+//                    }
+//
+//                    @Override
+//                    public void failOnItem(String failMsg) {
+//                        if (null == getIView())
+//                            return;
+//                        getIView().onItemFail(failMsg);
+//                    }
+//                });
     }
 }

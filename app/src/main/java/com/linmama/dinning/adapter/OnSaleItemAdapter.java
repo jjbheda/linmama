@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.linmama.dinning.goods.item.MenuItemResultsBean;
+import com.linmama.dinning.goods.onsale.ShopItemBean;
 import com.squareup.picasso.Picasso;
 import com.linmama.dinning.R;
 
@@ -20,12 +20,12 @@ import java.util.List;
  */
 
 public class OnSaleItemAdapter extends BaseAdapter {
-    private List<MenuItemResultsBean> mResults;
+    private List<ShopItemBean> mResults;
     private LayoutInflater mInflater;
     private OnOffItem mOnOffItem;
     private Context mContext;
 
-    public OnSaleItemAdapter(Context context, List<MenuItemResultsBean> results) {
+    public OnSaleItemAdapter(Context context, List<ShopItemBean> results) {
         this.mContext = context;
         this.mResults = results;
         mInflater = LayoutInflater.from(context);
@@ -47,7 +47,7 @@ public class OnSaleItemAdapter extends BaseAdapter {
     }
 
     public void removeItem(int i) {
-        MenuItemResultsBean bean = mResults.remove(i);
+        ShopItemBean bean = mResults.remove(i);
         if (null != bean) {
             notifyDataSetChanged();
         }
@@ -67,13 +67,13 @@ public class OnSaleItemAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        MenuItemResultsBean bean = mResults.get(i);
+        final ShopItemBean bean = mResults.get(i);
         holder.name.setText(bean.getName());
         holder.off.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (null != mOnOffItem) {
-                    mOnOffItem.offItem(i);
+                    mOnOffItem.offItem(bean);
                 }
             }
         });
@@ -97,6 +97,6 @@ public class OnSaleItemAdapter extends BaseAdapter {
     }
 
     public interface OnOffItem {
-        void offItem(int position);
+        void offItem(ShopItemBean bean);
     }
 }

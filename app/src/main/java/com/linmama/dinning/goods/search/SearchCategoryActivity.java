@@ -147,15 +147,15 @@ public class SearchCategoryActivity extends BasePresenterActivity<SearchCategory
     }
 
     @Override
-    public void offItemSuccess(DataBean bean, String itemId) {
+    public void offItemSuccess(String msg) {
         ViewUtils.showSnack(content, "下架成功");
         isOff = true;
         for (int i = 0; i < mAdapter.getCount(); i++) {
             SearchItemResultsBean item = (SearchItemResultsBean)mAdapter.getItem(i);
-            if (itemId.equals(String.valueOf(item.getId()))) {
-                mAdapter.updateItem(i);
-                return;
-            }
+//            if (itemId.equals(String.valueOf(item.getId()))) {
+//                mAdapter.updateItem(i);
+//                return;
+//            }
         }
     }
 

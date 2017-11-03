@@ -1,8 +1,6 @@
 package com.linmama.dinning.goods.onsale;
 
-import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.goods.category.MenuCategoryBean;
-import com.linmama.dinning.goods.item.MenuItemResultsBean;
 import com.linmama.dinning.goods.model.OnSellMenuItemListModel;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.base.BasePresenter;
@@ -62,10 +60,10 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
     public void getOnSellMenu(int menuCategory) {
         if (null == getIView())
             return;
-        ((OnSellMenuItemListModel) getiModelMap().get("OnSellMenuItem")).getOnSellMenu(menuCategory,
+        ((OnSellMenuItemListModel) getiModelMap().get("OnSellMenuItem")).getProductlistById(menuCategory,
                 new OnSellMenuItemListModel.OnSellMenuItemListHint() {
                     @Override
-                    public void successOnSellMenuItemList(List<MenuItemResultsBean> beans) {
+                    public void successOnSellMenuItemList(List<ShopItemBean> beans) {
                         if (null == getIView())
                             return;
                         getIView().sellMenuItemSuccess(beans);
@@ -87,7 +85,7 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
         ((OnAllSellMenuItemListModel) getiModelMap().get("OnAllSellMenuItem")).getOnSellMenu(
                 new OnAllSellMenuItemListModel.OnAllSellMenuItemListHint() {
                     @Override
-                    public void successOnAllSellMenuItemList(List<MenuItemResultsBean> bean) {
+                    public void successOnAllSellMenuItemList(List<ShopItemBean> bean) {
                         if (null == getIView())
                             return;
                         getIView().sellMenuItemSuccess(bean);
@@ -103,16 +101,16 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
     }
 
     @Override
-    public void offItem(String op_flag, final String item_id) {
+    public void offItem(final int id) {
         if (null == getIView())
             return;
-        ((OffItemModel) getiModelMap().get("OffItem")).offItem(op_flag, item_id,
+        ((OffItemModel) getiModelMap().get("OffItem")).offItem(id,
                 new OffItemModel.OffItemHint() {
                     @Override
-                    public void successOffItem(DataBean bean, String itemId) {
+                    public void successOffItem(String bean) {
                         if (null == getIView())
                             return;
-                        getIView().offItemSuccess(bean, item_id);
+                        getIView().offItemSuccess(bean);
                     }
 
                     @Override
