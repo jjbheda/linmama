@@ -1,6 +1,7 @@
 package com.linmama.dinning.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.linmama.dinning.R;
 import com.linmama.dinning.goods.category.MenuCategoryBean;
+import com.linmama.dinning.widget.header.WindmillDrawable;
 
 import java.util.List;
 

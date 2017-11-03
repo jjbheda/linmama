@@ -6,10 +6,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.FrameLayout;
 
-import com.linmama.dinning.data.rank.SalesRankFragment;
 import com.linmama.dinning.data.report.SalesStatisticsFragment;
 import com.linmama.dinning.R;
 import com.linmama.dinning.base.BaseFragment;
+import com.linmama.dinning.shop.statistics.BusinessStatisticsFragment;
 import com.linmama.dinning.utils.LogUtils;
 
 import butterknife.BindView;
@@ -26,7 +26,7 @@ public class DataFragment extends BaseFragment {
     FrameLayout mContent;
     private FragmentManager mManager;
     private SalesStatisticsFragment mStatistics;
-    private SalesRankFragment mRank;
+    private BusinessStatisticsFragment mRank;
 
     @Override
     protected int getLayoutResID() {
@@ -68,7 +68,7 @@ public class DataFragment extends BaseFragment {
                     break;
                 case 1:
                     if (null == mRank) {
-                        mRank = new SalesRankFragment();
+                        mRank = new BusinessStatisticsFragment();
                     }
                     switchContent(mRank);
                     break;

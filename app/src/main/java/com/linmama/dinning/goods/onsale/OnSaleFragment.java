@@ -94,13 +94,13 @@ public class OnSaleFragment extends BasePresenterFragment<MenuCategoryPresenter>
 
     @Override
     public void menuCategorySuccess(List<MenuCategoryBean> beans) {
-        if (null != beans && null != beans) {
+        if (null != beans && beans.size() > 0) {
             List<MenuCategoryBean> results = new ArrayList<>();
             results.addAll(beans);
             mCategorydapter = new MenuCategoryAdapter(mActivity, results);
             mTabWidget.setAdapter(mCategorydapter);
             mTabWidget.setOnItemClickListener(mTabClickListener);
-            mPresenter.getOnAllSellMenu();
+            mPresenter.getOnSellMenu(0);
         }
     }
 

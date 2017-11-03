@@ -33,7 +33,6 @@ public class MenuCategoryContract {
 
     public interface OnSellMenuItemPresenter {
         void getOnSellMenu(int menuCategory);
-        void getOnAllSellMenu();
     }
 
     public interface OffItemPresenter {

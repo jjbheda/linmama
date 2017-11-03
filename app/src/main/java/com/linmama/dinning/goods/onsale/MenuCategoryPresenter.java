@@ -6,7 +6,6 @@ import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.goods.model.MenuCategoryListModel;
 import com.linmama.dinning.goods.model.OffItemModel;
-import com.linmama.dinning.goods.model.OnAllSellMenuItemListModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +20,7 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
     @Override
     public HashMap<String, IModel> getiModelMap() {
         return loadModelMap(new MenuCategoryListModel(), new OnSellMenuItemListModel(),
-                new OffItemModel(), new OnAllSellMenuItemListModel());
+                new OffItemModel(), new MenuCategoryListModel());
     }
 
     @Override
@@ -38,7 +37,7 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
     public void getMenuCategory() {
         if (null == getIView())
             return;
-        ((MenuCategoryListModel) getiModelMap().get("MenuCategory")).getMenuCategoryList(
+        ((MenuCategoryListModel) getiModelMap().get("MenuCategory")).getMenuCategory(
                 new MenuCategoryListModel.MenuCategoryListHint() {
                     @Override
                     public void successMenuCategoryList(List<MenuCategoryBean> bean) {
@@ -71,28 +70,6 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
 
                     @Override
                     public void failOnSellMenuItemList(String str) {
-                        if (null == getIView())
-                            return;
-                        getIView().sellMenuItemFail(str);
-                    }
-                });
-    }
-
-    @Override
-    public void getOnAllSellMenu() {
-        if (null == getIView())
-            return;
-        ((OnAllSellMenuItemListModel) getiModelMap().get("OnAllSellMenuItem")).getOnSellMenu(
-                new OnAllSellMenuItemListModel.OnAllSellMenuItemListHint() {
-                    @Override
-                    public void successOnAllSellMenuItemList(List<ShopItemBean> bean) {
-                        if (null == getIView())
-                            return;
-                        getIView().sellMenuItemSuccess(bean);
-                    }
-
-                    @Override
-                    public void failOnAllSellMenuItemList(String str) {
                         if (null == getIView())
                             return;
                         getIView().sellMenuItemFail(str);

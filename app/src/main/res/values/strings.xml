@@ -7,7 +7,7 @@
     <string name="login_usercode">输入用户编号</string>
 
     <string name="tab_item1">待处理</string>
-    <string name="tab_item2">订单查询</string>
+    <string name="tab_item2">商品管理</string>
     <string name="tab_item3">店铺管理</string>
     <string name="tab_item4">设置</string>
 
@@ -82,9 +82,13 @@
     <string name="data_yesterday">昨日</string>
     <string name="data_month">本月</string>
     <string name="data_lastmonth">上月</string>
+    <string name="data_date">日期</string>
+    <string name="data_turnover">营业额</string>
+    <string name="data_orderenum">订单量</string>
+
     <string name="data_rank">排名</string>
-    <string name="data_category">菜品</string>
-    <string name="data_salenum">销量</string>
+    <string name="data_product">商品</string>
+    <string name="data_order_num">销量</string>
 
     <string name="data_tab_item1">营业统计</string>
     <string name="data_tab_item2">销售排行</string>
@@ -165,6 +169,7 @@
     <string name="sale_parce">营业分析</string>
     <string name="history_business_count">历史营业统计</string>
     <string name="dishes_parse">菜品分析</string>
+    <string name="sale_sort">销售排行</string>
 
     <string name="my_bill">我的账单</string>
     <string name="order_account_detail">账单明细</string>

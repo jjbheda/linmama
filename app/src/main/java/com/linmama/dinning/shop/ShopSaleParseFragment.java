@@ -1,20 +1,25 @@
 package com.linmama.dinning.shop;
 
+import android.os.Bundle;
 import android.widget.TextView;
 
 import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.R;
 import com.linmama.dinning.base.BaseFragment;
+import com.linmama.dinning.base.CommonActivity;
 import com.linmama.dinning.except.ApiException;
-import com.linmama.dinning.shop.bean.ShopBean;
 import com.linmama.dinning.shop.bean.ShopSaleParseBean;
+import com.linmama.dinning.shop.salerank.SalesRankFragment;
+import com.linmama.dinning.shop.statistics.BusinessStatisticsFragment;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
+import com.linmama.dinning.widget.SettingItem;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static com.linmama.dinning.base.BaseModel.httpService;
 
@@ -39,6 +44,10 @@ public class ShopSaleParseFragment extends BaseFragment {
     @BindView(R.id.loss_num)
     TextView mLossNum;
 
+    @BindView(R.id.history_business_analyze)
+    SettingItem mBusinessCount;
+    @BindView(R.id.dishes_parse)
+    SettingItem mDishesParse;
 
     @Override
     protected int getLayoutResID() {
@@ -71,6 +80,15 @@ public class ShopSaleParseFragment extends BaseFragment {
                         dismissDialog();
                     }
                 });
+    }
+
+    @OnClick(R.id.history_business_analyze)
+    public void goTo(){
+        CommonActivity.start(mActivity, BusinessStatisticsFragment.class,new Bundle());
+    }
+    @OnClick(R.id.dishes_parse)
+    public void goToSaleParse(){
+        CommonActivity.start(mActivity, SalesRankFragment.class,new Bundle());
     }
 
     @Override

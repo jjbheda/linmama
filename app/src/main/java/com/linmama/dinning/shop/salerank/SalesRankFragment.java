@@ -1,15 +1,16 @@
-package com.linmama.dinning.data.rank;
+package com.linmama.dinning.shop.salerank;
 
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.linmama.dinning.base.BasePresenterFragment;
+
 import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.SaleRankAdapter;
-import com.linmama.dinning.bean.SaleRankBean;
-import com.linmama.dinning.bean.SaleRankResultsBean;
+import com.linmama.dinning.base.BasePresenterFragment;
+import com.linmama.dinning.shop.bean.SaleRankBean;
 import com.linmama.dinning.utils.TimeUtils;
 
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.linmama.dinning.utils.TimeUtils.getLastMonth;
 
 /**
  * Created by jingkang on 2017/2/25
@@ -25,7 +25,7 @@ import static com.linmama.dinning.utils.TimeUtils.getLastMonth;
  */
 
 public class SalesRankFragment extends BasePresenterFragment<SaleRankPresenter> implements
-        RadioGroup.OnCheckedChangeListener, SaleRankContract.SaleDayRankView, SaleRankContract.SaleMonthRankView {
+        RadioGroup.OnCheckedChangeListener, SaleRankContract.SaleRankView{
     @BindView(R.id.rankToday)
     RadioButton rankToday;
     @BindView(R.id.rankYesterday)
@@ -38,6 +38,9 @@ public class SalesRankFragment extends BasePresenterFragment<SaleRankPresenter> 
     RadioGroup rankGroup;
     @BindView(android.R.id.list)
     ListView list;
+
+    @BindView(R.id.titleGoods)
+    Toolbar toolbar;
 
     @Override
     protected SaleRankPresenter loadPresenter() {
@@ -57,36 +60,42 @@ public class SalesRankFragment extends BasePresenterFragment<SaleRankPresenter> 
     @Override
     protected void initListener() {
         rankGroup.setOnCheckedChangeListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActivity.finish();
+            }
+        });
     }
+
 
     @Override
     protected void initData() {
-        mPresenter.getSaleDayRank(TimeUtils.getCurrentTimeInString(TimeUtils.DATE_FROMAT_Default));
+        mPresenter.getSaleRank(0);
     }
 
     @OnClick(R.id.rankToday)
     public void getTodayRank(View view) {
         showDialog("加载中...");
-        mPresenter.getSaleDayRank(TimeUtils.getCurrentTimeInString(TimeUtils.DATE_FROMAT_Default));
+        mPresenter.getSaleRank(0);
     }
 
     @OnClick(R.id.rankYesterday)
     public void getYesterdayRank(View view) {
         showDialog("加载中...");
-        mPresenter.getSaleDayRank(TimeUtils.getYesterdayTimeInString());
+        mPresenter.getSaleRank(1);
     }
 
     @OnClick(R.id.rankMonth)
     public void getMonthRank(View view) {
         showDialog("加载中...");
-        mPresenter.getSaleMonthRank(TimeUtils.getCurrentYear(), TimeUtils.getCurrentMonth());
+        mPresenter.getSaleRank(2);
     }
 
     @OnClick(R.id.rankLastMonth)
     public void getLastMonthRank(View view) {
         showDialog("加载中...");
-        int[] date = getLastMonth();
-        mPresenter.getSaleMonthRank(date[0], date[1]);
+        mPresenter.getSaleRank(3);
     }
 
     @Override
@@ -95,32 +104,16 @@ public class SalesRankFragment extends BasePresenterFragment<SaleRankPresenter> 
     }
 
     @Override
-    public void saleDayRankSuccess(SaleRankBean bean) {
+    public void saleRankSuccess(List<SaleRankBean>  beans) {
         dismissDialog();
-        if (null != bean && null != bean.getResults()) {
-            List<SaleRankResultsBean> beans = bean.getResults();
+        if (null != beans && beans.size()>0) {
             SaleRankAdapter adapter = new SaleRankAdapter(mActivity, beans);
             list.setAdapter(adapter);
         }
     }
 
     @Override
-    public void saleDayRankFail(String failMsg) {
-        dismissDialog();
-    }
-
-    @Override
-    public void saleMonthRankSuccess(SaleRankBean bean) {
-        dismissDialog();
-        if (null != bean && null != bean.getResults()) {
-            List<SaleRankResultsBean> beans = bean.getResults();
-            SaleRankAdapter adapter = new SaleRankAdapter(mActivity, beans);
-            list.setAdapter(adapter);
-        }
-    }
-
-    @Override
-    public void saleMonthRankFail(String failMsg) {
+    public void saleRankFail(String failMsg) {
         dismissDialog();
     }
 

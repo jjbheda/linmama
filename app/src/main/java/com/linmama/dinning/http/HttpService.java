@@ -5,7 +5,6 @@ import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.LoginBean;
 import com.linmama.dinning.bean.OrderDetailBean;
-import com.linmama.dinning.bean.SaleRankBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.base.BaseHttpResult;
@@ -19,8 +18,10 @@ import com.linmama.dinning.bean.StoreSettingsBean;
 import com.linmama.dinning.bean.UserServerBean;
 import com.linmama.dinning.goods.category.MenuCategoryBean;
 import com.linmama.dinning.goods.onsale.ShopItemBean;
+import com.linmama.dinning.shop.bean.SaleRankBean;
 import com.linmama.dinning.shop.bean.ShopBean;
 import com.linmama.dinning.shop.bean.ShopSaleParseBean;
+import com.linmama.dinning.shop.bean.BusinessParseBean;
 
 import java.util.List;
 
@@ -67,6 +68,10 @@ public interface HttpService {
     @POST("baseData/")
     Observable<BaseHttpResult<ShopBean>> getShopBaseData();
 
+    //菜品分类列表接口
+    @POST("category/")
+    Observable<BaseHttpResult<List<MenuCategoryBean>>> getMenuCategory();
+
     //菜品分类下对应的菜品
     @FormUrlEncoded
     @POST("productList/")
@@ -76,7 +81,7 @@ public interface HttpService {
     @POST("undercarriage/")
     Observable<BaseHttpResult<List<ShopItemBean>>> getUnderCarriageData();
 
-    //下架商品列表
+    //下架商品
     @FormUrlEncoded
     @POST("underProduct/")
     Observable<BaseHttpResult> underProduct(@Field("id") int id);
@@ -89,6 +94,20 @@ public interface HttpService {
     // 店铺管理-营业分析
     @POST("businessAnalysis/")
     Observable<BaseHttpResult<ShopSaleParseBean>> getShopParseBaseData();
+
+    //店铺管理-营业分析-历史营业分析 0当月  1 上月
+    @FormUrlEncoded
+    @POST("historyAnalysis/")
+    Observable<BaseHttpResult<List<BusinessParseBean>>> getHistoryAnalysisData(@Field("type") int type);
+
+    //店铺管理-营业分析-菜品分析  type://0 当日  1 昨日 2本月 3 上月
+    @FormUrlEncoded
+    @POST("productAnalysis/")
+    Observable<BaseHttpResult<List<SaleRankBean>>> getProductAnalysisData(@Field("type") int type);
+
+
+
+
 
     //4	提醒列表接口
     @GET("orderWarnList/")
@@ -144,17 +163,6 @@ public interface HttpService {
     @POST("refusedRefund/")
     Observable<BaseHttpResult<DataBean>> refusedRefund(@Field("refund_id") String refund_id, @Field("reason") String reason);
 
-    //15	菜品分类列表接口
-    @POST("category/")
-    Observable<BaseHttpResult<List<MenuCategoryBean>>> getMenuCategory();
-
-    //16	在售菜品列表接口
-    @GET("onSellMenuItemList/")
-    Observable<BaseHttpResult<List<ShopItemBean>>> getOnSellMenu(@Query("menuCategory") int menuCategory);
-
-    @GET("onSellMenuItemList/")
-    Observable<BaseHttpResult<List<ShopItemBean>>> getOnSellMenu();
-
 
     //18	菜品搜索接口
     @GET("menuItemList/")
@@ -165,6 +173,7 @@ public interface HttpService {
     Observable<BaseHttpResult<SaleReportBean>> turnoverReport();
 
     //20	销售排行接口 ?day=2017-03-08
+
     @GET("salesRanking/")
     Observable<BaseHttpResult<SaleRankBean>> getSalesRank(@Query("day") String day);
 

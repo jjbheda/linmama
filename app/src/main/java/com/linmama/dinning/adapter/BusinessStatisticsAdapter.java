@@ -17,12 +17,12 @@ import com.linmama.dinning.shop.bean.SaleRankBean;
 
 import java.util.List;
 
-public class SaleRankAdapter extends BaseAdapter {
-    private List<SaleRankBean> mResults;
+public class BusinessStatisticsAdapter extends BaseAdapter {
+    private List<BusinessParseBean> mResults;
     private LayoutInflater mInflater;
     private Context mContext;
 
-    public SaleRankAdapter(Context context, List<SaleRankBean> results) {
+    public BusinessStatisticsAdapter(Context context, List<BusinessParseBean> results) {
         this.mContext = context;
         this.mResults = results;
         mInflater = LayoutInflater.from(context);
@@ -48,19 +48,19 @@ public class SaleRankAdapter extends BaseAdapter {
         ViewHolder holder;
         if (view == null) {
             holder = new ViewHolder();
-            view = mInflater.inflate(R.layout.lv_item_rank_sale, viewGroup, false);
-            holder.index = (TextView) view.findViewById(R.id.data_rank);
-            holder.income = (TextView) view.findViewById(R.id.data_product);
-            holder.saleNum = (TextView) view.findViewById(R.id.data_order_num);
+            view = mInflater.inflate(R.layout.lv_item_salerank, viewGroup, false);
+            holder.index = (TextView) view.findViewById(R.id.rank);
+            holder.income = (TextView) view.findViewById(R.id.category);
+            holder.saleNum = (TextView) view.findViewById(R.id.saleNum);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        SaleRankBean bean = mResults.get(i);
+        BusinessParseBean bean = mResults.get(i);
             holder.index.setTextColor(mContext.getResources().getColor(R.color.colorOrderAppoint));
-        holder.index.setText(bean.index+"");
-        holder.income.setText(bean.name);
-        holder.saleNum.setText(bean.count);
+        holder.index.setText(bean.date);
+        holder.income.setText(bean.income);
+        holder.saleNum.setText(bean.total_ords);
         return view;
     }
 

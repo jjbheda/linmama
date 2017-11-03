@@ -4,6 +4,7 @@
     style="@style/BothMatch"
     android:orientation="vertical">
 
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/titleGoods"
         style="@style/ToolBarStyle"
@@ -11,7 +12,7 @@
 
         <TextView
             style="@style/ToolBarTitleStyle"
-            android:text="@string/sale_sort"/>
+            android:text="@string/sale_parce"/>
     </android.support.v7.widget.Toolbar>
 
 
@@ -19,20 +20,12 @@
         android:id="@+id/rankGroup"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
         android:background="@android:color/white"
         android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/rankToday"
-            style="@style/RankTabItem"
-            android:checked="true"
-            android:text="@string/data_today" />
-
-        <RadioButton
-            android:id="@+id/rankYesterday"
-            style="@style/RankTabItem"
-            android:text="@string/data_yesterday" />
 
         <RadioButton
             android:id="@+id/rankMonth"
@@ -60,7 +53,7 @@
             android:background="@drawable/rank_item_bg"
             android:gravity="center"
             android:padding="5dp"
-            android:text="@string/data_rank"
+            android:text="@string/data_date"
             android:textColor="@color/colorLoginEdit"
             android:textSize="14sp" />
 

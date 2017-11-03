@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MenuCategoryListModel extends BaseModel {
 
-    public void getMenuCategoryList(@NonNull final MenuCategoryListHint hint) {
+    public void getMenuCategory(@NonNull final MenuCategoryListHint hint) {
         if (hint == null)
             throw new RuntimeException("MenuCategoryListHint cannot be null!");
 

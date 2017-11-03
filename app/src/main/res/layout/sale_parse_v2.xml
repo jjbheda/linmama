@@ -8,7 +8,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/titleGoods"
         style="@style/ToolBarStyle"
-        app:navigationIcon="@mipmap/icon_close">
+        app:navigationIcon="@mipmap/icon_back">
 
         <TextView
             style="@style/ToolBarTitleStyle"
@@ -131,7 +131,7 @@
     </LinearLayout>
 
     <com.linmama.dinning.widget.SettingItem
-        android:id="@+id/history_business_count"
+        android:id="@+id/history_business_analyze"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
