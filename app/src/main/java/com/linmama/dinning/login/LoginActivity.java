@@ -43,8 +43,6 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
     @BindView(R.id.loginPwd)
     ClearEditText mLoginPwd;
     @BindView(R.id.login)
-    Button mLogin;
-    @BindView(R.id.loginUsercode)
     TextView mLoginUsercode;
 
     @Override
@@ -134,16 +132,6 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
     @Override
     protected void initData() {
 
-    }
-
-    @OnClick(R.id.loginUsercode)
-    public void getUsercode(View view) {
-        new MyAlertDialog(this).builder()
-                .setTitle("请输入用户编号")
-                .setEditHint("用户编号")
-                .setNegativeButton("取消", null)
-                .setConfirmButton("确定", this)
-                .show();
     }
 
     @OnClick(R.id.login)

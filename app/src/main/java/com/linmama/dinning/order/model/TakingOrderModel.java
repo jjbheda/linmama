@@ -25,7 +25,6 @@ public class TakingOrderModel extends BaseModel {
                 .subscribe(new CommonSubscriber<TakingOrderMenuBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(TakingOrderMenuBean bean) {
-
                         hint.successInfo(bean);
                     }
 

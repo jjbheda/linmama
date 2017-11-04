@@ -1,6 +1,9 @@
 package com.linmama.dinning.order.ordersearch;
 
 import com.linmama.dinning.bean.SarchItemBean;
+import com.linmama.dinning.bean.TakingOrderBean;
+
+import java.util.List;
 
 /**
  * Created by jiangjingbo on 2017/11/1.
@@ -9,12 +12,13 @@ import com.linmama.dinning.bean.SarchItemBean;
 public class OrderSearchContract  {
 
     public interface SearchOrderView {
-        String getSearchKeyword();
 
-        void getSearchOrderSuccess(SarchItemBean bean);
+        void getSearchOrderSuccess(List<TakingOrderBean> beans);
 
         void getSearchOrderFail(String failMsg);
     }
 
-
+    public interface SearchOrderPresenter {
+        void getSearchOrderData(int order_type,String search);
+    }
 }

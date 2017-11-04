@@ -1,20 +1,18 @@
 package com.linmama.dinning.order.ordersearch;
 
 import com.linmama.dinning.base.BasePresenter;
+import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.mvp.IModel;
-import com.linmama.dinning.order.model.CompleteOrderModel;
-import com.linmama.dinning.order.model.OKOrderModel;
-import com.linmama.dinning.order.model.OrderDetailModel;
-import com.linmama.dinning.order.model.OrderSearchModel;
-import com.linmama.dinning.order.model.TakingOrderModel;
+import com.linmama.dinning.utils.LogUtils;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by jiangjingbo on 2017/10/30.
  */
 
-public class OrderSearchPresenter extends BasePresenter<OrderSearchActivity>  {
+public class OrderSearchPresenter extends BasePresenter<OrderSearchActivity> implements OrderSearchContract.SearchOrderPresenter{
     @Override
     public HashMap<String, IModel> getiModelMap() {
         return loadModelMap(new OrderSearchModel());
@@ -27,5 +25,26 @@ public class OrderSearchPresenter extends BasePresenter<OrderSearchActivity>  {
         return map;
     }
 
+
+    @Override
+    public void getSearchOrderData(int order_type, String search) {
+        if (null == getIView())
+            return;
+        ((OrderSearchModel) getiModelMap().get("OrderSearchModel")).searchOrder(order_type,search, new OrderSearchModel.SearchOrderHint(){
+
+            @Override
+            public void successSearchOrder(List<TakingOrderBean> beans) {
+                if (null == getIView())
+                    return;
+                getIView().getSearchOrderSuccess(beans);
+            }
+
+            @Override
+            public void failSearchOrder(String failMsg) {
+                getIView().getSearchOrderFail(failMsg);
+
+            }
+        });
+    }
 
 }

@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public class OrderSearchModel extends BaseModel{
-    public void searchItem(int order_type, @NonNull final String keyword, @NonNull final SearchOrderHint hint) {
+    public void searchOrder(int order_type, @NonNull final String keyword, @NonNull final SearchOrderHint hint) {
         if (hint == null)
             throw new RuntimeException("SearchOrderHint cannot be null.");
 
