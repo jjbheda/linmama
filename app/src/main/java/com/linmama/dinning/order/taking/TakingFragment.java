@@ -59,10 +59,14 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     private int currentPage = 1;
     private int last_page = 1;
     private static final int REQUEST_TAKE_ORDER_DETAIL = 0x20;
-
+    TakingOrderPresenter presenter;
     @Override
     protected TakingOrderPresenter loadPresenter() {
-        return new TakingOrderPresenter();
+        presenter = new TakingOrderPresenter();
+        return presenter;
+    }
+    public TakingOrderPresenter getPresenter() {
+        return presenter;
     }
 
     @Override
@@ -103,9 +107,10 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     }
 
     public void refresh() {
-        if (null != mPresenter) {
-            mPtrTaking.autoRefresh(true);
-        }
+//        if (null != mPresenter) {
+//            mPtrTaking.autoRefresh(true);
+//        }
+        mResults.clear();
     }
 
     @Override

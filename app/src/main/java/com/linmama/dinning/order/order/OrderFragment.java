@@ -252,7 +252,25 @@ public class OrderFragment extends BasePresenterFragment implements
                 intent2.putExtras(args2);
                 appCompatActivity.startActivity(intent2);
                 break;
+            case R.id.order_today_title_tv:
+                if (mTakingFragment!=null){
+                    mTakingFragment.refresh();
+                    mTakingFragment.getPresenter().getTakingOrder(0);
+                }
+                break;
+            case R.id.order_tomorrow_title_tv:
+                if (mTakingFragment!=null){
+                    mTakingFragment.refresh();
+                    mTakingFragment.getPresenter().getTakingOrder(1);
+                }
+                break;
 
+            case R.id.order_all_title_tv:
+                if (mTakingFragment!=null){
+                    mTakingFragment.refresh();
+                    mTakingFragment.getPresenter().getTakingOrder(2);
+                }
+                break;
             default:
                 break;
         }

@@ -5,16 +5,13 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
-
 import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.SaleRankAdapter;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.shop.bean.SaleRankBean;
-import com.linmama.dinning.utils.TimeUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -37,7 +34,7 @@ public class SalesRankFragment extends BasePresenterFragment<SaleRankPresenter> 
     @BindView(R.id.rankGroup)
     RadioGroup rankGroup;
     @BindView(android.R.id.list)
-    ListView list;
+    ListView listView;
 
     @BindView(R.id.titleGoods)
     Toolbar toolbar;
@@ -102,13 +99,13 @@ public class SalesRankFragment extends BasePresenterFragment<SaleRankPresenter> 
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
 
     }
-
+    
     @Override
     public void saleRankSuccess(List<SaleRankBean>  beans) {
         dismissDialog();
-        if (null != beans && beans.size()>0) {
+        if (null != beans) {
             SaleRankAdapter adapter = new SaleRankAdapter(mActivity, beans);
-            list.setAdapter(adapter);
+            listView.setAdapter(adapter);
         }
     }
 
