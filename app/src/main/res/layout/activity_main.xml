@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/BothMatch"
     android:orientation="vertical"
-    android:keepScreenOn="true"
-    tools:context="com.linmama.dinning.com.linmama.dinning.home.MainActivity">
+    android:keepScreenOn="true">
 
     <FrameLayout
         android:id="@+id/content"
@@ -27,9 +26,9 @@
             style="@style/HomeTabLay">
 
             <ImageView
-                android:id="@+id/imgTabOrder"
+                android:id="@+id/imgPendingTreat"
                 style="@style/HomeTabImg"
-                android:src="@drawable/tab_order_selector" />
+                android:src="@drawable/tab_pendingtreat_selector" />
 
         </LinearLayout>
 
@@ -39,18 +38,18 @@
             style="@style/HomeTabLay">
 
             <ImageView
-                android:id="@+id/imgTabData"
+                android:id="@+id/imgOrderQuery"
                 style="@style/HomeTabImg"
-                android:src="@drawable/tab_data_selector" />
+                android:src="@drawable/tab_order_query_selector" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layTabGoods"
             style="@style/HomeTabLay">
 
             <ImageView
-                android:id="@+id/imgTabGoods"
+                android:id="@+id/imgShopManager"
                 style="@style/HomeTabImg"
-                android:src="@drawable/tab_manager_selector" />
+                android:src="@drawable/tab_shop_manager_selector" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layTabSettings"

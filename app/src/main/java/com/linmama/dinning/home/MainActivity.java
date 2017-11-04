@@ -46,12 +46,12 @@ public class MainActivity extends BaseActivity {
     LinearLayout layTabData;
     @BindView(R.id.layTabSettings)
     LinearLayout layTabSettings;
-    @BindView(R.id.imgTabOrder)
-    ImageView imgTabOrder;
-    @BindView(R.id.imgTabGoods)
-    ImageView imgTabGoods;
-    @BindView(R.id.imgTabData)
-    ImageView imgTabData;
+    @BindView(R.id.imgPendingTreat)
+    ImageView imgimgPendingTreat;
+    @BindView(R.id.imgShopManager)
+    ImageView imgShopManager;
+    @BindView(R.id.imgOrderQuery)
+    ImageView imgOrderQuery;
     @BindView(R.id.imgTabSettings)
     ImageView imgTabSettings;
 
@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity {
 
         replaceContent(new OrderFragment());
         resetSelected();
-        imgTabOrder.setImageResource(R.mipmap.tab_order_selected);
+        imgimgPendingTreat.setImageResource(R.mipmap.pendingtreat_selected);
         if (BuildConfig.DEBUG) {
             JPushInterface.setDebugMode(true);
         } else {
@@ -181,10 +181,10 @@ public class MainActivity extends BaseActivity {
 
         replaceContent(new OrderFragment());
         resetSelected();
-        imgTabOrder.setImageResource(R.mipmap.tab_order_selected);
+        imgimgPendingTreat.setImageResource(R.mipmap.pendingtreat_selected);
     }
 
-    @OnClick(R.id.layTabGoods)
+    @OnClick(R.id.imgShopManager)
     public void showGoods(View view) {
         if (null == mshops) {
             mshops = new ShopManagerFragment();
@@ -193,10 +193,10 @@ public class MainActivity extends BaseActivity {
 
         replaceContent(new ShopManagerFragment());
         resetSelected();
-        imgTabGoods.setImageResource(R.mipmap.tab_manager_selected);
+        imgShopManager.setImageResource(R.mipmap.shop_manager_selected);
     }
 
-    @OnClick(R.id.layTabData)
+    @OnClick(R.id.imgOrderQuery)
     public void showData(View view) {
         if (null == mData) {
             mData = new DataFragment();
@@ -205,7 +205,7 @@ public class MainActivity extends BaseActivity {
 
         replaceContent(new DataFragment());
         resetSelected();
-        imgTabData.setImageResource(R.mipmap.tab_data_selected);
+        imgOrderQuery.setImageResource(R.mipmap.order_query_selected);
     }
 
     @OnClick(R.id.layTabSettings)
@@ -221,9 +221,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void resetSelected() {
-        imgTabOrder.setImageResource(R.mipmap.tab_order);
-        imgTabData.setImageResource(R.mipmap.tab_data);
-        imgTabGoods.setImageResource(R.mipmap.tab_manager);
+        imgimgPendingTreat.setImageResource(R.mipmap.pendingtreat);
+        imgOrderQuery.setImageResource(R.mipmap.order_query);
+        imgShopManager.setImageResource(R.mipmap.shop_manager);
         imgTabSettings.setImageResource(R.mipmap.tab_setting);
     }
 
