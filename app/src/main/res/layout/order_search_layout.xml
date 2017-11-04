@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/arrow_left_black" />
+            android:src="@mipmap/icon_back" />
 
         <com.linmama.dinning.widget.ClearEditText
             android:id="@+id/etSearch"
