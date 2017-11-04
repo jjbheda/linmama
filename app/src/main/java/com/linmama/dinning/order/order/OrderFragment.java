@@ -254,20 +254,20 @@ public class OrderFragment extends BasePresenterFragment implements
                 break;
             case R.id.order_today_title_tv:
                 if (mTakingFragment!=null){
-                    mTakingFragment.refresh();
+                    mTakingFragment.setRange(0);
                     mTakingFragment.getPresenter().getTakingOrder(0);
                 }
                 break;
             case R.id.order_tomorrow_title_tv:
                 if (mTakingFragment!=null){
-                    mTakingFragment.refresh();
+                    mTakingFragment.setRange(1);
                     mTakingFragment.getPresenter().getTakingOrder(1);
                 }
                 break;
 
             case R.id.order_all_title_tv:
                 if (mTakingFragment!=null){
-                    mTakingFragment.refresh();
+                    mTakingFragment.setRange(2);
                     mTakingFragment.getPresenter().getTakingOrder(2);
                 }
                 break;

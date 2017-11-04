@@ -20,10 +20,10 @@ public class TakingOrderPresenter extends BasePresenter<TakingFragment> implemen
         TakingOrderContract.PrintPresenter, TakingOrderContract.CompleteOrderPresenter {
 
     @Override
-    public void getTakingOrder(int page) {
+    public void getTakingOrder(int range) {
         if (null == getIView())
             return;
-        ((TakingOrderModel) getiModelMap().get("TakingOrder")).getTakingOrder(page, new TakingOrderModel.TakingOrderHint() {
+        ((TakingOrderModel) getiModelMap().get("TakingOrder")).getTakingOrder(range, new TakingOrderModel.TakingOrderHint() {
 
             @Override
             public void successInfo(TakingOrderMenuBean bean) {

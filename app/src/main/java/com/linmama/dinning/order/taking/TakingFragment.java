@@ -80,6 +80,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         final WindmillHeader header = new WindmillHeader(mActivity);
         mPtrTaking.setHeaderView(header);
         mPtrTaking.addPtrUIHandler(header);
+        presenter.getTakingOrder(0);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                 if (null != mPresenter) {
 //                    showDialog("加载中...");
                     currentPage = 1;
-                    mPresenter.getTakingOrder(currentPage);
+                    mPresenter.getTakingOrder(mRange);
                 }
             }
         });
@@ -106,11 +107,15 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         }
     }
 
+    public int mRange;
+    public void setRange(int range) {
+        mRange = range;
+    }
+
     public void refresh() {
-//        if (null != mPresenter) {
-//            mPtrTaking.autoRefresh(true);
-//        }
-        mResults.clear();
+        if (null != mPresenter) {
+            mPtrTaking.autoRefresh(true);
+        }
     }
 
     @Override
@@ -129,10 +134,18 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         }
         last_page = resultBean.last_page;
 
-        if (null != resultBean && null != resultBean) {
+
+        if (null != resultBean ) {
             LogUtils.d("getTakingOrderSuccess", resultBean.toString());
             List<TakingOrderBean> results = resultBean.data;
             mResults.addAll(results);
+            if (currentPage ==1 && results.size() ==0 ) {
+                mPtrTaking.getHeader().setVisibility(View.GONE);
+                if (mAdapter != null){
+                    mAdapter.notifyDataSetChanged();
+                }
+                return;
+            }
             if (null == mAdapter) {
                 mAdapter = new TakingOrderAdapter(mActivity, mResults);
 //            mAdapter.setCancelOrder(this);
@@ -145,6 +158,10 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                 mAdapter.notifyDataSetChanged();
                 if (currentPage > 1) {
                     mLvTakingOrder.getMoreComplete();
+                }
+
+                if (currentPage == last_page) {
+                    mLvTakingOrder.setNoMore();
                 }
             }
         }
@@ -392,6 +409,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     @Override
     public void onGetMore() {
         if (currentPage == last_page){
+            mLvTakingOrder.setNoMore();
             return;
         }
         currentPage++;

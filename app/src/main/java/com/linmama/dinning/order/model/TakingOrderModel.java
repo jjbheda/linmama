@@ -15,12 +15,12 @@ import java.util.List;
 
 public class TakingOrderModel extends BaseModel {
 
-    public void getTakingOrder(int page, @NonNull final TakingOrderHint hint) {
+    public void getTakingOrder(int range, @NonNull final TakingOrderHint hint) {
 
         if (hint == null)
             throw new RuntimeException("TakingOrderHint cannot be null.");
 
-        httpService.getReceivedOrder(page,1,"2")
+        httpService.getReceivedOrder(1,1,range+"")
                 .compose(new CommonTransformer<TakingOrderMenuBean>())
                 .subscribe(new CommonSubscriber<TakingOrderMenuBean>(LmamaApplication.getInstance()) {
                     @Override
