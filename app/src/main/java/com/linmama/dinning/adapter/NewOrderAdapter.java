@@ -67,7 +67,6 @@ public class NewOrderAdapter extends BaseAdapter {
         return i;
     }
 
-    LinearLayout shrintLt;
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder1 holder1 = null;
@@ -96,6 +95,8 @@ public class NewOrderAdapter extends BaseAdapter {
         } else {
                 holder1 = (ViewHolder1) view.getTag();
         }
+        final  LinearLayout shrintLt;
+        final TextView shrint_btn;
         final LResultNewOrderBean bean = (LResultNewOrderBean)getItem(i);
         if (bean == null || holder1 == null){
             return view;
@@ -121,10 +122,8 @@ public class NewOrderAdapter extends BaseAdapter {
         for (OrderOrderMenuBean bean1:bean.order_list){
             View lt_view = layoutInflater.inflate(R.layout.lv_item_goods_single,null);
             TextView tv_name = (TextView) lt_view.findViewById(R.id.goods_name);
-//            TextView tv_num = (TextView) lt_view.findViewById(R.id.goods_number);
             TextView tv_price = (TextView) lt_view.findViewById(R.id.goods_price);
             tv_name.setText(bean1.goods_list.get(0).name);
-//            tv_num.setText("X"+bean1.goods_list.get(0).amount);
             tv_price.setText(bean1.goods_list.get(0).total_price);
             holder1.order_goods_lt.addView(lt_view);
         }
@@ -135,62 +134,63 @@ public class NewOrderAdapter extends BaseAdapter {
             tv_order_takeoff_time.setText("取餐时间:"+bean1.pickup_date+ " "+bean1.pickup_start_time+"-"+bean1.pickup_end_time);
             holder1.order_time_list.addView(lt_view);
         }
-
-            shrintLt = holder1.goods_shrink_lt;
-            holder1.shrint_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (shrintLt.getVisibility() == View.VISIBLE){
-                        shrintLt.setVisibility(View.GONE);
-                    } else {
-                        shrintLt.setVisibility(View.VISIBLE);
-                    }
+        shrint_btn = holder1.shrint_btn;
+        shrintLt = holder1.goods_shrink_lt;
+        shrint_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (shrintLt.getVisibility() == View.VISIBLE){
+                    shrintLt.setVisibility(View.GONE);
+                    shrint_btn.setText("展开");
+                } else {
+                    shrintLt.setVisibility(View.VISIBLE);
+                    shrint_btn.setText("收起");
                 }
-            });
+            }
+        });
 
-            holder1.phone_lt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!bean.user.user_tel.equals(""))
-                        ContectUtils.onCall(mContext,bean.user.user_tel);
-                }
-            });
-            holder1.cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    BaseModel.httpService.cancelOrder(bean.id,0). compose(new CommonTransformer())
-                            .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                                @Override
-                                public void onNext(String bean) {
-                                    Toast.makeText(mContext,bean,Toast.LENGTH_SHORT).show();
-                                }
+        holder1.phone_lt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!bean.user.user_tel.equals(""))
+                    ContectUtils.onCall(mContext,bean.user.user_tel);
+            }
+        });
+        holder1.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            BaseModel.httpService.cancelOrder(bean.id,0). compose(new CommonTransformer())
+                    .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                        @Override
+                        public void onNext(String bean) {
+                            Toast.makeText(mContext,bean,Toast.LENGTH_SHORT).show();
+                        }
 
-                                @Override
-                                public void onError(ApiException e) {
-                                    super.onError(e);
-                                    Toast.makeText(mContext,"取消订单失败",Toast.LENGTH_SHORT).show();
-                                }
-                            });;
-                }
-            });
-            holder1.ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    BaseModel.httpService.commitOrder(bean.id). compose(new CommonTransformer())
-                            .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                                @Override
-                                public void onNext(String bean) {
-                                    Toast.makeText(mContext,bean,Toast.LENGTH_SHORT).show();
-                                }
-
-                                @Override
-                                public void onError(ApiException e) {
-                                    super.onError(e);
-                                    Toast.makeText(mContext,"确定订单失败",Toast.LENGTH_SHORT).show();
-                                }
-                            });;
-                }
-            });
+                        @Override
+                        public void onError(ApiException e) {
+                            super.onError(e);
+                            Toast.makeText(mContext,"取消订单失败",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            }
+        });
+        holder1.ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            BaseModel.httpService.commitOrder(bean.id). compose(new CommonTransformer())
+                    .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                        @Override
+                        public void onNext(String bean) {
+                            Toast.makeText(mContext,bean,Toast.LENGTH_SHORT).show();
+                        }
+                        @Override
+                        public void onError(ApiException e) {
+                            super.onError(e);
+                            Toast.makeText(mContext,"确定订单失败",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            }
+        });
         return view;
     }
 
