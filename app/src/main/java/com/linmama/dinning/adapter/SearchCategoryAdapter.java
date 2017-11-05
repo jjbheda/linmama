@@ -116,7 +116,7 @@ public class SearchCategoryAdapter extends BaseAdapter {
                 }
             });
             Picasso.with(mContext)
-                    .load(String.format(mContext.getResources().getString(R.string.picasso_load_url), bean.getSmall_image()))
+                    .load(bean.getSmall_image())
                     .placeholder(R.mipmap.ic_load)
                     .error(R.mipmap.ic_load)
                     .into(holder1.icon);
@@ -132,7 +132,7 @@ public class SearchCategoryAdapter extends BaseAdapter {
                 }
             });
             Picasso.with(mContext)
-                    .load(String.format(mContext.getResources().getString(R.string.picasso_load_url), bean.getSmall_image()))
+                    .load(bean.getSmall_image())
                     .placeholder(R.mipmap.ic_load)
                     .error(R.mipmap.ic_load)
                     .into(holder2.icon);

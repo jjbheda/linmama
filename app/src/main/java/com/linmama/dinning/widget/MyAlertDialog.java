@@ -35,7 +35,7 @@ public class MyAlertDialog {
 	private boolean showEditText = false;
 	private boolean showLayout = false;
 	private boolean showPosBtn = false;
-	private boolean showNegBtn = false;
+	private boolean showNegBtn = true;
 
 	public MyAlertDialog(Context context) {
 		this.context = context;
@@ -213,6 +213,24 @@ public class MyAlertDialog {
 		return this;
 	}
 
+	public MyAlertDialog setConfirmButton(String text, final OnClickListener listener) {
+		showNegBtn = true;
+		if ("".equals(text)) {
+			btn_neg.setText("是");
+		} else {
+			btn_neg.setText(text);
+		}
+		btn_neg.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (listener != null)
+					listener.onClick(v);
+				dialog.dismiss();
+			}
+		});
+		return this;
+	}
+
 	private void setLayout() {
 		if (!showTitle && !showMsg) {
 			txt_title.setText("提示");
@@ -261,7 +279,7 @@ public class MyAlertDialog {
 			btn_pos.setBackgroundResource(R.drawable.alertdialog_single_selector);
 		}
 
-		if (!showPosBtn && showNegBtn) {
+		if ( showNegBtn) {
 			btn_neg.setVisibility(View.VISIBLE);
 			btn_neg.setBackgroundResource(R.drawable.alertdialog_single_selector);
 		}

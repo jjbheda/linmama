@@ -7,12 +7,18 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseHttpResult;
+import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
+import com.linmama.dinning.except.ApiException;
+import com.linmama.dinning.subscriber.CommonSubscriber;
+import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
@@ -43,9 +49,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 
 public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> implements
         TakingOrderContract.TakingOrderView, TakingOrderContract.ConfirmPayView, TakingOrderContract.PrintView,
-        MyAlertDialog.ICallBack, TakingOrderAdapter.IOKOrder, TakingOrderAdapter.IPosOrder,
-        AdapterView.OnItemClickListener, GetMoreListView.OnGetMoreListener, TakingOrderAdapter.IComplete,
-        TakingOrderContract.CompleteOrderView{
+        MyAlertDialog.ICallBack, TakingOrderAdapter.IPosOrder, TakingOrderAdapter.ICommitOrder, TakingOrderAdapter.ICancelOrder, AdapterView.OnItemClickListener, GetMoreListView.OnGetMoreListener,
+        TakingOrderContract.CompleteOrderView {
     @BindView(R.id.lvNewOrder)
     GetMoreListView mLvTakingOrder;
     @BindView(R.id.ptr_new)
@@ -60,11 +65,13 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     private int last_page = 1;
     private static final int REQUEST_TAKE_ORDER_DETAIL = 0x20;
     TakingOrderPresenter presenter;
+
     @Override
     protected TakingOrderPresenter loadPresenter() {
         presenter = new TakingOrderPresenter();
         return presenter;
     }
+
     public TakingOrderPresenter getPresenter() {
         return presenter;
     }
@@ -91,6 +98,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
                 if (null != mPresenter) {
 //                    showDialog("加载中...");
+                    mResults.clear();
                     currentPage = 1;
                     mPresenter.getTakingOrder(mRange);
                 }
@@ -108,6 +116,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     }
 
     public int mRange;
+
     public void setRange(int range) {
         mRange = range;
     }
@@ -134,13 +143,13 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         }
         last_page = resultBean.last_page;
 
-        if (null != resultBean ) {
+        if (null != resultBean) {
             LogUtils.d("getTakingOrderSuccess", resultBean.toString());
             List<TakingOrderBean> results = resultBean.data;
             mResults.addAll(results);
-            if (currentPage ==1 && results.size() ==0 ) {
+            if (currentPage == 1 && results.size() == 0) {
                 mPtrTaking.getHeader().setVisibility(View.GONE);
-                if (mAdapter != null){
+                if (mAdapter != null) {
                     mAdapter.notifyDataSetChanged();
                 }
                 return;
@@ -148,9 +157,9 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
             if (null == mAdapter) {
                 mAdapter = new TakingOrderAdapter(mActivity, mResults);
 //            mAdapter.setCancelOrder(this);
-                mAdapter.setOkOrder(this);
                 mAdapter.setPosOrder(this);
-                mAdapter.setCompleteOrder(this);
+                mAdapter.setCommitOrder(this);
+                mAdapter.setCancelOrder(this);
                 mLvTakingOrder.setAdapter(mAdapter);
                 mLvTakingOrder.setOnItemClickListener(this);
             } else {
@@ -214,14 +223,32 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     }
 
     @Override
-    public void okOrder(int position) {
-        selectPosition = position;
+    public void onCommitOrder(final TakingOrderBean bean) {
         mAlert = new MyAlertDialog(mActivity).builder()
-                .setTitle("请输入操作密码")
-                .setEditHint("操作密码")
-                .setEditInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                .setNegativeButton("取消", null)
-                .setConfirmButton("确定", TakingFragment.this);
+                .setTitle("接单并打印小票")
+                .setConfirmButton("是", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BaseModel.httpService.commitOrder(bean.id + "").compose(new CommonTransformer())
+                                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                                    @Override
+                                    public void onNext(String bean) {
+                                        Toast.makeText(mActivity, bean, Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onError(ApiException e) {
+                                        super.onError(e);
+                                        Toast.makeText(mActivity, "确定订单失败", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                }).setPositiveButton("否", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
         mAlert.show();
     }
 
@@ -407,7 +434,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 
     @Override
     public void onGetMore() {
-        if (currentPage == last_page){
+        if (currentPage == last_page) {
             mLvTakingOrder.setNoMore();
             return;
         }
@@ -422,25 +449,27 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         mAdapter = null;
     }
 
-    @Override
-    public void completeOrder(int position) {
-        final ResultsBean result = (ResultsBean) mAdapter.getItem(position);
-        if (result.getPay_status().equals("1")) {
-            new MyAlertDialog(mActivity).builder()
-                    .setMsg("顾客未支付，您确定要完成订单吗？")
-                    .setNegativeButton("取消", null)
-                    .setPositiveButton("确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            showDialog("加载中...");
-                            mPresenter.completeOrder(String.valueOf(result.getId()));
-                        }
-                    }).show();
-        } else {
-            showDialog("加载中...");
-            mPresenter.completeOrder(String.valueOf(result.getId()));
-        }
-    }
+/*
+@Override
+public void onCommitOrder(int position) {
+final ResultsBean result = (ResultsBean) mAdapter.getItem(position);
+if (result.getPay_status().equals("1")) {
+new MyAlertDialog(mActivity).builder()
+.setMsg("顾客未支付，您确定要完成订单吗？")
+.setNegativeButton("取消", null)
+.setPositiveButton("确定", new View.OnClickListener() {
+@Override
+public void onClick(View view) {
+showDialog("加载中...");
+mPresenter.completeOrder(String.valueOf(result.getId()));
+}
+}).show();
+} else {
+showDialog("加载中...");
+mPresenter.completeOrder(String.valueOf(result.getId()));
+}
+}
+*/
 
     @Override
     public void completeOrderSuccess(String orderId) {
@@ -462,5 +491,10 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         if (!TextUtils.isEmpty(failMsg)) {
             ViewUtils.showSnack(mPtrTaking, failMsg);
         }
+    }
+
+    @Override
+    public void onCancelOrder(TakingOrderBean bean) {
+
     }
 }

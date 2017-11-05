@@ -83,7 +83,7 @@ public class OffSaleItemAdapter extends BaseAdapter {
             }
         });
         Picasso.with(mContext)
-                .load(String.format(mContext.getResources().getString(R.string.picasso_load_url), bean.getThumbnail()))
+                .load( bean.getThumbnail())
                 .placeholder(R.mipmap.ic_load)
                 .error(R.mipmap.ic_load)
                 .into(holder.icon);
