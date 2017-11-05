@@ -14,6 +14,7 @@ import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.OrderItemsBean;
 import com.linmama.dinning.bean.ResultsBean;
 import com.linmama.dinning.bean.TakingOrderBean;
+import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.bluetooth.PrintDataService;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.LogUtils;
@@ -50,11 +51,12 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
     private ResultsBean mPrintingBean = null;
     private List<TakingOrderBean> mResults;
     private int currentPage = 1;
+    private int last_page = 1;
     private static final int REQUEST_TAKE_ORDER_DETAIL = 0x20;
 
     @Override
     protected TodayOrderPresenter loadPresenter() {
-        return new TodayOrderPresenter();
+        return  new TodayOrderPresenter();
     }
 
     @Override
@@ -77,9 +79,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
             @Override
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
                 if (null != mPresenter) {
-//                    showDialog("加载中...");
-                    currentPage = 1;
-                    mPresenter.getTodayOrder(currentPage);
+                    mPresenter.getTodayOrder(0);
                 }
             }
         });
@@ -106,7 +106,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
     }
 
     @Override
-    public void getTodayOrderSuccess(List<TakingOrderBean> resultBeans) {
+    public void getTodayOrderSuccess(TakingOrderMenuBean resultBean) {
         dismissDialog();
         if (currentPage == 1 && mPtrTaking.isRefreshing()) {
             mPtrTaking.refreshComplete();
@@ -114,15 +114,17 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
         if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
             mResults.clear();
         }
-//        if (TextUtils.isEmpty(takingOrderBean.getNext())) {
-//            mLvTakingOrder.setNoMore();
-//        } else {
-//            mLvTakingOrder.setHasMore();
-//        }
-        if (null != resultBeans && null != resultBeans) {
-            LogUtils.d("getTakingOrderSuccess", resultBeans.toString());
-            List<TakingOrderBean> results = resultBeans;
-            mResults.addAll(results);
+        last_page = resultBean.last_page;
+        if (null != resultBean.data && resultBean.data.size()>0) {
+            LogUtils.d("getTakingOrderSuccess", resultBean.data.toString());
+            mResults.addAll(resultBean.data);
+            if (currentPage ==1 && mResults.size() ==0 ) {
+                mPtrTaking.getHeader().setVisibility(View.GONE);
+                if (mAdapter != null){
+                    mAdapter.notifyDataSetChanged();
+                }
+                return;
+            }
             if (null == mAdapter) {
                 mAdapter = new TakingOrderAdapter(mActivity, mResults);
 //            mAdapter.setCancelOrder(this);
@@ -361,6 +363,10 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
 
     @Override
     public void onGetMore() {
+        if (currentPage == last_page){
+            mLvTakingOrder.setNoMore();
+            return;
+        }
         currentPage++;
         mPresenter.getTodayOrder(currentPage);
     }

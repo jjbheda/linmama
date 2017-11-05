@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,7 +78,7 @@ public class TakingOrderAdapter extends BaseAdapter {
             this.notifyDataSetChanged();
         }
     }
-    LinearLayout shrintLt;
+
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder1 holder1 = null;
@@ -98,19 +99,28 @@ public class TakingOrderAdapter extends BaseAdapter {
             holder1.order_goods_lt = (LinearLayout) view.findViewById(R.id.order_goods_lt);
             holder1.order_time_list = (LinearLayout) view.findViewById(R.id.order_time_list);
             holder1.notes_msg_lt = (LinearLayout) view.findViewById(R.id.notes_msg_lt);
+            holder1.address_icon = (ImageView) view.findViewById(R.id.address_iv);
             view.setTag(holder1);
         } else {
             holder1 = (ViewHolder1) view.getTag();
         }
+        final  LinearLayout shrintLt;
+        final TextView shrint_btn;
         final TakingOrderBean bean = (TakingOrderBean) getItem(i);
         if (bean == null || holder1 == null) {
             return view;
         }
         holder1.tv_name.setText(bean.user.user_name);
-//        holder1.table_num.setText(bean.id);
+        holder1.table_num.setText(bean.order_no+"");
         holder1.order_time.setText(bean.order_datetime_bj);
-//        holder1.tv_order_status.setText(bean.is_ensure_order.equals("0") ? "已接单" : "未接单");
         holder1.parcel_iv.setText(bean.is_for_here.equals("0") ? "自取" : "堂食");
+        if (bean.is_for_here.equals("0")){
+            holder1.table_num.setBackgroundColor(mContext.getResources().getColor(R.color.colorOrderTake));
+            holder1.address_icon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.address_iv));
+        } else {
+            holder1.table_num.setBackgroundColor(mContext.getResources().getColor(R.color.actionsheet_red));
+            holder1.address_icon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.address_logo));
+        }
         holder1.tv_remark.setText(bean.remark);
         holder1.haspay_tv.setText(bean.pay_amount);
         holder1.pay_tv.setText(bean.pay_amount);
@@ -135,20 +145,23 @@ public class TakingOrderAdapter extends BaseAdapter {
             holder1.order_goods_lt.addView(lt_view);
         }
 
-        if (holder1.tv_remark.equals("")) {
+        if (bean.remark.equals("")) {
             holder1.tv_remark.setVisibility(View.GONE);
         } else {
             holder1.tv_remark.setVisibility(View.VISIBLE);
             holder1.tv_remark.setText(bean.remark);
         }
         shrintLt = holder1.goods_shrink_lt;
-        holder1.shrint_btn.setOnClickListener(new View.OnClickListener() {
+        shrint_btn = holder1.shrint_btn;
+        shrint_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (shrintLt.getVisibility() == View.VISIBLE){
                     shrintLt.setVisibility(View.GONE);
+                    shrint_btn.setText("展开");
                 } else {
                     shrintLt.setVisibility(View.VISIBLE);
+                    shrint_btn.setText("收起");
                 }
             }
         });
@@ -208,6 +221,7 @@ public class TakingOrderAdapter extends BaseAdapter {
 
     private static class ViewHolder1 {
         TextView tv_name;
+        ImageView address_icon;
         TextView order_time;
         TextView tv_order_status;
         TextView table_num;

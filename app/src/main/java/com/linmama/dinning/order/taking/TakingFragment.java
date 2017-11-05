@@ -134,7 +134,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         }
         last_page = resultBean.last_page;
 
-
         if (null != resultBean ) {
             LogUtils.d("getTakingOrderSuccess", resultBean.toString());
             List<TakingOrderBean> results = resultBean.data;

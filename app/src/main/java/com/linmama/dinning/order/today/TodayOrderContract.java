@@ -4,6 +4,7 @@ import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.QuitOrderBean;
 import com.linmama.dinning.bean.TakingOrderBean;
+import com.linmama.dinning.bean.TakingOrderMenuBean;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class TodayOrderContract {
     public interface TodayOrderView {
-        void getTodayOrderSuccess(List<TakingOrderBean> list);
+        void getTodayOrderSuccess(TakingOrderMenuBean resultBean);
         void getTodayOrderFail(String failMsg);
     }
     public interface PrintView {

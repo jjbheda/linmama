@@ -3,6 +3,7 @@ package com.linmama.dinning.order.model;
 import android.support.annotation.NonNull;
 
 import com.linmama.dinning.bean.TakingOrderBean;
+import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.LmamaApplication;
@@ -18,28 +19,27 @@ import java.util.List;
 
 public class TodayListModel extends BaseModel {
 
-    public static void getReceivedOrder(int page,@NonNull final TodayOrderHint hint) {
+    public static void getReceivedOrder(int order_type,@NonNull final TodayOrderHint hint) {
         if (null == hint)
             throw new RuntimeException("QuitOrderHint cannot be null");
-//
-//        httpService.getReceivedOrder(page,0,"0")
-//                .compose(new CommonTransformer<List<TakingOrderBean>>())
-//                .subscribe(new CommonSubscriber<List<TakingOrderBean>>(LmamaApplication.getInstance()) {
-//                    @Override
-//                    public void onNext(List<TakingOrderBean> list) {
-//                        hint.successTodayOrder(list);
-//                    }
-//
-//                    @Override
-//                    public void onError(ApiException e) {
-//                        super.onError(e);
-//                        hint.failTodayOrder(e.getMessage());
-//                    }
-//                });
+        httpService.getReceivedOrder(1,0,"2")
+                .compose(new CommonTransformer<TakingOrderMenuBean>())
+                .subscribe(new CommonSubscriber<TakingOrderMenuBean>(LmamaApplication.getInstance()) {
+                    @Override
+                    public void onNext(TakingOrderMenuBean bean) {
+                        hint.successTodayOrder(bean);
+                    }
+
+                    @Override
+                    public void onError(ApiException e) {
+                        super.onError(e);
+                        hint.failTodayOrder(e.getMessage());
+                    }
+                });
     }
 
     public interface TodayOrderHint {
-        void successTodayOrder(List<TakingOrderBean> list);
+        void successTodayOrder(TakingOrderMenuBean resultBean);
 
         void failTodayOrder(String failMsg);
     }

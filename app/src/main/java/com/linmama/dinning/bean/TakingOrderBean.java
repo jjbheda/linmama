@@ -19,4 +19,5 @@ public class TakingOrderBean {
     public String is_for_here = "";// "1"
     public String pay_amount= "";// "0.07"
     public String order_datetime_bj= "";// "2017-10-10 22:49:33"
+    public int order_no= 0;// 序号
 }

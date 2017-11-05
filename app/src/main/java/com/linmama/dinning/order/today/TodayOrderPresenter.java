@@ -3,6 +3,7 @@ package com.linmama.dinning.order.today;
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.TakingOrderBean;
+import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.order.model.OrderDetailModel;
 import com.linmama.dinning.order.model.TakingOrderModel;
@@ -37,15 +38,15 @@ public class TodayOrderPresenter extends BasePresenter<TodayFragment> implements
     }
 
     @Override
-    public void getTodayOrder(int page ) {
+    public void getTodayOrder(int order_type ) {
         if (null == getIView())
             return;
-        TodayListModel.getReceivedOrder(page, new TodayListModel.TodayOrderHint() {
+        TodayListModel.getReceivedOrder(order_type, new TodayListModel.TodayOrderHint() {
                     @Override
-                    public void successTodayOrder(List<TakingOrderBean> list) {
+                    public void successTodayOrder(TakingOrderMenuBean resultBean) {
                         if (null == getIView())
                             return;
-                        getIView().getTodayOrderSuccess(list);
+                        getIView().getTodayOrderSuccess(resultBean);
                     }
 
                     @Override

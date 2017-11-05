@@ -15,6 +15,7 @@ public class LResultNewOrderBean implements Serializable {
     public OrderUser user = new OrderUser();
     public String serial_number = ""; //"No20171010224933576179", //订单号
     public String id = ""; //2, //订单ID
+    public int order_no = 0; //序号
     public int amount = 0; //3, //商品总数
     public String remark = ""; ////备注
     public String is_for_here = ""; //1 堂食 0 自取

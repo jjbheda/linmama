@@ -101,11 +101,11 @@ public class NewOrderAdapter extends BaseAdapter {
             return view;
         }
         holder1.tv_name.setText(bean.user.user_name);
-        holder1.table_num.setText(bean.id);
+        holder1.table_num.setText(bean.order_no+"");
         holder1.order_time.setText(bean.order_datetime_bj);
         holder1.tv_order_status.setText(bean.is_ensure_order.equals("0")?"已接单":"未接单");
         holder1.parcel_iv.setText(bean.is_for_here.equals("0")?"自取":"堂食");
-        if (holder1.tv_remark.equals("")) {
+        if (bean.remark.equals("")) {
             holder1.tv_remark.setVisibility(View.GONE);
         } else {
             holder1.tv_remark.setVisibility(View.VISIBLE);
