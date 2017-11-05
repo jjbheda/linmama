@@ -17,6 +17,7 @@ import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.OrderOrderMenuBean;
 import com.linmama.dinning.bean.OrderPickupTimeBean;
+import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
@@ -28,13 +29,11 @@ import java.util.List;
  * Created by jingkang onOrOff 2017/3/6
  */
 public class NewOrderAdapter extends BaseAdapter {
-    private final static int ITEM_TYPE1 = 0;
-    private final static int ITEM_TYPE2 = 1;
-
     private List<LResultNewOrderBean> mResults;
     private LayoutInflater mInflater;
     private Activity mContext;
-    private ITakeOrder mTakeOrder;
+    private ICommitOrder mCommitOrder;
+    private ICancelOrder mCancelOrder;
 
     public NewOrderAdapter(Activity context, List<LResultNewOrderBean> results) {
         this.mContext = context;
@@ -67,6 +66,12 @@ public class NewOrderAdapter extends BaseAdapter {
         return i;
     }
 
+    public void removeItem(int i) {
+        LResultNewOrderBean rb = mResults.remove(i);
+        if (null != rb) {
+            this.notifyDataSetChanged();
+        }
+    }
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder1 holder1 = null;
@@ -118,18 +123,18 @@ public class NewOrderAdapter extends BaseAdapter {
         holder1.tv_serial_number.setText(bean.serial_number);
         holder1.tv_delivery_address_name.setText(bean.place.place_name);
         holder1.tv_delivery_address.setText(bean.place.place_address);
-        LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        holder1.order_goods_lt.removeAllViews();
         for (OrderOrderMenuBean bean1:bean.order_list){
-            View lt_view = layoutInflater.inflate(R.layout.lv_item_goods_single,null);
+            View lt_view = mInflater.inflate(R.layout.lv_item_goods_single,null);
             TextView tv_name = (TextView) lt_view.findViewById(R.id.goods_name);
             TextView tv_price = (TextView) lt_view.findViewById(R.id.goods_price);
             tv_name.setText(bean1.goods_list.get(0).name);
             tv_price.setText(bean1.goods_list.get(0).total_price);
             holder1.order_goods_lt.addView(lt_view);
         }
-
+        holder1.order_time_list.removeAllViews();
         for (OrderPickupTimeBean bean1:bean.pickup_list) {
-            View lt_view = layoutInflater.inflate(R.layout.lv_item_ordertime_single,null);
+            View lt_view = mInflater.inflate(R.layout.lv_item_ordertime_single,null);
             TextView tv_order_takeoff_time = (TextView) lt_view.findViewById(R.id.order_takeoff_time);
             tv_order_takeoff_time.setText("取餐时间:"+bean1.pickup_date+ " "+bean1.pickup_start_time+"-"+bean1.pickup_end_time);
             holder1.order_time_list.addView(lt_view);
@@ -159,36 +164,17 @@ public class NewOrderAdapter extends BaseAdapter {
         holder1.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            BaseModel.httpService.cancelOrder(bean.id,0). compose(new CommonTransformer())
-                    .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                        @Override
-                        public void onNext(String bean) {
-                            Toast.makeText(mContext,bean,Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onError(ApiException e) {
-                            super.onError(e);
-                            Toast.makeText(mContext,"取消订单失败",Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                if (mCancelOrder!=null){
+                    mCancelOrder.onCancelOrder(bean);
+                }
             }
         });
         holder1.ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            BaseModel.httpService.commitOrder(bean.id). compose(new CommonTransformer())
-                    .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                        @Override
-                        public void onNext(String bean) {
-                            Toast.makeText(mContext,bean,Toast.LENGTH_SHORT).show();
-                        }
-                        @Override
-                        public void onError(ApiException e) {
-                            super.onError(e);
-                            Toast.makeText(mContext,"确定订单失败",Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                if (mCommitOrder!=null){
+                    mCommitOrder.onCommitOrder(bean);
+                }
             }
         });
         return view;
@@ -215,12 +201,20 @@ public class NewOrderAdapter extends BaseAdapter {
         TextView ok;
     }
 
-    public void setTakeOrder(ITakeOrder takeOrder) {
-        this.mTakeOrder = takeOrder;
+    public void setCommitOrder(ICommitOrder commitOrder){
+        mCommitOrder = commitOrder;
     }
 
-    public interface ITakeOrder {
-        void takeOrder(int position);
+    public void setCancelOrder(ICancelOrder cancelOrder){
+        mCancelOrder = cancelOrder;
+    }
+
+    public interface ICommitOrder {
+        void onCommitOrder(LResultNewOrderBean bean);
+    }
+
+    public interface ICancelOrder {
+        void onCancelOrder(LResultNewOrderBean bean);
     }
 
 }

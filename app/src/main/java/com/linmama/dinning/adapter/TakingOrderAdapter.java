@@ -176,19 +176,9 @@ public class TakingOrderAdapter extends BaseAdapter {
         holder1.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BaseModel.httpService.cancelOrder(bean.id+"",1). compose(new CommonTransformer())
-                        .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                            @Override
-                            public void onNext(String bean) {
-                                Toast.makeText(mContext,bean,Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onError(ApiException e) {
-                                super.onError(e);
-                                Toast.makeText(mContext,"取消订单失败",Toast.LENGTH_SHORT).show();
-                            }
-                        });;
+               if (mCancelOrder!=null){
+                   mCancelOrder.onCancelOrder(bean);
+               }
             }
         });
 

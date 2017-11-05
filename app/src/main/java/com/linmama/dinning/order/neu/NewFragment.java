@@ -6,8 +6,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
+import com.linmama.dinning.LmamaApplication;
+import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
+import com.linmama.dinning.bean.DataSynEvent;
 import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.OrderGoodBean;
@@ -15,7 +19,11 @@ import com.linmama.dinning.bean.OrderOrderMenuBean;
 import com.linmama.dinning.bean.OrderPickupTimeBean;
 import com.linmama.dinning.bean.OrderPlace;
 import com.linmama.dinning.bean.OrderUser;
+import com.linmama.dinning.bean.TakingOrderBean;
+import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.order.neu.timepick.TimePickerActivity;
+import com.linmama.dinning.subscriber.CommonSubscriber;
+import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.R;
@@ -31,6 +39,10 @@ import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.header.WindmillHeader;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +57,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * for company xcxid
  */
 public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implements
-        NewOrderContract.NewOrderView, NewOrderContract.ReceiveOrderView,
-        NewOrderAdapter.ITakeOrder,MyAlertDialog.ICallBack, AdapterView.OnItemClickListener,
+        NewOrderContract.NewOrderView, NewOrderContract.ReceiveOrderView
+        ,MyAlertDialog.ICallBack, AdapterView.OnItemClickListener,NewOrderAdapter.ICommitOrder,NewOrderAdapter.ICancelOrder,
         NewOrderContract.PrintView, GetMoreListView.OnGetMoreListener {
     public boolean IsTest = false;
     @BindView(R.id.lvNewOrder)
@@ -86,6 +98,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         final WindmillHeader header = new WindmillHeader(mActivity);
         mPtrNew.setHeaderView(header);
         mPtrNew.addPtrUIHandler(header);
+        EventBus.getDefault().register(this);//订阅
     }
 
     @Override
@@ -235,13 +248,8 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                 model.is_ensure_order = "1"; //1已接单 0未接单
                 model.pay_amount = "0.2"; //"0.07", //支付金额
                 model.order_datetime_bj = "2017-10-10 22:49:33"; //下单日期
-
                 results.add(model);
             }
-
-
-
-
             mResults.addAll(results);
             LogUtils.d("Results", results.size() + "");
 //            if (null != mNewHint) {
@@ -249,9 +257,10 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 //            }
             if (null == mAdapter) {
                 mAdapter = new NewOrderAdapter(mActivity, mResults);
-                mAdapter.setTakeOrder(this);
                 mLvNewOrder.setAdapter(mAdapter);
                 mLvNewOrder.setOnItemClickListener(this);
+                mAdapter.setCommitOrder(this);
+                mAdapter.setCancelOrder(this);
             } else {
                 mAdapter.notifyDataSetChanged();
                 if (currentPage > 1) {
@@ -262,8 +271,6 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
     @Override
     public void onGetMore() {
-//        currentPage++;
-//        mPresenter.getNewOrder(1);
     }
 
     @Override
@@ -274,15 +281,14 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         }
     }
 
-
-    @Override
-    public void takeOrder(int position) {
-        LogUtils.d("confirmOrder", position + "");
-        LResultNewOrderBean rb = mResults.get(position);
-        if (null == rb) {
-            ViewUtils.showSnack(mPtrNew, "订单不存在");
-            return;
-        }
+//    @Override
+//    public void takeOrder(int position) {
+//        LogUtils.d("confirmOrder", position + "");
+//        LResultNewOrderBean rb = mResults.get(position);
+//        if (null == rb) {
+//            ViewUtils.showSnack(mPtrNew, "订单不存在");
+//            return;
+//        }
 //        if (rb.is_in_store()) {
 //            mPrintingBean = rb;
 //            final int orderid = mResults.get(position).id;
@@ -326,10 +332,10 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 //                mAlert.show();
 //            }
 //        } else {
-            Bundle data = new Bundle();
-            ActivityUtils.startActivityForResult(this, TimePickerActivity.class, data, REQUEST_SET_WARN_TIME);
-//        }
-    }
+//            Bundle data = new Bundle();
+//            ActivityUtils.startActivityForResult(this, TimePickerActivity.class, data, REQUEST_SET_WARN_TIME);
+////        }
+//    }
 
     @Override
     public void receiveOrderSuccess(String orderId) {
@@ -511,6 +517,75 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         dismissDialog();
     }
 
+    @Override
+    public void onCommitOrder(final LResultNewOrderBean bean) {
+        mAlert = new MyAlertDialog(mActivity).builder()
+                .setTitle("接单并打印小票")
+                .setConfirmButton("是", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BaseModel.httpService.commitOrder(bean.id + "").compose(new CommonTransformer())
+                                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                                    @Override
+                                    public void onNext(String msg) {
+                                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+                                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+                                            LResultNewOrderBean rb = (LResultNewOrderBean) mAdapter.getItem(i);
+                                            if (rb.id .equals(bean.id)) {
+                                                mAdapter.removeItem(i);
+                                                mAdapter.notifyDataSetChanged();
+                                                EventBus.getDefault().post(new DataSynEvent(true));
+                                                return;
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(ApiException e) {
+                                        super.onError(e);
+                                        Toast.makeText(mActivity, "确定订单失败", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                }).setPositiveButton("否", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+        mAlert.show();
+    }
+
+    @Override
+    public void onCancelOrder(final LResultNewOrderBean bean) {
+        BaseModel.httpService.cancelOrder(bean.id+"",1). compose(new CommonTransformer())
+                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                    @Override
+                    public void onNext(String msg) {
+                        Toast.makeText(mActivity,msg,Toast.LENGTH_SHORT).show();
+                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+                            LResultNewOrderBean rb = (LResultNewOrderBean) mAdapter.getItem(i);
+                            if (rb.id .equals(bean.id)) {
+                                mAdapter.removeItem(i);
+                                mAdapter.notifyDataSetChanged();
+                                EventBus.getDefault().post(new DataSynEvent(true));
+                                return;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiException e) {
+                        super.onError(e);
+                        Toast.makeText(mActivity,"取消订单失败",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onDataSynEvent(DataSynEvent event) {
+    }
+
     public interface INewHint {
         void newHint();
     }
@@ -526,5 +601,6 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         super.onDestroyView();
         currentPage = 1;
         mAdapter = null;
+        EventBus.getDefault().unregister(this);//解除订阅
     }
 }

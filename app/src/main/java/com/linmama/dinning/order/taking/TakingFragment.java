@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
+import com.linmama.dinning.bean.DataSynEvent;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
@@ -32,6 +34,10 @@ import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.header.WindmillHeader;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -88,6 +94,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         mPtrTaking.setHeaderView(header);
         mPtrTaking.addPtrUIHandler(header);
         presenter.getTakingOrder(0);
+        EventBus.getDefault().register(this);//订阅
     }
 
     @Override
@@ -124,6 +131,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     public void refresh() {
         if (null != mPresenter) {
             mPtrTaking.autoRefresh(true);
+            mPresenter.getTakingOrder(mRange);
         }
     }
 
@@ -232,8 +240,16 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                         BaseModel.httpService.commitOrder(bean.id + "").compose(new CommonTransformer())
                                 .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
                                     @Override
-                                    public void onNext(String bean) {
-                                        Toast.makeText(mActivity, bean, Toast.LENGTH_SHORT).show();
+                                    public void onNext(String msg) {
+                                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+                                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+                                            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
+                                            if (rb.id == bean.id) {
+                                                mAdapter.removeItem(i);
+                                                mAdapter.notifyDataSetChanged();
+                                                return;
+                                            }
+                                        }
                                     }
 
                                     @Override
@@ -442,11 +458,22 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         mPresenter.getTakingOrder(currentPage);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onDataSynEvent(DataSynEvent event) {
+        Log.e("TakingFragment", "event---->" + event.isShouldUpdateData());
+        Toast.makeText(mActivity,"TakingFragment 数据刷新",Toast.LENGTH_SHORT).show();
+        if (event.isShouldUpdateData()) {
+            refresh();
+        }
+
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         currentPage = 1;
         mAdapter = null;
+        EventBus.getDefault().unregister(this);//解除订阅
     }
 
 /*
@@ -494,7 +521,27 @@ mPresenter.completeOrder(String.valueOf(result.getId()));
     }
 
     @Override
-    public void onCancelOrder(TakingOrderBean bean) {
+    public void onCancelOrder(final TakingOrderBean bean) {
+        BaseModel.httpService.cancelOrder(bean.id + "", 1).compose(new CommonTransformer())
+                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                    @Override
+                    public void onNext(String msg) {
+                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+                            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
+                            if (rb.id == bean.id) {
+                                mAdapter.removeItem(i);
+                                mAdapter.notifyDataSetChanged();
+                                return;
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onError(ApiException e) {
+                        super.onError(e);
+                        Toast.makeText(mActivity, "取消订单失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
