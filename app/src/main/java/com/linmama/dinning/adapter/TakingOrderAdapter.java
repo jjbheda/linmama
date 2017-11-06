@@ -28,10 +28,12 @@ public class TakingOrderAdapter extends BaseAdapter {
     private Activity mContext;
     private ICompleteOrder mCommitOrder;
     private ICancelOrder mCancelOrder;
+    private int mOrderStyle;
 
-    public TakingOrderAdapter(Activity context, List<TakingOrderBean> results) {
+    public TakingOrderAdapter(Activity context, int orderStyle,List<TakingOrderBean> results) {
         this.mContext = context;
         this.mResults = results;
+        this.mOrderStyle = orderStyle;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -109,7 +111,7 @@ public class TakingOrderAdapter extends BaseAdapter {
         holder1.table_num.setText(bean.order_no+"");
         holder1.order_time.setText(bean.order_datetime_bj);
         holder1.parcel_iv.setText(bean.is_for_here.equals("0") ? "自取" : "堂食");
-        if (bean.is_for_here.equals("0")){
+        if (mOrderStyle == 1){
             holder1.table_num.setBackgroundColor(mContext.getResources().getColor(R.color.colorOrderTake));
             holder1.address_icon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.address_iv));
         } else {

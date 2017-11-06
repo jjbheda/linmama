@@ -101,7 +101,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
             @Override
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
                 if (null != mPresenter) {
-//                    showDialog("加载中...");
                     mResults.clear();
                     currentPage = 1;
                     mPresenter.getTakingOrder(mRange);
@@ -158,7 +157,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                 return;
             }
             if (null == mAdapter) {
-                mAdapter = new TakingOrderAdapter(mActivity, mResults);
+                mAdapter = new TakingOrderAdapter(mActivity,1, mResults);
                 mAdapter.setCommitOrder(this);
                 mAdapter.setCancelOrder(this);
                 mLvTakingOrder.setAdapter(mAdapter);
@@ -460,26 +459,41 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 
     @Override
     public void onCancelOrder(final TakingOrderBean bean) {
-        BaseModel.httpService.cancelOrder(bean.id + "", 1).compose(new CommonTransformer())
-                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(String msg) {
-                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-                            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
-                            if (rb.id == bean.id) {
-                                mAdapter.removeItem(i);
-                                mAdapter.notifyDataSetChanged();
-                                return;
-                            }
-                        }
-                    }
 
+        mAlert = new MyAlertDialog(mActivity).builder()
+                .setTitle("取消订单后款项将原路返回")
+                .setConfirmButton("确定", new View.OnClickListener() {
                     @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        Toast.makeText(mActivity, "取消订单失败", Toast.LENGTH_SHORT).show();
+                    public void onClick(View v) {
+                        BaseModel.httpService.cancelOrder(bean.id + "", 1).compose(new CommonTransformer())
+                                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                                    @Override
+                                    public void onNext(String msg) {
+                                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+                                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+                                            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
+                                            if (rb.id == bean.id) {
+                                                mAdapter.removeItem(i);
+                                                mAdapter.notifyDataSetChanged();
+                                                return;
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(ApiException e) {
+                                        super.onError(e);
+                                        Toast.makeText(mActivity, "取消订单失败", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                }).setPositiveButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
                     }
                 });
+        mAlert.show();
+
     }
 }

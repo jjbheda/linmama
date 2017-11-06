@@ -9,6 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
+            android:singleLine="true"
             android:text="送达时间 05-21 15:25"
             android:textColor="#2BAF2B"
             android:textSize="16sp"

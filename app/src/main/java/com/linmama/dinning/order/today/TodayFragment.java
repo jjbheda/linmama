@@ -38,8 +38,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 
 public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> implements
-        TodayOrderContract.TodayOrderView,TodayOrderContract.PrintView,TakingOrderAdapter.IPosOrder,
-        AdapterView.OnItemClickListener, GetMoreListView.OnGetMoreListener{
+        TodayOrderContract.TodayOrderView,TodayOrderContract.PrintView, GetMoreListView.OnGetMoreListener{
     @BindView(R.id.lvNewOrder)
     GetMoreListView mLvTakingOrder;
     @BindView(R.id.ptr_new)
@@ -126,10 +125,9 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
                 return;
             }
             if (null == mAdapter) {
-                mAdapter = new TakingOrderAdapter(mActivity, mResults);
+                mAdapter = new TakingOrderAdapter(mActivity,0, mResults);
 //            mAdapter.setCancelOrder(this);
                 mLvTakingOrder.setAdapter(mAdapter);
-                mLvTakingOrder.setOnItemClickListener(this);
             } else {
                 mAdapter.notifyDataSetChanged();
                 if (currentPage > 1) {
@@ -180,34 +178,26 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
 //        }
 //    }
 
-
-    @Override
-    public void posOrder(final int position) {
-        mAlert = new MyAlertDialog(mActivity).builder()
-                .setMsg("是否打印小票")
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确定", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (PrintDataService.isConnection()) {
-                            showDialog("请稍后...");
-                            mPrintingBean = (ResultsBean) mAdapter.getItem(position);
-                            mPresenter.getPrintData(mPrintingBean.getId());
-                        } else {
-                            ViewUtils.showSnack(mPtrTaking, "未连接票据打印机");
-                        }
-                    }
-                });
-        mAlert.show();
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        ResultsBean rb = (ResultsBean) mAdapter.getItem(i);
-        Bundle data = new Bundle();
-        data.putParcelable(Constants.ORDER_TAKE_DETAIL, rb);
-//        ActivityUtils.startActivityForResult(this, TakingOrderDetailActivity.class, data, REQUEST_TAKE_ORDER_DETAIL);
-    }
+//
+//    @Override
+//    public void posOrder(final int position) {
+//        mAlert = new MyAlertDialog(mActivity).builder()
+//                .setMsg("是否打印小票")
+//                .setNegativeButton("取消", null)
+//                .setPositiveButton("确定", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        if (PrintDataService.isConnection()) {
+//                            showDialog("请稍后...");
+//                            mPrintingBean = (ResultsBean) mAdapter.getItem(position);
+//                            mPresenter.getPrintData(mPrintingBean.getId());
+//                        } else {
+//                            ViewUtils.showSnack(mPtrTaking, "未连接票据打印机");
+//                        }
+//                    }
+//                });
+//        mAlert.show();
+//    }
 
     @Override
     public void getPrintDataSuccess(OrderDetailBean bean) {
