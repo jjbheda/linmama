@@ -20,4 +20,5 @@ public class TakingOrderBean {
     public String pay_amount= "";// "0.07"
     public String order_datetime_bj= "";// "2017-10-10 22:49:33"
     public int order_no= 0;// 序号
+    public String is_ensure_order="1"; //1已接单 0未接单
 }

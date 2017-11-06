@@ -98,7 +98,6 @@ public class TakingOrderAdapter extends BaseAdapter {
             holder1.tv_delivery_address = (TextView) view.findViewById(R.id.tv_delivery_address);
             holder1.order_goods_lt = (LinearLayout) view.findViewById(R.id.order_goods_lt);
             holder1.order_time_list = (LinearLayout) view.findViewById(R.id.order_time_list);
-            holder1.notes_msg_lt = (LinearLayout) view.findViewById(R.id.notes_msg_lt);
             holder1.address_icon = (ImageView) view.findViewById(R.id.address_iv);
             holder1.goods_shrink_lt = (LinearLayout) view.findViewById(R.id.goods_shrink_lt);
             holder1.phone_lt = (LinearLayout) view.findViewById(R.id.phone_lt);
@@ -125,10 +124,11 @@ public class TakingOrderAdapter extends BaseAdapter {
             holder1.table_num.setBackgroundColor(mContext.getResources().getColor(R.color.actionsheet_red));
             holder1.address_icon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.address_logo));
         }
+        holder1.tv_order_status.setText(bean.is_ensure_order.equals("0")?"未接单":"已接单");
         holder1.tv_remark.setText(bean.remark);
         holder1.haspay_tv.setText(bean.pay_amount);
         holder1.pay_tv.setText(bean.pay_amount);
-        holder1.tv_serial_number.setText(bean.serial_number);
+        holder1.tv_serial_number.setText("单号: "+bean.serial_number);
         holder1.tv_delivery_address_name.setText(bean.place.place_name);
         holder1.tv_delivery_address.setText(bean.place.place_address);
         holder1.shrint_btn = (TextView) view.findViewById(R.id.shrint_tv);
@@ -190,6 +190,9 @@ public class TakingOrderAdapter extends BaseAdapter {
                }
             }
         });
+
+        holder1.ok.setText("已完成");
+        holder1.cancel.setText("取消订单");
         holder1.order_time_list.removeAllViews();
         View lt_view = mInflater.inflate(R.layout.lv_item_ordertime_single,null);
         TextView tv_order_takeoff_time = (TextView) lt_view.findViewById(R.id.order_takeoff_time);

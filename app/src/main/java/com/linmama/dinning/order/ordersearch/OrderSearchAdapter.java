@@ -87,7 +87,6 @@ public class OrderSearchAdapter extends BaseAdapter {
             holder1.tv_delivery_address = (TextView) view.findViewById(R.id.tv_delivery_address);
             holder1.order_goods_lt = (LinearLayout) view.findViewById(R.id.order_goods_lt);
             holder1.order_time_list = (LinearLayout) view.findViewById(R.id.order_time_list);
-            holder1.notes_msg_lt = (LinearLayout) view.findViewById(R.id.notes_msg_lt);
             view.setTag(holder1);
         } else {
             holder1 = (ViewHolder1) view.getTag();

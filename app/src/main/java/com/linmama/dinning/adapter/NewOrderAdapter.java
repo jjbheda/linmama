@@ -109,7 +109,7 @@ public class NewOrderAdapter extends BaseAdapter {
         holder1.tv_name.setText(bean.user.user_name);
         holder1.table_num.setText(bean.order_no+"");
         holder1.order_time.setText(bean.order_datetime_bj);
-        holder1.tv_order_status.setText(bean.is_ensure_order.equals("0")?"已接单":"未接单");
+        holder1.tv_order_status.setText("等待处理");
         holder1.parcel_iv.setText(bean.is_for_here.equals("0")?"自取":"堂食");
         if (bean.remark.equals("")) {
             holder1.tv_remark.setVisibility(View.GONE);
@@ -120,7 +120,7 @@ public class NewOrderAdapter extends BaseAdapter {
 
         holder1.haspay_tv.setText(bean.pay_amount);
         holder1.pay_tv.setText(bean.pay_amount);
-        holder1.tv_serial_number.setText(bean.serial_number);
+        holder1.tv_serial_number.setText("单号： "+bean.serial_number);
         holder1.tv_delivery_address_name.setText(bean.place.place_name);
         holder1.tv_delivery_address.setText(bean.place.place_address);
         holder1.order_goods_lt.removeAllViews();
