@@ -344,12 +344,25 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
+                    android:id="@+id/btnPrint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/icon_cancel_bg"
+                    android:gravity="center"
+                    android:layout_alignBottom="@+id/btnNewCancel2"
+                    android:layout_toLeftOf="@+id/btnNewCancel2"
+                    android:layout_toStartOf="@+id/btnNewCancel2"
+                    android:text="打印小票"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#C2C0C2"
+                    android:textSize="16sp" />
+
+                <TextView
                     android:id="@+id/btnNewCancel2"
+                    android:layout_marginRight="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/btnOrderCommit"
-                    android:layout_marginEnd="29dp"
-                    android:layout_marginRight="29dp"
                     android:layout_toLeftOf="@+id/btnOrderCommit"
                     android:layout_toStartOf="@+id/btnOrderCommit"
                     android:background="@mipmap/icon_cancel_bg"

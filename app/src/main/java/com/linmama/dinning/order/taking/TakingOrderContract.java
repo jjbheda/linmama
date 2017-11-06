@@ -18,16 +18,6 @@ public class TakingOrderContract {
         void getTakingOrderFail(String failMsg);
     }
 
-    public interface ConfirmPayView {
-        void confirmPaySuccess(String orderId);
-        void confirmPayFail(String failMsg);
-    }
-
-//    public interface CancelWarnView {
-//        void cancelWarnSuccess(DataBean bean, String orderId);
-//        void cancelWarnFail(String failMsg);
-//    }
-
     public interface CompleteOrderView {
         void completeOrderSuccess(String orderId);
         void completeOrderFail(String failMsg);

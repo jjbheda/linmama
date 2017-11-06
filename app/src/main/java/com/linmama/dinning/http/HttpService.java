@@ -64,6 +64,11 @@ public interface HttpService {
     @POST("ensureOrder/")
     Observable<BaseHttpResult> commitOrder(@Field("id") String id);
 
+    //完成订单
+    @FormUrlEncoded
+    @POST("finishOrder/")
+    Observable<BaseHttpResult> finishOrder(@Field("id") String id);
+
     //店铺管理
     @POST("baseData/")
     Observable<BaseHttpResult<ShopBean>> getShopBaseData();

@@ -1,25 +1,17 @@
 package com.linmama.dinning.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.R;
-import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.bean.OrderGoodBean;
 import com.linmama.dinning.bean.TakingOrderBean;
-import com.linmama.dinning.except.ApiException;
-import com.linmama.dinning.subscriber.CommonSubscriber;
-import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.utils.ContectUtils;
 
 import java.util.List;
@@ -34,9 +26,7 @@ public class TakingOrderAdapter extends BaseAdapter {
     private List<TakingOrderBean> mResults;
     private LayoutInflater mInflater;
     private Activity mContext;
-    private IPosOrder mPosOrder;
-    //    private ICancelRingOrder mCancelRingOrder;
-    private ICommitOrder mCommitOrder;
+    private ICompleteOrder mCommitOrder;
     private ICancelOrder mCancelOrder;
 
     public TakingOrderAdapter(Activity context, List<TakingOrderBean> results) {
@@ -103,6 +93,8 @@ public class TakingOrderAdapter extends BaseAdapter {
             holder1.phone_lt = (LinearLayout) view.findViewById(R.id.phone_lt);
             holder1.ok = (TextView) view.findViewById(R.id.btnOrderCommit);
             holder1.cancel = (TextView) view.findViewById(R.id.btnNewCancel2);
+            holder1.btnPrint = (TextView) view.findViewById(R.id.btnPrint);
+
             view.setTag(holder1);
         } else {
             holder1 = (ViewHolder1) view.getTag();
@@ -150,6 +142,13 @@ public class TakingOrderAdapter extends BaseAdapter {
             holder1.tv_remark.setVisibility(View.VISIBLE);
             holder1.tv_remark.setText(bean.remark);
         }
+
+        holder1.order_time_list.removeAllViews();
+        View lt_view = mInflater.inflate(R.layout.lv_item_ordertime_single,null);
+        TextView tv_order_takeoff_time = (TextView) lt_view.findViewById(R.id.order_takeoff_time);
+        tv_order_takeoff_time.setText("取餐时间:" + bean.pickup.pickup_date + " " + bean.pickup.pickup_start_time + "-" + bean.pickup.pickup_end_time);
+        holder1.order_time_list.addView(lt_view);
+
         shrintLt = holder1.goods_shrink_lt;
         shrint_btn = holder1.shrint_btn;
         shrint_btn.setOnClickListener(new View.OnClickListener() {
@@ -186,18 +185,14 @@ public class TakingOrderAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                if (mCommitOrder!=null){
-                   mCommitOrder.onCommitOrder(bean);
+                   mCommitOrder.onCompleteOrder(bean);
                }
             }
         });
 
         holder1.ok.setText("已完成");
         holder1.cancel.setText("取消订单");
-        holder1.order_time_list.removeAllViews();
-        View lt_view = mInflater.inflate(R.layout.lv_item_ordertime_single,null);
-        TextView tv_order_takeoff_time = (TextView) lt_view.findViewById(R.id.order_takeoff_time);
-        tv_order_takeoff_time.setText("取餐时间:" + bean.pickup.pickup_date + " " + bean.pickup.pickup_start_time + "-" + bean.pickup.pickup_end_time);
-        holder1.order_time_list.addView(lt_view);
+        holder1.btnPrint.setVisibility(View.VISIBLE);
 
         return view;
     }
@@ -220,20 +215,12 @@ public class TakingOrderAdapter extends BaseAdapter {
         LinearLayout goods_shrink_lt;
         LinearLayout phone_lt;
         TextView tv_serial_number;
-        LinearLayout notes_msg_lt;
         TextView cancel;
         TextView ok;
+        TextView btnPrint;
     }
 
-    public void setPosOrder(IPosOrder posOrder) {
-        this.mPosOrder = posOrder;
-    }
-
-    public interface IPosOrder {
-        void posOrder(int position);
-    }
-
-    public void setCommitOrder(ICommitOrder commitOrder){
+    public void setCommitOrder(ICompleteOrder commitOrder){
         mCommitOrder = commitOrder;
     }
 
@@ -241,8 +228,8 @@ public class TakingOrderAdapter extends BaseAdapter {
         mCancelOrder = cancelOrder;
     }
 
-    public interface ICommitOrder {
-        void onCommitOrder(TakingOrderBean bean);
+    public interface ICompleteOrder {
+        void onCompleteOrder(TakingOrderBean bean);
     }
 
     public interface ICancelOrder {

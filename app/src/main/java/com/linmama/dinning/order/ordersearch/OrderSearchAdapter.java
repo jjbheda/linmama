@@ -87,6 +87,7 @@ public class OrderSearchAdapter extends BaseAdapter {
             holder1.tv_delivery_address = (TextView) view.findViewById(R.id.tv_delivery_address);
             holder1.order_goods_lt = (LinearLayout) view.findViewById(R.id.order_goods_lt);
             holder1.order_time_list = (LinearLayout) view.findViewById(R.id.order_time_list);
+            holder1.btnPrint = (TextView) view.findViewById(R.id.btnPrint);
             view.setTag(holder1);
         } else {
             holder1 = (ViewHolder1) view.getTag();
@@ -96,9 +97,8 @@ public class OrderSearchAdapter extends BaseAdapter {
             return view;
         }
         holder1.tv_name.setText(bean.user.user_name);
-//        holder1.table_num.setText(bean.id);
         holder1.order_time.setText(bean.order_datetime_bj);
-//        holder1.tv_order_status.setText(bean.is_ensure_order.equals("0") ? "已接单" : "未接单");
+        holder1.tv_order_status.setText(bean.is_ensure_order.equals("0") ? "已接单" : "未接单");
         holder1.parcel_iv.setText(bean.is_for_here.equals("0") ? "自取" : "堂食");
         holder1.tv_remark.setText(bean.remark);
         holder1.haspay_tv.setText(bean.pay_amount);
@@ -149,7 +149,7 @@ public class OrderSearchAdapter extends BaseAdapter {
                 ContectUtils.onCall(mContext,bean.user.user_tel);
             }
         });
-
+        holder1.btnPrint.setVisibility(View.VISIBLE);
         holder1.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,9 +212,9 @@ public class OrderSearchAdapter extends BaseAdapter {
         LinearLayout goods_shrink_lt;
         LinearLayout phone_lt;
         TextView tv_serial_number;
-        LinearLayout notes_msg_lt;
         TextView cancel;
         TextView ok;
+        TextView btnPrint;
     }
 
     public void setPosOrder(IPosOrder posOrder) {

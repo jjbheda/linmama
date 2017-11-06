@@ -3,7 +3,6 @@ package com.linmama.dinning.order.taking;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.linmama.dinning.LmamaApplication;
-import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.DataSynEvent;
@@ -29,7 +27,6 @@ import com.linmama.dinning.adapter.TakingOrderAdapter;
 import com.linmama.dinning.bean.OrderItemsBean;
 import com.linmama.dinning.bean.ResultsBean;
 import com.linmama.dinning.bluetooth.PrintDataService;
-import com.linmama.dinning.utils.ActivityUtils;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.widget.MyAlertDialog;
@@ -54,8 +51,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 
 public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> implements
-        TakingOrderContract.TakingOrderView, TakingOrderContract.ConfirmPayView, TakingOrderContract.PrintView,
-        MyAlertDialog.ICallBack, TakingOrderAdapter.IPosOrder, TakingOrderAdapter.ICommitOrder, TakingOrderAdapter.ICancelOrder, AdapterView.OnItemClickListener, GetMoreListView.OnGetMoreListener,
+        TakingOrderContract.TakingOrderView,TakingOrderContract.PrintView,
+        MyAlertDialog.ICallBack,TakingOrderAdapter.ICompleteOrder, TakingOrderAdapter.ICancelOrder,GetMoreListView.OnGetMoreListener,
         TakingOrderContract.CompleteOrderView {
     @BindView(R.id.lvNewOrder)
     GetMoreListView mLvTakingOrder;
@@ -117,8 +114,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     protected void initData() {
         if (null != mPresenter) {
             mPtrTaking.autoRefresh(true);
-//            showDialog("加载中...");
-//            mPresenter.getTakingOrder();
         }
     }
 
@@ -164,12 +159,9 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
             }
             if (null == mAdapter) {
                 mAdapter = new TakingOrderAdapter(mActivity, mResults);
-//            mAdapter.setCancelOrder(this);
-                mAdapter.setPosOrder(this);
                 mAdapter.setCommitOrder(this);
                 mAdapter.setCancelOrder(this);
                 mLvTakingOrder.setAdapter(mAdapter);
-                mLvTakingOrder.setOnItemClickListener(this);
             } else {
                 mAdapter.notifyDataSetChanged();
                 if (currentPage > 1) {
@@ -192,31 +184,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     }
 
     @Override
-    public void confirmPaySuccess(String orderId) {
-        dismissDialog();
-        ViewUtils.showSnack(mPtrTaking, "确认支付");
-        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-            ResultsBean rb = (ResultsBean) mAdapter.getItem(i);
-            if (String.valueOf(rb.getId()).equals(orderId)) {
-                rb.setPay_status("2");
-                mAdapter.notifyDataSetChanged();
-//                mAdapter.removeItem(i);
-//                selectPosition = -1;
-//                mPtrTaking.autoRefresh(true);
-                return;
-            }
-        }
-    }
-
-    @Override
-    public void confirmPayFail(String msg) {
-        dismissDialog();
-        if (!TextUtils.isEmpty(msg)) {
-            ViewUtils.showSnack(mPtrTaking, msg);
-        }
-    }
-
-    @Override
     public void onEditText(String text) {
         mAlert.dismiss();
         mAlert = null;
@@ -231,13 +198,13 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     }
 
     @Override
-    public void onCommitOrder(final TakingOrderBean bean) {
+    public void onCompleteOrder(final TakingOrderBean bean) {
         mAlert = new MyAlertDialog(mActivity).builder()
                 .setTitle("接单并打印小票")
                 .setConfirmButton("是", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        BaseModel.httpService.commitOrder(bean.id + "").compose(new CommonTransformer())
+                        BaseModel.httpService.finishOrder(bean.id + "").compose(new CommonTransformer())
                                 .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
                                     @Override
                                     public void onNext(String msg) {
@@ -268,33 +235,26 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         mAlert.show();
     }
 
-    @Override
-    public void posOrder(final int position) {
-        mAlert = new MyAlertDialog(mActivity).builder()
-                .setMsg("是否打印小票")
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确定", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (PrintDataService.isConnection()) {
-                            showDialog("请稍后...");
-                            mPrintingBean = (ResultsBean) mAdapter.getItem(position);
-                            mPresenter.getPrintData(mPrintingBean.getId());
-                        } else {
-                            ViewUtils.showSnack(mPtrTaking, "未连接票据打印机");
-                        }
-                    }
-                });
-        mAlert.show();
-    }
+//    @Override
+//    public void posOrder(final int position) {
+//        mAlert = new MyAlertDialog(mActivity).builder()
+//                .setMsg("是否打印小票")
+//                .setNegativeButton("取消", null)
+//                .setPositiveButton("确定", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        if (PrintDataService.isConnection()) {
+//                            showDialog("请稍后...");
+//                            mPrintingBean = (ResultsBean) mAdapter.getItem(position);
+//                            mPresenter.getPrintData(mPrintingBean.getId());
+//                        } else {
+//                            ViewUtils.showSnack(mPtrTaking, "未连接票据打印机");
+//                        }
+//                    }
+//                });
+//        mAlert.show();
+//    }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        ResultsBean rb = (ResultsBean) mAdapter.getItem(i);
-        Bundle data = new Bundle();
-        data.putParcelable(Constants.ORDER_TAKE_DETAIL, rb);
-//        ActivityUtils.startActivityForResult(this, TakingOrderDetailActivity.class, data, REQUEST_TAKE_ORDER_DETAIL);
-    }
 
     @Override
     public void getPrintDataSuccess(OrderDetailBean bean) {
@@ -475,28 +435,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         mAdapter = null;
         EventBus.getDefault().unregister(this);//解除订阅
     }
-
-/*
-@Override
-public void onCommitOrder(int position) {
-final ResultsBean result = (ResultsBean) mAdapter.getItem(position);
-if (result.getPay_status().equals("1")) {
-new MyAlertDialog(mActivity).builder()
-.setMsg("顾客未支付，您确定要完成订单吗？")
-.setNegativeButton("取消", null)
-.setPositiveButton("确定", new View.OnClickListener() {
-@Override
-public void onClick(View view) {
-showDialog("加载中...");
-mPresenter.completeOrder(String.valueOf(result.getId()));
-}
-}).show();
-} else {
-showDialog("加载中...");
-mPresenter.completeOrder(String.valueOf(result.getId()));
-}
-}
-*/
 
     @Override
     public void completeOrderSuccess(String orderId) {
