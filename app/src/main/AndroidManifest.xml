@@ -65,7 +65,7 @@
             android:name="com.linmama.dinning.order.neu.timepick.TimePickerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.linmama.dinning.order.ordersearch.OrderSearchActivity"
+            android:name="com.linmama.dinning.order.orderundosearch.OrderUndoSearchActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.linmama.dinning.goods.search.SearchCategoryActivity"

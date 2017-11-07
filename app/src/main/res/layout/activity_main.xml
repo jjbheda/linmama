@@ -23,24 +23,36 @@
 
         <LinearLayout
             android:id="@+id/layTabOrder"
-            style="@style/HomeTabLay">
+            style="@style/HomeTabLay"
+           android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imgPendingTreat"
                 style="@style/HomeTabImg"
                 android:src="@drawable/tab_pendingtreat_selector" />
+            <TextView
+                android:id="@+id/menu_order_btn"
+                style="@style/menu_bottom"
+                android:text="待处理"
+                />
 
         </LinearLayout>
 
-
         <LinearLayout
             android:id="@+id/layTabData"
-            style="@style/HomeTabLay">
+            style="@style/HomeTabLay"
+            android:orientation="vertical"
+            >
 
             <ImageView
                 android:id="@+id/imgOrderQuery"
                 style="@style/HomeTabImg"
                 android:src="@drawable/tab_order_query_selector" />
+            <TextView
+                android:id="@+id/order_query_btn"
+                style="@style/menu_bottom"
+                android:text="订单查询"
+                />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layTabGoods"
@@ -50,6 +62,11 @@
                 android:id="@+id/imgShopManager"
                 style="@style/HomeTabImg"
                 android:src="@drawable/tab_shop_manager_selector" />
+            <TextView
+                android:id="@+id/shop_manager_btn"
+                style="@style/menu_bottom"
+                android:text="店铺管理"
+                />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/layTabSettings"
@@ -59,6 +76,11 @@
                 android:id="@+id/imgTabSettings"
                 style="@style/HomeTabImg"
                 android:src="@drawable/tab_setting_selector" />
+            <TextView
+                android:id="@+id/setting_btn"
+                style="@style/menu_bottom"
+                android:text="设置"
+                />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

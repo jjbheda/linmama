@@ -1,18 +1,15 @@
-package com.linmama.dinning.order.ordersearch;
+package com.linmama.dinning.order.orderundosearch;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.linmama.dinning.R;
-import com.linmama.dinning.adapter.TakingOrderAdapter;
-import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.base.BasePresenterActivity;
-import com.linmama.dinning.bean.SarchItemBean;
 import com.linmama.dinning.bean.TakingOrderBean;
-import com.linmama.dinning.goods.search.SearchCategoryPresenter;
+import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.widget.ClearEditText;
 import com.linmama.dinning.widget.GetMoreListView;
 
@@ -20,16 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by jiangjingbo on 2017/10/29.
  */
 
-public class OrderSearchActivity extends BasePresenterActivity<OrderSearchPresenter>
-        implements OrderSearchContract.SearchOrderView,View.OnClickListener {
+public class OrderUndoSearchActivity extends BasePresenterActivity<OrderUndoSearchPresenter>
+        implements OrderUndoSearchContract.SearchOrderView,View.OnClickListener {
     private int orderType = 0;      //0 当日单   1预约单
-    private OrderSearchAdapter mAdapter;
+    private OrderUndoSearchAdapter mAdapter;
     private List<TakingOrderBean> mResults = new ArrayList<>();
 
     @BindView(R.id.lvSearchOrderLt)
@@ -38,10 +34,10 @@ public class OrderSearchActivity extends BasePresenterActivity<OrderSearchPresen
     @BindView(R.id.etSearch)
     ClearEditText mEtSearch;
 
-    OrderSearchPresenter presenter;
+    OrderUndoSearchPresenter presenter;
     @Override
-    protected OrderSearchPresenter loadPresenter() {
-        presenter = new OrderSearchPresenter();
+    protected OrderUndoSearchPresenter loadPresenter() {
+        presenter = new OrderUndoSearchPresenter();
         return presenter;
     }
 
@@ -70,11 +66,11 @@ public class OrderSearchActivity extends BasePresenterActivity<OrderSearchPresen
     }
 
     @Override
-    public void getSearchOrderSuccess(List<TakingOrderBean> beans) {
+    public void getSearchOrderSuccess(TakingOrderMenuBean bean) {
         mResults.clear();
-        mResults.addAll(beans);
+        mResults.addAll(bean.data);
 
-        mAdapter = new OrderSearchAdapter(OrderSearchActivity.this, mResults);
+        mAdapter = new OrderUndoSearchAdapter(OrderUndoSearchActivity.this, mResults);
         mSearchOrderLt.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
 
@@ -91,6 +87,10 @@ public class OrderSearchActivity extends BasePresenterActivity<OrderSearchPresen
             if (mEtSearch.getText()!=null){
                 presenter.getSearchOrderData(orderType,mEtSearch.getText().toString());
             }
+            InputMethodManager imm = (InputMethodManager) OrderUndoSearchActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            //隐藏软键盘 //
+            imm.hideSoftInputFromWindow(mEtSearch.getWindowToken(), 0);
+
         }
     }
 }

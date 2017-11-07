@@ -56,8 +56,14 @@ public interface HttpService {
     //处理中订单查询    order_type：1预约单 0 当日单  search 搜索条件 订单号、用户名、电话号码  page 默认1
     @FormUrlEncoded
     @POST("receivedQuery/")
-    Observable<BaseHttpResult<List<TakingOrderBean>>> orderQuery(@Query("page") int page, @Field("order_type") int order_type
+    Observable<BaseHttpResult<TakingOrderMenuBean>> orderQuery(@Query("page") int page, @Field("order_type") int order_type
             , @Field("search") String search);
+
+    //已完成订单查询    order_type：1预约单 0 当日单  search 搜索条件 订单号、用户名、电话号码  page 默认1
+    @FormUrlEncoded
+    @POST("finishedOrderList/")
+    Observable<BaseHttpResult<TakingOrderMenuBean>> getFinishedOrderListData
+    (@Query("page") int page, @Field("start") String start, @Field("end") String end);
 
     //确认订单
     @FormUrlEncoded

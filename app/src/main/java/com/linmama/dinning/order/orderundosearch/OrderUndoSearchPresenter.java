@@ -1,9 +1,9 @@
-package com.linmama.dinning.order.ordersearch;
+package com.linmama.dinning.order.orderundosearch;
 
 import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.bean.TakingOrderBean;
+import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.mvp.IModel;
-import com.linmama.dinning.utils.LogUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,10 +12,10 @@ import java.util.List;
  * Created by jiangjingbo on 2017/10/30.
  */
 
-public class OrderSearchPresenter extends BasePresenter<OrderSearchActivity> implements OrderSearchContract.SearchOrderPresenter{
+public class OrderUndoSearchPresenter extends BasePresenter<OrderUndoSearchActivity> implements OrderUndoSearchContract.SearchOrderPresenter{
     @Override
     public HashMap<String, IModel> getiModelMap() {
-        return loadModelMap(new OrderSearchModel());
+        return loadModelMap(new OrderUndoSearchModel());
     }
 
     @Override
@@ -30,13 +30,13 @@ public class OrderSearchPresenter extends BasePresenter<OrderSearchActivity> imp
     public void getSearchOrderData(int order_type, String search) {
         if (null == getIView())
             return;
-        ((OrderSearchModel) getiModelMap().get("OrderSearchModel")).searchOrder(order_type,search, new OrderSearchModel.SearchOrderHint(){
+        ((OrderUndoSearchModel) getiModelMap().get("OrderSearchModel")).searchOrder(order_type,search, new OrderUndoSearchModel.SearchOrderHint(){
 
             @Override
-            public void successSearchOrder(List<TakingOrderBean> beans) {
+            public void successSearchOrder(TakingOrderMenuBean bean) {
                 if (null == getIView())
                     return;
-                getIView().getSearchOrderSuccess(beans);
+                getIView().getSearchOrderSuccess(bean);
             }
 
             @Override

@@ -13,6 +13,6 @@
         </layer-list>
     </item>
 
-    <item android:drawable="@color/trans" />
+    <item android:drawable="@color/commonWhile" />
 
 </selector>

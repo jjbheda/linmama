@@ -1,6 +1,5 @@
 package com.linmama.dinning.order.order;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -26,7 +24,7 @@ import com.linmama.dinning.adapter.OrderAdapter;
 import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.order.neu.NewFragment;
-import com.linmama.dinning.order.ordersearch.OrderSearchActivity;
+import com.linmama.dinning.order.orderundosearch.OrderUndoSearchActivity;
 import com.linmama.dinning.order.taking.TakingFragment;
 import com.linmama.dinning.R;
 import com.linmama.dinning.goods.category.MenuCategoryResultsBean;
@@ -239,14 +237,14 @@ public class OrderFragment extends BasePresenterFragment implements
                 mViewPager.setCurrentItem(2, true);
                 break;
             case R.id.icon_today_search:
-                Intent intent = new Intent(appCompatActivity, OrderSearchActivity.class);
+                Intent intent = new Intent(appCompatActivity, OrderUndoSearchActivity.class);
                 Bundle args = new Bundle();
                 args.putInt("OrderType",0);
                 intent.putExtras(args);
                 appCompatActivity.startActivity(intent);
                 break;
             case R.id.icon_taking_search:
-                Intent intent2 = new Intent(appCompatActivity, OrderSearchActivity.class);
+                Intent intent2 = new Intent(appCompatActivity, OrderUndoSearchActivity.class);
                 Bundle args2 = new Bundle();
                 args2.putInt("OrderType",1);
                 intent2.putExtras(args2);

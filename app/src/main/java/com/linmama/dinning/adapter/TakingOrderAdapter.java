@@ -21,7 +21,6 @@ import java.util.List;
  */
 public class TakingOrderAdapter extends BaseAdapter {
     private final static int ITEM_TYPE1 = 0;
-    private final static int ITEM_TYPE2 = 1;
 
     private List<TakingOrderBean> mResults;
     private LayoutInflater mInflater;

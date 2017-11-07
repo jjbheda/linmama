@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TakingOrderPresenter extends BasePresenter<TakingFragment> implements
-        TakingOrderContract.TakingOrderPresenter, TakingOrderContract.ConfirmPayPresenter,
+        TakingOrderContract.TakingOrderPresenter,
         TakingOrderContract.PrintPresenter, TakingOrderContract.CompleteOrderPresenter {
 
     @Override
@@ -75,28 +75,6 @@ public class TakingOrderPresenter extends BasePresenter<TakingFragment> implemen
 //                    }
 //                });
 //    }
-
-    @Override
-    public void confirmPayment(String orderId, String pwd) {
-        if (null == getIView())
-            return;
-        ((OKOrderModel) getiModelMap().get("ConfirmPay")).okOrder(orderId, pwd,
-                new OKOrderModel.OKHint() {
-                    @Override
-                    public void successOK(String orderId) {
-                        if (null == getIView())
-                            return;
-                        getIView().confirmPaySuccess(orderId);
-                    }
-
-                    @Override
-                    public void failOK(String failMsg) {
-                        if (null == getIView())
-                            return;
-                        getIView().confirmPayFail(failMsg);
-                    }
-                });
-    }
 
     @Override
     public void getPrintData(int orderId) {

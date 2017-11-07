@@ -192,7 +192,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         }
         if (null != rb) {
             showDialog("加载中...");
-            mPresenter.confirmPayment(String.valueOf(rb.getId()), text);
         }
     }
 
@@ -459,7 +458,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 
     @Override
     public void onCancelOrder(final TakingOrderBean bean) {
-
         mAlert = new MyAlertDialog(mActivity).builder()
                 .setTitle("取消订单后款项将原路返回")
                 .setConfirmButton("确定", new View.OnClickListener() {
@@ -494,6 +492,5 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                     }
                 });
         mAlert.show();
-
     }
 }

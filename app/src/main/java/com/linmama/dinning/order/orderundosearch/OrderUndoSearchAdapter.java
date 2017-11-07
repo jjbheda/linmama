@@ -1,4 +1,4 @@
-package com.linmama.dinning.order.ordersearch;
+package com.linmama.dinning.order.orderundosearch;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,17 +25,13 @@ import java.util.List;
 /**
  * Created by jingkang onOrOff 2017/3/6
  */
-public class OrderSearchAdapter extends BaseAdapter {
+public class OrderUndoSearchAdapter extends BaseAdapter {
 
     private List<TakingOrderBean> mResults;
     private LayoutInflater mInflater;
     private Activity mContext;
-    private IPosOrder mPosOrder;
-    //    private ICancelRingOrder mCancelRingOrder;
-    private IOKOrder mOkOrder;
-    private IComplete mCompleteOrder;
 
-    public OrderSearchAdapter(Activity context, List<TakingOrderBean> results) {
+    public OrderUndoSearchAdapter(Activity context, List<TakingOrderBean> results) {
         this.mContext = context;
         this.mResults = results;
         mInflater = LayoutInflater.from(context);
@@ -73,7 +69,7 @@ public class OrderSearchAdapter extends BaseAdapter {
         ViewHolder1 holder1 = null;
         if (view == null) {
             holder1 = new ViewHolder1();
-            view = mInflater.inflate(R.layout.order_common_layout, viewGroup, false);
+            view = mInflater.inflate(R.layout.order_search_common_layout, viewGroup, false);
             holder1.tv_name = (TextView) view.findViewById(R.id.tv_name);
             holder1.order_time = (TextView) view.findViewById(R.id.order_time);
             holder1.table_num = (TextView) view.findViewById(R.id.table_num);
@@ -98,7 +94,7 @@ public class OrderSearchAdapter extends BaseAdapter {
         }
         holder1.tv_name.setText(bean.user.user_name);
         holder1.order_time.setText(bean.order_datetime_bj);
-        holder1.tv_order_status.setText(bean.is_ensure_order.equals("0") ? "已接单" : "未接单");
+        holder1.tv_order_status.setText("未完成");
         holder1.parcel_iv.setText(bean.is_for_here.equals("0") ? "自取" : "堂食");
         holder1.tv_remark.setText(bean.remark);
         holder1.haspay_tv.setText(bean.pay_amount);
@@ -110,11 +106,10 @@ public class OrderSearchAdapter extends BaseAdapter {
         holder1.order_goods_lt = (LinearLayout) view.findViewById(R.id.order_goods_lt);
         holder1.goods_shrink_lt = (LinearLayout) view.findViewById(R.id.goods_shrink_lt);
         holder1.phone_lt = (LinearLayout) view.findViewById(R.id.phone_lt);
-        holder1.ok = (TextView) view.findViewById(R.id.btnOrderCommit);
         holder1.cancel = (TextView) view.findViewById(R.id.btnNewCancel2);
-        LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        holder1.order_goods_lt.removeAllViews();
         for (OrderGoodBean bean1 : bean.goods_list) {
-            View lt_view = layoutInflater.inflate(R.layout.lv_item_goods_single, null);
+            View lt_view = mInflater.inflate(R.layout.lv_item_goods_single, null);
             TextView tv_name = (TextView) lt_view.findViewById(R.id.goods_name);
             TextView tv_num = (TextView) lt_view.findViewById(R.id.goods_number);
             TextView tv_price = (TextView) lt_view.findViewById(R.id.goods_price);
@@ -149,7 +144,6 @@ public class OrderSearchAdapter extends BaseAdapter {
                 ContectUtils.onCall(mContext,bean.user.user_tel);
             }
         });
-        holder1.btnPrint.setVisibility(View.VISIBLE);
         holder1.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,25 +163,9 @@ public class OrderSearchAdapter extends BaseAdapter {
             }
         });
 
-        holder1.ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BaseModel.httpService.commitOrder(bean.id+""). compose(new CommonTransformer())
-                        .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                            @Override
-                            public void onNext(String bean) {
-                                Toast.makeText(mContext,bean,Toast.LENGTH_SHORT).show();
-                            }
 
-                            @Override
-                            public void onError(ApiException e) {
-                                super.onError(e);
-                                Toast.makeText(mContext,"确定订单失败",Toast.LENGTH_SHORT).show();
-                            }
-                        });;
-            }
-        });
-        View lt_view = layoutInflater.inflate(R.layout.lv_item_ordertime_single, null);
+        holder1.order_time_list.removeAllViews();
+        View lt_view = mInflater.inflate(R.layout.lv_item_ordertime_single,null);
         TextView tv_order_takeoff_time = (TextView) lt_view.findViewById(R.id.order_takeoff_time);
         tv_order_takeoff_time.setText("取餐时间:" + bean.pickup.pickup_date + " " + bean.pickup.pickup_start_time + "-" + bean.pickup.pickup_end_time);
         holder1.order_time_list.addView(lt_view);
@@ -213,31 +191,11 @@ public class OrderSearchAdapter extends BaseAdapter {
         LinearLayout phone_lt;
         TextView tv_serial_number;
         TextView cancel;
-        TextView ok;
         TextView btnPrint;
     }
 
-    public void setPosOrder(IPosOrder posOrder) {
-        this.mPosOrder = posOrder;
+    public interface ICancelOrder {
+        void onCancelOrder(TakingOrderBean bean);
     }
 
-    public void setOkOrder(IOKOrder okOrder) {
-        this.mOkOrder = okOrder;
-    }
-
-    public void setCompleteOrder(IComplete completeOrder) {
-        this.mCompleteOrder = completeOrder;
-    }
-
-    public interface IPosOrder {
-        void posOrder(int position);
-    }
-
-    public interface IOKOrder {
-        void okOrder(int position);
-    }
-
-    public interface IComplete {
-        void completeOrder(int position);
-    }
 }

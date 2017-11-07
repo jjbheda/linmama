@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.TakingOrderAdapter;
+import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.OrderItemsBean;
@@ -16,6 +19,9 @@ import com.linmama.dinning.bean.ResultsBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.bluetooth.PrintDataService;
+import com.linmama.dinning.except.ApiException;
+import com.linmama.dinning.subscriber.CommonSubscriber;
+import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.SpUtils;
@@ -27,6 +33,7 @@ import com.linmama.dinning.widget.header.WindmillHeader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -38,7 +45,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 
 public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> implements
-        TodayOrderContract.TodayOrderView,TodayOrderContract.PrintView, GetMoreListView.OnGetMoreListener{
+        TodayOrderContract.TodayOrderView, TodayOrderContract.PrintView, GetMoreListView.OnGetMoreListener, TakingOrderAdapter.ICompleteOrder, TakingOrderAdapter.ICancelOrder {
     @BindView(R.id.lvNewOrder)
     GetMoreListView mLvTakingOrder;
     @BindView(R.id.ptr_new)
@@ -55,7 +62,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
 
     @Override
     protected TodayOrderPresenter loadPresenter() {
-        return  new TodayOrderPresenter();
+        return new TodayOrderPresenter();
     }
 
     @Override
@@ -114,18 +121,18 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
             mResults.clear();
         }
         last_page = resultBean.last_page;
-        if (null != resultBean.data && resultBean.data.size()>0) {
+        if (null != resultBean.data && resultBean.data.size() > 0) {
             LogUtils.d("getTakingOrderSuccess", resultBean.data.toString());
             mResults.addAll(resultBean.data);
-            if (currentPage ==1 && mResults.size() ==0 ) {
+            if (currentPage == 1 && mResults.size() == 0) {
                 mPtrTaking.getHeader().setVisibility(View.GONE);
-                if (mAdapter != null){
+                if (mAdapter != null) {
                     mAdapter.notifyDataSetChanged();
                 }
                 return;
             }
             if (null == mAdapter) {
-                mAdapter = new TakingOrderAdapter(mActivity,0, mResults);
+                mAdapter = new TakingOrderAdapter(mActivity, 0, mResults);
 //            mAdapter.setCancelOrder(this);
                 mLvTakingOrder.setAdapter(mAdapter);
             } else {
@@ -144,60 +151,6 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
             ViewUtils.showSnack(mPtrTaking, failMsg);
         }
     }
-
-//    @Override
-//    public void cancelWarnSuccess(DataBean bean, String orderId) {
-//        dismissDialog();
-//        ViewUtils.showSnack(mPtrTaking, "取消提醒");
-//        AlarmManagerUtils.cancelAlarm(mActivity, AlarmManagerUtils.ALARM_ACTION, Integer.parseInt(orderId));
-//        mPtrTaking.autoRefresh(true);
-//    }
-//
-//    @Override
-//    public void cancelWarnFail(String msg) {
-//        dismissDialog();
-//        if (!TextUtils.isEmpty(msg)) {
-//            ViewUtils.showSnack(mPtrTaking, msg);
-//        }
-//    }
-
-
-//    @Override
-//    public void cancelRingOrder(int position) {
-//        ResultsBean rb = null;
-//        if (null != mAdapter.getItem(position)) {
-//            rb = (ResultsBean) mAdapter.getItem(position);
-//        }
-//        List<OrderWarnsBean> warns = null;
-//        if (rb != null) {
-//            warns = rb.getOrderWarms();
-//        }
-//        if (null != warns && warns.size() > 0) {
-//            showDialog("加载中...");
-//            mPresenter.cancelWarn(String.valueOf(warns.get(0).getId()));
-//        }
-//    }
-
-//
-//    @Override
-//    public void posOrder(final int position) {
-//        mAlert = new MyAlertDialog(mActivity).builder()
-//                .setMsg("是否打印小票")
-//                .setNegativeButton("取消", null)
-//                .setPositiveButton("确定", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        if (PrintDataService.isConnection()) {
-//                            showDialog("请稍后...");
-//                            mPrintingBean = (ResultsBean) mAdapter.getItem(position);
-//                            mPresenter.getPrintData(mPrintingBean.getId());
-//                        } else {
-//                            ViewUtils.showSnack(mPtrTaking, "未连接票据打印机");
-//                        }
-//                    }
-//                });
-//        mAlert.show();
-//    }
 
     @Override
     public void getPrintDataSuccess(OrderDetailBean bean) {
@@ -352,8 +305,84 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
     }
 
     @Override
+    public void onCompleteOrder(final TakingOrderBean bean) {
+        mAlert = new MyAlertDialog(mActivity).builder()
+                .setTitle("接单并打印小票")
+                .setConfirmButton("是", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BaseModel.httpService.finishOrder(bean.id + "").compose(new CommonTransformer())
+                                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                                    @Override
+                                    public void onNext(String msg) {
+                                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+                                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+                                            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
+                                            if (rb.id == bean.id) {
+                                                mAdapter.removeItem(i);
+                                                mAdapter.notifyDataSetChanged();
+                                                return;
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(ApiException e) {
+                                        super.onError(e);
+                                        Toast.makeText(mActivity, "确定订单失败", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                }).setPositiveButton("否", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+        mAlert.show();
+    }
+
+    @Override
+    public void onCancelOrder(final TakingOrderBean bean) {
+        mAlert = new MyAlertDialog(mActivity).builder()
+                .setTitle("取消订单后款项将原路返回")
+                .setConfirmButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BaseModel.httpService.cancelOrder(bean.id + "", 1).compose(new CommonTransformer())
+                                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                                    @Override
+                                    public void onNext(String msg) {
+                                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+                                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+                                            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
+                                            if (rb.id == bean.id) {
+                                                mAdapter.removeItem(i);
+                                                mAdapter.notifyDataSetChanged();
+                                                return;
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(ApiException e) {
+                                        super.onError(e);
+                                        Toast.makeText(mActivity, "取消订单失败", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                }).setPositiveButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+        mAlert.show();
+    }
+
+    @Override
     public void onGetMore() {
-        if (currentPage == last_page){
+        if (currentPage == last_page) {
             mLvTakingOrder.setNoMore();
             return;
         }

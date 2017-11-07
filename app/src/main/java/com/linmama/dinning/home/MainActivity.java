@@ -9,8 +9,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.linmama.dinning.base.BaseActivity;
+import com.linmama.dinning.order.ordercompletesearch.OrderCompleteSearchFragment;
 import com.linmama.dinning.shop.ShopManagerFragment;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.BuildConfig;
@@ -55,10 +57,19 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.imgTabSettings)
     ImageView imgTabSettings;
 
+    @BindView(R.id.menu_order_btn)
+    TextView menu_order_btn;
+    @BindView(R.id.order_query_btn)
+    TextView mOrderQueryTv;
+    @BindView(R.id.shop_manager_btn)
+    TextView mShopManagerTv;
+    @BindView(R.id.setting_btn)
+    TextView mSettingTv;
+
     private FragmentManager mManager;
     private OrderFragment mOrder;
     private ShopManagerFragment mshops;
-    private DataFragment mData;
+    private OrderCompleteSearchFragment mData;
     private SettingFragment mSetting;
     private long exitTime = 0;
 
@@ -152,7 +163,7 @@ public class MainActivity extends BaseActivity {
     private void hideFragments(FragmentTransaction transaction) {
         String tag1 = OrderFragment.class.getName();
         String tag2 = ShopManagerFragment.class.getName();
-        String tag3 = DataFragment.class.getName();
+        String tag3 = OrderCompleteSearchFragment.class.getName();
         String tag4 = SettingFragment.class.getName();
         OrderFragment frag1 = (OrderFragment) mManager.findFragmentByTag(tag1);
         if (null != frag1) {
@@ -162,7 +173,7 @@ public class MainActivity extends BaseActivity {
         if (null != frag2) {
             transaction.hide(frag2);
         }
-        DataFragment frag3 = (DataFragment) mManager.findFragmentByTag(tag3);
+        OrderCompleteSearchFragment frag3 = (OrderCompleteSearchFragment) mManager.findFragmentByTag(tag3);
         if (null != frag3) {
             transaction.hide(frag3);
         }
@@ -182,6 +193,7 @@ public class MainActivity extends BaseActivity {
         replaceContent(new OrderFragment());
         resetSelected();
         imgimgPendingTreat.setImageResource(R.mipmap.pendingtreat_selected);
+        menu_order_btn.setTextColor(getResources().getColor(R.color.colorAccent));
     }
 
     @OnClick(R.id.imgShopManager)
@@ -194,18 +206,20 @@ public class MainActivity extends BaseActivity {
         replaceContent(new ShopManagerFragment());
         resetSelected();
         imgShopManager.setImageResource(R.mipmap.shop_manager_selected);
+        mShopManagerTv.setTextColor(getResources().getColor(R.color.colorAccent));
     }
 
     @OnClick(R.id.imgOrderQuery)
     public void showData(View view) {
         if (null == mData) {
-            mData = new DataFragment();
+            mData = new OrderCompleteSearchFragment();
         }
         switchContent(mData);
 
-        replaceContent(new DataFragment());
+        replaceContent(new OrderCompleteSearchFragment());
         resetSelected();
         imgOrderQuery.setImageResource(R.mipmap.order_query_selected);
+        mOrderQueryTv.setTextColor(getResources().getColor(R.color.colorAccent));
     }
 
     @OnClick(R.id.layTabSettings)
@@ -218,6 +232,7 @@ public class MainActivity extends BaseActivity {
         replaceContent(new SettingFragment());
         resetSelected();
         imgTabSettings.setImageResource(R.mipmap.tab_setting_selected);
+        mSettingTv.setTextColor(getResources().getColor(R.color.colorAccent));
     }
 
     private void resetSelected() {
@@ -225,8 +240,12 @@ public class MainActivity extends BaseActivity {
         imgOrderQuery.setImageResource(R.mipmap.order_query);
         imgShopManager.setImageResource(R.mipmap.shop_manager);
         imgTabSettings.setImageResource(R.mipmap.tab_setting);
-    }
 
+        menu_order_btn.setTextColor(getResources().getColor(R.color.menu_grey));
+        mOrderQueryTv.setTextColor(getResources().getColor(R.color.menu_grey));
+        mShopManagerTv.setTextColor(getResources().getColor(R.color.menu_grey));
+        mSettingTv.setTextColor(getResources().getColor(R.color.menu_grey));
+    }
 
     @Override
     protected void onDestroy() {
@@ -246,7 +265,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void exit() {
-        if ((System.currentTimeMillis() - exitTime) > 2000) {
+        if ((System.currentTimeMillis() - exitTime) > 1000) {
             ViewUtils.showToast(this, "再按一次退出程序");
             exitTime = System.currentTimeMillis();
         } else {
