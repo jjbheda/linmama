@@ -133,7 +133,8 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
             }
             if (null == mAdapter) {
                 mAdapter = new TakingOrderAdapter(mActivity, 0, mResults);
-//            mAdapter.setCancelOrder(this);
+                mAdapter.setCommitOrder(this);
+                mAdapter.setCancelOrder(this);
                 mLvTakingOrder.setAdapter(mAdapter);
             } else {
                 mAdapter.notifyDataSetChanged();

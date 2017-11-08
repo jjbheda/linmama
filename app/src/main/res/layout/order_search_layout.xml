@@ -50,6 +50,8 @@
             android:textColor="#666666"
             android:textSize="16sp" />
     </LinearLayout>
+    <View
+        style="@style/LineViewSingle"/>
     <com.linmama.dinning.widget.GetMoreListView
         android:id="@+id/lvSearchOrderLt"
         style="@style/OrderListStyle" />
