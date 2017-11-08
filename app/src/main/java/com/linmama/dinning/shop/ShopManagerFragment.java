@@ -11,6 +11,7 @@ import com.linmama.dinning.base.BaseFragment;
 import com.linmama.dinning.base.CommonActivity;
 import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.goods.GoodsFragment;
+import com.linmama.dinning.shop.account.AccountFragment;
 import com.linmama.dinning.shop.bean.ShopBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
@@ -59,6 +60,11 @@ public class ShopManagerFragment extends BaseFragment {
     @OnClick(R.id.shop_parse_rt)
     public void turnToShopParse(){
         CommonActivity.start(mActivity,ShopSaleParseFragment.class,new Bundle());
+    }
+
+    @OnClick(R.id.reconciliation_rt)
+    public void turnToReconciliation(){
+        CommonActivity.start(mActivity,AccountFragment.class,new Bundle());
     }
 
     @Override

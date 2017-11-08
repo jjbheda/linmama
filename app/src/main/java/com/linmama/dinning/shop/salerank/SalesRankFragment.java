@@ -6,11 +6,9 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.linmama.dinning.R;
-import com.linmama.dinning.adapter.SaleRankAdapter;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.shop.bean.SaleRankBean;
 
-import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;

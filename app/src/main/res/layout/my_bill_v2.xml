@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout style="@style/MatchWrap"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    style="@style/BothMatch"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    android:background="#F4F2F3">
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    style="@style/MatchWrap"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/titleGoods"
@@ -14,187 +14,59 @@
 
         <TextView
             style="@style/ToolBarTitleStyle"
-            android:text="@string/my_bill"/>
+            android:text="@string/my_bill" />
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal"
+        android:background="#e4e4e4"
         android:gravity="center_vertical"
-        android:background="#e4e4e4">
+        android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            >
-        <TextView
-            android:id="@+id/textView5"
-            android:paddingLeft="15dp"
-            style="@style/TextViewMybill"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:drawableRight="@mipmap/takeout_instore_unfold"
-            android:drawablePadding="10dp"
-            android:gravity="left|center_vertical"
-            android:text="近七日账单"/>
+            android:layout_weight="1">
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/textView5"
+                style="@style/TextViewMybill"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/takeout_instore_unfold"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="15dp"
+                android:text="近七日账单" />
+
+        </LinearLayout>
 
         <TextView
             style="@style/TextViewMybill"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical|right"
+            android:drawablePadding="10dp"
             android:drawableRight="@mipmap/icon_right_arrow"
-            android:drawablePadding="10dp"
+            android:gravity="center_vertical|right"
             android:paddingRight="10dp"
-            android:text="历史账单"/>
+            android:text="历史账单" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        >
+    <View style="@style/SepShopManagerLineStyle" />
+</LinearLayout>
+<in.srain.cube.views.ptr.PtrClassicFrameLayout
+    android:id="@+id/account_ft"
+    style="@style/BothMatch"
+    android:background="#F4F2F3"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
 
-        <TextView
-            style="@style/TextViewMybill"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="left|center_vertical"
-            android:text="05/18日账单"/>
+    <com.linmama.dinning.widget.GetMoreListView
+        android:id="@+id/account_lv"
+        style="@style/OrderListStyle" />
 
-        <TextView
-            style="@style/TextViewMybill"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="+1791.00"/>
-
-        <TextView
-            style="@style/TextViewMybill"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:text="已汇入"/>
-
-    </LinearLayout>
-    <View
-        style="@style/SepShopManagerLineStyle"
-        />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        >
-
-        <TextView
-            style="@style/TextViewMybill"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="left|center_vertical"
-            android:text="05/18日账单"/>
-
-        <TextView
-            style="@style/TextViewMybill"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="+1791.00"/>
-
-        <TextView
-            android:id="@+id/textView2"
-            style="@style/TextViewMybill"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:text="已汇入"/>
-
-    </LinearLayout>
-    <View
-        style="@style/SepShopManagerLineStyle"
-        />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        >
-
-        <TextView
-            style="@style/TextViewMybill"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="left|center_vertical"
-            android:text="05/18日账单"/>
-
-        <TextView
-            style="@style/TextViewMybill"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="+1791.00"/>
-
-        <TextView
-            style="@style/TextViewMybill"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:text="已汇入"/>
-
-    </LinearLayout>
-    <View
-        style="@style/SepShopManagerLineStyle"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        >
-
-        <TextView
-            style="@style/TextViewMybill"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="left|center_vertical"
-            android:text="05/18日账单"/>
-
-        <TextView
-            style="@style/TextViewMybill"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="+1791.00"/>
-
-        <TextView
-            style="@style/TextViewMybill"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical|right"
-            android:text="已汇入"/>
-
-    </LinearLayout>
-    <View
-        style="@style/SepShopManagerLineStyle"
-        />
-
+</in.srain.cube.views.ptr.PtrClassicFrameLayout>
 </LinearLayout>

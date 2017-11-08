@@ -1,11 +1,11 @@
 package com.linmama.dinning.http;
 
+import com.linmama.dinning.bean.AccountBeanItem;
 import com.linmama.dinning.bean.AppVersionBean;
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.LoginBean;
 import com.linmama.dinning.bean.OrderDetailBean;
-import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.bean.CompleteOrderBean;
@@ -116,6 +116,10 @@ public interface HttpService {
     @POST("productAnalysis/")
     Observable<BaseHttpResult<List<SaleRankBean>>> getProductAnalysisData(@Field("type") int type);
 
+    //我的账单--历史账单
+    @FormUrlEncoded
+    @POST("historyBillQuery/")
+    Observable<BaseHttpResult<List<AccountBeanItem>>> getHistoryBillQueryData(@Query("page") int page, @Field("type") int type);
 
 
 

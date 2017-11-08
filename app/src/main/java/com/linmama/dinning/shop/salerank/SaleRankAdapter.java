@@ -1,4 +1,4 @@
-package com.linmama.dinning.adapter;
+package com.linmama.dinning.shop.salerank;
 
 /**
  * Created by jingkang onOrOff 2017/3/16

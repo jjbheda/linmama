@@ -8,7 +8,6 @@ import android.widget.RadioGroup;
 
 import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.BusinessStatisticsAdapter;
-import com.linmama.dinning.adapter.SaleRankAdapter;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.shop.bean.BusinessParseBean;
 
