@@ -15,14 +15,11 @@ import android.widget.TextView;
 
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.AppVersionBean;
-import com.linmama.dinning.bean.DataBean;
+import com.linmama.dinning.bean.ShopBaseInfoBean;
 import com.linmama.dinning.bean.StoreSettingsBean;
 import com.linmama.dinning.bluetooth.CheckBTActivity;
 import com.linmama.dinning.login.LoginActivity;
-import com.linmama.dinning.setting.advice.AdviceActivity;
-import com.linmama.dinning.setting.complete.CompleteOrderListActivity;
-import com.linmama.dinning.setting.operate.ModifyOperatePwdActivity;
-import com.linmama.dinning.setting.shopstatus.StoreStatusContract;
+import com.linmama.dinning.setting.shopstatus.StoreInfoContract;
 import com.linmama.dinning.setting.shopstatus.StoreStatusPresenter;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.ActivityUtils;
@@ -35,9 +32,7 @@ import com.linmama.dinning.utils.asynctask.ProgressCallable;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.SettingItem;
 import com.linmama.dinning.R;
-import com.linmama.dinning.base.MapActivity;
 import com.linmama.dinning.bluetooth.PrintDataService;
-import com.linmama.dinning.setting.login.ModifyLoginPwdActivity;
 import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.utils.asynctask.AsyncTaskUtils;
 import com.linmama.dinning.utils.asynctask.Callback;
@@ -58,8 +53,7 @@ import static com.linmama.dinning.utils.SpUtils.get;
  */
 
 public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter> implements
-        StoreStatusContract.StoreStatusModifyView, StoreStatusContract.StoreStatusView,
-        EasyPermissions.PermissionCallbacks, StoreStatusContract.CheckAppVersionView {
+        StoreInfoContract.StoreInfoView,StoreInfoContract.StoreStatusModifyView{
     @BindView(R.id.content)
     LinearLayout llContent;
     @BindView(R.id.tvName)
@@ -137,7 +131,7 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
 
     @Override
     protected void initData() {
-        mPresenter.getStoreStatus();
+        mPresenter.getStoreInfo();
     }
 
     @OnClick(R.id.btnOpen)
@@ -202,22 +196,6 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
         }
     }
 
-    @AfterPermissionGranted(REQUEST_PERMISSION_CALL)
-    private void callServiceTask() {
-        if (EasyPermissions.hasPermissions(mActivity, Manifest.permission.CALL_PHONE)) {
-            callService();
-        } else {
-            EasyPermissions.requestPermissions(this, "小不点商户想使用您的拨打电话功能以接通客服电话", REQUEST_PERMISSION_CALL, Manifest.permission.CALL_PHONE);
-        }
-    }
-
-    private void callService() {
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        Uri data = Uri.parse("tel:4000506390");
-        intent.setData(data);
-        startActivity(intent);
-    }
-
     @OnClick(R.id.tvLogout)
     public void logOut(View view) {
         new MyAlertDialog(mActivity).builder()
@@ -240,7 +218,7 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     }
 
     @Override
-    public void getStoreStatusModifySuccess(String bean) {
+    public void setStoreStatusModifySuccess(String bean) {
         dismissDialog();
         if (isClosed) {
             openStatus.setText(R.string.set_open_status);
@@ -258,7 +236,7 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     }
 
     @Override
-    public void getStoreStatusModifyFail(String failMsg) {
+    public void setStoreStatusModifyFail(String failMsg) {
         dismissDialog();
         if (!TextUtils.isEmpty(failMsg)) {
             ViewUtils.showSnack(llContent, failMsg);
@@ -266,9 +244,17 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     }
 
     @Override
-    public void getStoreStatusSuccess(StoreSettingsBean bean) {
+    public void getStoreInfoFail(String failMsg) {
         dismissDialog();
-        isClosed = bean.is_closed();
+        if (!TextUtils.isEmpty(failMsg)) {
+            ViewUtils.showSnack(llContent, failMsg);
+        }
+    }
+
+    @Override
+    public void getStoreInfoSuccess(ShopBaseInfoBean bean) {
+        dismissDialog();
+        isClosed = bean.is_open.equals("0");
         if (isClosed) {
             openStatus.setText(R.string.set_close_status);
             btnOpen.setText(R.string.set_open);
@@ -283,31 +269,9 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     }
 
     @Override
-    public void getStoreStatusFail(String failMsg) {
-        dismissDialog();
-        if (!TextUtils.isEmpty(failMsg)) {
-            ViewUtils.showSnack(llContent, failMsg);
-        }
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-        if (requestCode == REQUEST_PERMISSION_CALL) {
-            callService();
-        }
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            new AppSettingsDialog.Builder(this).build().show();
-        }
     }
 
     @Override
@@ -361,41 +325,6 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
         }
         if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
 
-        }
-    }
-
-    @Override
-    public void getAppVersionSuccess(final AppVersionBean bean) {
-        dismissDialog();
-        if (null != bean) {
-            int version_code = bean.getVersion_code();
-            int versionCode = AppUtils.getVersionCode(mActivity);
-            if (version_code > versionCode) {
-                new MyAlertDialog(mActivity).builder()
-                        .setTitle("已有新版本 " + bean.getVersion_no())
-                        .setMsg(bean.getContent() + "\n" + bean.getUpdate_date())
-                        .setNegativeButton("取消", null)
-                        .setPositiveButton("确认", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Uri uri = Uri.parse("http://work.xcxid.com" + bean.getApk());
-                                Intent intent = new Intent();
-                                intent.setAction(Intent.ACTION_VIEW);
-                                intent.setData(uri);
-                                startActivity(intent);
-                            }
-                        }).show();
-            } else {
-                ViewUtils.showSnack(llContent, "已经是最新版本");
-            }
-        }
-    }
-
-    @Override
-    public void getAppVersionFail(String failMsg) {
-        dismissDialog();
-        if (!TextUtils.isEmpty(failMsg)) {
-            ViewUtils.showSnack(llContent, failMsg);
         }
     }
 }

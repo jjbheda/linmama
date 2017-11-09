@@ -8,3 +8,4 @@
 /captures
 .externalNativeBuild
 libWheel/build
+libWheel/build/outputs

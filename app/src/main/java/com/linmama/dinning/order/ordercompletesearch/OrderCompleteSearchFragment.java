@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.linmama.dinning.R;
 import com.linmama.dinning.base.BasePresenterFragment;
@@ -56,7 +57,7 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderComp
 
     @Override
     public void getSearchOrderFail(String failMsg) {
-
+        Toast.makeText(mActivity,failMsg,Toast.LENGTH_SHORT).show();
     }
     OrderCompleteSearchPresenter presenter;
     @Override

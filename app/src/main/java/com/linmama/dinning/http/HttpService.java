@@ -6,6 +6,7 @@ import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.LoginBean;
 import com.linmama.dinning.bean.OrderDetailBean;
+import com.linmama.dinning.bean.ShopBaseInfoBean;
 import com.linmama.dinning.bean.ShopSearchBean;
 import com.linmama.dinning.bean.SingleAccountBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
@@ -139,25 +140,15 @@ public interface HttpService {
     @POST("billDetailList")
     Observable<BaseHttpResult<SingleAccountBean>> getBillDetailListData(@Query("page") int page, @Field("date") String date, @Field("type") int type);
 
-    //获取店铺打烊状态
-    @GET("storeSettings/")
-    Observable<BaseHttpResult<StoreSettingsBean>> getStoreSettings();
-
+    //shopStatus设置-基本状态信息
+    @POST("shopStatus/")
+    Observable<BaseHttpResult<ShopBaseInfoBean>> getStoreInfo();
 
     //营业/打烊开关接口
     //op_flag为操作标记，0关闭 1 开启
     @FormUrlEncoded
     @POST("setOpenStatus/")
     Observable<BaseHttpResult> openOrClose(@Field("status") int status);
-
-
-
-    //自动接单接口
-    //status:当前APP状态 0关闭 1 开启
-    @FormUrlEncoded
-    @POST("autoEnsureOrder/")
-    Observable<BaseHttpResult> openOrCloseOrder(@Field("status") int status);
-
 
 
 
