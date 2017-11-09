@@ -144,9 +144,9 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     public void openStore(View view) {
         showDialog("加载中...");
         if (isClosed) {
-            mPresenter.modifyStoreStatus("1");
+            mPresenter.modifyStoreStatus(0);
         } else {
-            mPresenter.modifyStoreStatus("2");
+            mPresenter.modifyStoreStatus(1);
         }
     }
 
@@ -240,7 +240,7 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     }
 
     @Override
-    public void getStoreStatusModifySuccess(DataBean bean) {
+    public void getStoreStatusModifySuccess(String bean) {
         dismissDialog();
         if (isClosed) {
             openStatus.setText(R.string.set_open_status);

@@ -31,13 +31,13 @@ public class StoreStatusPresenter extends BasePresenter<SettingFragment> impleme
     }
 
     @Override
-    public void modifyStoreStatus(String opFlag) {
+    public void modifyStoreStatus(int opFlag) {
         if (null == getIView())
             return;
         ((StoreStatusModifyModel) getiModelMap().get("StoreStatusModify")).openOrClose(opFlag,
                 new StoreStatusModifyModel.StoreStatusModifyHint() {
                     @Override
-                    public void successStoreStatusModify(DataBean bean) {
+                    public void successStoreStatusModify(String bean) {
                         if (null == getIView())
                             return;
                         getIView().getStoreStatusModifySuccess(bean);

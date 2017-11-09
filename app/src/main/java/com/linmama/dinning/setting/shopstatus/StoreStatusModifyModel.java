@@ -15,15 +15,15 @@ import com.linmama.dinning.except.ApiException;
 
 public class StoreStatusModifyModel extends BaseModel {
 
-    public void openOrClose(@NonNull final String opFlag, @NonNull final StoreStatusModifyHint hint) {
+    public void openOrClose(@NonNull final int opFlag, @NonNull final StoreStatusModifyHint hint) {
         if (hint == null)
             throw new RuntimeException("StoreStatusModifyHint cannot be null.");
 
         httpService.openOrClose(opFlag)
-                .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
+                .compose(new CommonTransformer())
+                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
                     @Override
-                    public void onNext(DataBean bean) {
+                    public void onNext(String bean) {
                         hint.successStoreStatusModify(bean);
                     }
 
@@ -36,7 +36,7 @@ public class StoreStatusModifyModel extends BaseModel {
     }
 
     public interface StoreStatusModifyHint {
-        void successStoreStatusModify(DataBean bean);
+        void successStoreStatusModify(String bean);
 
         void failStoreStatusModify(String failMsg);
     }

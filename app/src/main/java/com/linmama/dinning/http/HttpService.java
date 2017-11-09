@@ -139,6 +139,25 @@ public interface HttpService {
     @POST("billDetailList")
     Observable<BaseHttpResult<SingleAccountBean>> getBillDetailListData(@Query("page") int page, @Field("date") String date, @Field("type") int type);
 
+    //获取店铺打烊状态
+    @GET("storeSettings/")
+    Observable<BaseHttpResult<StoreSettingsBean>> getStoreSettings();
+
+
+    //营业/打烊开关接口
+    //op_flag为操作标记，0关闭 1 开启
+    @FormUrlEncoded
+    @POST("setOpenStatus/")
+    Observable<BaseHttpResult> openOrClose(@Field("status") int status);
+
+
+
+    //自动接单接口
+    //status:当前APP状态 0关闭 1 开启
+    @FormUrlEncoded
+    @POST("autoEnsureOrder/")
+    Observable<BaseHttpResult> openOrCloseOrder(@Field("status") int status);
+
 
 
 
@@ -233,15 +252,6 @@ public interface HttpService {
     Observable<BaseHttpResult<OrderDetailBean>> getOrderDetail(@Path("id") int orderId);
 
 
-    //26	营业/打烊开关接口
-    //op_flag为操作标记，1代表开始营业，2代表打烊
-    @FormUrlEncoded
-    @POST("openOrClose/")
-    Observable<BaseHttpResult<DataBean>> openOrClose(@Field("op_flag") String op_flag);
-
-    //27	获取店铺打烊状态
-    @GET("storeSettings/")
-    Observable<BaseHttpResult<StoreSettingsBean>> getStoreSettings();
 
     //32	月销售额排行
     @GET("monthSalesRanking/")

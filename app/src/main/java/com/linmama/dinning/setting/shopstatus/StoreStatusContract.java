@@ -16,7 +16,7 @@ public class StoreStatusContract {
     }
 
     public interface StoreStatusModifyView {
-        void getStoreStatusModifySuccess(DataBean bean);
+        void getStoreStatusModifySuccess(String bean);
 
         void getStoreStatusModifyFail(String failMsg);
     }
@@ -26,7 +26,7 @@ public class StoreStatusContract {
     }
 
     public interface StoreStatusModifyPresenter {
-        void modifyStoreStatus(String opFlag);
+        void modifyStoreStatus(int opFlag);
     }
 
     public interface CheckAppVersionView {
