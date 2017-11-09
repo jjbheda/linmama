@@ -90,7 +90,7 @@ public interface HttpService {
     //菜品分类下对应的菜品
     @FormUrlEncoded
     @POST("productList/")
-    Observable<BaseHttpResult<ShopTotalBean>> getProductlistById(@Field("id") int id);
+    Observable<BaseHttpResult<ShopTotalBean>> getProductlistById(@Query("page") int page,@Field("id") int id);
 
     //商品搜索
     @FormUrlEncoded

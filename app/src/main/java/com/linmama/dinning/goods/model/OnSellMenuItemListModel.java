@@ -18,11 +18,11 @@ import java.util.List;
 
 public class OnSellMenuItemListModel extends BaseModel {
 
-    public void getProductlistById(@NonNull int menuCategory, @NonNull final OnSellMenuItemListHint hint) {
+    public void getProductlistById(int page,@NonNull int menuCategory, @NonNull final OnSellMenuItemListHint hint) {
         if (hint == null)
             throw new RuntimeException("OnSellMenuItemListHint cannot be null!");
 
-        httpService.getProductlistById(menuCategory)
+        httpService.getProductlistById(page,menuCategory)
                 .compose(new CommonTransformer<ShopTotalBean>())
                 .subscribe(new CommonSubscriber<ShopTotalBean>(LmamaApplication.getInstance()) {
                     @Override

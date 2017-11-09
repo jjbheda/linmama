@@ -32,7 +32,7 @@ public class MenuCategoryContract {
     }
 
     public interface OnSellMenuItemPresenter {
-        void getOnSellMenu(int menuCategory);
+        void getOnSellMenu(int page,int menuCategory);
     }
 
     public interface OffItemPresenter {

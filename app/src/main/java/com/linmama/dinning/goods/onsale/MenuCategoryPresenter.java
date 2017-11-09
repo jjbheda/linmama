@@ -56,10 +56,10 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
     }
 
     @Override
-    public void getOnSellMenu(int menuCategory) {
+    public void getOnSellMenu(int page,int menuCategory) {
         if (null == getIView())
             return;
-        ((OnSellMenuItemListModel) getiModelMap().get("OnSellMenuItem")).getProductlistById(menuCategory,
+        ((OnSellMenuItemListModel) getiModelMap().get("OnSellMenuItem")).getProductlistById(page,menuCategory,
                 new OnSellMenuItemListModel.OnSellMenuItemListHint() {
                     @Override
                     public void successOnSellMenuItemList(ShopTotalBean beans) {

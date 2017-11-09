@@ -9,15 +9,19 @@
         android:layout_height="match_parent"
         android:background="@drawable/category_tab_bg"
         android:divider="@color/colorWindowBg"
-        android:dividerHeight="1dp"
-        android:layout_toRightOf="@id/tabWidget" />
+        android:dividerHeight="1dp" />
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="1dp"
-        android:divider="@color/colorMenuItemDivider"
-        android:dividerHeight="1dp"
-        android:layout_toRightOf="@id/tabWidget" />
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/ptr_onsale"
+        android:layout_toRightOf="@id/tabWidget"
+        style="@style/BothMatch"
+        android:background="@color/colorSettingBg">
+
+        <com.linmama.dinning.widget.GetMoreListView
+            android:id="@+id/listView"
+            android:layout_marginLeft="1dp"
+            android:divider="@color/colorMenuItemDivider"
+            android:dividerHeight="1dp"
+            style="@style/OrderListStyle" />
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 </RelativeLayout>
