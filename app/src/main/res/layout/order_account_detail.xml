@@ -20,7 +20,7 @@
             android:layout_alignParentTop="true"
             style="@style/TextViewSaleParseGreyCommon"
             android:textColor="#999999"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:text="05/18账单"/>
         <TextView
             android:layout_below="@+id/turnover_tag"
@@ -32,61 +32,38 @@
 
         <TextView
             android:layout_below="@+id/today_turnover"
-            android:id="@+id/yestoday_turnover"
+            android:id="@+id/flag_turnover"
             style="@style/TextViewSaleParse14sp"
             android:textColor="#333333"
             android:textSize="16sp"
             android:text="已汇入"/>
     </RelativeLayout>
 
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        app:tabGravity="fill"
-        app:tabIndicatorColor="@color/colorOrderSelected"
-        app:tabMinWidth="500dp"
-        app:tabMode="fixed"
-        android:background="#F0EEEF"
-        app:tabSelectedTextColor="@color/colorOrderSelected"
-        app:tabTextColor="@color/colorOrderText">
-
-        <android.support.design.widget.TabItem
-            style="@style/MatchWrap"
-            android:text="正常单\n17910"
-           />
-
-        <android.support.design.widget.TabItem
-            style="@style/MatchWrap"
-            android:text="调整单\n0.00" />
-
-    </android.support.design.widget.TabLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="70dp"
         android:orientation="horizontal"
         android:background="#D7D7D7"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        >
+        android:paddingRight="20dp">
 
         <TextView
+            android:id="@+id/normal_item"
             style="@style/TextViewNewOrderDetailCommon"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center|left"
+            android:gravity="center"
             android:text="正常单"/>
 
         <TextView
+            android:id="@+id/redress_item"
             style="@style/TextViewNewOrderDetailCommon"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center|right"
-            android:text="共65单，+1791.00"/>
+            android:gravity="center"
+            android:text="调整单\n+1791.00"/>
 
     </LinearLayout>
 
@@ -95,8 +72,7 @@
         android:layout_height="40dp"
         android:orientation="horizontal"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        >
+        android:paddingRight="20dp">
 
         <TextView
             style="@style/TextViewOrderDetailGrey"
@@ -118,7 +94,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:gravity="left|center_vertical"
+            android:gravity="center|center_vertical"
             android:text="订单号"/>
 
         <TextView
@@ -131,52 +107,19 @@
 
     </LinearLayout>
     <View
-        style="@style/LineView"
+        style="@style/LineViewSingle"
         />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        >
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/single_account_ft"
+        style="@style/BothMatch"
+        android:background="#F4F2F3"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
 
-        <TextView
-            style="@style/TextViewOrderDetailGrey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="#66"/>
+        <com.linmama.dinning.widget.GetMoreListView
+            android:id="@+id/single_account_lv"
+            style="@style/OrderListStyle" />
 
-        <TextView
-            style="@style/TextViewOrderDetailGrey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="普通单"/>
-
-        <TextView
-            style="@style/TextViewOrderDetailGrey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="left|center_vertical"
-            android:singleLine="true"
-            android:text="12011112221141111"/>
-
-        <TextView
-            style="@style/TextViewOrderDetailGrey"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="right|center_vertical"
-            android:text="+11.00"/>
-
-    </LinearLayout>
-
-    <View
-        style="@style/LineView"
-        />
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
 </LinearLayout>

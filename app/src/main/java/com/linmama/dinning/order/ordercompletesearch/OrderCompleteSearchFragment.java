@@ -3,19 +3,13 @@ package com.linmama.dinning.order.ordercompletesearch;
 import android.app.DatePickerDialog;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.linmama.dinning.R;
-import com.linmama.dinning.adapter.SearchCategoryAdapter;
-import com.linmama.dinning.base.BasePresenterActivity;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
-import com.linmama.dinning.order.orderundosearch.OrderUndoSearchActivity;
 import com.linmama.dinning.order.orderundosearch.OrderUndoSearchAdapter;
-import com.linmama.dinning.order.orderundosearch.OrderUndoSearchContract;
-import com.linmama.dinning.order.orderundosearch.OrderUndoSearchPresenter;
 import com.linmama.dinning.widget.GetMoreListView;
 
 import java.text.SimpleDateFormat;

@@ -11,15 +11,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.linmama.dinning.adapter.SearchCategoryAdapter;
 import com.linmama.dinning.bean.SearchItemResultsBean;
+import com.linmama.dinning.bean.ShopSearchBean;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.R;
 import com.linmama.dinning.base.BasePresenterActivity;
-import com.linmama.dinning.bean.DataBean;
-import com.linmama.dinning.bean.SarchItemBean;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.widget.ClearEditText;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -60,7 +60,7 @@ public class SearchCategoryActivity extends BasePresenterActivity<SearchCategory
 
     @Override
     protected void initView() {
-        list.setEmptyView(empty);
+//        list.setEmptyView(empty);
     }
 
     @Override
@@ -118,11 +118,15 @@ public class SearchCategoryActivity extends BasePresenterActivity<SearchCategory
     }
 
     @Override
-    public void getSearchCategorySuccess(SarchItemBean bean) {
+    public void getSearchCategorySuccess(List<ShopSearchBean> beans) {
         dismissDialog();
-        if (null != bean && null != bean.getResults()) {
-            mAdapter = new SearchCategoryAdapter(this, bean.getResults());
+        if (beans.size()>0) {
+            mAdapter = new SearchCategoryAdapter(this,beans);
             list.setAdapter(mAdapter);
+            mAdapter.setIOffItem(this);
+            mAdapter.setIOnItem(this);
+        } else {
+            list.setEmptyView(empty);
         }
     }
 
@@ -136,28 +140,29 @@ public class SearchCategoryActivity extends BasePresenterActivity<SearchCategory
 
     @Override
     public void offItem(int position) {
-        SearchItemResultsBean bean = (SearchItemResultsBean) mAdapter.getItem(position);
-        mPresenter.offItem("1", String.valueOf(bean.getId()));
+        ShopSearchBean bean = (ShopSearchBean) mAdapter.getItem(position);
+        mPresenter.offItem(bean.id);
     }
 
     @Override
     public void onItem(int position) {
-        SearchItemResultsBean bean = (SearchItemResultsBean) mAdapter.getItem(position);
-        mPresenter.onItem("2", String.valueOf(bean.getId()));
+        ShopSearchBean bean = (ShopSearchBean) mAdapter.getItem(position);
+        mPresenter.onItem(bean.id);
     }
 
     @Override
-    public void offItemSuccess(String msg) {
+    public void offItemSuccess(int id,String msg) {
         ViewUtils.showSnack(content, "下架成功");
         isOff = true;
         for (int i = 0; i < mAdapter.getCount(); i++) {
-            SearchItemResultsBean item = (SearchItemResultsBean)mAdapter.getItem(i);
-//            if (itemId.equals(String.valueOf(item.getId()))) {
-//                mAdapter.updateItem(i);
-//                return;
-//            }
+            ShopSearchBean item = (ShopSearchBean)mAdapter.getItem(i);
+            if (id == item.id) {
+                mAdapter.updateItem(i);
+                return;
+            }
         }
     }
+
 
     @Override
     public void offItemFail(String failMsg) {
@@ -167,17 +172,18 @@ public class SearchCategoryActivity extends BasePresenterActivity<SearchCategory
     }
 
     @Override
-    public void onItemSuccess(DataBean bean, String itemId) {
+    public void onItemSuccess(int id,String msg) {
         isOn = true;
         ViewUtils.showSnack(content, "上架成功");
         for (int i = 0; i < mAdapter.getCount(); i++) {
-            SearchItemResultsBean item = (SearchItemResultsBean)mAdapter.getItem(i);
-            if (itemId.equals(String.valueOf(item.getId()))) {
+            ShopSearchBean item = (ShopSearchBean)mAdapter.getItem(i);
+            if (id == item.id) {
                 mAdapter.updateItem(i);
                 return;
             }
         }
     }
+
 
     @Override
     public void onItemFail(String failMsg) {

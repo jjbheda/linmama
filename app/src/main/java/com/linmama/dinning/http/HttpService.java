@@ -6,6 +6,8 @@ import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.LoginBean;
 import com.linmama.dinning.bean.OrderDetailBean;
+import com.linmama.dinning.bean.ShopSearchBean;
+import com.linmama.dinning.bean.SingleAccountBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.bean.CompleteOrderBean;
@@ -18,6 +20,7 @@ import com.linmama.dinning.bean.StoreSettingsBean;
 import com.linmama.dinning.bean.UserServerBean;
 import com.linmama.dinning.goods.category.MenuCategoryBean;
 import com.linmama.dinning.goods.onsale.ShopItemBean;
+import com.linmama.dinning.goods.onsale.ShopTotalBean;
 import com.linmama.dinning.shop.bean.SaleRankBean;
 import com.linmama.dinning.shop.bean.ShopBean;
 import com.linmama.dinning.shop.bean.ShopSaleParseBean;
@@ -86,7 +89,12 @@ public interface HttpService {
     //菜品分类下对应的菜品
     @FormUrlEncoded
     @POST("productList/")
-    Observable<BaseHttpResult<List<ShopItemBean>>> getProductlistById(@Field("id") int id);
+    Observable<BaseHttpResult<ShopTotalBean>> getProductlistById(@Field("id") int id);
+
+    //商品搜索
+    @FormUrlEncoded
+    @POST("searchList/")
+    Observable<BaseHttpResult<List<ShopSearchBean>>> getShopSearchData(@Field("search") String search);
 
     //下架商品列表
     @POST("undercarriage/")
@@ -120,6 +128,17 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("historyBillQuery/")
     Observable<BaseHttpResult<List<AccountBeanItem>>> getHistoryBillQueryData(@Query("page") int page, @Field("type") int type);
+
+    //我的账单--账单详情
+    @FormUrlEncoded
+    @POST("billDetail/")
+    Observable<BaseHttpResult<AccountBeanItem>> getBillDetailData( @Field("date") String date);
+
+    //我的账单--账单详情 --订单列表  type: 0//0 正常单  1调整单 默认查询正常单
+    @FormUrlEncoded
+    @POST("billDetailList")
+    Observable<BaseHttpResult<SingleAccountBean>> getBillDetailListData(@Query("page") int page, @Field("date") String date, @Field("type") int type);
+
 
 
 

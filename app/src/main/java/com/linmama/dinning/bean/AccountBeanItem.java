@@ -10,4 +10,5 @@ public class AccountBeanItem implements Serializable {
     public String date = "";
     public String income = "";
     public String text = "";
+    public String income_invalid = "";
 }

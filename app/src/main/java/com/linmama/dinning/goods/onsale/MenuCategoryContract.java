@@ -16,7 +16,7 @@ public class MenuCategoryContract {
     }
 
     public interface OnSellMenuItemView {
-        void sellMenuItemSuccess(List<ShopItemBean> beans);
+        void sellMenuItemSuccess(ShopTotalBean bean);
 
         void sellMenuItemFail(String failMsg);
     }

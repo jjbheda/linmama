@@ -4,7 +4,9 @@ package com.linmama.dinning.shop.account;
  * Created by jingkang onOrOff 2017/3/16
  */
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.linmama.dinning.R;
+import com.linmama.dinning.base.BaseActivity;
+import com.linmama.dinning.base.CommonActivity;
 import com.linmama.dinning.bean.AccountBeanItem;
+import com.linmama.dinning.shop.account.detail.AccountDetailFragment;
 import com.linmama.dinning.shop.bean.SaleRankBean;
 
 import java.util.List;
@@ -20,9 +25,9 @@ import java.util.List;
 public class AccountAdapter extends BaseAdapter {
     private List<AccountBeanItem> mResults;
     private LayoutInflater mInflater;
-    private Context mContext;
+    private Activity mContext;
 
-    public AccountAdapter(Context context, List<AccountBeanItem> results) {
+    public AccountAdapter(Activity context, List<AccountBeanItem> results) {
         this.mContext = context;
         this.mResults = results;
         mInflater = LayoutInflater.from(context);
@@ -56,10 +61,18 @@ public class AccountAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        AccountBeanItem bean = mResults.get(i);
+       final AccountBeanItem bean = mResults.get(i);
         holder.date.setText(bean.date+"日账单");
         holder.income.setText(bean.income);
         holder.text.setText(bean.text);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("Date",bean.date);
+                CommonActivity.start(mContext,AccountDetailFragment.class,bundle);
+            }
+        });
         return view;
     }
 

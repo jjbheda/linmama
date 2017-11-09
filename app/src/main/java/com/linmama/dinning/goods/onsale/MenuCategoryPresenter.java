@@ -1,10 +1,10 @@
 package com.linmama.dinning.goods.onsale;
 
 import com.linmama.dinning.goods.category.MenuCategoryBean;
+import com.linmama.dinning.goods.model.MenuCategoryListModel;
 import com.linmama.dinning.goods.model.OnSellMenuItemListModel;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.base.BasePresenter;
-import com.linmama.dinning.goods.model.MenuCategoryListModel;
 import com.linmama.dinning.goods.model.OffItemModel;
 
 import java.util.HashMap;
@@ -40,10 +40,10 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
         ((MenuCategoryListModel) getiModelMap().get("MenuCategory")).getMenuCategory(
                 new MenuCategoryListModel.MenuCategoryListHint() {
                     @Override
-                    public void successMenuCategoryList(List<MenuCategoryBean> bean) {
+                    public void successMenuCategoryList(List<MenuCategoryBean> beans) {
                         if (null == getIView())
                             return;
-                        getIView().menuCategorySuccess(bean);
+                        getIView().menuCategorySuccess(beans);
                     }
 
                     @Override
@@ -62,7 +62,7 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
         ((OnSellMenuItemListModel) getiModelMap().get("OnSellMenuItem")).getProductlistById(menuCategory,
                 new OnSellMenuItemListModel.OnSellMenuItemListHint() {
                     @Override
-                    public void successOnSellMenuItemList(List<ShopItemBean> beans) {
+                    public void successOnSellMenuItemList(ShopTotalBean beans) {
                         if (null == getIView())
                             return;
                         getIView().sellMenuItemSuccess(beans);

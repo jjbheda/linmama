@@ -3,6 +3,7 @@ package com.linmama.dinning.goods.model;
 import android.support.annotation.NonNull;
 
 import com.linmama.dinning.goods.onsale.ShopItemBean;
+import com.linmama.dinning.goods.onsale.ShopTotalBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.LmamaApplication;
@@ -22,10 +23,10 @@ public class OnSellMenuItemListModel extends BaseModel {
             throw new RuntimeException("OnSellMenuItemListHint cannot be null!");
 
         httpService.getProductlistById(menuCategory)
-                .compose(new CommonTransformer<List<ShopItemBean>>())
-                .subscribe(new CommonSubscriber<List<ShopItemBean>>(LmamaApplication.getInstance()) {
+                .compose(new CommonTransformer<ShopTotalBean>())
+                .subscribe(new CommonSubscriber<ShopTotalBean>(LmamaApplication.getInstance()) {
                     @Override
-                    public void onNext(List<ShopItemBean> bean) {
+                    public void onNext(ShopTotalBean bean) {
                         hint.successOnSellMenuItemList(bean);
                     }
 
@@ -38,7 +39,7 @@ public class OnSellMenuItemListModel extends BaseModel {
     }
 
     public interface OnSellMenuItemListHint {
-        void successOnSellMenuItemList(List<ShopItemBean> bean);
+        void successOnSellMenuItemList(ShopTotalBean bean);
 
         void failOnSellMenuItemList(String str);
     }

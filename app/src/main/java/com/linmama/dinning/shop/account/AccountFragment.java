@@ -48,13 +48,6 @@ public class AccountFragment extends BasePresenterFragment<AccountPresenter> imp
         LogUtils.d("getAccountSuccess", beans.toString());
         List<AccountBeanItem> results = beans;
         mResults.addAll(results);
-//            if (currentPage == 1 && results.size() == 0) {
-//                mPtrAccount.getHeader().setVisibility(View.GONE);
-//                if (mAdapter != null) {
-//                    mAdapter.notifyDataSetChanged();
-//                }
-//                return;
-//            }
         if (null == mAdapter) {
             mAdapter = new AccountAdapter(mActivity, mResults);
             mLvAccount.setAdapter(mAdapter);

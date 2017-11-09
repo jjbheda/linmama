@@ -2,12 +2,15 @@ package com.linmama.dinning.goods.search;
 
 import android.support.annotation.NonNull;
 
+import com.linmama.dinning.bean.ShopSearchBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.bean.SarchItemBean;
 import com.linmama.dinning.except.ApiException;
+
+import java.util.List;
 
 /**
  * Created by jingkang on 2017/3/16
@@ -19,12 +22,12 @@ public class SearchCategoryModel extends BaseModel {
         if (hint == null)
             throw new RuntimeException("SearchCategoryHint cannot be null.");
 
-        httpService.searchMenuItem(keyword)
-                .compose(new CommonTransformer<SarchItemBean>())
-                .subscribe(new CommonSubscriber<SarchItemBean>(LmamaApplication.getInstance()) {
+        httpService.getShopSearchData(keyword)
+                .compose(new CommonTransformer<List<ShopSearchBean>>())
+                .subscribe(new CommonSubscriber<List<ShopSearchBean>>(LmamaApplication.getInstance()) {
                     @Override
-                    public void onNext(SarchItemBean bean) {
-                        hint.successSearchCategory(bean);
+                    public void onNext(List<ShopSearchBean> beans) {
+                        hint.successSearchCategory(beans);
                     }
 
                     @Override
@@ -36,7 +39,7 @@ public class SearchCategoryModel extends BaseModel {
     }
 
     public interface SearchCategoryHint {
-        void successSearchCategory(SarchItemBean bean);
+        void successSearchCategory(List<ShopSearchBean> beans);
 
         void failSearchCategory(String failMsg);
     }

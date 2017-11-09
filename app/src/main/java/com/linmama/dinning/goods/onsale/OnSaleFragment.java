@@ -112,10 +112,10 @@ public class OnSaleFragment extends BasePresenterFragment<MenuCategoryPresenter>
     }
 
     @Override
-    public void sellMenuItemSuccess(List<ShopItemBean> beans) {
+    public void sellMenuItemSuccess(ShopTotalBean bean) {
         dismissDialog();
-        if (null != beans ) {
-            mSaleAdapter = new OnSaleItemAdapter(mActivity, beans);
+        if (bean.data.size()>0) {
+            mSaleAdapter = new OnSaleItemAdapter(mActivity, bean.data);
             mListView.setAdapter(mSaleAdapter);
             mSaleAdapter.setOnOffItem(this);
         }
