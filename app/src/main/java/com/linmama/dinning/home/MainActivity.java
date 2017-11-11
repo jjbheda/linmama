@@ -12,13 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.linmama.dinning.base.BaseActivity;
-import com.linmama.dinning.order.ordercompletesearch.OrderCompleteSearchFragment;
+import com.linmama.dinning.order.ordercompletesearch.OrderCompleteFragment;
 import com.linmama.dinning.shop.ShopManagerFragment;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.BuildConfig;
 import com.linmama.dinning.R;
 import com.linmama.dinning.bluetooth.PrintDataService;
-import com.linmama.dinning.data.DataFragment;
 import com.linmama.dinning.order.order.OrderFragment;
 import com.linmama.dinning.setting.SettingFragment;
 import com.linmama.dinning.url.Constants;
@@ -69,7 +68,7 @@ public class MainActivity extends BaseActivity {
     private FragmentManager mManager;
     private OrderFragment mOrder;
     private ShopManagerFragment mshops;
-    private OrderCompleteSearchFragment mData;
+    private OrderCompleteFragment mData;
     private SettingFragment mSetting;
     private long exitTime = 0;
 
@@ -163,7 +162,7 @@ public class MainActivity extends BaseActivity {
     private void hideFragments(FragmentTransaction transaction) {
         String tag1 = OrderFragment.class.getName();
         String tag2 = ShopManagerFragment.class.getName();
-        String tag3 = OrderCompleteSearchFragment.class.getName();
+        String tag3 = OrderCompleteFragment.class.getName();
         String tag4 = SettingFragment.class.getName();
         OrderFragment frag1 = (OrderFragment) mManager.findFragmentByTag(tag1);
         if (null != frag1) {
@@ -173,7 +172,7 @@ public class MainActivity extends BaseActivity {
         if (null != frag2) {
             transaction.hide(frag2);
         }
-        OrderCompleteSearchFragment frag3 = (OrderCompleteSearchFragment) mManager.findFragmentByTag(tag3);
+        OrderCompleteFragment frag3 = (OrderCompleteFragment) mManager.findFragmentByTag(tag3);
         if (null != frag3) {
             transaction.hide(frag3);
         }
@@ -212,11 +211,11 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.imgOrderQuery)
     public void showData(View view) {
         if (null == mData) {
-            mData = new OrderCompleteSearchFragment();
+            mData = new OrderCompleteFragment();
         }
         switchContent(mData);
 
-        replaceContent(new OrderCompleteSearchFragment());
+        replaceContent(new OrderCompleteFragment());
         resetSelected();
         imgOrderQuery.setImageResource(R.mipmap.order_query_selected);
         mOrderQueryTv.setTextColor(getResources().getColor(R.color.colorAccent));

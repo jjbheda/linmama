@@ -14,7 +14,7 @@ import java.util.HashMap;
  * Created by jiangjingbo on 2017/10/30.
  */
 
-public class OrderCompleteSearchPresenter extends BasePresenter<OrderCompleteSearchFragment> implements
+public class OrderCompleteSearchPresenter extends BasePresenter<OrderCompleteFragment> implements
         OrderCompleteSearchContract.CompletedOrderPresenter,OrderCompleteSearchContract.RefundFailOrderPresenter {
     @Override
     public HashMap<String, IModel> getiModelMap() {

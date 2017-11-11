@@ -4,7 +4,6 @@ import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteSearchContract;
-import com.linmama.dinning.order.ordercompletesearch.OrderCompleteSearchFragment;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteSearchModel;
 
 import java.util.HashMap;

@@ -2,7 +2,6 @@ package com.linmama.dinning.order.ordercompletesearch;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -35,7 +34,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Created by jiangjingbo on 2017/11/6.
  */
 
-public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderCompleteSearchPresenter>
+public class OrderCompleteFragment extends BasePresenterFragment<OrderCompleteSearchPresenter>
         implements OrderCompleteSearchContract.SearchOrderView,OrderCompleteSearchContract.CancelView,
         GetMoreListView.OnGetMoreListener,OrderUndoSearchAdapter.ICancelFinishedOrder,OrderUndoSearchAdapter.IPrintOrder{
     private List<TakingOrderBean> mResults = new ArrayList<>();
