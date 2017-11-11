@@ -25,6 +25,14 @@ public class OrderCompleteSearchContract {
         void refundRetryFail(String failMsg);
     }
 
+    public interface CancelView {
+
+        void cancelOrderSuccess(int id,String msg);
+
+        void cancelOrderFail(String failMsg);
+    }
+
+
     public interface CompletedOrderPresenter {
         void getFinishedOrderListData(int page,String start,String end);
     }

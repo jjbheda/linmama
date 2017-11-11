@@ -73,9 +73,30 @@ public class OrderCompleteSearchModel extends BaseModel{
                         hint.refundRetryFail(e.getMessage());
                     }
                 });
-
     }
 
+    public void cancelOrder(int id,final CancelOrderHint hint) {
+        if (hint == null)
+            throw new RuntimeException("CancelOrderHint cannot be null.");
+        httpService.cancelFinishedOrder(id).compose(new CommonTransformer())
+                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                    @Override
+                    public void onNext(String bean) {
+                        hint.cancelOrderSuccess(bean);
+                    }
+
+                    @Override
+                    public void onError(ApiException e) {
+                        super.onError(e);
+                        hint.failCancelOrder(e.getMessage());
+                    }
+                });
+    }
+
+    public interface CancelOrderHint {
+        void cancelOrderSuccess(String bean);
+        void failCancelOrder(String failMsg);
+    }
 
     public interface SearchCompleteOrderHint {
         void successSearchOrder(TakingOrderMenuBean bean);

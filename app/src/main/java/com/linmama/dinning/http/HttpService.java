@@ -78,6 +78,11 @@ public interface HttpService {
     @POST("refundRetry/")
     Observable<BaseHttpResult> refundRetry(@Field("id") int id);
 
+    //已完成订单查询     取消订单
+    @FormUrlEncoded
+    @POST("cancelFinishedOrder/")
+    Observable<BaseHttpResult> cancelFinishedOrder(@Field("id") int id);
+
     //确认订单
     @FormUrlEncoded
     @POST("ensureOrder/")

@@ -36,7 +36,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 
 public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderCompleteSearchPresenter>
-        implements OrderCompleteSearchContract.SearchOrderView,GetMoreListView.OnGetMoreListener{
+        implements OrderCompleteSearchContract.SearchOrderView,OrderCompleteSearchContract.CancelView,
+        GetMoreListView.OnGetMoreListener,OrderUndoSearchAdapter.ICancelFinishedOrder,OrderUndoSearchAdapter.IPrintOrder{
     private List<TakingOrderBean> mResults = new ArrayList<>();
     @BindView(R.id.lvSearchOrderLt)
     GetMoreListView lvSearchOrderLt;
@@ -86,6 +87,7 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderComp
             if (null == mAdapter) {
                 mAdapter = new OrderUndoSearchAdapter(mActivity,0,mResults);
                 lvSearchOrderLt.setAdapter(mAdapter);
+                mAdapter.setCancelOrder(this);
             } else {
                 mAdapter.notifyDataSetChanged();
                 if (currentPage > 1) {
@@ -225,5 +227,31 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderComp
         }
         currentPage++;
         mPresenter.getFinishedOrderListData(currentPage,mStartDate,mEndDate);
+    }
+
+    @Override
+    public void cancelOrder(TakingOrderBean bean) {
+        mPresenter.cancelOrder(bean.id);
+    }
+
+    @Override
+    public void cancelOrderSuccess(int id, String msg) {
+        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
+            if (rb.id  == id) {
+                mAdapter.removeItem(i);
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public void cancelOrderFail(String failMsg) {
+        Toast.makeText(mActivity,failMsg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void printOrder(TakingOrderBean bean) {
+
     }
 }

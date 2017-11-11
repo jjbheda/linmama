@@ -68,4 +68,23 @@ public class OrderCompleteSearchPresenter extends BasePresenter<OrderCompleteSea
             }
         });
     }
+    public void cancelOrder(final int id) {
+        ((OrderCompleteSearchModel) getiModelMap().get("OrderCompleteSearchModel")).cancelOrder(id, new OrderCompleteSearchModel.CancelOrderHint(){
+
+            @Override
+            public void cancelOrderSuccess(String msg) {
+                if (null == getIView())
+                    return;
+                getIView().cancelOrderSuccess(id,msg);
+            }
+
+            @Override
+            public void failCancelOrder(String failMsg) {
+                if (null == getIView())
+                    return;
+                getIView().cancelOrderFail(failMsg);
+            }
+        });
+    }
+
 }
