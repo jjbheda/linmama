@@ -70,7 +70,7 @@ public class OrderUndoSearchActivity extends BasePresenterActivity<OrderUndoSear
         mResults.clear();
         mResults.addAll(bean.data);
 
-        mAdapter = new OrderUndoSearchAdapter(OrderUndoSearchActivity.this, mResults);
+        mAdapter = new OrderUndoSearchAdapter(OrderUndoSearchActivity.this,1, mResults);
         mSearchOrderLt.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
 

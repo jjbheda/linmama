@@ -18,7 +18,19 @@ public class OrderCompleteSearchContract {
         void getSearchOrderFail(String failMsg);
     }
 
-    public interface SearchOrderPresenter {
+    public interface RefundRetryView {
+
+        void refundRetrySuccess(int id,String bean);
+
+        void refundRetryFail(String failMsg);
+    }
+
+    public interface CompletedOrderPresenter {
         void getFinishedOrderListData(int page,String start,String end);
     }
+
+    public interface RefundFailOrderPresenter {
+        void getRefundFailOrderListData(int page);
+    }
+
 }

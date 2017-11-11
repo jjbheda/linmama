@@ -10,4 +10,5 @@ public class SingleAccountItemBean implements Serializable {
     public String type= "";
     public String serial_number= "";
     public String income= "";
+    public String order_no= "";
 }

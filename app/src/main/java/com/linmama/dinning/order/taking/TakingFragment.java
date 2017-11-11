@@ -53,8 +53,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> implements
         TakingOrderContract.TakingOrderView,TakingOrderContract.PrintView,
         MyAlertDialog.ICallBack,TakingOrderAdapter.ICompleteOrder, TakingOrderAdapter.ICancelOrder,GetMoreListView.OnGetMoreListener,
-        TakingOrderContract.CompleteOrderView {
-    @BindView(R.id.lvNewOrder)
+    TakingOrderContract.CompleteOrderView {
+        @BindView(R.id.lvNewOrder)
     GetMoreListView mLvTakingOrder;
     @BindView(R.id.ptr_new)
     PtrClassicFrameLayout mPtrTaking;
@@ -212,7 +212,12 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                                             if (rb.id == bean.id) {
                                                 mAdapter.removeItem(i);
                                                 mAdapter.notifyDataSetChanged();
-                                                return;
+
+
+                                                if (null != mPresenter) {
+                                                    mPresenter.getPrintData(bean.id);
+                                                }
+
                                             }
                                         }
                                     }
@@ -221,6 +226,19 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                                     public void onError(ApiException e) {
                                         super.onError(e);
                                         Toast.makeText(mActivity, "确定订单失败", Toast.LENGTH_SHORT).show();
+
+                                        final StringBuilder builder = new StringBuilder();
+
+                                        builder.append("这是一个测!!!!");
+
+                                        if (PrintDataService.isConnection()) {
+                                            PrintDataService.send(builder.toString());
+                                            dismissDialog();
+                                            return;
+                                        } else {
+                                            dismissDialog();
+                                        }
+
                                     }
                                 });
                     }
@@ -257,6 +275,17 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     @Override
     public void getPrintDataSuccess(OrderDetailBean bean) {
         final StringBuilder builder = new StringBuilder();
+
+        builder.append("这是一个测!!!!");
+
+        if (PrintDataService.isConnection()) {
+            PrintDataService.send(builder.toString());
+            dismissDialog();
+            return;
+        } else {
+            dismissDialog();
+        }
+
         BigDecimal bd = null;
         String fullname = (String) SpUtils.get(Constants.USER_FULLNAME, "");
         if (!TextUtils.isEmpty(fullname)) {

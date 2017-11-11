@@ -1,20 +1,21 @@
 package com.linmama.dinning.order.ordercompletesearch;
 
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BasePresenter;
-import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
+import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.mvp.IModel;
-import com.linmama.dinning.order.orderundosearch.OrderUndoSearchContract;
-import com.linmama.dinning.order.orderundosearch.OrderUndoSearchModel;
+import com.linmama.dinning.subscriber.CommonSubscriber;
+import com.linmama.dinning.transformer.CommonTransformer;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by jiangjingbo on 2017/10/30.
  */
 
-public class OrderCompleteSearchPresenter extends BasePresenter<OrderCompleteSearchFragment> implements OrderCompleteSearchContract.SearchOrderPresenter{
+public class OrderCompleteSearchPresenter extends BasePresenter<OrderCompleteSearchFragment> implements
+        OrderCompleteSearchContract.CompletedOrderPresenter,OrderCompleteSearchContract.RefundFailOrderPresenter {
     @Override
     public HashMap<String, IModel> getiModelMap() {
         return loadModelMap(new OrderCompleteSearchModel());
@@ -49,4 +50,22 @@ public class OrderCompleteSearchPresenter extends BasePresenter<OrderCompleteSea
         });
     }
 
+    @Override
+    public void getRefundFailOrderListData(int page) {
+        ((OrderCompleteSearchModel) getiModelMap().get("OrderCompleteSearchModel")).getRefundFailOrderListData(page, new OrderCompleteSearchModel.SearchCompleteOrderHint(){
+
+            @Override
+            public void successSearchOrder(TakingOrderMenuBean beans) {
+                if (null == getIView())
+                    return;
+                getIView().getSearchOrderSuccess(beans);
+            }
+
+            @Override
+            public void failSearchOrder(String failMsg) {
+                getIView().getSearchOrderFail(failMsg);
+
+            }
+        });
+    }
 }

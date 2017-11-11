@@ -34,12 +34,12 @@
                     android:id="@+id/select_date"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:background="@color/commonWhile"
-                    android:textColor="@color/menu_grey"
-                    android:textSize="16sp"
-                    android:gravity="center"
                     android:layout_toLeftOf="@+id/icon_taking_search"
-                    android:text="选择日期" />
+                    android:background="@color/commonWhile"
+                    android:gravity="center"
+                    android:text="选择日期"
+                    android:textColor="@color/menu_grey"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <ImageView
@@ -53,24 +53,48 @@
 
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
-    <View
-        style="@style/LineViewSingle"/>
+
+    <View style="@style/LineViewSingle" />
+
     <TextView
         android:id="@+id/date_selected_tv"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:textColor="#999999"
-        android:textSize="16sp"
         android:background="#F5F5F5"
-        android:text="2017-11-08 至 2017-11-09"
         android:gravity="right|center_vertical"
         android:paddingRight="15dp"
-        android:visibility="gone"
-        />
-    <View
-        style="@style/LineViewSingle"/>
+        android:text="2017-11-08 至 2017-11-09"
+        android:textColor="#999999"
+        android:textSize="16sp"
+        android:visibility="gone" />
 
+    <View style="@style/LineViewSingle" />
+    <LinearLayout
+        android:background="#f5f5f5"
+       android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        >
+    <TextView
+        android:id="@+id/tv_refundment"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:text="退款未成功"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp" />
+    </LinearLayout>
+
+    <View style="@style/LineViewSingle" />
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/ptr_complete"
+        style="@style/BothMatch"
+        android:background="@color/colorSettingBg">
     <com.linmama.dinning.widget.GetMoreListView
         android:id="@+id/lvSearchOrderLt"
         style="@style/OrderListStyle" />
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 </LinearLayout>

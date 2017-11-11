@@ -69,6 +69,15 @@ public interface HttpService {
     Observable<BaseHttpResult<TakingOrderMenuBean>> getFinishedOrderListData
     (@Query("page") int page, @Field("start") String start, @Field("end") String end);
 
+    //已完成订单查询     退款未完成 列表
+    @POST("refundFailOrderList/")
+    Observable<BaseHttpResult<TakingOrderMenuBean>> getRefundFailOrderData(@Query("page") int page);
+
+    //已完成订单查询     退款未完成 退款
+    @FormUrlEncoded
+    @POST("refundRetry/")
+    Observable<BaseHttpResult> refundRetry(@Field("id") int id);
+
     //确认订单
     @FormUrlEncoded
     @POST("ensureOrder/")

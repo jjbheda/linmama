@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/BothMatch"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/titleGoods"
+        style="@style/ToolBarStyle">
+
+        <TextView
+            style="@style/ToolBarTitleStyle"
+            android:text="@string/app_name"/>
+    </android.support.v7.widget.Toolbar>
+
+    <View style="@style/LineViewSingle" />
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/ptr_refund"
+        style="@style/BothMatch"
+        android:background="@color/colorSettingBg">
+    <com.linmama.dinning.widget.GetMoreListView
+        android:id="@+id/lvSearchOrderLt"
+        style="@style/OrderListStyle" />
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+</LinearLayout>

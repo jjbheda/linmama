@@ -60,7 +60,7 @@ public class SingleAccountAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
        final SingleAccountItemBean bean = mResults.get(i);
-//        holder.index_tv.setText(bean.type);
+        holder.index_tv.setText(bean.order_no);
         holder.type_tv.setText(bean.type);
         holder.num_tv.setText(bean.serial_number);
         holder.income_tv.setText(bean.income);

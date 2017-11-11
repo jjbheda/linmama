@@ -80,6 +80,13 @@ public class TakingOrderPresenter extends BasePresenter<TakingFragment> implemen
     public void getPrintData(int orderId) {
         if (null == getIView())
             return;
+
+        if (1 ==1 ){
+            getIView().getPrintDataSuccess(new OrderDetailBean());
+            return;
+        }
+
+
         ((OrderDetailModel) getiModelMap().get("PrintData")).getOrderDetail(orderId,
                 new OrderDetailModel.OrderDetailHint() {
                     @Override

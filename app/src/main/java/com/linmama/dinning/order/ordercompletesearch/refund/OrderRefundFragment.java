@@ -1,4 +1,4 @@
-package com.linmama.dinning.order.ordercompletesearch;
+package com.linmama.dinning.order.ordercompletesearch.refund;
 
 import android.app.DatePickerDialog;
 import android.view.View;
@@ -7,11 +7,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.linmama.dinning.R;
+import com.linmama.dinning.adapter.TakingOrderAdapter;
 import com.linmama.dinning.base.BasePresenterFragment;
+import com.linmama.dinning.bean.DataSynEvent;
+import com.linmama.dinning.bean.LResultNewOrderBean;
+import com.linmama.dinning.bean.OrderOrderMenuBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
+import com.linmama.dinning.order.ordercompletesearch.OrderCompleteSearchContract;
+import com.linmama.dinning.order.ordercompletesearch.OrderCompleteSearchPresenter;
 import com.linmama.dinning.order.orderundosearch.OrderUndoSearchAdapter;
+import com.linmama.dinning.utils.LogUtils;
+import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
+import com.linmama.dinning.widget.header.WindmillHeader;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,131 +31,147 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * Created by jiangjingbo on 2017/11/6.
  */
 
-public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderCompleteSearchPresenter>
-        implements OrderCompleteSearchContract.SearchOrderView{
-    private List<TakingOrderBean> mResults = new ArrayList<>();
+public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefundSearchPresenter>
+        implements OrderCompleteSearchContract.SearchOrderView,OrderCompleteSearchContract.RefundRetryView,GetMoreListView.OnGetMoreListener,
+        OrderUndoSearchAdapter.IRefundRetry,OrderUndoSearchAdapter.IPrintOrder{
+
+    @BindView(R.id.ptr_refund)
+    PtrClassicFrameLayout mPreRefundLt;
     @BindView(R.id.lvSearchOrderLt)
     GetMoreListView lvSearchOrderLt;
     private OrderUndoSearchAdapter mAdapter;
+    List<TakingOrderBean> mResults = new ArrayList<>();
 
-    @BindView(R.id.nearly_tv)
-    TextView mNearlyTv;
-
-    @BindView(R.id.select_date)
-    TextView mSelectDateTv;
-
-    @BindView(R.id.tv_refundment)
-    TextView mRefundmentTv;
-
-    @BindView(R.id.date_selected_tv)
-    TextView mSelectedDateTv;
-
-    private String mStartDate = "";
-    private String mEndDate = "";
-
-    private int currentQueryType = 0;       //已完成
-
+    private int currentPage = 1;
+    private int last_page = 1;
 
     @Override
     public void getSearchOrderSuccess(TakingOrderMenuBean bean) {
-        mResults.clear();
-        mResults.addAll(bean.data);
+        dismissDialog();
+        if (currentPage == 1 && mPreRefundLt.isRefreshing()) {
+            mPreRefundLt.refreshComplete();
+        }
+        if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
+            mResults.clear();
+        }
+        last_page = bean.last_page;
 
-        mAdapter = new OrderUndoSearchAdapter(mActivity, mResults);
-        lvSearchOrderLt.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
+        if (bean.data.size()>0){
+            LogUtils.d("getTakingOrderSuccess", bean.data.toString());
+            List<TakingOrderBean> results = bean.data;
+            mResults.addAll(results);
+            if (currentPage == 1 && results.size() == 0) {
+                mPreRefundLt.getHeader().setVisibility(View.GONE);
+                if (mAdapter != null) {
+                    mAdapter.notifyDataSetChanged();
+                }
+                return;
+            }
+            if (null == mAdapter) {
+                mAdapter = new OrderUndoSearchAdapter(mActivity,1,mResults);
+                mAdapter.setPrintOrder(this);
+                mAdapter.setRefundRetry(this);
+                lvSearchOrderLt.setAdapter(mAdapter);
+            } else {
+                mAdapter.notifyDataSetChanged();
+                if (currentPage > 1) {
+                    lvSearchOrderLt.getMoreComplete();
+                }
+
+                if (currentPage == last_page) {
+                    lvSearchOrderLt.setNoMore();
+                }
+            }
+        }
     }
 
     @Override
     public void getSearchOrderFail(String failMsg) {
         Toast.makeText(mActivity,failMsg,Toast.LENGTH_SHORT).show();
     }
-    OrderCompleteSearchPresenter presenter;
     @Override
-    protected OrderCompleteSearchPresenter loadPresenter() {
-        presenter = new OrderCompleteSearchPresenter();
-        return presenter;
-    }
-
-    @OnClick(R.id.select_date)
-    public void showDateSelecterDiaglog(){
-        final Calendar calendar = Calendar.getInstance();
-            DatePickerDialog dialog = new DatePickerDialog(mActivity,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        // 设置
-                        calendar.set(year, monthOfYear, dayOfMonth);
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                        mStartDate = format.format(calendar.getTime());
-                        showEndDialog();
-                    }
-                }, // 设置年,月,日
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH));
-        dialog.setTitle("请选择开始日期");
-        dialog.show();
-    }
-
-    private void showEndDialog(){
-        final Calendar calendar = Calendar.getInstance();
-        DatePickerDialog dialog = new DatePickerDialog(mActivity,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        // 设置
-                        calendar.set(year, monthOfYear, dayOfMonth);
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                        mEndDate = format.format(calendar.getTime());
-                        mSelectedDateTv.setVisibility(View.VISIBLE);
-                        if (!mStartDate.equals("") && !mEndDate.equals("")) {
-                            mSelectedDateTv.setText(mStartDate +" 至 "+mEndDate);
-                            presenter.getFinishedOrderListData(1,mStartDate,mEndDate);
-                        }
-                    }
-                }, // 设置年,月,日
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH));
-        dialog.setTitle("请选择结束日期");
-        dialog.show();
-    }
-
-    @OnClick(R.id.nearly_tv)
-    public void getNearlyData() {
-        mSelectedDateTv.setVisibility(View.GONE);
-        presenter.getFinishedOrderListData(1,"","");
-    }
-
-    @OnClick(R.id.tv_refundment)
-    public void getRefundmentData() {
-//        mSelectedDateTv.setVisibility(View.GONE);
-//        presenter.getRefundFailOrderListData(1);
+    protected OrderCompleteRefundSearchPresenter loadPresenter() {
+        return new OrderCompleteRefundSearchPresenter();
     }
 
     @Override
     protected int getLayoutResID() {
-        return R.layout.order_complete_query_fragment;
+        return R.layout.order_complete_refund_query_fragment;
     }
 
     @Override
     protected void initView() {
-
+        final WindmillHeader header = new WindmillHeader(mActivity);
+        mPreRefundLt.setHeaderView(header);
+        mPreRefundLt.addPtrUIHandler(header);
     }
 
     @Override
     protected void initListener() {
-
+        lvSearchOrderLt.setOnGetMoreListener(this);
+        mPreRefundLt.setPtrHandler(new PtrDefaultHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
+                if (null != mPresenter) {
+                    mResults.clear();
+                    currentPage = 1;
+                    mPresenter.getRefundFailOrderListData(currentPage);
+                }
+            }
+        });
     }
 
     @Override
     protected void initData() {
-        presenter.getFinishedOrderListData(1,"","");
+        mPresenter.getRefundFailOrderListData(currentPage);
+    }
+
+    @Override
+    public void onGetMore() {
+        if (currentPage == last_page) {
+            lvSearchOrderLt.setNoMore();
+            return;
+        }
+        currentPage++;
+        mPresenter.getRefundFailOrderListData(currentPage);
+    }
+
+    @Override
+    public void printOrder(TakingOrderBean bean) {
+
+    }
+
+    @Override
+    public void refundRetry(TakingOrderBean bean) {
+     mPresenter.refundRetry(bean.id);
+    }
+
+    @Override
+    public void refundRetrySuccess(int id,String msg) {
+        if (msg.equals("退款成功")) {
+            for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+                TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
+                if (rb.id  == id) {
+                    mAdapter.removeItem(i);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+        } else {
+            Toast.makeText(mActivity,msg,Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void refundRetryFail(String failMsg) {
+
     }
 }
