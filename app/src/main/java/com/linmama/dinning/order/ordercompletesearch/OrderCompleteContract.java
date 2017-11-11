@@ -9,7 +9,7 @@ import java.util.List;
  * Created by jiangjingbo on 2017/11/1.
  */
 
-public class OrderCompleteSearchContract {
+public class OrderCompleteContract {
 
     public interface SearchOrderView {
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.linmama.dinning.R;
 import com.linmama.dinning.base.BasePresenterActivity;
@@ -78,8 +79,7 @@ public class OrderUndoSearchActivity extends BasePresenterActivity<OrderUndoSear
 
     @Override
     public void getSearchOrderFail(String failMsg) {
-
-
+        Toast.makeText(OrderUndoSearchActivity.this,failMsg,Toast.LENGTH_SHORT).show();
     }
 
     @Override

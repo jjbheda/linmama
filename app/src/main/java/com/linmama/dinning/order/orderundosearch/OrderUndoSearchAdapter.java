@@ -205,6 +205,7 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
         View lt_view = mInflater.inflate(R.layout.lv_item_ordertime_single, null);
         TextView tv_order_takeoff_time = (TextView) lt_view.findViewById(R.id.order_takeoff_time);
         tv_order_takeoff_time.setText("取餐时间:" + bean.pickup.pickup_date + " " + bean.pickup.pickup_start_time + "-" + bean.pickup.pickup_end_time);
+        tv_order_takeoff_time.setTextColor(mContext.getResources().getColor(R.color.menu_grey));
         holder1.order_time_list.addView(lt_view);
 
         return view;

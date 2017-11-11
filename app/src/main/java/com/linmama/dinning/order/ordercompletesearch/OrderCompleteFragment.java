@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.base.CommonActivity;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
+import com.linmama.dinning.order.ordercompletesearch.completesearch.OrderCompleteSearchFragment;
 import com.linmama.dinning.order.ordercompletesearch.refund.OrderRefundFragment;
 import com.linmama.dinning.order.orderundosearch.OrderUndoSearchAdapter;
 import com.linmama.dinning.utils.LogUtils;
@@ -34,9 +36,10 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Created by jiangjingbo on 2017/11/6.
  */
 
-public class OrderCompleteFragment extends BasePresenterFragment<OrderCompleteSearchPresenter>
-        implements OrderCompleteSearchContract.SearchOrderView,OrderCompleteSearchContract.CancelView,
-        GetMoreListView.OnGetMoreListener,OrderUndoSearchAdapter.ICancelFinishedOrder,OrderUndoSearchAdapter.IPrintOrder{
+public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePresenter>
+        implements OrderCompleteContract.SearchOrderView,OrderCompleteContract.CancelView,
+        GetMoreListView.OnGetMoreListener,
+        OrderUndoSearchAdapter.ICancelFinishedOrder,OrderUndoSearchAdapter.IPrintOrder{
     private List<TakingOrderBean> mResults = new ArrayList<>();
     @BindView(R.id.lvSearchOrderLt)
     GetMoreListView lvSearchOrderLt;
@@ -55,6 +58,8 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompleteSe
 
     @BindView(R.id.date_selected_tv)
     TextView mSelectedDateTv;
+    @BindView(R.id.lt_taking_search)
+    LinearLayout mSearchLt;
 
     private String mStartDate = "";
     private String mEndDate = "";
@@ -106,8 +111,8 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompleteSe
     }
 
     @Override
-    protected OrderCompleteSearchPresenter loadPresenter() {
-        return  new OrderCompleteSearchPresenter();
+    protected OrderCompletePresenter loadPresenter() {
+        return  new OrderCompletePresenter();
     }
 
     @OnClick(R.id.select_date)
@@ -172,6 +177,10 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompleteSe
         dialog.show();
     }
 
+    @OnClick(R.id.lt_taking_search)
+    public void goToSearch(){
+        CommonActivity.start(mActivity, OrderCompleteSearchFragment.class,new Bundle());
+    }
     @OnClick(R.id.nearly_tv)
     public void getNearlyData() {
         mSelectedDateTv.setVisibility(View.GONE);

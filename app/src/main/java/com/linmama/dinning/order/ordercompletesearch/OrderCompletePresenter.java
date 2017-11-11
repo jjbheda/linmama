@@ -1,12 +1,8 @@
 package com.linmama.dinning.order.ordercompletesearch;
 
-import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
-import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.mvp.IModel;
-import com.linmama.dinning.subscriber.CommonSubscriber;
-import com.linmama.dinning.transformer.CommonTransformer;
 
 import java.util.HashMap;
 
@@ -14,11 +10,11 @@ import java.util.HashMap;
  * Created by jiangjingbo on 2017/10/30.
  */
 
-public class OrderCompleteSearchPresenter extends BasePresenter<OrderCompleteFragment> implements
-        OrderCompleteSearchContract.CompletedOrderPresenter,OrderCompleteSearchContract.RefundFailOrderPresenter {
+public class OrderCompletePresenter extends BasePresenter<OrderCompleteFragment> implements
+        OrderCompleteContract.CompletedOrderPresenter,OrderCompleteContract.RefundFailOrderPresenter {
     @Override
     public HashMap<String, IModel> getiModelMap() {
-        return loadModelMap(new OrderCompleteSearchModel());
+        return loadModelMap(new OrderCompleteModel());
     }
 
     @Override
@@ -33,7 +29,7 @@ public class OrderCompleteSearchPresenter extends BasePresenter<OrderCompleteFra
     public void getFinishedOrderListData(int page,String start, String end) {
         if (null == getIView())
             return;
-        ((OrderCompleteSearchModel) getiModelMap().get("OrderCompleteSearchModel")).getFinishedOrderListData(page,start,end, new OrderCompleteSearchModel.SearchCompleteOrderHint(){
+        ((OrderCompleteModel) getiModelMap().get("OrderCompleteSearchModel")).getFinishedOrderListData(page,start,end, new OrderCompleteModel.SearchCompleteOrderHint(){
 
             @Override
             public void successSearchOrder(TakingOrderMenuBean beans) {
@@ -52,7 +48,7 @@ public class OrderCompleteSearchPresenter extends BasePresenter<OrderCompleteFra
 
     @Override
     public void getRefundFailOrderListData(int page) {
-        ((OrderCompleteSearchModel) getiModelMap().get("OrderCompleteSearchModel")).getRefundFailOrderListData(page, new OrderCompleteSearchModel.SearchCompleteOrderHint(){
+        ((OrderCompleteModel) getiModelMap().get("OrderCompleteSearchModel")).getRefundFailOrderListData(page, new OrderCompleteModel.SearchCompleteOrderHint(){
 
             @Override
             public void successSearchOrder(TakingOrderMenuBean beans) {
@@ -69,7 +65,7 @@ public class OrderCompleteSearchPresenter extends BasePresenter<OrderCompleteFra
         });
     }
     public void cancelOrder(final int id) {
-        ((OrderCompleteSearchModel) getiModelMap().get("OrderCompleteSearchModel")).cancelOrder(id, new OrderCompleteSearchModel.CancelOrderHint(){
+        ((OrderCompleteModel) getiModelMap().get("OrderCompleteSearchModel")).cancelOrder(id, new OrderCompleteModel.CancelOrderHint(){
 
             @Override
             public void cancelOrderSuccess(String msg) {
@@ -86,5 +82,4 @@ public class OrderCompleteSearchPresenter extends BasePresenter<OrderCompleteFra
             }
         });
     }
-
 }

@@ -54,7 +54,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         TakingOrderContract.TakingOrderView,TakingOrderContract.PrintView,
         MyAlertDialog.ICallBack,TakingOrderAdapter.ICompleteOrder, TakingOrderAdapter.ICancelOrder,GetMoreListView.OnGetMoreListener,
     TakingOrderContract.CompleteOrderView {
-        @BindView(R.id.lvNewOrder)
+    @BindView(R.id.lvNewOrder)
     GetMoreListView mLvTakingOrder;
     @BindView(R.id.ptr_new)
     PtrClassicFrameLayout mPtrTaking;

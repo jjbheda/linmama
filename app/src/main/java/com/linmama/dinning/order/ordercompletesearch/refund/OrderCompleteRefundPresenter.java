@@ -3,8 +3,8 @@ package com.linmama.dinning.order.ordercompletesearch.refund;
 import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.mvp.IModel;
-import com.linmama.dinning.order.ordercompletesearch.OrderCompleteSearchContract;
-import com.linmama.dinning.order.ordercompletesearch.OrderCompleteSearchModel;
+import com.linmama.dinning.order.ordercompletesearch.OrderCompleteContract;
+import com.linmama.dinning.order.ordercompletesearch.OrderCompleteModel;
 
 import java.util.HashMap;
 
@@ -12,10 +12,10 @@ import java.util.HashMap;
  * Created by jiangjingbo on 2017/10/30.
  */
 
-public class OrderCompleteRefundSearchPresenter extends BasePresenter<OrderRefundFragment> implements OrderCompleteSearchContract.RefundFailOrderPresenter {
+public class OrderCompleteRefundPresenter extends BasePresenter<OrderRefundFragment> implements OrderCompleteContract.RefundFailOrderPresenter {
     @Override
     public HashMap<String, IModel> getiModelMap() {
-        return loadModelMap(new OrderCompleteSearchModel());
+        return loadModelMap(new OrderCompleteModel());
     }
 
     @Override
@@ -27,7 +27,7 @@ public class OrderCompleteRefundSearchPresenter extends BasePresenter<OrderRefun
 
     @Override
     public void getRefundFailOrderListData(int page) {
-        ((OrderCompleteSearchModel) getiModelMap().get("OrderCompleteSearchModel")).getRefundFailOrderListData(page, new OrderCompleteSearchModel.SearchCompleteOrderHint(){
+        ((OrderCompleteModel) getiModelMap().get("OrderCompleteSearchModel")).getRefundFailOrderListData(page, new OrderCompleteModel.SearchCompleteOrderHint(){
 
             @Override
             public void successSearchOrder(TakingOrderMenuBean beans) {
@@ -47,7 +47,7 @@ public class OrderCompleteRefundSearchPresenter extends BasePresenter<OrderRefun
     }
 
     public void refundRetry(final int id) {
-        ((OrderCompleteSearchModel) getiModelMap().get("OrderCompleteSearchModel")).refundRetry(id, new OrderCompleteSearchModel.refundRetryHint(){
+        ((OrderCompleteModel) getiModelMap().get("OrderCompleteSearchModel")).refundRetry(id, new OrderCompleteModel.refundRetryHint(){
 
             @Override
             public void refundRetrySucess(String msg) {

@@ -34,22 +34,30 @@
                     android:id="@+id/select_date"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:layout_toLeftOf="@+id/icon_taking_search"
+                    android:layout_toLeftOf="@+id/lt_taking_search"
                     android:background="@color/commonWhile"
                     android:gravity="center"
                     android:text="选择日期"
                     android:textColor="@color/menu_grey"
                     android:textSize="16sp" />
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/icon_taking_search"
+            <LinearLayout
+                android:id="@+id/lt_taking_search"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@mipmap/icon_search" />
+            </LinearLayout>
 
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>

@@ -1,4 +1,4 @@
-package com.linmama.dinning.order.ordercompletesearch.refund;
+package com.linmama.dinning.order.ordercompletesearch.refundsearch;
 
 import android.view.View;
 import android.widget.Toast;
@@ -8,6 +8,7 @@ import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteContract;
+import com.linmama.dinning.order.ordercompletesearch.refund.OrderCompleteRefundPresenter;
 import com.linmama.dinning.order.orderundosearch.OrderUndoSearchAdapter;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.ViewUtils;
@@ -26,7 +27,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Created by jiangjingbo on 2017/11/6.
  */
 
-public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefundPresenter>
+public class OrderRefundSearchFragment extends BasePresenterFragment<OrderCompleteRefundPresenter>
         implements OrderCompleteContract.SearchOrderView,OrderCompleteContract.RefundRetryView,GetMoreListView.OnGetMoreListener,
         OrderUndoSearchAdapter.IRefundRetry,OrderUndoSearchAdapter.IPrintOrder{
 
