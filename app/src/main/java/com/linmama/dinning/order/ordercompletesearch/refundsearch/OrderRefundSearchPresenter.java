@@ -13,7 +13,7 @@ import java.util.HashMap;
  * Created by jiangjingbo on 2017/10/30.
  */
 
-public class OrderRefundSearchPresenter extends BasePresenter<OrderRefundFragment> implements OrderCompleteContract.RefundFailOrderPresenter {
+public class OrderRefundSearchPresenter extends BasePresenter<OrderRefundSearchFragment> implements OrderCompleteContract.RefundFailOrderPresenter {
     @Override
     public HashMap<String, IModel> getiModelMap() {
         return loadModelMap(new OrderCompleteModel());
@@ -62,6 +62,26 @@ public class OrderRefundSearchPresenter extends BasePresenter<OrderRefundFragmen
                 if (null == getIView())
                     return;
                 getIView().refundRetryFail(failMsg);
+            }
+        });
+    }
+
+    public void getSearchRefundFailOrderListData(final String keyword) {
+        ((OrderCompleteModel) getiModelMap().get("OrderCompleteSearchModel")).getSearchRefundFailOrderListData(keyword, new OrderCompleteModel.SearchCompleteOrderHint(){
+
+            @Override
+            public void successSearchOrder(TakingOrderMenuBean beans) {
+                if (null == getIView())
+                    return;
+                getIView().getSearchOrderSuccess(beans);
+            }
+
+            @Override
+            public void failSearchOrder(String failMsg) {
+                if (null == getIView())
+                    return;
+                getIView().getSearchOrderFail(failMsg);
+
             }
         });
     }

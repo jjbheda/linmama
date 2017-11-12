@@ -1,13 +1,16 @@
 package com.linmama.dinning.order.ordercompletesearch.refund;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import com.linmama.dinning.R;
 import com.linmama.dinning.base.BasePresenterFragment;
+import com.linmama.dinning.base.CommonActivity;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteContract;
+import com.linmama.dinning.order.ordercompletesearch.refundsearch.OrderRefundSearchFragment;
 import com.linmama.dinning.order.orderundosearch.OrderUndoSearchAdapter;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.ViewUtils;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -80,6 +84,10 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
         }
     }
 
+    @OnClick(R.id.lt_taking_search)
+    public void goSearch(){
+        CommonActivity.start(mActivity, OrderRefundSearchFragment.class,new Bundle());
+    }
     @Override
     public void getSearchOrderFail(String failMsg) {
         Toast.makeText(mActivity,failMsg,Toast.LENGTH_SHORT).show();

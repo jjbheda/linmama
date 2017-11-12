@@ -78,6 +78,11 @@ public interface HttpService {
     @POST("refundFailOrderList/")
     Observable<BaseHttpResult<TakingOrderMenuBean>> getRefundFailOrderData(@Query("page") int page);
 
+    //已完成订单查询   退款未完成  搜索接口    搜索条件 订单号、用户名、电话号码
+    @FormUrlEncoded
+    @POST("refundFailOrderListQuery/")
+    Observable<BaseHttpResult<TakingOrderMenuBean>> getSearchRefundFailOrderListData(@Field("search") String search);
+
     //已完成订单查询     退款未完成 退款
     @FormUrlEncoded
     @POST("refundRetry/")
