@@ -126,7 +126,16 @@ public class OrderFragment extends BasePresenterFragment implements
         mAdapter.setFragments(mFragmentList);
         mViewPager.setAdapter(mAdapter);
 //        mViewPager.setOffscreenPageLimit(4);
-        mOrderGroup.check(R.id.newOrder);
+        Bundle args = getArguments();
+        if (args != null && args.getString("OrderType")!=null) {
+           String type = args.getString("OrderType","0");    // 订单类型  0 当日单 1预约单
+            if (type.equals("1"))
+                mOrderGroup.check(R.id.takingOrder);
+            else if (type.equals("0"))
+                mOrderGroup.check(R.id.todayOrder);
+        } else {
+            mOrderGroup.check(R.id.newOrder);
+        }
     }
 
     @Override
@@ -163,18 +172,6 @@ public class OrderFragment extends BasePresenterFragment implements
         results.add(allMenu);
         results.add(allMenu2);
         results.add(allMenu3);
-//        mCategorydapter = new MenuCategoryAdapter(mActivity, results);
-//        mTabWidget.setAdapter(mCategorydapter);
-//        mTabWidget.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//               if (position == 0 || position ==1) {
-//                   showDialog("加载中...");
-//                   itemBackChanged(view);
-//                   dismissDialog();
-//               }
-//            }
-//        });
     }
 
     @Override
@@ -304,19 +301,6 @@ public class OrderFragment extends BasePresenterFragment implements
             mNewBadge.setBadgeCount(count);
         }
     }
-
-    private void setRemindCount(int count) {
-        if (null == mRemindBadge) {
-            mRemindBadge = new BadgeView(mActivity);
-        }
-        mRemindBadge.setTargetView(mTodayOrder);
-        if (count == 0) {
-            mRemindBadge.setVisibility(View.GONE);
-        } else {
-            mRemindBadge.setBadgeCount(count);
-        }
-    }
-
 
     @Override
     public void notifyReceiveOrder() {

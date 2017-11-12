@@ -420,22 +420,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_TAKE_ORDER_DETAIL && resultCode == Activity.RESULT_OK && null != data) {
-            String orderId = data.getStringExtra(Constants.ORDER_ID);
-            for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-                ResultsBean rb = (ResultsBean) mAdapter.getItem(i);
-                if (String.valueOf(rb.getId()).equals(orderId)) {
-                    rb.setPay_status("2");
-                    mAdapter.notifyDataSetChanged();
-                    return;
-                }
-            }
-        }
-    }
-
-    @Override
     public void onGetMore() {
         if (currentPage == last_page) {
             mLvTakingOrder.setNoMore();
@@ -452,7 +436,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         if (event.isShouldUpdateData()) {
             refresh();
         }
-
     }
 
     @Override

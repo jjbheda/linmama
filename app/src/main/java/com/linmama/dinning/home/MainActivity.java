@@ -1,10 +1,12 @@
 package com.linmama.dinning.home;
 
 import android.app.ProgressDialog;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,6 +31,10 @@ import com.linmama.dinning.utils.asynctask.Callback;
 import com.linmama.dinning.utils.asynctask.IProgressListener;
 import com.linmama.dinning.utils.asynctask.ProgressCallable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -39,6 +45,7 @@ import cn.jpush.android.api.TagAliasCallback;
 // Jpush AppKey: 63c6a767cc9437077af1d0a1
 // Master Secret: f417e836aa6352486ac8f873
 public class MainActivity extends BaseActivity {
+    public static String TAG= "MainActivity";
     @BindView(R.id.layTabOrder)
     LinearLayout layTabOrder;
     @BindView(R.id.layTabGoods)
@@ -71,7 +78,7 @@ public class MainActivity extends BaseActivity {
     private OrderCompleteFragment mData;
     private SettingFragment mSetting;
     private long exitTime = 0;
-
+    String mOrdertype ="";   // 订单类型  0 当日单 1预约单
     @Override
     protected int getLayoutResID() {
         return R.layout.activity_main;
@@ -79,14 +86,36 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        if (getIntent()!=null && getIntent().getExtras()!=null) {
+            Bundle bundle = getIntent().getExtras();
+            try {
+                JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+                Iterator<String> it =  json.keys();
+                while (it.hasNext()) {
+                    String myKey = it.next().toString();
+                    if (myKey.equals("type")) {
+                        mOrdertype = json.optString(myKey);
+                        break;
+                    }
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Get message extra JSON error!");
+            }
+    }
+
         mManager = getSupportFragmentManager();
 
         if (null == mOrder) {
             mOrder = new OrderFragment();
         }
+        if (!mOrdertype.equals("")) {   // 订单类型  0 当日单 1预约单
+            Bundle args = new Bundle();
+            args.putString("OrderType",mOrdertype);
+            mOrder.setArguments(args);
+        }
         switchContent(mOrder);
 
-        replaceContent(new OrderFragment());
+//        replaceContent(new OrderFragment());
         resetSelected();
         imgimgPendingTreat.setImageResource(R.mipmap.pendingtreat_selected);
         if (BuildConfig.DEBUG) {
