@@ -128,11 +128,11 @@ public class OrderFragment extends BasePresenterFragment implements
 //        mViewPager.setOffscreenPageLimit(4);
         Bundle args = getArguments();
         if (args != null && args.getString("OrderType")!=null) {
-           String type = args.getString("OrderType","0");    // 订单类型  0 当日单 1预约单
+           String type = args.getString("OrderType","0");    // 订单类型  0 新订单 1预约单
             if (type.equals("1"))
                 mOrderGroup.check(R.id.takingOrder);
             else if (type.equals("0"))
-                mOrderGroup.check(R.id.todayOrder);
+                mOrderGroup.check(R.id.newOrder);
         } else {
             mOrderGroup.check(R.id.newOrder);
         }

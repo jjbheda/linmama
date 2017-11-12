@@ -30,7 +30,7 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/nearly_account_tv"
                 style="@style/TextViewMybill"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -43,6 +43,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/history_account_tv"
             style="@style/TextViewMybill"
             android:layout_width="0dp"
             android:layout_height="match_parent"

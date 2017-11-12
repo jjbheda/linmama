@@ -1,6 +1,7 @@
 package com.linmama.dinning.shop.account;
 
 import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.linmama.dinning.R;
 import com.linmama.dinning.base.BasePresenterFragment;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -33,8 +35,12 @@ public class AccountFragment extends BasePresenterFragment<AccountPresenter> imp
     @BindView(R.id.account_ft)
     PtrClassicFrameLayout mPtrAccount;
 
-    int type;
+    @BindView(R.id.history_account_tv)
+    TextView mHistoryTv;
+    @BindView(R.id.nearly_account_tv)
+    TextView mNearlyAccountTv;
 
+    int type = 0;
     @Override
     public void AccountGetSuccess(List<AccountBeanItem> beans) {
         dismissDialog();
@@ -71,6 +77,22 @@ public class AccountFragment extends BasePresenterFragment<AccountPresenter> imp
         }
     }
 
+    @OnClick(R.id.nearly_account_tv)
+    public void turnToNearLyAccount(){
+        mResults.clear();
+        currentPage = 1;
+        type = 0;
+        mPresenter.getHistoryBillQueryData(currentPage, type);
+    }
+
+    @OnClick(R.id.history_account_tv)
+    public void turnToHistoryAccount(){
+        mResults.clear();
+        currentPage = 1;
+        type = 1;
+        mPresenter.getHistoryBillQueryData(currentPage, type);
+    }
+
     @Override
     protected AccountPresenter loadPresenter() {
         return new AccountPresenter();
@@ -97,7 +119,8 @@ public class AccountFragment extends BasePresenterFragment<AccountPresenter> imp
                 if (null != mPresenter) {
                     mResults.clear();
                     currentPage = 1;
-                    mPresenter.getHistoryBillQueryData(currentPage, 0);
+                    type = 1;
+                    mPresenter.getHistoryBillQueryData(currentPage, type);
                 }
             }
         });
@@ -105,11 +128,13 @@ public class AccountFragment extends BasePresenterFragment<AccountPresenter> imp
 
     @Override
     protected void initData() {
-        mPresenter.getHistoryBillQueryData(1, 0);
+        mPresenter.getHistoryBillQueryData(currentPage, 0);
     }
 
     @Override
     public void onGetMore() {
+        if (type == 0)
+            return;
         if (currentPage == last_page) {
             mLvAccount.setNoMore();
             return;
