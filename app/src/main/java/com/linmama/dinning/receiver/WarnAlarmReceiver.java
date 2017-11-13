@@ -73,31 +73,18 @@ public class WarnAlarmReceiver extends BroadcastReceiver {
                 Log.e(TAG, "Get message extra JSON error!");
             }
 
-            if (type.equals("0")) {
-                Toast.makeText(context,"type = "+type,Toast.LENGTH_SHORT).show();
-            } else if (type.equals("1")) {
-                Toast.makeText(context,"type = "+type,Toast.LENGTH_SHORT).show();
+            boolean isVoiceWarn = (boolean) SpUtils.get(Constants.VOICE_WARN, false);
+            if (isVoiceWarn){
+                playMp3(context,type);
             }
-
-            MediaPlayer mediaPlayer = createLocalMp3(context,type);
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener(){
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    mp.release();//释放音频资源
-                }
-            });
-
-            try {
-                //在播放音频资源之前，必须调用Prepare方法完成些准备工作
-                 mediaPlayer.prepare();
-                //开始播放音频
-                mediaPlayer.start();
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);
+            if (isAutoReceiveOrder) {
+                Intent i = new Intent(context, MainActivity.class);
+                i.putExtras(bundle);
+                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                context.startActivity(i);
             }
-
 //            processCustomMessage(context, bundle);
 //            NotificationUtils.showNotification(context, "测试", 1);
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
@@ -141,6 +128,26 @@ public class WarnAlarmReceiver extends BroadcastReceiver {
         return mp;
     }
 
+    private void playMp3(Context context,String type){
+        MediaPlayer mediaPlayer = createLocalMp3(context,type);
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener(){
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();//释放音频资源
+            }
+        });
+
+        try {
+            //在播放音频资源之前，必须调用Prepare方法完成些准备工作
+            mediaPlayer.prepare();
+            //开始播放音频
+            mediaPlayer.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private String[] dealBundle(Bundle bundle) {
         String msgType = "";
         String orderId = "";

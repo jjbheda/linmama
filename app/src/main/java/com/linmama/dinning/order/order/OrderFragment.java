@@ -29,6 +29,8 @@ import com.linmama.dinning.order.taking.TakingFragment;
 import com.linmama.dinning.R;
 import com.linmama.dinning.goods.category.MenuCategoryResultsBean;
 import com.linmama.dinning.order.today.TodayFragment;
+import com.linmama.dinning.url.Constants;
+import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.widget.BadgeView;
 
 import java.util.ArrayList;
@@ -128,13 +130,24 @@ public class OrderFragment extends BasePresenterFragment implements
 //        mViewPager.setOffscreenPageLimit(4);
         Bundle args = getArguments();
         if (args != null && args.getString("OrderType")!=null) {
-           String type = args.getString("OrderType","0");    // 订单类型  0 新订单 1预约单
-            if (type.equals("1"))
-                mOrderGroup.check(R.id.takingOrder);
-            else if (type.equals("0"))
+           String type = args.getString("OrderType","0");    // 订单类型  0 当日单 1预约单
+            boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);
+            if (isAutoReceiveOrder) {
+                if (type.equals("1")) {
+                    mOrderGroup.check(R.id.takingOrder);
+                    showTileTaking();
+                } else {
+                    mOrderGroup.check(R.id.todayOrder);
+                    hideTileTaking(true);
+                }
+
+            } else {
                 mOrderGroup.check(R.id.newOrder);
+                hideTileTaking(false);
+            }
         } else {
             mOrderGroup.check(R.id.newOrder);
+            hideTileTaking(false);
         }
     }
 
