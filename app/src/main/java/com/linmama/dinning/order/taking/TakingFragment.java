@@ -12,11 +12,13 @@ import android.widget.Toast;
 import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
+import com.linmama.dinning.base.CommonActivity;
 import com.linmama.dinning.bean.DataSynEvent;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.except.ApiException;
+import com.linmama.dinning.order.ordercompletesearch.OrderCompleteFragment;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.url.Constants;
@@ -198,57 +200,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 
     @Override
     public void onCompleteOrder(final TakingOrderBean bean) {
-        mAlert = new MyAlertDialog(mActivity).builder()
-                .setTitle("接单并打印小票")
-                .setConfirmButton("是", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        BaseModel.httpService.finishOrder(bean.id + "").compose(new CommonTransformer())
-                                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                                    @Override
-                                    public void onNext(String msg) {
-                                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-                                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-                                            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
-                                            if (rb.id == bean.id) {
-                                                mAdapter.removeItem(i);
-                                                mAdapter.notifyDataSetChanged();
-
-                                                if (null != mPresenter) {
-                                                    mPresenter.getPrintData(bean.id);
-                                                }
-
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(ApiException e) {
-                                        super.onError(e);
-                                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                                        final StringBuilder builder = new StringBuilder();
-
-                                        builder.append("这是一个测!!!!");
-
-                                        if (PrintDataService.isConnection()) {
-                                            PrintDataService.send(builder.toString());
-                                            dismissDialog();
-                                            return;
-                                        } else {
-                                            dismissDialog();
-                                        }
-
-                                    }
-                                });
-                    }
-                }).setPositiveButton("否", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-        mAlert.show();
+        CommonActivity.start(mActivity,OrderCompleteFragment.class,new Bundle());
     }
 
 //    @Override

@@ -13,6 +13,7 @@ import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.TakingOrderAdapter;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
+import com.linmama.dinning.base.CommonActivity;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.OrderItemsBean;
 import com.linmama.dinning.bean.ResultsBean;
@@ -20,6 +21,7 @@ import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.bluetooth.PrintDataService;
 import com.linmama.dinning.except.ApiException;
+import com.linmama.dinning.order.ordercompletesearch.OrderCompleteFragment;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.url.Constants;
@@ -308,40 +310,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
 
     @Override
     public void onCompleteOrder(final TakingOrderBean bean) {
-        mAlert = new MyAlertDialog(mActivity).builder()
-                .setTitle("接单并打印小票")
-                .setConfirmButton("是", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        BaseModel.httpService.finishOrder(bean.id + "").compose(new CommonTransformer())
-                                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                                    @Override
-                                    public void onNext(String msg) {
-                                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-                                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-                                            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
-                                            if (rb.id == bean.id) {
-                                                mAdapter.removeItem(i);
-                                                mAdapter.notifyDataSetChanged();
-                                                return;
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(ApiException e) {
-                                        super.onError(e);
-                                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }
-                }).setPositiveButton("否", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-        mAlert.show();
+        CommonActivity.start(mActivity,OrderCompleteFragment.class,new Bundle());
     }
 
     @Override
