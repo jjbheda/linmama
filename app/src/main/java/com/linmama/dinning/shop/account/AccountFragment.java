@@ -1,6 +1,8 @@
 package com.linmama.dinning.shop.account;
 
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
 import com.linmama.dinning.R;
@@ -39,6 +41,9 @@ public class AccountFragment extends BasePresenterFragment<AccountPresenter> imp
     TextView mHistoryTv;
     @BindView(R.id.nearly_account_tv)
     TextView mNearlyAccountTv;
+
+    @BindView(R.id.titleGoods)
+    Toolbar toolbar;
 
     int type = 0;
     @Override
@@ -122,6 +127,12 @@ public class AccountFragment extends BasePresenterFragment<AccountPresenter> imp
                     type = 1;
                     mPresenter.getHistoryBillQueryData(currentPage, type);
                 }
+            }
+        });
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActivity.finish();
             }
         });
     }

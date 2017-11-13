@@ -1,6 +1,8 @@
 package com.linmama.dinning.shop;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 
 import com.linmama.dinning.LmamaApplication;
@@ -48,6 +50,8 @@ public class ShopSaleParseFragment extends BaseFragment {
     SettingItem mBusinessCount;
     @BindView(R.id.dishes_parse)
     SettingItem mDishesParse;
+    @BindView(R.id.titleGoods)
+    Toolbar toolbar;
 
     @Override
     protected int getLayoutResID() {
@@ -93,7 +97,12 @@ public class ShopSaleParseFragment extends BaseFragment {
 
     @Override
     protected void initListener() {
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActivity.finish();
+            }
+        });
     }
 
     private void showUI(ShopSaleParseBean bean) {

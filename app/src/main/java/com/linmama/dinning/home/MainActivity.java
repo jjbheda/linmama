@@ -133,7 +133,7 @@ public class MainActivity extends BaseActivity {
             }
         });
         String btAddress = (String) SpUtils.get(Constants.BT_ADDRESS, "");
-        if (!TextUtils.isEmpty(btAddress) && !PrintDataService.isConnection()) {
+        if (!PrintDataService.isConnection()) {
             AsyncTaskUtils.doProgressAsync(this, ProgressDialog.STYLE_SPINNER, "请稍后...", "正在连接票据打印机",
                     new CallEarliest<Void>() {
 

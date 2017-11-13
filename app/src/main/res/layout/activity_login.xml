@@ -8,7 +8,7 @@
         style="@style/BothWrap"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:src="@mipmap/logo" />
+        android:src="@mipmap/ic_laucher_lin" />
 
     <com.linmama.dinning.widget.ClearEditText
         android:id="@+id/loginName"
