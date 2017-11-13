@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.utils.ContectUtils;
+import com.linmama.dinning.utils.TimeUtils;
 
 import java.util.List;
 
@@ -92,9 +94,11 @@ public class NewOrderAdapter extends BaseAdapter {
                 holder1.order_goods_lt = (LinearLayout) view.findViewById(R.id.order_goods_lt);
                 holder1.order_time_list = (LinearLayout) view.findViewById(R.id.order_time_list);
                 holder1.phone_lt = (LinearLayout) view.findViewById(R.id.phone_lt);
+                holder1.address_icon = (ImageView) view.findViewById(R.id.address_iv);
                 holder1.ok = (TextView) view.findViewById(R.id.btnOrderCommit);
                 holder1.cancel = (TextView) view.findViewById(R.id.btnNewCancel2);
                 holder1.shrint_btn = (TextView) view.findViewById(R.id.shrint_tv);
+                holder1.btnPrint = (TextView) view.findViewById(R.id.btnPrint);
                 holder1.goods_shrink_lt = (LinearLayout) view.findViewById(R.id.goods_shrink_lt);
                 view.setTag(holder1);
         } else {
@@ -108,9 +112,15 @@ public class NewOrderAdapter extends BaseAdapter {
         }
         holder1.tv_name.setText(bean.user.user_name);
         holder1.table_num.setText(bean.order_no+"");
-        holder1.order_time.setText(bean.order_datetime_bj);
+        holder1.order_time.setText("下单时间 : "+bean.order_datetime_bj);
         holder1.tv_order_status.setText("等待处理");
         holder1.parcel_iv.setText(bean.is_for_here.equals("0")?"自取":"堂食");
+
+        if (bean.is_for_here.equals("0")){
+            holder1.address_icon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.address_iv));
+        } else {
+            holder1.address_icon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.address_logo));
+        }
         if (bean.remark.equals("")) {
             holder1.tv_remark.setVisibility(View.GONE);
         } else {
@@ -164,6 +174,10 @@ public class NewOrderAdapter extends BaseAdapter {
         holder1.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!TimeUtils.isTimeLargeThanTenMinutes(bean.order_datetime_bj)){
+                    Toast.makeText(mContext,"10分钟内不允许取消",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (mCancelOrder!=null){
                     mCancelOrder.onCancelOrder(bean);
                 }
@@ -177,11 +191,13 @@ public class NewOrderAdapter extends BaseAdapter {
                 }
             }
         });
+        holder1.btnPrint.setVisibility(View.GONE);
         return view;
     }
 
     private static class ViewHolder1 {
         TextView tv_name;
+        ImageView address_icon;
         TextView order_time;
         TextView tv_order_status;
         TextView table_num;
@@ -199,6 +215,7 @@ public class NewOrderAdapter extends BaseAdapter {
         TextView tv_serial_number;
         TextView cancel;
         TextView ok;
+        TextView btnPrint;
     }
 
     public void setCommitOrder(ICommitOrder commitOrder){

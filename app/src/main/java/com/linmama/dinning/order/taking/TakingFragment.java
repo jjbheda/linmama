@@ -150,7 +150,8 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
             List<TakingOrderBean> results = resultBean.data;
             mResults.addAll(results);
             if (currentPage == 1 && results.size() == 0) {
-                mPtrTaking.getHeader().setVisibility(View.GONE);
+                if (mPtrTaking.getHeader()!= null)
+                    mPtrTaking.getHeader().setVisibility(View.GONE);
                 if (mAdapter != null) {
                     mAdapter.notifyDataSetChanged();
                 }
@@ -213,7 +214,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                                                 mAdapter.removeItem(i);
                                                 mAdapter.notifyDataSetChanged();
 
-
                                                 if (null != mPresenter) {
                                                     mPresenter.getPrintData(bean.id);
                                                 }
@@ -225,7 +225,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                                     @Override
                                     public void onError(ApiException e) {
                                         super.onError(e);
-                                        Toast.makeText(mActivity, "确定订单失败", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
 
                                         final StringBuilder builder = new StringBuilder();
 

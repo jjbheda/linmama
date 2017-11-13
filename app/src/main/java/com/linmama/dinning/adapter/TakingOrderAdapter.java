@@ -108,15 +108,20 @@ public class TakingOrderAdapter extends BaseAdapter {
         }
         holder1.tv_name.setText(bean.user.user_name);
         holder1.table_num.setText(bean.order_no+"");
-        holder1.order_time.setText(bean.order_datetime_bj);
+        holder1.order_time.setText("下单时间 : "+bean.order_datetime_bj);
         holder1.parcel_iv.setText(bean.is_for_here.equals("0") ? "自取" : "堂食");
         if (mOrderStyle == 1){
             holder1.table_num.setBackgroundColor(mContext.getResources().getColor(R.color.colorOrderTake));
-            holder1.address_icon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.address_iv));
         } else {
             holder1.table_num.setBackgroundColor(mContext.getResources().getColor(R.color.actionsheet_red));
+        }
+
+        if (bean.is_for_here.equals("0")){
+            holder1.address_icon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.address_iv));
+        } else {
             holder1.address_icon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.address_logo));
         }
+
         holder1.tv_order_status.setText(bean.is_ensure_order.equals("0")?"未接单":"已接单");
         holder1.tv_remark.setText(bean.remark);
         holder1.haspay_tv.setText(bean.pay_amount);

@@ -40,7 +40,7 @@ import static com.linmama.dinning.base.BaseModel.httpService;
  * Created by jiangjingbo on 2017/11/8.
  */
 
-public class AccountDetailFragment extends BasePresenterFragment<AccountPresenter> implements AccountContract.AccountView, GetMoreListView.OnGetMoreListener {
+public class AccountDetailFragment extends BasePresenterFragment<AccountPresenter> implements GetMoreListView.OnGetMoreListener {
     private List<SingleAccountItemBean> mResults = new ArrayList<>();
     private String date = "";
     private int currentPage = 1;
@@ -66,42 +66,6 @@ public class AccountDetailFragment extends BasePresenterFragment<AccountPresente
     int type;
 
     @Override
-    public void AccountGetSuccess(List<AccountBeanItem> beans) {
-//        dismissDialog();
-//        if (currentPage == 1 && mPtrAccount.isRefreshing()) {
-//            mPtrAccount.refreshComplete();
-//        }
-//        if (currentPage == 1) {
-//            mResults.clear();
-//        }
-//
-//        LogUtils.d("getAccountSuccess", beans.toString());
-//        List<AccountBeanItem> results = beans;
-//        mResults.addAll(results);
-//        if (null == mAdapter) {
-//            mAdapter = new AccountAdapter(mActivity, mResults);
-//            mLvAccount.setAdapter(mAdapter);
-//        } else {
-//            mAdapter.notifyDataSetChanged();
-//            if (currentPage > 1) {
-//                mLvAccount.getMoreComplete();
-//            }
-//        }
-//        if (beans.size() <= 20) {
-//            mLvAccount.setNoMore();
-//            last_page = currentPage;
-//        }
-    }
-
-    @Override
-    public void AccountGetFail(String failMsg) {
-//        dismissDialog();
-//        if (!TextUtils.isEmpty(failMsg)) {
-//            ViewUtils.showSnack(mPtrAccount, failMsg);
-//        }
-    }
-
-    @Override
     protected AccountPresenter loadPresenter() {
         return new AccountPresenter();
     }
@@ -113,49 +77,40 @@ public class AccountDetailFragment extends BasePresenterFragment<AccountPresente
 
     @Override
     protected void initView() {
-//        final WindmillHeader header = new WindmillHeader(mActivity);
-//        mPtrAccount.setHeaderView(header);
-//        mPtrAccount.addPtrUIHandler(header);
         Bundle bundle = getArguments();
-        if (bundle!=null){
-            date = bundle.getString("Date","");
+        if (bundle != null) {
+            date = bundle.getString("Date", "");
         }
-
         showDialog("加载中...");
-        httpService.getBillDetailData(date)
-                .compose(new CommonTransformer<AccountBeanItem>())
-                .subscribe(new CommonSubscriber<AccountBeanItem>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(AccountBeanItem bean) {
-                        dismissDialog();
-                        if (bean != null){
-                            showUI(bean);
-                        }
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        dismissDialog();
-                    }
-                });
-
-        getNormalData();
-
         final WindmillHeader header = new WindmillHeader(mActivity);
         mPtrAccount.setHeaderView(header);
         mPtrAccount.addPtrUIHandler(header);
     }
 
     @OnClick(R.id.normal_item)
-    protected void getNormalData(){
-        httpService.getBillDetailListData(currentPage,date,0)
+    protected void getNormalData() {
+        type = 0;
+        mResults.clear();
+        currentPage = 1;
+        getListData();
+    }
+
+    @OnClick(R.id.redress_item)
+    public void getRedressData(){
+        type = 1;
+        mResults.clear();
+        currentPage = 1;
+        getListData();
+    }
+
+    public void getListData(){
+        httpService.getBillDetailListData(currentPage, date, type)
                 .compose(new CommonTransformer<SingleAccountBean>())
                 .subscribe(new CommonSubscriber<SingleAccountBean>(LmamaApplication.getInstance()) {
-                    @Override
+                        @Override
                     public void onNext(SingleAccountBean bean) {
                         dismissDialog();
-                        if (bean != null){
+                        if (bean != null) {
                             showLtUI(bean);
                         }
                     }
@@ -167,6 +122,26 @@ public class AccountDetailFragment extends BasePresenterFragment<AccountPresente
                     }
                 });
     }
+    public void getBaseData(){
+        httpService.getBillDetailData(date)
+                .compose(new CommonTransformer<AccountBeanItem>())
+                .subscribe(new CommonSubscriber<AccountBeanItem>(LmamaApplication.getInstance()) {
+                    @Override
+                    public void onNext(AccountBeanItem bean) {
+                        dismissDialog();
+                        if (bean != null) {
+                            showUI(bean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiException e) {
+                        super.onError(e);
+                        dismissDialog();
+                    }
+                });
+    }
+
     @Override
     protected void initListener() {
         mLvAccount.setOnGetMoreListener(this);
@@ -176,7 +151,7 @@ public class AccountDetailFragment extends BasePresenterFragment<AccountPresente
                 if (null != mPresenter) {
                     mResults.clear();
                     currentPage = 1;
-                    getNormalData();
+                    getListData();
                 }
             }
         });
@@ -184,17 +159,18 @@ public class AccountDetailFragment extends BasePresenterFragment<AccountPresente
 
     @Override
     protected void initData() {
-//        mPresenter.getHistoryBillQueryData(1, 0);
+        getBaseData();
+        getListData();
     }
 
     @Override
     public void onGetMore() {
-//        if (currentPage == last_page) {
-//            mLvAccount.setNoMore();
-//            return;
-//        }
-//        currentPage++;
-//        mPresenter.getHistoryBillQueryData(currentPage, 0);
+        if (currentPage == last_page) {
+            mLvAccount.setNoMore();
+            return;
+        }
+        currentPage++;
+        mPresenter.getHistoryBillQueryData(currentPage, 0);
     }
 
     private void showLtUI(SingleAccountBean bean) {
@@ -204,9 +180,9 @@ public class AccountDetailFragment extends BasePresenterFragment<AccountPresente
         if (currentPage == 1) {
             mResults.clear();
         }
-
+        last_page  =bean.last_page;
         LogUtils.d("getAccountSuccess", bean.data.toString());
-        List<SingleAccountItemBean> results =  bean.data;
+        List<SingleAccountItemBean> results = bean.data;
         mResults.addAll(results);
         if (null == mAdapter) {
             mAdapter = new SingleAccountAdapter(mActivity, mResults);
@@ -216,15 +192,17 @@ public class AccountDetailFragment extends BasePresenterFragment<AccountPresente
             if (currentPage > 1) {
                 mLvAccount.getMoreComplete();
             }
+            if (currentPage == last_page) {
+                mLvAccount.setNoMore();
+            }
         }
     }
 
-
-    public void showUI(AccountBeanItem bean){
+    public void showUI(AccountBeanItem bean) {
         turnover_tag.setText(bean.date);
         today_turnover.setText(bean.income);
         flag_turnover.setText(bean.text);
-        normal_item.setText("正常单\n"+bean.income);
-        redress_item.setText("调整单\n"+bean.income_invalid);
+        normal_item.setText("正常单\n" + bean.income);
+        redress_item.setText("调整单\n" + bean.income_invalid);
     }
 }

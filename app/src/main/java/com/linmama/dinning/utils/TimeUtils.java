@@ -1,5 +1,6 @@
 package com.linmama.dinning.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,6 +17,22 @@ public class TimeUtils {
 
     private TimeUtils() {
         throw new AssertionError();
+    }
+
+    public static boolean isTimeLargeThanTenMinutes (String time2){
+        boolean flag = false;
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date now = new Date();
+            Date date=df.parse(time2);
+            long l=now.getTime()-date.getTime();
+            if(l/(60*1000)>= 10) {
+                flag = true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return flag;
     }
 
     /**

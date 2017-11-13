@@ -1,5 +1,6 @@
 package com.linmama.dinning.shop;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -9,12 +10,20 @@ import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.R;
 import com.linmama.dinning.base.BaseFragment;
 import com.linmama.dinning.base.CommonActivity;
+import com.linmama.dinning.bluetooth.PrintDataService;
 import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.goods.GoodsFragment;
+import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.shop.account.AccountFragment;
 import com.linmama.dinning.shop.bean.ShopBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
+import com.linmama.dinning.utils.ViewUtils;
+import com.linmama.dinning.utils.asynctask.AsyncTaskUtils;
+import com.linmama.dinning.utils.asynctask.CallEarliest;
+import com.linmama.dinning.utils.asynctask.Callback;
+import com.linmama.dinning.utils.asynctask.IProgressListener;
+import com.linmama.dinning.utils.asynctask.ProgressCallable;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -46,6 +55,12 @@ public class ShopManagerFragment extends BaseFragment {
     RelativeLayout mShopParse;
     @BindView(R.id.reconciliation_rt)
     RelativeLayout mShopReconciliation;
+
+    @BindView(R.id.print_status_tv)
+    TextView mPrintStatusTv;
+
+    @BindView(R.id.iv_print)
+    ImageView mPrintIv;
 
     @Override
     protected int getLayoutResID() {
@@ -87,6 +102,41 @@ public class ShopManagerFragment extends BaseFragment {
                         dismissDialog();
                     }
                 });
+
+        if (!PrintDataService.isConnection()) {
+            AsyncTaskUtils.doProgressAsync(mActivity, ProgressDialog.STYLE_SPINNER, "请稍后...", "正在连接票据打印机",
+                    new CallEarliest<Void>() {
+
+                        @Override
+                        public void onCallEarliest() throws Exception {
+
+                        }
+
+                    }, new ProgressCallable<Void>() {
+
+                        @Override
+                        public Void call(IProgressListener pProgressListener)
+                                throws Exception {
+                            PrintDataService.init();
+                            return null;
+                        }
+
+                    }, new Callback<Void>() {
+
+                        @Override
+                        public void onCallback(Void pCallbackValue) {
+                            if (PrintDataService.isConnection()) {
+                                ViewUtils.showToast(mActivity, "已连接票据打印机");
+                                mPrintStatusTv.setText("已连接");
+                                mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_has_connect));
+                            } else {
+                                ViewUtils.showToast(mActivity, "票据打印机连接失败");
+                                mPrintStatusTv.setText("未连接");
+                                mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_pos));
+                            }
+                        }
+                    });
+        }
     }
 
     @Override

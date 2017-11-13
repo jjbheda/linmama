@@ -125,7 +125,8 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
             LogUtils.d("getTakingOrderSuccess", resultBean.data.toString());
             mResults.addAll(resultBean.data);
             if (currentPage == 1 && mResults.size() == 0) {
-                mPtrTaking.getHeader().setVisibility(View.GONE);
+                if (mPtrTaking.getHeader()!= null)
+                     mPtrTaking.getHeader().setVisibility(View.GONE);
                 if (mAdapter != null) {
                     mAdapter.notifyDataSetChanged();
                 }
@@ -330,7 +331,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
                                     @Override
                                     public void onError(ApiException e) {
                                         super.onError(e);
-                                        Toast.makeText(mActivity, "确定订单失败", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     }

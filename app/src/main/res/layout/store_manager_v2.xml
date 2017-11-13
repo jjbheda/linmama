@@ -45,6 +45,7 @@
             style="@style/shop_manage_lt">
 
             <ImageView
+                android:id="@+id/iv_print"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon_has_connect"
@@ -52,14 +53,14 @@
                 />
 
             <TextView
+                android:id="@+id/print_status_tv"
                 style="@style/TextViewNewOrderNotes"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:textColor="#259B24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:text="已连接"
-                />
+                android:textColor="#259B24" />
         </LinearLayout>
 
         <LinearLayout
