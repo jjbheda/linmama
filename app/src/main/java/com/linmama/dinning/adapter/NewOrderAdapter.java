@@ -121,6 +121,13 @@ public class NewOrderAdapter extends BaseAdapter {
         } else {
             holder1.address_icon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.address_logo));
         }
+
+        if (bean.order_type.equals("1")){
+            holder1.table_num.setBackgroundColor(mContext.getResources().getColor(R.color.colorOrderTake));
+        } else {
+            holder1.table_num.setBackgroundColor(mContext.getResources().getColor(R.color.actionsheet_red));
+        }
+
         if (bean.remark.equals("")) {
             holder1.tv_remark.setVisibility(View.GONE);
         } else {

@@ -200,7 +200,27 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 
     @Override
     public void onCompleteOrder(final TakingOrderBean bean) {
-        CommonActivity.start(mActivity,OrderCompleteFragment.class,new Bundle());
+
+        BaseModel.httpService.finishOrder(bean.id + "").compose(new CommonTransformer())
+                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                               @Override
+                               public void onNext(String msg) {
+                                   Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+                                   for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+                                       TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
+                                       if (rb.id == bean.id) {
+                                           mAdapter.removeItem(i);
+                                           mAdapter.notifyDataSetChanged();
+                                       }
+                                   }
+                               }
+
+                               @Override
+                               public void onError(ApiException e) {
+                                   super.onError(e);
+                                   Toast.makeText(mActivity,e.getMessage(),Toast.LENGTH_SHORT).show();
+                               }
+                           });
     }
 
 //    @Override
@@ -401,15 +421,16 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     @Override
     public void completeOrderSuccess(String orderId) {
         dismissDialog();
-        ViewUtils.showSnack(mPtrTaking, "完成订单");
-        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-            ResultsBean rb = (ResultsBean) mAdapter.getItem(i);
-            if (String.valueOf(rb.getId()).equals(orderId)) {
-                mAdapter.removeItem(i);
-                mAdapter.notifyDataSetChanged();
-                return;
-            }
-        }
+//        ViewUtils.showSnack(mPtrTaking, "完成订单");
+//        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+//            ResultsBean rb = (ResultsBean) mAdapter.getItem(i);
+//            if (String.valueOf(rb.getId()).equals(orderId)) {
+//                mAdapter.removeItem(i);
+//                mAdapter.notifyDataSetChanged();
+//                return;
+//            }
+//        }
+        CommonActivity.start(mActivity,OrderCompleteFragment.class,new Bundle());
     }
 
     @Override

@@ -225,19 +225,16 @@
                 android:id="@+id/goods_shrink_lt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#F0F0F0"
                 android:orientation="vertical"
-                android:paddingBottom="5dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="5dp">
+                android:background="@color/commonWhile">
 
                 <TextView
                     android:id="@+id/tv_remark"
                     style="@style/TextViewNewOrder"
+                    android:background="#F0F0F0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
+                    android:padding="8dp"
                     android:text="备注：按时送达，晚了单位没人了" />
 
                 <LinearLayout
