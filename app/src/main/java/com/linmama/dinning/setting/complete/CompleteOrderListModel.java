@@ -19,20 +19,20 @@ public class CompleteOrderListModel extends BaseModel {
         if (hint == null)
             throw new RuntimeException("CompleteOrderListHint cannot be null.");
 
-        httpService.getCompletedOrderList(page)
-                .compose(new CommonTransformer<CompleteOrderBean>())
-                .subscribe(new CommonSubscriber<CompleteOrderBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(CompleteOrderBean bean) {
-                        hint.successCompleteListOrder(bean);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failCompleteListOrder(e.getMessage());
-                    }
-                });
+//        httpService.getCompletedOrderList(page)
+//                .compose(new CommonTransformer<CompleteOrderBean>())
+//                .subscribe(new CommonSubscriber<CompleteOrderBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(CompleteOrderBean bean) {
+//                        hint.successCompleteListOrder(bean);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failCompleteListOrder(e.getMessage());
+//                    }
+//                });
     }
 
     public interface CompleteOrderListHint {

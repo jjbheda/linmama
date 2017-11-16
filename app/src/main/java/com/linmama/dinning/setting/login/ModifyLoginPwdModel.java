@@ -20,20 +20,20 @@ public class ModifyLoginPwdModel extends BaseModel {
         if (null == hint)
             throw new RuntimeException("ModifyLoginPwdHint cannot be null.");
 
-        httpService.modifyPassword(oldPwd, newPwd)
-                .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(DataBean bean) {
-                        hint.successModifyLoginPwd(bean);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failModifyLoginPwd(e.getMessage());
-                    }
-                });
+//        httpService.modifyPassword(oldPwd, newPwd)
+//                .compose(new CommonTransformer<DataBean>())
+//                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(DataBean bean) {
+//                        hint.successModifyLoginPwd(bean);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failModifyLoginPwd(e.getMessage());
+//                    }
+//                });
     }
 
     public interface ModifyLoginPwdHint {

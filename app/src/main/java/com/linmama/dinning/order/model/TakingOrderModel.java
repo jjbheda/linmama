@@ -15,7 +15,7 @@ import java.util.List;
 
 public class TakingOrderModel extends BaseModel {
 
-    public void getTakingOrder(int range, @NonNull final TakingOrderHint hint) {
+    public void getTakingOrder(int page,int order_type, int range,@NonNull final TakingOrderHint hint) {
 
         if (hint == null)
             throw new RuntimeException("TakingOrderHint cannot be null.");

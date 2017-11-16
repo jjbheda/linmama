@@ -5,6 +5,9 @@ package com.linmama.dinning.bean;
  */
 
 public class DataSynEvent {
+    public DataSynEvent(){
+    }
+
     public DataSynEvent (boolean shouldUpdateData){
         this.shouldUpdateData = shouldUpdateData;
     }
@@ -18,4 +21,13 @@ public class DataSynEvent {
     }
 
     private boolean shouldUpdateData;
+    private boolean autoReceiveorderIsSet;
+
+    public boolean isAutoReceiveorderIsSet() {
+        return autoReceiveorderIsSet;
+    }
+
+    public void setAutoReceiveorderIsSet(boolean autoReceiveorderIsSet) {
+        this.autoReceiveorderIsSet = autoReceiveorderIsSet;
+    }
 }

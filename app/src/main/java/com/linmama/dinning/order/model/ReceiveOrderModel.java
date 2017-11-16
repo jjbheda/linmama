@@ -19,20 +19,20 @@ public class ReceiveOrderModel extends BaseModel {
         if (hint == null)
             throw new RuntimeException("ReceiveHint cannot be null.");
 
-        httpService.receivingOrder(orderId)
-                .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(DataBean bean) {
-                        hint.successReceive(orderId);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failReceive(e.getMessage());
-                    }
-                });
+//        httpService.receivingOrder(orderId)
+//                .compose(new CommonTransformer<DataBean>())
+//                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(DataBean bean) {
+//                        hint.successReceive(orderId);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failReceive(e.getMessage());
+//                    }
+//                });
     }
 
     public interface ReceiveHint {

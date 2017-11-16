@@ -13,16 +13,16 @@ import com.linmama.dinning.subscriber.CommonSubscriber;
  * Created by jingkang on 2017/3/10
  */
 public class CompleteOrderModel extends BaseModel {
-    public void completeWarn(@NonNull final String orderId, @NonNull final CompleteHint hint) {
+    public void completeOrder(@NonNull final String orderId, @NonNull final CompleteHint hint) {
 
         if (hint == null)
             throw new RuntimeException("CompleteHint cannot be null.");
 
-        httpService.completeOrder(orderId)
-                .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
+        httpService.finishOrder(orderId)
+                .compose(new CommonTransformer())
+                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
                     @Override
-                    public void onNext(DataBean bean) {
+                    public void onNext(String bean) {
                         hint.successComplete(orderId);
                     }
 

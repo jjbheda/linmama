@@ -30,7 +30,7 @@ public class TakingOrderContract {
     }
 
     public interface TakingOrderPresenter {
-        void getTakingOrder(int page);
+        void getTakingOrder(int page,int order_type,int range);
     }
 
     public interface ConfirmPayPresenter {
@@ -42,7 +42,7 @@ public class TakingOrderContract {
 //    }
 
     public interface CompleteOrderPresenter {
-        void completeOrder(String warnId);
+        void completeOrder(String id);
     }
 
     public interface PrintPresenter {

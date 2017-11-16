@@ -129,7 +129,7 @@ public class OrderFragment extends BasePresenterFragment implements
         mViewPager.setAdapter(mAdapter);
 //        mViewPager.setOffscreenPageLimit(4);
         Bundle args = getArguments();
-        if (args != null && args.getString("OrderType")!=null) {
+        if (args != null && args.getString("OrderType")!=null) {        //订单推送
            String type = args.getString("OrderType","0");    // 订单类型  0 当日单 1预约单
             boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);
             if (isAutoReceiveOrder) {
@@ -263,20 +263,20 @@ public class OrderFragment extends BasePresenterFragment implements
             case R.id.order_today_title_tv:
                 if (mTakingFragment!=null){
                     mTakingFragment.setRange(0);
-                    mTakingFragment.getPresenter().getTakingOrder(0);
+                    mTakingFragment.getPresenter().getTakingOrder(1,1,0);
                 }
                 break;
             case R.id.order_tomorrow_title_tv:
                 if (mTakingFragment!=null){
                     mTakingFragment.setRange(1);
-                    mTakingFragment.getPresenter().getTakingOrder(1);
+                    mTakingFragment.getPresenter().getTakingOrder(1,1,1);
                 }
                 break;
 
             case R.id.order_all_title_tv:
                 if (mTakingFragment!=null){
                     mTakingFragment.setRange(2);
-                    mTakingFragment.getPresenter().getTakingOrder(2);
+                    mTakingFragment.getPresenter().getTakingOrder(1,1,2);
                 }
                 break;
             default:
@@ -295,7 +295,6 @@ public class OrderFragment extends BasePresenterFragment implements
         tvName.setBackgroundColor(Color.WHITE);
         lastSelectView = tvName;
     }
-
 
     @Override
     public void newHint() {

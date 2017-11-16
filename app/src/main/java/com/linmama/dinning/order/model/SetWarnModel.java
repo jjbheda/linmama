@@ -19,20 +19,20 @@ public class SetWarnModel extends BaseModel {
         if (hint == null)
             throw new RuntimeException("SetWarnHint不能为空");
 
-        httpService.setWarn(orderId, warn_time, warn_type)
-                .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(DataBean dataBean) {
-                        hint.successSetWarn(dataBean);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failSetWarn(e.getMessage());
-                    }
-                });
+//        httpService.setWarn(orderId, warn_time, warn_type)
+//                .compose(new CommonTransformer<DataBean>())
+//                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(DataBean dataBean) {
+//                        hint.successSetWarn(dataBean);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failSetWarn(e.getMessage());
+//                    }
+//                });
     }
 
     public interface SetWarnHint {

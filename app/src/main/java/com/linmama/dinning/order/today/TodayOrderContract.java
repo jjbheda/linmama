@@ -17,6 +17,12 @@ public class TodayOrderContract {
         void getTodayOrderSuccess(TakingOrderMenuBean resultBean);
         void getTodayOrderFail(String failMsg);
     }
+
+    public interface CompleteOrderView {
+        void completeOrderSuccess(String orderId);
+        void completeOrderFail(String failMsg);
+    }
+
     public interface PrintView {
         void getPrintDataSuccess(OrderDetailBean bean);
 
@@ -27,7 +33,8 @@ public class TodayOrderContract {
         void getTodayOrder(int page);
     }
 
-    public interface PrintPresenter {
-        void getPrintData(int orderId);
+    public interface CompleteOrder {
+        void completeOrder(String id);
     }
+
 }

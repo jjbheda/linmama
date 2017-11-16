@@ -47,6 +47,7 @@ public interface HttpService {
     @POST("login/")
     Observable<BaseHttpResult<LoginBean>> login(@Field("username") String username,
                                                 @Field("password") String pwd);
+
     //2	新订单列表接口
     @POST("newOrderList/")
     Observable<BaseHttpResult<List<LResultNewOrderBean>>> getNewOrder();
@@ -62,6 +63,11 @@ public interface HttpService {
     @POST("receivedQuery/")
     Observable<BaseHttpResult<TakingOrderMenuBean>> orderQuery(@Query("page") int page, @Field("order_type") int order_type
             , @Field("search") String search);
+
+    //处理中订单 取消订单        type：0 新订单中取消订单  1 预约单和当日单中取消取订单
+    @FormUrlEncoded
+    @POST("cancelOrder/")
+    Observable<BaseHttpResult> cancelOrder(@Field("id") int id,@Field("type") int type);
 
     //已完成订单查询    搜索接口    搜索条件 订单号、用户名、电话号码
     @FormUrlEncoded
@@ -114,7 +120,7 @@ public interface HttpService {
     //菜品分类下对应的菜品
     @FormUrlEncoded
     @POST("productList/")
-    Observable<BaseHttpResult<ShopTotalBean>> getProductlistById(@Query("page") int page,@Field("id") int id);
+    Observable<BaseHttpResult<ShopTotalBean>> getProductlistById(@Query("page") int page, @Field("id") int id);
 
     //商品搜索
     @FormUrlEncoded
@@ -157,7 +163,7 @@ public interface HttpService {
     //我的账单--账单详情
     @FormUrlEncoded
     @POST("billDetail/")
-    Observable<BaseHttpResult<AccountBeanItem>> getBillDetailData( @Field("date") String date);
+    Observable<BaseHttpResult<AccountBeanItem>> getBillDetailData(@Field("date") String date);
 
     //我的账单--账单详情 --订单列表  type: 0//0 正常单  1调整单 默认查询正常单
     @FormUrlEncoded
@@ -175,113 +181,4 @@ public interface HttpService {
     Observable<BaseHttpResult> openOrClose(@Field("status") int status);
 
 
-
-
-    //4	提醒列表接口
-    @GET("orderWarnList/")
-    Observable<BaseHttpResult<RemindBean>> getWarnOrder();
-
-    //5	退单列表接口
-    @GET("refundApplicationList/")
-    Observable<BaseHttpResult<List<QuitOrderBean>>> getQuitOrder();
-
-    //6	未支付订单列表接口
-    @GET("nonPaymentOrderList/")
-    Observable<BaseHttpResult<NonPayOrderBean>> getNonPayOrder();
-
-    //7	接单接口
-    @FormUrlEncoded
-    @POST("receivingOrder/")
-    Observable<BaseHttpResult<DataBean>> receivingOrder(@Field("order_id") String order_id);
-
-    //8	取消订单接口 Id: id//返回的订单id  Type：0 新订单中取消订单  1 预约单和当日单中取消取订单
-    @FormUrlEncoded
-    @POST("cancelOrder/")
-    Observable<BaseHttpResult> cancelOrder(@Field("id") String id,@Field("type") int type);
-
-    //9	确认支付接口
-    @FormUrlEncoded
-    @POST("confirmPayment/")
-    Observable<BaseHttpResult<DataBean>> confirmPayment(@Field("order_id") String order_id,
-        @Field("operation_password") String operation_password);
-
-    //10	设置备菜提醒接口
-    @FormUrlEncoded
-    @POST("setWarn/")
-    Observable<BaseHttpResult<DataBean>> setWarn(@Field("order_id") String order_id,
-        @Field("warn_time") String warn_time, @Field("warn_type") String warn_type);
-
-    //11	取消备菜提醒接口
-    @FormUrlEncoded
-    @POST("cancelWarn/")
-    Observable<BaseHttpResult<DataBean>> cancelWarn(@Field("warn_id") String warn_id);
-
-    //12	提醒已知晓接口
-    @FormUrlEncoded
-    @POST("handleWarn/")
-    Observable<BaseHttpResult<DataBean>> handleWarn(@Field("warn_id") String order_id);
-
-    //13	同意退款接口
-    @FormUrlEncoded
-    @POST("refund/")
-    Observable<BaseHttpResult<DataBean>> refund(@Field("refund_id") String refund_id, @Field("operation_password") String operation_password);
-
-    //14	拒绝退款接口
-    @FormUrlEncoded
-    @POST("refusedRefund/")
-    Observable<BaseHttpResult<DataBean>> refusedRefund(@Field("refund_id") String refund_id, @Field("reason") String reason);
-
-
-    //18	菜品搜索接口
-    @GET("menuItemList/")
-    Observable<BaseHttpResult<SarchItemBean>> searchMenuItem(@Query("search") String keyword);
-
-    //19	营业额统计接口
-    @GET("turnoverReport/")
-    Observable<BaseHttpResult<SaleReportBean>> turnoverReport();
-
-    //20	销售排行接口 ?day=2017-03-08
-
-    @GET("salesRanking/")
-    Observable<BaseHttpResult<SaleRankBean>> getSalesRank(@Query("day") String day);
-
-    //21	提交投诉建议接口
-    @FormUrlEncoded
-    @POST
-    Observable<BaseHttpResult<DataBean>> submitAdvice(@Url String url, @Field("content") String content);
-
-    //22	修改登录密码接口
-    @FormUrlEncoded
-    @POST("modifyPassword/")
-    Observable<BaseHttpResult<DataBean>> modifyPassword(@Field("old_password") String old_password,
-        @Field("new_password") String new_password);
-
-    //23	修改操作密码接口
-    @FormUrlEncoded
-    @POST("modifyOperationPassword/")
-    Observable<BaseHttpResult<DataBean>> modifyOperationPassword(@Field("old_password") String old_password,
-        @Field("new_password") String new_password);
-
-    //24	订单详情接口
-    @GET("orderList/{id}/")
-    Observable<BaseHttpResult<OrderDetailBean>> getOrderDetail(@Path("id") int orderId);
-
-
-
-    //32	月销售额排行
-    @GET("monthSalesRanking/")
-    Observable<BaseHttpResult<SaleRankBean>> getMonthSalesRank(@Query("year") int year, @Query("month") int month);
-
-    @GET
-    Observable<BaseHttpResult<AppVersionBean>> getCheckAppVersion(@Url String url);
-
-    @GET("getUserServer/")
-    Observable<BaseHttpResult<UserServerBean>> getUserServer(@Query("usercode") String usercode);
-
-    @FormUrlEncoded
-    @POST("completeOrder/")
-    Observable<BaseHttpResult<DataBean>> completeOrder(@Field("order_id") String orderId);
-
-    @GET("completedOrderList/")
-    Observable<BaseHttpResult<CompleteOrderBean>> getCompletedOrderList(@Query("page") int page);
 }

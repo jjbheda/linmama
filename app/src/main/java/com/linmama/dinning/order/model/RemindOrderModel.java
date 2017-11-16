@@ -19,20 +19,20 @@ public class RemindOrderModel extends BaseModel {
         if (remindOrderHint == null)
             throw new RuntimeException("InfoHint不能为空");
 
-        httpService.getWarnOrder()
-                .compose(new CommonTransformer<RemindBean>())
-                .subscribe(new CommonSubscriber<RemindBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(RemindBean remindBean) {
-                        remindOrderHint.successRemindOrder(remindBean);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        remindOrderHint.failRemindOrder(e.getMessage());
-                    }
-                });
+//        httpService.getWarnOrder()
+//                .compose(new CommonTransformer<RemindBean>())
+//                .subscribe(new CommonSubscriber<RemindBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(RemindBean remindBean) {
+//                        remindOrderHint.successRemindOrder(remindBean);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        remindOrderHint.failRemindOrder(e.getMessage());
+//                    }
+//                });
     }
 
     public interface RemindOrderHint {

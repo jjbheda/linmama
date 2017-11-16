@@ -9,6 +9,8 @@ import com.linmama.dinning.except.ExceptionEngine;
 import com.linmama.dinning.except.ServerException;
 import com.linmama.dinning.utils.LogUtils;
 
+import java.util.Map;
+
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -32,7 +34,9 @@ public class ErrorTransformer<T> implements Observable.Transformer<BaseHttpResul
                     String errorInfo;
                     if (null != httpResult.getErrors_info()) {
                         errorInfo = httpResult.getErrors_info().toString();
-                    } else {
+                    } else  if (httpResult.getData()!=null && httpResult.getData() instanceof Map && ((Map)httpResult.getData()).containsKey("errors_info")) {
+                        errorInfo = (String) ((Map)httpResult.getData()).get("errors_info");
+                    }  else {
                         throw new ServerException(ErrorType.HTTP_ERROR, "Network Error.");
                     }
                     if (!TextUtils.isEmpty(errorInfo)) {

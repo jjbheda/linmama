@@ -18,20 +18,20 @@ public class HandleWarnModel extends BaseModel {
         if (hint == null)
             throw new RuntimeException("HandleHint不能为空");
 
-        httpService.handleWarn(warnId)
-                .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(DataBean dataBean) {
-                        hint.successHandle(dataBean);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failHandle(e.getMessage());
-                    }
-                });
+//        httpService.handleWarn(warnId)
+//                .compose(new CommonTransformer<DataBean>())
+//                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(DataBean dataBean) {
+//                        hint.successHandle(dataBean);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failHandle(e.getMessage());
+//                    }
+//                });
     }
 
     public interface HandleHint {

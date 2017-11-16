@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -58,12 +59,13 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implements
         NewOrderContract.NewOrderView, NewOrderContract.ReceiveOrderView
-        ,MyAlertDialog.ICallBack, AdapterView.OnItemClickListener,NewOrderAdapter.ICommitOrder,NewOrderAdapter.ICancelOrder,
+        , MyAlertDialog.ICallBack, AdapterView.OnItemClickListener, NewOrderAdapter.ICommitOrder, NewOrderAdapter.ICancelOrder,
         NewOrderContract.PrintView, GetMoreListView.OnGetMoreListener {
     public boolean IsTest = false;
+    private static String TAG = "NewFragment";
     @BindView(R.id.lvNewOrder)
     GetMoreListView mLvNewOrder;
-//    @BindView(R.id.newOrderAllTv)
+    //    @BindView(R.id.newOrderAllTv)
 //    TextView mNewOrderAllTv;
 //    @BindView(R.id.newOrderSaleTv)
 //    TextView mNewOrderSaleTv;
@@ -72,7 +74,8 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
     private NewOrderAdapter mAdapter;
     private INewHint mNewHint;
     private INewReceiveOrder mNewReceiveOrder;
-    private List<LResultNewOrderBean> mResults;
+    private List<LResultNewOrderBean> mResults = new ArrayList<>();
+    ;
     private MyAlertDialog mAlert;
     private int selectPosition = -1;
     private static final int REQUEST_SET_WARN_TIME = 0x10;
@@ -94,7 +97,6 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
     @Override
     protected void initView() {
-        mResults = new ArrayList<>();
         final WindmillHeader header = new WindmillHeader(mActivity);
         mPtrNew.setHeaderView(header);
         mPtrNew.addPtrUIHandler(header);
@@ -110,8 +112,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
             @Override
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
                 if (null != mPresenter) {
-//                    showDialog("加载中...");
-//                    currentPage = 1;
+                    currentPage = 1;
                     mPresenter.getNewOrder(1);
                 }
             }
@@ -143,7 +144,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_SET_WARN_TIME && null != data) {
             String orderId = data.getStringExtra(Constants.ORDER_ID);
-            if (!TextUtils.isEmpty(orderId) && null != mResults) {
+            if (!TextUtils.isEmpty(orderId) && mResults.size() > 0) {
                 for (LResultNewOrderBean rb : mResults) {
                     if (String.valueOf(rb.id).equals(orderId)) {
                         mResults.remove(rb);
@@ -207,66 +208,27 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
             mResults.clear();
         }
-//        if (TextUtils.isEmpty(bean.getNext())) {
-            mLvNewOrder.setNoMore();
-//        } else {
-//            mLvNewOrder.setHasMore();
-//        }
-            List<LResultNewOrderBean> results = bean;
-
-            if (IsTest){
-                LResultNewOrderBean model = new LResultNewOrderBean();
-                model.remark = "少放糖";
-                OrderOrderMenuBean menuBean = new OrderOrderMenuBean();
-                menuBean.date = "周二";
-                OrderGoodBean goodBean = new OrderGoodBean();
-                goodBean.amount = 3;
-                goodBean.name = "西红柿炒蛋";
-                goodBean.total_price = "20";
-                menuBean.goods_list .add(goodBean);
-                model.order_list.add(menuBean);
-                OrderPickupTimeBean pickupTimeBean = new OrderPickupTimeBean();
-                pickupTimeBean.pickup_date = "2017-09-19";
-                pickupTimeBean.pickup_start_time = "08:00";
-                pickupTimeBean.pickup_end_time = "10:00";
-                model.pickup_list.add(pickupTimeBean);
-                 OrderPlace place = new OrderPlace();
-                 place.place_address = "建国桥菜市场02号";
-                 place.place_name = "西城区";
-                 place.place_type = "0";
-                 model.place = place;
-
-                 OrderUser user = new OrderUser();
-                 user.user_name = "张三";
-                 user.user_tel = "13900000000";
-                 model.user = user;
-                model.serial_number ="No20171010224933576179"; //订单号
-                model.id = "2"; //订单ID
-                model.amount = 3;  //商品总数
-                model.is_for_here = "1";
-                model.order_type = "0"; //1预约单 0当日单
-                model.is_ensure_order = "1"; //1已接单 0未接单
-                model.pay_amount = "0.2"; //"0.07", //支付金额
-                model.order_datetime_bj = "2017-10-10 22:49:33"; //下单日期
-                results.add(model);
-            }
-            mResults.addAll(results);
-            LogUtils.d("Results", results.size() + "");
-//            if (null != mNewHint) {
-//                mNewHint.newHint();
-//            }
-            if (null == mAdapter) {
-                mAdapter = new NewOrderAdapter(mActivity, mResults);
-                mLvNewOrder.setAdapter(mAdapter);
-                mLvNewOrder.setOnItemClickListener(this);
-                mAdapter.setCommitOrder(this);
-                mAdapter.setCancelOrder(this);
-            } else {
-                mAdapter.notifyDataSetChanged();
-                if (currentPage > 1) {
-                    mLvNewOrder.getMoreComplete();
+        mLvNewOrder.setNoMore();
+        mResults.addAll(bean);
+        LogUtils.d("Results", bean.size() + "");
+        if (null == mAdapter) {
+            mAdapter = new NewOrderAdapter(mActivity, mResults);
+            mLvNewOrder.setAdapter(mAdapter);
+            mLvNewOrder.setOnItemClickListener(this);
+            mAdapter.setCommitOrder(this);
+            mAdapter.setCancelOrder(this);
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
+        boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);
+        if (isAutoReceiveOrder) {
+            if (mResults.size() > 0 && mAdapter != null){
+                for (LResultNewOrderBean model : mResults){
+                    completeOrder(model.id);
                 }
+                EventBus.getDefault().post(new DataSynEvent(true));     //通知预约单、当日单刷新
             }
+        }
     }
 
     @Override
@@ -467,7 +429,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
             builder.append("---------------------------");
             builder.append("\n");
         }
-        if (null != mPrintingBean ) {
+        if (null != mPrintingBean) {
             String remark = mPrintingBean.getRemark();
             if (!TextUtils.isEmpty(remark)) {
                 builder.append("备注:");
@@ -531,7 +493,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                                         Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
                                         for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
                                             LResultNewOrderBean rb = (LResultNewOrderBean) mAdapter.getItem(i);
-                                            if (rb.id .equals(bean.id)) {
+                                            if (rb.id == bean.id) {
                                                 mAdapter.removeItem(i);
                                                 mAdapter.notifyDataSetChanged();
                                                 EventBus.getDefault().post(new DataSynEvent(true));
@@ -543,7 +505,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                                     @Override
                                     public void onError(ApiException e) {
                                         super.onError(e);
-                                        Toast.makeText(mActivity, "确定订单失败", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     }
@@ -558,14 +520,14 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
     @Override
     public void onCancelOrder(final LResultNewOrderBean bean) {
-        BaseModel.httpService.cancelOrder(bean.id+"",1). compose(new CommonTransformer())
+        BaseModel.httpService.cancelOrder(bean.id, 0).compose(new CommonTransformer())
                 .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(String msg) {
-                        Toast.makeText(mActivity,msg,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
                         for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
                             LResultNewOrderBean rb = (LResultNewOrderBean) mAdapter.getItem(i);
-                            if (rb.id .equals(bean.id)) {
+                            if (rb.id == bean.id) {
                                 mAdapter.removeItem(i);
                                 mAdapter.notifyDataSetChanged();
                                 EventBus.getDefault().post(new DataSynEvent(true));
@@ -577,14 +539,50 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                     @Override
                     public void onError(ApiException e) {
                         super.onError(e);
-                        Toast.makeText(mActivity,e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(DataSynEvent event) {
+        if (event.isAutoReceiveorderIsSet()) {
+            if (mResults.size() > 0 && mAdapter != null) {
+                for (LResultNewOrderBean bean : mResults) {
+                    completeOrder(bean.id);
+                }
+                EventBus.getDefault().post(new DataSynEvent(true));
+            }
+        }
     }
+
+    public void completeOrder(final int id) {
+        BaseModel.httpService.commitOrder(id + "").compose(new CommonTransformer())
+                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                    @Override
+                    public void onNext(String msg) {
+                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+                            LResultNewOrderBean rb = (LResultNewOrderBean) mAdapter.getItem(i);
+                            if (rb.id == id) {
+                                mAdapter.removeItem(i);
+                                mAdapter.notifyDataSetChanged();
+                                Toast.makeText(mActivity, "订单序号"+id +"确认成功!", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG,"今日订单,订单序号"+id +"确认成功!");
+                                return;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiException e) {
+                        super.onError(e);
+                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 
     public interface INewHint {
         void newHint();

@@ -30,20 +30,20 @@ public class UserServerModel implements IModel {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
         HttpService httpService = retrofit.create(HttpService.class);
-        httpService.getUserServer(usercode)
-                .compose(new CommonTransformer<UserServerBean>())
-                .subscribe(new CommonSubscriber<UserServerBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(UserServerBean bean) {
-                        hint.successServer(bean);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failServer(e.getMessage());
-                    }
-                });
+//        httpService.getUserServer(usercode)
+//                .compose(new CommonTransformer<UserServerBean>())
+//                .subscribe(new CommonSubscriber<UserServerBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(UserServerBean bean) {
+//                        hint.successServer(bean);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failServer(e.getMessage());
+//                    }
+//                });
     }
 
     public interface UserServerHint {

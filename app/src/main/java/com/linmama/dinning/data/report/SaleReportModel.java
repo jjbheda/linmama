@@ -20,20 +20,20 @@ public class SaleReportModel extends BaseModel {
             throw new RuntimeException("SaleReportHint cannot be null.");
         }
 
-        httpService.turnoverReport()
-                .compose(new CommonTransformer<SaleReportBean>())
-                .subscribe(new CommonSubscriber<SaleReportBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(SaleReportBean bean) {
-                        hint.successSaleReport(bean);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failSaleReport(e.getMessage());
-                    }
-                });
+//        httpService.turnoverReport()
+//                .compose(new CommonTransformer<SaleReportBean>())
+//                .subscribe(new CommonSubscriber<SaleReportBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(SaleReportBean bean) {
+//                        hint.successSaleReport(bean);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failSaleReport(e.getMessage());
+//                    }
+//                });
     }
 
     public interface SaleReportHint {

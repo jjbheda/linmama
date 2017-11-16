@@ -19,20 +19,20 @@ public class OKOrderModel extends BaseModel {
         if (hint == null)
             throw new RuntimeException("OKHint cannot be null.");
 
-        httpService.confirmPayment(orderId, password)
-                .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(DataBean result) {
-                        hint.successOK(orderId);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failOK(e.getMessage());
-                    }
-                });
+//        httpService.confirmPayment(orderId, password)
+//                .compose(new CommonTransformer<DataBean>())
+//                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(DataBean result) {
+//                        hint.successOK(orderId);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failOK(e.getMessage());
+//                    }
+//                });
     }
 
     public interface OKHint {

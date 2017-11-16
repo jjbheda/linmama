@@ -19,20 +19,20 @@ public class CheckAppVersionModel extends BaseModel {
         if (null == hint)
             throw new RuntimeException("CheckAppVersionHint cannot be null.");
 
-        httpService.getCheckAppVersion(url)
-                .compose(new CommonTransformer<AppVersionBean>())
-                .subscribe(new CommonSubscriber<AppVersionBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(AppVersionBean bean) {
-                        hint.successCheckAppVersion(bean);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failCheckAppVersion(e.getMessage());
-                    }
-                });
+//        httpService.getCheckAppVersion(url)
+//                .compose(new CommonTransformer<AppVersionBean>())
+//                .subscribe(new CommonSubscriber<AppVersionBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(AppVersionBean bean) {
+//                        hint.successCheckAppVersion(bean);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failCheckAppVersion(e.getMessage());
+//                    }
+//                });
     }
 
     public interface CheckAppVersionHint {

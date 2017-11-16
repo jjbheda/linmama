@@ -19,10 +19,10 @@ import java.util.List;
 
 public class TodayListModel extends BaseModel {
 
-    public static void getReceivedOrder(int order_type,@NonNull final TodayOrderHint hint) {
+    public static void getReceivedOrder(int page,@NonNull final TodayOrderHint hint) {
         if (null == hint)
             throw new RuntimeException("QuitOrderHint cannot be null");
-        httpService.getReceivedOrder(1,0,"2")
+        httpService.getReceivedOrder(page,0,"0")
                 .compose(new CommonTransformer<TakingOrderMenuBean>())
                 .subscribe(new CommonSubscriber<TakingOrderMenuBean>(LmamaApplication.getInstance()) {
                     @Override

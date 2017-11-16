@@ -19,20 +19,20 @@ public class OrderDetailModel extends BaseModel {
         if (null == hint) {
             throw new RuntimeException("OrderDetailHint cannot be null.");
         }
-        httpService.getOrderDetail(orderId)
-                .compose(new CommonTransformer<OrderDetailBean>())
-                .subscribe(new CommonSubscriber<OrderDetailBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(OrderDetailBean bean) {
-                        hint.successOrderDetail(bean);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failOrderDetail(e.getMessage());
-                    }
-                });
+//        httpService.getOrderDetail(orderId)
+//                .compose(new CommonTransformer<OrderDetailBean>())
+//                .subscribe(new CommonSubscriber<OrderDetailBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(OrderDetailBean bean) {
+//                        hint.successOrderDetail(bean);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failOrderDetail(e.getMessage());
+//                    }
+//                });
     }
 
     public interface OrderDetailHint {

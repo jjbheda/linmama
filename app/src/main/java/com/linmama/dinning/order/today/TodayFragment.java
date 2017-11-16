@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import com.linmama.dinning.adapter.TakingOrderAdapter;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.base.CommonActivity;
+import com.linmama.dinning.bean.DataSynEvent;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.OrderItemsBean;
 import com.linmama.dinning.bean.ResultsBean;
@@ -21,6 +23,7 @@ import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.bluetooth.PrintDataService;
 import com.linmama.dinning.except.ApiException;
+import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteFragment;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
@@ -31,6 +34,10 @@ import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.header.WindmillHeader;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -47,7 +54,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 
 public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> implements
-        TodayOrderContract.TodayOrderView, TodayOrderContract.PrintView, GetMoreListView.OnGetMoreListener, TakingOrderAdapter.ICompleteOrder, TakingOrderAdapter.ICancelOrder {
+        TodayOrderContract.TodayOrderView, TodayOrderContract.PrintView, TodayOrderContract.CompleteOrderView,
+        GetMoreListView.OnGetMoreListener, TakingOrderAdapter.ICompleteOrder, TakingOrderAdapter.ICancelOrder {
     @BindView(R.id.lvNewOrder)
     GetMoreListView mLvTakingOrder;
     @BindView(R.id.ptr_new)
@@ -78,6 +86,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
         final WindmillHeader header = new WindmillHeader(mActivity);
         mPtrTaking.setHeaderView(header);
         mPtrTaking.addPtrUIHandler(header);
+        EventBus.getDefault().register(this);//订阅
     }
 
     @Override
@@ -87,7 +96,8 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
             @Override
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
                 if (null != mPresenter) {
-                    mPresenter.getTodayOrder(0);
+                    currentPage = 1;
+                    mPresenter.getTodayOrder(currentPage);
                 }
             }
         });
@@ -97,14 +107,23 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
     protected void initData() {
         if (null != mPresenter) {
             mPtrTaking.autoRefresh(true);
-//            showDialog("加载中...");
-//            mPresenter.getTakingOrder();
+            currentPage = 1;
+            mPresenter.getTodayOrder(currentPage);
         }
     }
 
     public void refresh() {
         if (null != mPresenter) {
             mPtrTaking.autoRefresh(true);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void onDataSynEvent(DataSynEvent event) {
+        Log.e("TodayFragment", "event---->" + event.isShouldUpdateData());
+        Toast.makeText(mActivity,"TodayFragment 数据刷新",Toast.LENGTH_SHORT).show();
+        if (event.isShouldUpdateData()) {
+            refresh();
         }
     }
 
@@ -134,6 +153,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
                 }
                 return;
             }
+            last_page = resultBean.last_page;
             if (null == mAdapter) {
                 mAdapter = new TakingOrderAdapter(mActivity, 0, mResults);
                 mAdapter.setCommitOrder(this);
@@ -310,26 +330,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
 
     @Override
     public void onCompleteOrder(final TakingOrderBean bean) {
-        BaseModel.httpService.finishOrder(bean.id + "").compose(new CommonTransformer())
-                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(String msg) {
-                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-                            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
-                            if (rb.id == bean.id) {
-                                mAdapter.removeItem(i);
-                                mAdapter.notifyDataSetChanged();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        Toast.makeText(mActivity,e.getMessage(),Toast.LENGTH_SHORT).show();
-                    }
-                });
+        mPresenter.completeOrder(bean.id+"");
     }
 
     @Override
@@ -339,7 +340,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
                 .setConfirmButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        BaseModel.httpService.cancelOrder(bean.id + "", 1).compose(new CommonTransformer())
+                        BaseModel.httpService.cancelOrder(bean.id, 1).compose(new CommonTransformer())
                                 .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
                                     @Override
                                     public void onNext(String msg) {
@@ -357,7 +358,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
                                     @Override
                                     public void onError(ApiException e) {
                                         super.onError(e);
-                                        Toast.makeText(mActivity, "取消订单失败", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     }
@@ -368,6 +369,24 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
                     }
                 });
         mAlert.show();
+    }
+
+    @Override
+    public void completeOrderSuccess(String orderId) {
+        dismissDialog();
+        CommonActivity.start(mActivity,OrderCompleteFragment.class,new Bundle());
+//        Intent i = new Intent(mActivity, MainActivity.class);
+//        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+//        mActivity.startActivity(i);
+    }
+
+    @Override
+    public void completeOrderFail(String failMsg) {
+        dismissDialog();
+        if (!TextUtils.isEmpty(failMsg)) {
+            ViewUtils.showSnack(mPtrTaking, failMsg);
+        }
     }
 
     @Override
@@ -385,5 +404,6 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
         super.onDestroyView();
         currentPage = 1;
         mAdapter = null;
+        EventBus.getDefault().unregister(this);//解除订阅
     }
 }

@@ -19,20 +19,20 @@ public class NonPayOrderModel extends BaseModel {
         if (nonPayOrderHint == null)
             throw new RuntimeException("NonPayOrderHint cannot be null");
 
-        httpService.getNonPayOrder()
-                .compose(new CommonTransformer<NonPayOrderBean>())
-                .subscribe(new CommonSubscriber<NonPayOrderBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(NonPayOrderBean nonPayOrderBean) {
-                        nonPayOrderHint.successNonPayOrder(nonPayOrderBean);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        nonPayOrderHint.failNonPayOrder(e.getMessage());
-                    }
-                });
+//        httpService.getNonPayOrder()
+//                .compose(new CommonTransformer<NonPayOrderBean>())
+//                .subscribe(new CommonSubscriber<NonPayOrderBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(NonPayOrderBean nonPayOrderBean) {
+//                        nonPayOrderHint.successNonPayOrder(nonPayOrderBean);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        nonPayOrderHint.failNonPayOrder(e.getMessage());
+//                    }
+//                });
     }
 
     public interface NonPayOrderHint {

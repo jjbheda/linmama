@@ -18,20 +18,20 @@ public class CancelWarnModel extends BaseModel {
         if (hint == null)
             throw new RuntimeException("CancelHint不能为空");
 
-        httpService.cancelWarn(orderId)
-                .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(DataBean dataBean) {
-                        hint.successCancel(dataBean, orderId);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failCancel(e.getMessage());
-                    }
-                });
+//        httpService.cancelWarn(orderId)
+//                .compose(new CommonTransformer<DataBean>())
+//                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(DataBean dataBean) {
+//                        hint.successCancel(dataBean, orderId);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failCancel(e.getMessage());
+//                    }
+//                });
     }
 
     public interface CancelHint {

@@ -18,20 +18,20 @@ public class AdviceModel extends BaseModel {
         if (null == hint)
             throw new RuntimeException("AdviceHint cannot be null.");
 
-        httpService.submitAdvice(url, content)
-                .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(DataBean bean) {
-                        hint.successAdvice(bean);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failAdvice(e.getMessage());
-                    }
-                });
+//        httpService.submitAdvice(url, content)
+//                .compose(new CommonTransformer<DataBean>())
+//                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(DataBean bean) {
+//                        hint.successAdvice(bean);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failAdvice(e.getMessage());
+//                    }
+//                });
     }
 
     public interface AdviceHint {

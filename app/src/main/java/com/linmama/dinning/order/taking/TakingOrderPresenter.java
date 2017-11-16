@@ -1,8 +1,6 @@
 package com.linmama.dinning.order.taking;
 
-import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.bean.OrderDetailBean;
-import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.order.model.CompleteOrderModel;
 import com.linmama.dinning.order.model.OrderDetailModel;
@@ -13,17 +11,16 @@ import com.linmama.dinning.order.model.OKOrderModel;
 import com.linmama.dinning.utils.LogUtils;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class TakingOrderPresenter extends BasePresenter<TakingFragment> implements
         TakingOrderContract.TakingOrderPresenter,
         TakingOrderContract.PrintPresenter, TakingOrderContract.CompleteOrderPresenter {
 
     @Override
-    public void getTakingOrder(int range) {
+    public void getTakingOrder(int page,int order_type,int range) {
         if (null == getIView())
             return;
-        ((TakingOrderModel) getiModelMap().get("TakingOrder")).getTakingOrder(range, new TakingOrderModel.TakingOrderHint() {
+        ((TakingOrderModel) getiModelMap().get("TakingOrder")).getTakingOrder(page,order_type,range, new TakingOrderModel.TakingOrderHint() {
 
             @Override
             public void successInfo(TakingOrderMenuBean bean) {
@@ -109,7 +106,7 @@ public class TakingOrderPresenter extends BasePresenter<TakingFragment> implemen
     public void completeOrder(String orderId) {
         if (null == getIView())
             return;
-        ((CompleteOrderModel) getiModelMap().get("CompleteOrder")).completeWarn(orderId,
+        ((CompleteOrderModel) getiModelMap().get("CompleteOrder")).completeOrder(orderId,
                 new CompleteOrderModel.CompleteHint() {
                     @Override
                     public void successComplete(String orderId) {

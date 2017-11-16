@@ -19,20 +19,20 @@ public class RefuseRefundModel extends BaseModel {
         if (null == hint)
             throw new RuntimeException("RefuseRefundHint cannot be null.");
 
-        httpService.refusedRefund(refund_id, reason)
-                .compose(new CommonTransformer<DataBean>())
-                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(DataBean bean) {
-                        hint.successRefuseRefund(bean);
-                    }
-
-                    @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        hint.failRefuseRefund(e.getMessage());
-                    }
-                });
+//        httpService.refusedRefund(refund_id, reason)
+//                .compose(new CommonTransformer<DataBean>())
+//                .subscribe(new CommonSubscriber<DataBean>(LmamaApplication.getInstance()) {
+//                    @Override
+//                    public void onNext(DataBean bean) {
+//                        hint.successRefuseRefund(bean);
+//                    }
+//
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        super.onError(e);
+//                        hint.failRefuseRefund(e.getMessage());
+//                    }
+//                });
     }
 
     public interface RefuseRefundHint {

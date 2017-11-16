@@ -18,6 +18,7 @@ import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.except.ApiException;
+import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteFragment;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
@@ -92,7 +93,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         final WindmillHeader header = new WindmillHeader(mActivity);
         mPtrTaking.setHeaderView(header);
         mPtrTaking.addPtrUIHandler(header);
-        presenter.getTakingOrder(0);
         EventBus.getDefault().register(this);//订阅
     }
 
@@ -105,7 +105,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                 if (null != mPresenter) {
                     mResults.clear();
                     currentPage = 1;
-                    mPresenter.getTakingOrder(mRange);
+                    mPresenter.getTakingOrder(currentPage,1,mRange);
                 }
             }
         });
@@ -115,6 +115,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     protected void initData() {
         if (null != mPresenter) {
             mPtrTaking.autoRefresh(true);
+            mPresenter.getTakingOrder(currentPage,1,mRange);
         }
     }
 
@@ -127,7 +128,8 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     public void refresh() {
         if (null != mPresenter) {
             mPtrTaking.autoRefresh(true);
-            mPresenter.getTakingOrder(mRange);
+            currentPage = 1;
+            mPresenter.getTakingOrder(currentPage,1,mRange);
         }
     }
 
@@ -200,27 +202,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 
     @Override
     public void onCompleteOrder(final TakingOrderBean bean) {
-
-        BaseModel.httpService.finishOrder(bean.id + "").compose(new CommonTransformer())
-                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                               @Override
-                               public void onNext(String msg) {
-                                   Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-                                   for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-                                       TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
-                                       if (rb.id == bean.id) {
-                                           mAdapter.removeItem(i);
-                                           mAdapter.notifyDataSetChanged();
-                                       }
-                                   }
-                               }
-
-                               @Override
-                               public void onError(ApiException e) {
-                                   super.onError(e);
-                                   Toast.makeText(mActivity,e.getMessage(),Toast.LENGTH_SHORT).show();
-                               }
-                           });
+        mPresenter.completeOrder(bean.id+"");
     }
 
 //    @Override
@@ -398,7 +380,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
             return;
         }
         currentPage++;
-        mPresenter.getTakingOrder(currentPage);
+        mPresenter.getTakingOrder(currentPage,1,mRange);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
@@ -421,16 +403,11 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     @Override
     public void completeOrderSuccess(String orderId) {
         dismissDialog();
-//        ViewUtils.showSnack(mPtrTaking, "完成订单");
-//        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-//            ResultsBean rb = (ResultsBean) mAdapter.getItem(i);
-//            if (String.valueOf(rb.getId()).equals(orderId)) {
-//                mAdapter.removeItem(i);
-//                mAdapter.notifyDataSetChanged();
-//                return;
-//            }
-//        }
         CommonActivity.start(mActivity,OrderCompleteFragment.class,new Bundle());
+//        Intent i = new Intent(mActivity, MainActivity.class);
+//        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+//        mActivity.startActivity(i);
     }
 
     @Override
@@ -448,7 +425,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                 .setConfirmButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        BaseModel.httpService.cancelOrder(bean.id + "", 1).compose(new CommonTransformer())
+                        BaseModel.httpService.cancelOrder(bean.id, 1).compose(new CommonTransformer())
                                 .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
                                     @Override
                                     public void onNext(String msg) {
@@ -466,7 +443,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                                     @Override
                                     public void onError(ApiException e) {
                                         super.onError(e);
-                                        Toast.makeText(mActivity, "取消订单失败", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     }
