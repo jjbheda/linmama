@@ -107,7 +107,7 @@ public interface HttpService {
     //完成订单
     @FormUrlEncoded
     @POST("finishOrder/")
-    Observable<BaseHttpResult> finishOrder(@Field("id") String id);
+    Observable<BaseHttpResult> finishOrder(@Field("id") int id);
 
     //店铺管理
     @POST("baseData/")

@@ -27,7 +27,7 @@
                     android:background="#2BAF2B"
                     android:gravity="center"
                     android:text="近两日"
-                    android:textColor="@color/commonWhile"
+                    android:textColor="@color/menu_grey"
                     android:textSize="16sp" />
 
                 <TextView
@@ -99,8 +99,7 @@
     <View style="@style/LineViewSingle" />
     <in.srain.cube.views.ptr.PtrClassicFrameLayout
         android:id="@+id/ptr_complete"
-        style="@style/BothMatch"
-        android:background="@color/colorSettingBg">
+        style="@style/BothMatch">
     <com.linmama.dinning.widget.GetMoreListView
         android:id="@+id/lvSearchOrderLt"
         style="@style/OrderListStyle" />

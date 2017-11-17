@@ -42,7 +42,7 @@
                     style="@style/BothWrap"
                     android:layout_marginBottom="5dp"
                     android:text="等待处理"
-                    android:textColor="#E51C23"
+                    android:textColor="#FD4A2E"
                     android:textSize="14sp" />
 
                 <TextView
@@ -313,7 +313,7 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:text="25.50"
-                    android:textColor="#F0503B" />
+                    android:textColor="#FD4A2E" />
 
             </LinearLayout>
         </LinearLayout>

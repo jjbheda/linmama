@@ -2,6 +2,7 @@ package com.linmama.dinning.order.ordercompletesearch;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
@@ -16,6 +17,7 @@ import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.order.ordercompletesearch.completesearch.OrderCompleteSearchFragment;
 import com.linmama.dinning.order.ordercompletesearch.refund.OrderRefundFragment;
 import com.linmama.dinning.order.orderundosearch.OrderUndoSearchAdapter;
+import com.linmama.dinning.utils.DateRangePicker;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
@@ -37,10 +39,11 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 
 public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePresenter>
-        implements OrderCompleteContract.SearchOrderView,OrderCompleteContract.CancelView,
+        implements OrderCompleteContract.SearchOrderView, OrderCompleteContract.CancelView,
         GetMoreListView.OnGetMoreListener,
-        OrderUndoSearchAdapter.ICancelFinishedOrder,OrderUndoSearchAdapter.IPrintOrder{
+        OrderUndoSearchAdapter.ICancelFinishedOrder, OrderUndoSearchAdapter.IPrintOrder {
     private List<TakingOrderBean> mResults = new ArrayList<>();
+    private Calendar calendar;
     @BindView(R.id.lvSearchOrderLt)
     GetMoreListView lvSearchOrderLt;
     @BindView(R.id.ptr_complete)
@@ -76,115 +79,101 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
             mResults.clear();
         }
         last_page = bean.last_page;
+        if (currentPage == 1 && bean.data.size() == 0) {
+            if (mPreComplete.getHeader() != null)
+                mPreComplete.getHeader().setVisibility(View.GONE);
 
-        if (bean.data.size()>0){
+            if (lvSearchOrderLt.getHeaderViewsCount() > 0) {
+                lvSearchOrderLt.removeAllViews();
+            }
+            mPreComplete.setVisibility(View.GONE);
+            lvSearchOrderLt.setNoMore();
+            if (mAdapter != null) {
+                mAdapter.notifyDataSetChanged();
+            }
+            return;
+        }
+        mPreComplete.setVisibility(View.VISIBLE);
+        if (bean.data.size() > 0) {
             LogUtils.d("getTakingOrderSuccess", bean.data.toString());
             List<TakingOrderBean> results = bean.data;
             mResults.addAll(results);
-            if (currentPage == 1 && results.size() == 0) {
+            if (mPreComplete.getHeader() != null)
                 mPreComplete.getHeader().setVisibility(View.GONE);
-                if (mAdapter != null) {
-                    mAdapter.notifyDataSetChanged();
-                }
-                return;
-            }
             if (null == mAdapter) {
-                mAdapter = new OrderUndoSearchAdapter(mActivity,0,mResults);
+                mAdapter = new OrderUndoSearchAdapter(mActivity, 0, mResults);
                 lvSearchOrderLt.setAdapter(mAdapter);
                 mAdapter.setCancelOrder(this);
-            } else {
                 mAdapter.notifyDataSetChanged();
-                if (currentPage > 1) {
-                    lvSearchOrderLt.getMoreComplete();
-                }
-
-                if (currentPage == last_page) {
-                    lvSearchOrderLt.setNoMore();
-                }
             }
+            if (currentPage > 1) {
+                lvSearchOrderLt.getMoreComplete();
+            }
+            if (currentPage == last_page) {
+                lvSearchOrderLt.setNoMore();
+            }
+
         }
     }
 
     @Override
     public void getSearchOrderFail(String failMsg) {
-        Toast.makeText(mActivity,failMsg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(mActivity, failMsg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected OrderCompletePresenter loadPresenter() {
-        return  new OrderCompletePresenter();
+        return new OrderCompletePresenter();
     }
 
     @OnClick(R.id.select_date)
-    public void showDateSelecterDiaglog(){
-        final Calendar calendar = Calendar.getInstance();
-            DatePickerDialog dialog = new DatePickerDialog(mActivity,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        // 设置
-                        calendar.set(year, monthOfYear, dayOfMonth);
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                        mStartDate = format.format(calendar.getTime());
-                        showEndDialog();
-                    }
-                }, // 设置年,月,日
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH));
-        dialog.setTitle("请选择开始日期");
-        dialog.show();
-//        final Calendar calendar = Calendar.getInstance();
-//
-//        DatePicker datePicker = new DatePicker(getActivity());
-//        datePicker.init(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
-//            @Override
-//            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-//                mStartDate = year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
-//                mSelectedDateTv.setText(mStartDate +" 至 "+mEndDate);
-//            }
-//        });
-//
-//        new AlertDialog.Builder(getActivity())
-//                .setTitle("Your title!!!")
-//                .setView(datePicker)
-//                .create().show();
+    public void showDateSelecterDiaglog() {
+        DateRangePicker picker = new DateRangePicker(mActivity, DateRangePicker.YEAR_MONTH_DAY, true);
+        //选择器
+        picker.setGravity(Gravity.CENTER);
+        picker.setDateRangeStart(1997, 1, 1);
+        picker.setDateRangeEnd(2030, 12, 30);
+        picker.setTextSize(16);
+        picker.setSelectedItem(year(), month(), day());
+        picker.setSelectedSecondItem(year(), month(), day());
+        picker.setOnDatePickListener(new DateRangePicker.OnYearMonthDayDoublePickListener() {
+            @Override
+            public void onDatePicked(String startYear, String startMonth, String startDay, String endYear, String endMonth, String endDay) {
+                mStartDate = startYear + "-" + startMonth + "-" + startDay;
+                mEndDate = endYear + "-" + endMonth + "-" + endDay;
+                if (!mStartDate.equals("") && !mEndDate.equals("")) {
+                    mSelectedDateTv.setVisibility(View.VISIBLE);
+                    mSelectedDateTv.setText(mStartDate + " 至 " + mEndDate);
+                    mPresenter.getFinishedOrderListData(1, mStartDate, mEndDate);
+                }
+            }
+        });
+        picker.show();
     }
 
-    private void showEndDialog(){
-        final Calendar calendar = Calendar.getInstance();
-        DatePickerDialog dialog = new DatePickerDialog(mActivity,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        // 设置
-                        calendar.set(year, monthOfYear, dayOfMonth);
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                        mEndDate = format.format(calendar.getTime());
-                        mSelectedDateTv.setVisibility(View.VISIBLE);
-                        if (!mStartDate.equals("") && !mEndDate.equals("")) {
-                            mSelectedDateTv.setText(mStartDate +" 至 "+mEndDate);
-                            mPresenter.getFinishedOrderListData(1,mStartDate,mEndDate);
-                        }
-                    }
-                }, // 设置年,月,日
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH));
-        TextView title = new TextView(mActivity);
-        title.setText("请选择结束日期");
-        dialog.setCustomTitle(title);
-        dialog.show();
+    private int year() {
+        return calendar.get(Calendar.YEAR);
+    }
+
+    private int month() {
+        return calendar.get(Calendar.MONTH) + 1;
+    }
+
+    private int day() {
+        return calendar.get(Calendar.DAY_OF_MONTH);
     }
 
     @OnClick(R.id.lt_taking_search)
-    public void goToSearch(){
-        CommonActivity.start(mActivity, OrderCompleteSearchFragment.class,new Bundle());
+    public void goToSearch() {
+        CommonActivity.start(mActivity, OrderCompleteSearchFragment.class, new Bundle());
     }
+
     @OnClick(R.id.nearly_tv)
     public void getNearlyData() {
         mSelectedDateTv.setVisibility(View.GONE);
-        mPresenter.getFinishedOrderListData(1,"","");
+        mNearlyTv.setBackgroundColor(mActivity.getResources().getColor(R.color.colorOrderTake));
+        mSelectDateTv.setBackgroundColor(mActivity.getResources().getColor(R.color.commonWhile));
+        mPresenter.getFinishedOrderListData(1, "", "");
     }
 
     @OnClick(R.id.tv_refundment)
@@ -192,7 +181,7 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
 //        mSelectedDateTv.setVisibility(View.GONE);
 //        presenter.getRefundFailOrderListData(1);
 
-        CommonActivity.start(mActivity, OrderRefundFragment.class,new Bundle());
+        CommonActivity.start(mActivity, OrderRefundFragment.class, new Bundle());
     }
 
     @Override
@@ -205,6 +194,7 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
         final WindmillHeader header = new WindmillHeader(mActivity);
         mPreComplete.setHeaderView(header);
         mPreComplete.addPtrUIHandler(header);
+        calendar = Calendar.getInstance();
     }
 
     @Override
@@ -216,7 +206,7 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
                 if (null != mPresenter) {
                     mResults.clear();
                     currentPage = 1;
-                    mPresenter.getFinishedOrderListData(currentPage,mStartDate,mEndDate);
+                    mPresenter.getFinishedOrderListData(currentPage, mStartDate, mEndDate);
                 }
             }
         });
@@ -224,7 +214,8 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
 
     @Override
     protected void initData() {
-        mPresenter.getFinishedOrderListData(1,"","");
+        mPreComplete.autoRefresh(true);
+        mPresenter.getFinishedOrderListData(1, "", "");
     }
 
     @Override
@@ -234,7 +225,7 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
             return;
         }
         currentPage++;
-        mPresenter.getFinishedOrderListData(currentPage,mStartDate,mEndDate);
+        mPresenter.getFinishedOrderListData(currentPage, mStartDate, mEndDate);
     }
 
     @Override
@@ -246,7 +237,7 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
     public void cancelOrderSuccess(int id, String msg) {
         for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
             TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
-            if (rb.id  == id) {
+            if (rb.id == id) {
                 mAdapter.removeItem(i);
                 mAdapter.notifyDataSetChanged();
             }
@@ -255,7 +246,7 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
 
     @Override
     public void cancelOrderFail(String failMsg) {
-        Toast.makeText(mActivity,failMsg,Toast.LENGTH_SHORT).show();
+        Toast.makeText(mActivity, failMsg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

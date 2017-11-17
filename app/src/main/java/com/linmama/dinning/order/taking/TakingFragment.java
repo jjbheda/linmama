@@ -66,7 +66,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     private MyAlertDialog mAlert;
     private int selectPosition = -1;
     private ResultsBean mPrintingBean = null;
-    private List<TakingOrderBean> mResults;
+    private List<TakingOrderBean> mResults = new ArrayList<>();
     private int currentPage = 1;
     private int last_page = 1;
     private static final int REQUEST_TAKE_ORDER_DETAIL = 0x20;
@@ -89,7 +89,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 
     @Override
     protected void initView() {
-        mResults = new ArrayList<>();
         final WindmillHeader header = new WindmillHeader(mActivity);
         mPtrTaking.setHeaderView(header);
         mPtrTaking.addPtrUIHandler(header);
@@ -119,7 +118,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         }
     }
 
-    public int mRange;
+    private int mRange;
 
     public void setRange(int range) {
         mRange = range;
@@ -148,6 +147,14 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
             mResults.clear();
         }
         last_page = resultBean.last_page;
+        if (currentPage == 1 && resultBean.data.size() == 0) {
+            if (mPtrTaking.getHeader()!= null)
+                mPtrTaking.getHeader().setVisibility(View.GONE);
+            if (mAdapter != null) {
+                mAdapter.notifyDataSetChanged();
+            }
+            return;
+        }
 
         if (null != resultBean) {
             LogUtils.d("getTakingOrderSuccess", resultBean.toString());
@@ -177,6 +184,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                 }
             }
         }
+
     }
 
     @Override
@@ -202,7 +210,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 
     @Override
     public void onCompleteOrder(final TakingOrderBean bean) {
-        mPresenter.completeOrder(bean.id+"");
+        mPresenter.completeOrder(bean.id);
     }
 
 //    @Override
@@ -401,8 +409,24 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     }
 
     @Override
-    public void completeOrderSuccess(String orderId) {
+    public void completeOrderSuccess(int orderId) {
         dismissDialog();
+        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
+            if (rb.id ==orderId) {
+                mAdapter.removeItem(i);
+                mAdapter.notifyDataSetChanged();
+                break;
+            }
+        }
+        if (mResults.size() == 0) {
+            if (mPtrTaking.getHeader()!= null)
+                mPtrTaking.getHeader().setVisibility(View.GONE);
+        }
+        if (mResults.size() == 0) {
+            if (mPtrTaking.getHeader()!= null)
+                mPtrTaking.getHeader().setVisibility(View.GONE);
+        }
         CommonActivity.start(mActivity,OrderCompleteFragment.class,new Bundle());
 //        Intent i = new Intent(mActivity, MainActivity.class);
 //        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

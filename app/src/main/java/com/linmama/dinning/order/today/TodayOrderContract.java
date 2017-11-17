@@ -19,7 +19,7 @@ public class TodayOrderContract {
     }
 
     public interface CompleteOrderView {
-        void completeOrderSuccess(String orderId);
+        void completeOrderSuccess(int orderId);
         void completeOrderFail(String failMsg);
     }
 
@@ -34,7 +34,7 @@ public class TodayOrderContract {
     }
 
     public interface CompleteOrder {
-        void completeOrder(String id);
+        void completeOrder(int id);
     }
 
 }

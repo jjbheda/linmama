@@ -56,13 +56,13 @@ public class TodayOrderPresenter extends BasePresenter<TodayFragment> implements
     }
 
     @Override
-    public void completeOrder(String orderId) {
+    public void completeOrder(int orderId) {
         if (null == getIView())
             return;
         ((CompleteOrderModel) getiModelMap().get("CompleteOrder")).completeOrder(orderId,
                 new CompleteOrderModel.CompleteHint() {
                     @Override
-                    public void successComplete(String orderId) {
+                    public void successComplete(int orderId) {
                         if (null == getIView())
                             return;
                         getIView().completeOrderSuccess(orderId);

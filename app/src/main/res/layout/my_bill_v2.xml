@@ -10,7 +10,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/titleGoods"
         style="@style/ToolBarStyle"
-        app:navigationIcon="@mipmap/icon_close">
+        android:drawablePadding="10dp"
+        app:navigationIcon="@mipmap/icon_back">
 
         <TextView
             style="@style/ToolBarTitleStyle"

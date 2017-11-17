@@ -78,7 +78,8 @@ public class MainActivity extends BaseActivity {
     private OrderCompleteFragment mData;
     private SettingFragment mSetting;
     private long exitTime = 0;
-    String mOrdertype ="";   // 订单类型  0 当日单 1预约单
+    private String mOrdertype ="";   // 订单类型  0 当日单 1预约单
+    private int mId = 0;   // 订单id
     @Override
     protected int getLayoutResID() {
         return R.layout.activity_main;
@@ -95,7 +96,9 @@ public class MainActivity extends BaseActivity {
                     String myKey = it.next().toString();
                     if (myKey.equals("type")) {
                         mOrdertype = json.optString(myKey);
-                        break;
+                    }
+                    if (myKey.equals("id")) {
+                        mId = json.optInt(myKey);
                     }
                 }
             } catch (JSONException e) {
@@ -108,9 +111,10 @@ public class MainActivity extends BaseActivity {
         if (null == mOrder) {
             mOrder = new OrderFragment();
         }
-        if (!mOrdertype.equals("")) {   // 订单类型  0 当日单 1预约单
+        if (!mOrdertype.equals("") && mId != 0) {   // 订单类型  0 当日单 1预约单
             Bundle args = new Bundle();
             args.putString("OrderType",mOrdertype);
+            args.putInt("ID",mId);
             mOrder.setArguments(args);
         }
         switchContent(mOrder);

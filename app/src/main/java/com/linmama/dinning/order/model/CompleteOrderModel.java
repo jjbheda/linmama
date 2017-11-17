@@ -13,7 +13,7 @@ import com.linmama.dinning.subscriber.CommonSubscriber;
  * Created by jingkang on 2017/3/10
  */
 public class CompleteOrderModel extends BaseModel {
-    public void completeOrder(@NonNull final String orderId, @NonNull final CompleteHint hint) {
+    public void completeOrder(@NonNull final int orderId, @NonNull final CompleteHint hint) {
 
         if (hint == null)
             throw new RuntimeException("CompleteHint cannot be null.");
@@ -35,7 +35,7 @@ public class CompleteOrderModel extends BaseModel {
     }
 
     public interface CompleteHint {
-        void successComplete(String orderId);
+        void successComplete(int orderId);
 
         void failComplete(String str);
     }

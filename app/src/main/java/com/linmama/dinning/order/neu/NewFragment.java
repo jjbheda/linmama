@@ -118,6 +118,11 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
             }
         });
     }
+    private int mId;    //推送订单的ID值
+
+    public void setId(int id){
+        mId = id;
+    }
 
     @Override
     protected void initData() {

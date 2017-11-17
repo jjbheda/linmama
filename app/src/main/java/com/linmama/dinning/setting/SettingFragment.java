@@ -100,8 +100,6 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     protected void initView() {
         LogUtils.d("Activity", mActivity.toString());
 //        String username = (String) get(Constants.USERNAME, "");
-        String userFullname = (String) get(Constants.USER_FULLNAME, "");
-        tvName.setText(userFullname);
         boolean isVoiceWarn = (boolean) SpUtils.get(Constants.VOICE_WARN, true);
         if (isVoiceWarn) {
             siRemind.setRightIcon(R.mipmap.icon_on);
@@ -146,9 +144,9 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     public void openStore(View view) {
         showDialog("加载中...");
         if (isClosed) {
-            mPresenter.modifyStoreStatus(0);
-        } else {
             mPresenter.modifyStoreStatus(1);
+        } else {
+            mPresenter.modifyStoreStatus(0);
         }
     }
 
@@ -263,6 +261,7 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     public void getStoreInfoSuccess(ShopBaseInfoBean bean) {
         dismissDialog();
         isClosed = bean.is_open.equals("0");
+
         if (isClosed) {
             openStatus.setText(R.string.set_close_status);
             btnOpen.setText(R.string.set_open);

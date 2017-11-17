@@ -19,7 +19,7 @@ public class TakingOrderContract {
     }
 
     public interface CompleteOrderView {
-        void completeOrderSuccess(String orderId);
+        void completeOrderSuccess(int orderId);
         void completeOrderFail(String failMsg);
     }
 
@@ -34,7 +34,7 @@ public class TakingOrderContract {
     }
 
     public interface ConfirmPayPresenter {
-        void confirmPayment(String orderId, String pwd);
+        void confirmPayment(int orderId, String pwd);
     }
 
 //    public interface CancelWarnPresenter {
@@ -42,7 +42,7 @@ public class TakingOrderContract {
 //    }
 
     public interface CompleteOrderPresenter {
-        void completeOrder(String id);
+        void completeOrder(int id);
     }
 
     public interface PrintPresenter {

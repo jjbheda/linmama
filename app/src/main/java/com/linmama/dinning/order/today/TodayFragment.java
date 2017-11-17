@@ -141,18 +141,18 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
         if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
             mResults.clear();
         }
+        if (currentPage == 1 && resultBean.data.size() == 0) {
+            if (mPtrTaking.getHeader()!= null)
+                mPtrTaking.getHeader().setVisibility(View.GONE);
+            if (mAdapter != null) {
+                mAdapter.notifyDataSetChanged();
+            }
+            return;
+        }
         last_page = resultBean.last_page;
         if (null != resultBean.data && resultBean.data.size() > 0) {
             LogUtils.d("getTakingOrderSuccess", resultBean.data.toString());
             mResults.addAll(resultBean.data);
-            if (currentPage == 1 && mResults.size() == 0) {
-                if (mPtrTaking.getHeader()!= null)
-                     mPtrTaking.getHeader().setVisibility(View.GONE);
-                if (mAdapter != null) {
-                    mAdapter.notifyDataSetChanged();
-                }
-                return;
-            }
             last_page = resultBean.last_page;
             if (null == mAdapter) {
                 mAdapter = new TakingOrderAdapter(mActivity, 0, mResults);
@@ -164,8 +164,12 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
                 if (currentPage > 1) {
                     mLvTakingOrder.getMoreComplete();
                 }
+                if (currentPage == last_page) {
+                    mLvTakingOrder.setNoMore();
+                }
             }
         }
+
     }
 
     @Override
@@ -330,7 +334,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
 
     @Override
     public void onCompleteOrder(final TakingOrderBean bean) {
-        mPresenter.completeOrder(bean.id+"");
+        mPresenter.completeOrder(bean.id);
     }
 
     @Override
@@ -372,8 +376,16 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
     }
 
     @Override
-    public void completeOrderSuccess(String orderId) {
+    public void completeOrderSuccess(int orderId) {
         dismissDialog();
+        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
+            if (rb.id == orderId) {
+                mAdapter.removeItem(i);
+                mAdapter.notifyDataSetChanged();
+                break;
+            }
+        }
         CommonActivity.start(mActivity,OrderCompleteFragment.class,new Bundle());
 //        Intent i = new Intent(mActivity, MainActivity.class);
 //        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
