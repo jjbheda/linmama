@@ -181,10 +181,6 @@ public class NewOrderAdapter extends BaseAdapter {
         holder1.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!TimeUtils.isTimeLargeThanTenMinutes(bean.order_datetime_bj)){
-                    Toast.makeText(mContext,"10分钟内不允许取消",Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 if (mCancelOrder!=null){
                     mCancelOrder.onCancelOrder(bean);
                 }
