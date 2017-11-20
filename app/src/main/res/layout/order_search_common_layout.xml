@@ -337,6 +337,14 @@
                 android:layout_height="wrap_content"
                 android:text="单号：10000993" />
 
+            <TextView
+                android:id="@+id/notes_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextViewOrderRed"
+                android:text="订单金额或退款金额与之前请求不一致，请核实后再试"
+                />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

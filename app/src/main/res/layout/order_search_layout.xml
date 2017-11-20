@@ -19,13 +19,19 @@
         android:gravity="center"
         android:orientation="horizontal">
 
+        <LinearLayout
+            android:id="@+id/back_lt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="15dp"
+            android:gravity="center"
+            android:paddingRight="15dp">
         <ImageView
             android:id="@+id/arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:src="@mipmap/icon_back" />
-
+        </LinearLayout>
         <com.linmama.dinning.widget.ClearEditText
             android:id="@+id/etSearch"
             style="@style/OrderClearEditText"

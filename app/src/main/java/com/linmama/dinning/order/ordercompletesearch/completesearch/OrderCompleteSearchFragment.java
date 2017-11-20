@@ -161,4 +161,9 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
     public void cancelOrderFail(String failMsg) {
         Toast.makeText(mActivity,failMsg,Toast.LENGTH_SHORT).show();
     }
+
+    @OnClick(R.id.back_lt)
+    public void back(){
+        mActivity.finish();
+    }
 }

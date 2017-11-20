@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="@string/set_open" />
+                    android:text="" />
             </RelativeLayout>
 
             <com.linmama.dinning.widget.SettingItem

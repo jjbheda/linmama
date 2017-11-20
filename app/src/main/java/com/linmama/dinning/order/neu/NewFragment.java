@@ -61,7 +61,6 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         NewOrderContract.NewOrderView, NewOrderContract.ReceiveOrderView
         , MyAlertDialog.ICallBack, AdapterView.OnItemClickListener, NewOrderAdapter.ICommitOrder, NewOrderAdapter.ICancelOrder,
         NewOrderContract.PrintView, GetMoreListView.OnGetMoreListener {
-    public boolean IsTest = false;
     private static String TAG = "NewFragment";
     @BindView(R.id.lvNewOrder)
     GetMoreListView mLvNewOrder;
@@ -313,7 +312,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                 mPresenter.getPrintData(Integer.parseInt(orderId));
             }
         }
-        ViewUtils.showSnack(mPtrNew, "接单成功");
+        ViewUtils.showSnack(mPtrNew, "确认成功");
         for (LResultNewOrderBean rb : mResults) {
             if (String.valueOf(rb.id).equals(orderId)) {
                 mResults.remove(rb);
@@ -341,6 +340,12 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         }
         if (!TextUtils.isEmpty(failMsg)) {
             ViewUtils.showSnack(mPtrNew, failMsg);
+        }
+
+        //刷新页面
+        if (null != mPresenter) {
+            currentPage = 1;
+            mPresenter.getNewOrder(1);
         }
     }
 
@@ -525,29 +530,45 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
     @Override
     public void onCancelOrder(final LResultNewOrderBean bean) {
-        BaseModel.httpService.cancelOrder(bean.id, 0).compose(new CommonTransformer())
-                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
-                    @Override
-                    public void onNext(String msg) {
-                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-                            LResultNewOrderBean rb = (LResultNewOrderBean) mAdapter.getItem(i);
-                            if (rb.id == bean.id) {
-                                mAdapter.removeItem(i);
-                                mAdapter.notifyDataSetChanged();
-                                EventBus.getDefault().post(new DataSynEvent(true));
-                                return;
-                            }
-                        }
-                    }
 
+        mAlert = new MyAlertDialog(mActivity).builder()
+                .setTitle("取消订单，款项将原路反馈")
+                .setConfirmButton("是", new View.OnClickListener() {
                     @Override
-                    public void onError(ApiException e) {
-                        super.onError(e);
-                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    public void onClick(View v) {
+                        BaseModel.httpService.cancelOrder(bean.id, 0).compose(new CommonTransformer())
+                                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                                    @Override
+                                    public void onNext(String msg) {
+                                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+                                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+                                            LResultNewOrderBean rb = (LResultNewOrderBean) mAdapter.getItem(i);
+                                            if (rb.id == bean.id) {
+                                                mAdapter.removeItem(i);
+                                                mAdapter.notifyDataSetChanged();
+                                                EventBus.getDefault().post(new DataSynEvent(true));
+                                                return;
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(ApiException e) {
+                                        super.onError(e);
+                                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        if (null != mPresenter) {
+                                            currentPage = 1;
+                                            mPresenter.getNewOrder(1);
+                                        }
+                                    }
+                                });
+                    }
+                }).setPositiveButton("否", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                     }
                 });
-
+        mAlert.show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行

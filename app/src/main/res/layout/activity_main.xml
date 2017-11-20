@@ -24,7 +24,7 @@
         <LinearLayout
             android:id="@+id/layTabOrder"
             style="@style/HomeTabLay"
-           android:orientation="vertical">
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imgPendingTreat"
@@ -39,7 +39,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layTabData"
+            android:id="@+id/ltTabDataQuery"
             style="@style/HomeTabLay"
             android:orientation="vertical"
             >

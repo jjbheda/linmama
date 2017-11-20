@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by jiangjingbo on 2017/10/29.
@@ -94,4 +95,10 @@ public class OrderUndoSearchActivity extends BasePresenterActivity<OrderUndoSear
 
         }
     }
+
+    @OnClick(R.id.back_lt)
+    public void back(){
+        this.finish();
+    }
+
 }

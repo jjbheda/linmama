@@ -85,7 +85,6 @@ public class OrderFragment extends BasePresenterFragment implements
     ListView mTabWidget;
 
     private BadgeView mNewBadge;
-    private BadgeView mRemindBadge;
 
     private NewFragment mNewFragment;
     private TakingFragment mTakingFragment;
@@ -94,7 +93,6 @@ public class OrderFragment extends BasePresenterFragment implements
     public static boolean isForeground = false;
     public static String NEWORDER_REFRESH_ACTION = "com.xcxid.dining.refreshneworder";
 
-    private MenuCategoryAdapter mCategorydapter;
     private TextView lastSelectView;
     private AppCompatActivity appCompatActivity;
 
@@ -136,18 +134,22 @@ public class OrderFragment extends BasePresenterFragment implements
                 if (type.equals("1")) {
                     mOrderGroup.check(R.id.takingOrder);
                     showTileTaking();
+                    mViewPager.setCurrentItem(1);
                 } else {
                     mOrderGroup.check(R.id.todayOrder);
                     hideTileTaking(true);
+                    mViewPager.setCurrentItem(2);
                 }
 
             } else {
                 mOrderGroup.check(R.id.newOrder);
                 hideTileTaking(false);
+                mViewPager.setCurrentItem(0);
             }
         } else {
             mOrderGroup.check(R.id.newOrder);
             hideTileTaking(false);
+            mViewPager.setCurrentItem(0);
         }
     }
 
@@ -189,7 +191,6 @@ public class OrderFragment extends BasePresenterFragment implements
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
-
     }
 
     @Override

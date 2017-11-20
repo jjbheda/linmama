@@ -296,6 +296,16 @@
 
     </style>
 
+    <style name="TextViewOrderRed">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">#FD4A2E</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:textSize">14sp</item>
+
+    </style>
+
     <style name="LineView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>

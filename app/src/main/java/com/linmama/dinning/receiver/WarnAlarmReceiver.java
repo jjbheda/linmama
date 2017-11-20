@@ -73,7 +73,7 @@ public class WarnAlarmReceiver extends BroadcastReceiver {
                 Log.e(TAG, "Get message extra JSON error!");
             }
 
-            boolean isVoiceWarn = (boolean) SpUtils.get(Constants.VOICE_WARN, false);
+            boolean isVoiceWarn = (boolean) SpUtils.get(Constants.VOICE_WARN, true);
             if (isVoiceWarn){
                 playMp3(context,type);
             }
@@ -193,25 +193,6 @@ public class WarnAlarmReceiver extends BroadcastReceiver {
 //            NotificationUtils.showNotification(context, msg, 2);
 //        }
 //    }
-
-    private String getOrderType(Bundle bundle){
-        String type ="0";   // 订单类型  0 当日单 1预约单
-        try {
-            JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-            Iterator<String> it =  json.keys();
-            while (it.hasNext()) {
-                String myKey = it.next().toString();
-                if (myKey.equals("type")) {
-                    type = json.optString(myKey);
-                    break;
-                }
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "Get message extra JSON error!");
-        }
-        return type;
-    }
-
 
     private String printBundle(Bundle bundle) {
         StringBuilder sb = new StringBuilder();

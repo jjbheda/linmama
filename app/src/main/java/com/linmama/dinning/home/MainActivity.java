@@ -50,8 +50,8 @@ public class MainActivity extends BaseActivity {
     LinearLayout layTabOrder;
     @BindView(R.id.layTabGoods)
     LinearLayout layTabGoods;
-    @BindView(R.id.layTabData)
-    LinearLayout layTabData;
+    @BindView(R.id.ltTabDataQuery)
+    LinearLayout ltTabDataQuery;
     @BindView(R.id.layTabSettings)
     LinearLayout layTabSettings;
     @BindView(R.id.imgPendingTreat)
@@ -121,6 +121,7 @@ public class MainActivity extends BaseActivity {
 
 //        replaceContent(new OrderFragment());
         resetSelected();
+        menu_order_btn.setTextColor(getResources().getColor(R.color.actionsheet_red));
         imgimgPendingTreat.setImageResource(R.mipmap.pendingtreat_selected);
         if (BuildConfig.DEBUG) {
             JPushInterface.setDebugMode(true);
@@ -217,6 +218,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.layTabOrder)
     public void showOrder(View view) {
+        Log.d(TAG,"new Order onclick begin");
         if (null == mOrder) {
             mOrder = new OrderFragment();
         }
@@ -225,11 +227,13 @@ public class MainActivity extends BaseActivity {
         replaceContent(new OrderFragment());
         resetSelected();
         imgimgPendingTreat.setImageResource(R.mipmap.pendingtreat_selected);
-        menu_order_btn.setTextColor(getResources().getColor(R.color.colorAccent));
+        menu_order_btn.setTextColor(getResources().getColor(R.color.actionsheet_red));
+        Log.d(TAG,"new Order onclick end");
     }
 
-    @OnClick(R.id.imgShopManager)
+    @OnClick(R.id.layTabGoods)
     public void showGoods(View view) {
+        Log.d(TAG,"shopmanager onclick begin");
         if (null == mshops) {
             mshops = new ShopManagerFragment();
         }
@@ -238,11 +242,13 @@ public class MainActivity extends BaseActivity {
         replaceContent(new ShopManagerFragment());
         resetSelected();
         imgShopManager.setImageResource(R.mipmap.shop_manager_selected);
-        mShopManagerTv.setTextColor(getResources().getColor(R.color.colorAccent));
+        mShopManagerTv.setTextColor(getResources().getColor(R.color.actionsheet_red));
+        Log.d(TAG,"shopmanager onclick end");
     }
 
-    @OnClick(R.id.imgOrderQuery)
+    @OnClick(R.id.ltTabDataQuery)
     public void showData(View view) {
+        Log.d(TAG,"orderQuery onclick begin");
         if (null == mData) {
             mData = new OrderCompleteFragment();
         }
@@ -251,11 +257,13 @@ public class MainActivity extends BaseActivity {
         replaceContent(new OrderCompleteFragment());
         resetSelected();
         imgOrderQuery.setImageResource(R.mipmap.order_query_selected);
-        mOrderQueryTv.setTextColor(getResources().getColor(R.color.colorAccent));
+        mOrderQueryTv.setTextColor(getResources().getColor(R.color.actionsheet_red));
+        Log.d(TAG,"orderQuery onclick end");
     }
 
     @OnClick(R.id.layTabSettings)
     public void showSettings(View view) {
+        Log.d(TAG,"setting onclick begin");
         if (null == mSetting) {
             mSetting = new SettingFragment();
         }
@@ -264,7 +272,8 @@ public class MainActivity extends BaseActivity {
         replaceContent(new SettingFragment());
         resetSelected();
         imgTabSettings.setImageResource(R.mipmap.tab_setting_selected);
-        mSettingTv.setTextColor(getResources().getColor(R.color.colorAccent));
+        mSettingTv.setTextColor(getResources().getColor(R.color.actionsheet_red));
+        Log.d(TAG,"setting onclick end");
     }
 
     private void resetSelected() {

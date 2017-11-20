@@ -26,7 +26,7 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
     private IRefundRetry mRefundRetry;
     private IPrintOrder mPrintOrder;
     private ICancelFinishedOrder mCancelOrder;
-    private int searchType = 0; //0 已完成订单    1  退款未成功
+    private int searchType = 0;  //0 已完成订单    1  退款未成功
 
     public OrderUndoSearchAdapter(Activity context, int searchType, List<TakingOrderBean> results) {
         this.mContext = context;
@@ -91,6 +91,7 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
             holder1.order_goods_lt = (LinearLayout) view.findViewById(R.id.order_goods_lt);
             holder1.order_time_list = (LinearLayout) view.findViewById(R.id.order_time_list);
             holder1.btnPrint = (TextView) view.findViewById(R.id.btnPrint);
+            holder1.tv_notes_order = (TextView) view.findViewById(R.id.notes_order);
             view.setTag(holder1);
         } else {
             holder1 = (ViewHolder1) view.getTag();
@@ -102,7 +103,6 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
         holder1.tv_name.setText(bean.user.user_name);
         holder1.order_time.setText(bean.order_datetime_bj);
         holder1.table_num.setText(bean.order_no + "");
-        holder1.tv_order_status.setText("未完成");
         holder1.parcel_iv.setText(bean.is_for_here.equals("0") ? "自取" : "堂食");
         holder1.tv_remark.setText(bean.remark);
         holder1.haspay_tv.setText(bean.pay_amount);
@@ -152,24 +152,24 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
                     ContectUtils.onCall(mContext, bean.user.user_tel);
             }
         });
-
+        String type = "已完成";
         if (searchType == 0) {
-            String type = "";
             //0 可取消 1已取消 2 已退款
             if (bean.status.equals("0")) {
-                type = "取消订单";
+                type = "可取消";
                 holder1.complete.setTextColor(mContext.getResources().getColor(R.color.gray_bg_color));
                 holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_commit_bg));
             } else if (bean.status.equals("1")) {
                 type = "已取消";
                 holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
-            } else {
+            } else if (bean.status.equals("2")){
                 type = "已退款";
                 holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
             }
             holder1.complete.setText(type);
 
         } else {
+            type = "已完成";
             holder1.complete.setText("再次退款");
             holder1.complete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -179,6 +179,13 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
                     }
                 }
             });
+        }
+        holder1.tv_order_status.setText(type);
+        if (!bean.fail_reson.equals("")) {
+            holder1.tv_notes_order.setVisibility(View.VISIBLE);
+            holder1.tv_notes_order.setText(bean.fail_reson);
+        } else {
+            holder1.tv_notes_order.setVisibility(View.GONE);
         }
 
         holder1.complete.setOnClickListener(new View.OnClickListener() {
@@ -230,6 +237,8 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
         TextView tv_serial_number;
         TextView complete;
         TextView btnPrint;
+        TextView tv_notes_order;
+
     }
 
 

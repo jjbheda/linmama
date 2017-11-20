@@ -171,4 +171,8 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
     public void refundRetryFail(String failMsg) {
 
     }
+    @OnClick(R.id.back_lt)
+    public void back(){
+        mActivity.finish();
+    }
 }
