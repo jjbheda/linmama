@@ -2,6 +2,8 @@ package com.linmama.dinning.shop;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,6 +40,8 @@ import static com.linmama.dinning.base.BaseModel.httpService;
 public class ShopManagerFragment extends BaseFragment {
     @BindView(R.id.shop_status)
     TextView mShopStatus;
+    @BindView(R.id.shop_status_iv)
+    ImageView mShopStatusIv;
     @BindView(R.id.today_revenues)
     TextView mTodayRevenues;
     @BindView(R.id.today_order_tv)
@@ -132,7 +136,7 @@ public class ShopManagerFragment extends BaseFragment {
                             } else {
                                 ViewUtils.showToast(mActivity, "票据打印机连接失败");
                                 mPrintStatusTv.setText("未连接");
-                                mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_pos));
+                                mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_off_connect));
                             }
                         }
                     });
@@ -141,11 +145,17 @@ public class ShopManagerFragment extends BaseFragment {
 
     @Override
     protected void initListener() {
-
     }
 
     public void showUI(ShopBean bean){
-        mShopStatus.setText(bean.is_open.equals("1")?"营业中":"打烊");
+        if (bean.is_open.equals("1")) {
+            mShopStatus.setText("营业中");
+            mShopStatusIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_on_sale));
+        } else {
+            mShopStatus.setText("打烊");
+            mShopStatusIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_off_sale));
+        }
+
         mTodayRevenues.setText(bean.income);
         mTodayOrderNum.setText(bean.total_ords+"");
         mShopName.setText(bean.shop_name);

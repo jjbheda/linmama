@@ -27,6 +27,7 @@ public class TakingOrderAdapter extends BaseAdapter {
     private Activity mContext;
     private ICompleteOrder mCommitOrder;
     private ICancelOrder mCancelOrder;
+    private IPrintOrder mPrintOrder;
     private int mOrderStyle;
 
     public TakingOrderAdapter(Activity context, int orderStyle,List<TakingOrderBean> results) {
@@ -55,7 +56,11 @@ public class TakingOrderAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return mResults.get(i);
+        if (mResults != null && mResults.size() > i) {
+            return mResults.get(i);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -196,7 +201,7 @@ public class TakingOrderAdapter extends BaseAdapter {
             }
         });
 
-        holder1.ok.setText("已完成");
+        holder1.ok.setText("完成");
         holder1.cancel.setText("取消订单");
         holder1.btnPrint.setVisibility(View.VISIBLE);
 
@@ -234,11 +239,19 @@ public class TakingOrderAdapter extends BaseAdapter {
         mCancelOrder = cancelOrder;
     }
 
+    public void setPrintOrder(IPrintOrder printOrder){
+        mPrintOrder = printOrder;
+    }
+
     public interface ICompleteOrder {
         void onCompleteOrder(TakingOrderBean bean);
     }
 
     public interface ICancelOrder {
         void onCancelOrder(TakingOrderBean bean);
+    }
+
+    public interface IPrintOrder{
+        void onPrintOrder(TakingOrderBean bean);
     }
 }

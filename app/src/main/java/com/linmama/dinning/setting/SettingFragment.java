@@ -144,9 +144,9 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     public void openStore(View view) {
         showDialog("加载中...");
         if (isClosed) {
-            mPresenter.modifyStoreStatus(1);
-        } else {
             mPresenter.modifyStoreStatus(0);
+        } else {
+            mPresenter.modifyStoreStatus(1);
         }
     }
 

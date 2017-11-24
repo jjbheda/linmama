@@ -54,7 +54,11 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return mResults.get(i);
+        if (mResults != null && mResults.size() > i) {
+            return mResults.get(i);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -92,6 +96,10 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
             holder1.order_time_list = (LinearLayout) view.findViewById(R.id.order_time_list);
             holder1.btnPrint = (TextView) view.findViewById(R.id.btnPrint);
             holder1.tv_notes_order = (TextView) view.findViewById(R.id.notes_order);
+            holder1.shrint_btn = (TextView) view.findViewById(R.id.shrint_tv);
+            holder1.goods_shrink_lt = (LinearLayout) view.findViewById(R.id.goods_shrink_lt);
+            holder1.phone_lt = (LinearLayout) view.findViewById(R.id.phone_lt);
+            holder1.complete = (TextView) view.findViewById(R.id.btnNewCancel2);
             view.setTag(holder1);
         } else {
             holder1 = (ViewHolder1) view.getTag();
@@ -110,11 +118,7 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
         holder1.tv_serial_number.setText("单号 ： " + bean.serial_number);
         holder1.tv_delivery_address_name.setText(bean.place.place_name);
         holder1.tv_delivery_address.setText(bean.place.place_address);
-        holder1.shrint_btn = (TextView) view.findViewById(R.id.shrint_tv);
-        holder1.order_goods_lt = (LinearLayout) view.findViewById(R.id.order_goods_lt);
-        holder1.goods_shrink_lt = (LinearLayout) view.findViewById(R.id.goods_shrink_lt);
-        holder1.phone_lt = (LinearLayout) view.findViewById(R.id.phone_lt);
-        holder1.complete = (TextView) view.findViewById(R.id.btnNewCancel2);
+
         holder1.order_goods_lt.removeAllViews();
         for (OrderGoodBean bean1 : bean.goods_list) {
             View lt_view = mInflater.inflate(R.layout.lv_item_goods_single, null);
@@ -133,14 +137,19 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
             holder1.tv_remark.setVisibility(View.VISIBLE);
             holder1.tv_remark.setText(bean.remark);
         }
+        final  LinearLayout shrintLt;
+        final TextView shrint_btn;
+        shrint_btn = holder1.shrint_btn;
         shrintLt = holder1.goods_shrink_lt;
-        holder1.shrint_btn.setOnClickListener(new View.OnClickListener() {
+        shrint_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (shrintLt.getVisibility() == View.VISIBLE) {
+                if (shrintLt.getVisibility() == View.VISIBLE){
                     shrintLt.setVisibility(View.GONE);
+                    shrint_btn.setText("展开");
                 } else {
                     shrintLt.setVisibility(View.VISIBLE);
+                    shrint_btn.setText("收起");
                 }
             }
         });
@@ -156,7 +165,7 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
         if (searchType == 0) {
             //0 可取消 1已取消 2 已退款
             if (bean.status.equals("0")) {
-                type = "可取消";
+                type = "已完成";
                 holder1.complete.setTextColor(mContext.getResources().getColor(R.color.gray_bg_color));
                 holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_commit_bg));
             } else if (bean.status.equals("1")) {
@@ -240,7 +249,6 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
         TextView tv_notes_order;
 
     }
-
 
     public interface IRefundRetry {
         void refundRetry(TakingOrderBean bean);

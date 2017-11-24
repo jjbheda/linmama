@@ -17,6 +17,7 @@ import com.linmama.dinning.R;
 import com.linmama.dinning.base.BaseActivity;
 import com.linmama.dinning.base.CommonActivity;
 import com.linmama.dinning.bean.AccountBeanItem;
+import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.shop.account.detail.AccountDetailFragment;
 import com.linmama.dinning.shop.bean.SaleRankBean;
 
@@ -40,7 +41,11 @@ public class AccountAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return mResults.get(i);
+        if (mResults != null && mResults.size() > i) {
+            return mResults.get(i);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -61,7 +66,11 @@ public class AccountAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
+
        final AccountBeanItem bean = mResults.get(i);
+        if (bean == null || holder == null){
+            return view;
+        }
         holder.date.setText(bean.date+"日账单");
         holder.income.setText(bean.income);
         holder.text.setText(bean.text);

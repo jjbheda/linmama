@@ -121,7 +121,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(DataSynEvent event) {
         Log.e("TodayFragment", "event---->" + event.isShouldUpdateData());
-        Toast.makeText(mActivity,"TodayFragment 数据刷新",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mActivity, "TodayFragment 数据刷新", Toast.LENGTH_SHORT).show();
         if (event.isShouldUpdateData()) {
             refresh();
         }
@@ -141,8 +141,9 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
         if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
             mResults.clear();
         }
+        mAdapter = new TakingOrderAdapter(mActivity, 0, mResults);
         if (currentPage == 1 && resultBean.data.size() == 0) {
-            if (mPtrTaking.getHeader()!= null)
+            if (mPtrTaking.getHeader() != null)
                 mPtrTaking.getHeader().setVisibility(View.GONE);
             if (mAdapter != null) {
                 mAdapter.notifyDataSetChanged();
@@ -154,20 +155,19 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
             LogUtils.d("getTakingOrderSuccess", resultBean.data.toString());
             mResults.addAll(resultBean.data);
             last_page = resultBean.last_page;
-            if (null == mAdapter) {
-                mAdapter = new TakingOrderAdapter(mActivity, 0, mResults);
-                mAdapter.setCommitOrder(this);
-                mAdapter.setCancelOrder(this);
-                mLvTakingOrder.setAdapter(mAdapter);
-            } else {
-                mAdapter.notifyDataSetChanged();
-                if (currentPage > 1) {
-                    mLvTakingOrder.getMoreComplete();
-                }
-                if (currentPage == last_page) {
-                    mLvTakingOrder.setNoMore();
-                }
+
+            mAdapter.setCommitOrder(this);
+            mAdapter.setCancelOrder(this);
+            mLvTakingOrder.setAdapter(mAdapter);
+
+            mAdapter.notifyDataSetChanged();
+            if (currentPage > 1) {
+                mLvTakingOrder.getMoreComplete();
             }
+            if (currentPage == last_page) {
+                mLvTakingOrder.setNoMore();
+            }
+
         }
 
     }
@@ -386,7 +386,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
                 break;
             }
         }
-        CommonActivity.start(mActivity,OrderCompleteFragment.class,new Bundle());
+        CommonActivity.start(mActivity, OrderCompleteFragment.class, new Bundle());
 //        Intent i = new Intent(mActivity, MainActivity.class);
 //        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );

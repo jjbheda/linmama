@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,18 +52,16 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
     private OrderUndoSearchAdapter mAdapter;
 
     @BindView(R.id.nearly_tv)
-    TextView mNearlyTv;
+    RadioButton mNearlyTv;
 
     @BindView(R.id.select_date)
-    TextView mSelectDateTv;
+    RadioButton mSelectDateTv;
 
     @BindView(R.id.tv_refundment)
     TextView mRefundmentTv;
 
     @BindView(R.id.date_selected_tv)
     TextView mSelectedDateTv;
-    @BindView(R.id.lt_taking_search)
-    LinearLayout mSearchLt;
 
     private String mStartDate = "";
     private String mEndDate = "";
@@ -93,19 +92,18 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
             }
             return;
         }
+        mAdapter = new OrderUndoSearchAdapter(mActivity, 0, mResults);
         mPreComplete.setVisibility(View.VISIBLE);
         if (bean.data.size() > 0) {
             LogUtils.d("getTakingOrderSuccess", bean.data.toString());
             List<TakingOrderBean> results = bean.data;
             mResults.addAll(results);
-            if (mPreComplete.getHeader() != null)
+            if (mPreComplete.getHeader() != null) {
                 mPreComplete.getHeader().setVisibility(View.GONE);
-            if (null == mAdapter) {
-                mAdapter = new OrderUndoSearchAdapter(mActivity, 0, mResults);
-                lvSearchOrderLt.setAdapter(mAdapter);
-                mAdapter.setCancelOrder(this);
-                mAdapter.notifyDataSetChanged();
             }
+            lvSearchOrderLt.setAdapter(mAdapter);
+            mAdapter.setCancelOrder(this);
+            mAdapter.notifyDataSetChanged();
             if (currentPage > 1) {
                 lvSearchOrderLt.getMoreComplete();
             }
@@ -128,6 +126,8 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
 
     @OnClick(R.id.select_date)
     public void showDateSelecterDiaglog() {
+//        mNearlyTv.setBackgroundColor(mActivity.getResources().getColor(R.color.commonWhile));
+//        mSelectDateTv.setBackgroundColor(mActivity.getResources().getColor(R.color.colorOrderTake));
         DateRangePicker picker = new DateRangePicker(mActivity, DateRangePicker.YEAR_MONTH_DAY, true);
         //选择器
         picker.setGravity(Gravity.CENTER);
@@ -163,7 +163,7 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
         return calendar.get(Calendar.DAY_OF_MONTH);
     }
 
-    @OnClick(R.id.lt_taking_search)
+    @OnClick(R.id.order_search_lt)
     public void goToSearch() {
         CommonActivity.start(mActivity, OrderCompleteSearchFragment.class, new Bundle());
     }
@@ -171,8 +171,8 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
     @OnClick(R.id.nearly_tv)
     public void getNearlyData() {
         mSelectedDateTv.setVisibility(View.GONE);
-        mNearlyTv.setBackgroundColor(mActivity.getResources().getColor(R.color.colorOrderTake));
-        mSelectDateTv.setBackgroundColor(mActivity.getResources().getColor(R.color.commonWhile));
+//        mNearlyTv.setBackgroundColor(mActivity.getResources().getColor(R.color.colorOrderTake));
+//        mSelectDateTv.setBackgroundColor(mActivity.getResources().getColor(R.color.commonWhile));
         mPresenter.getFinishedOrderListData(1, "", "");
     }
 

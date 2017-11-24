@@ -66,21 +66,19 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
                 }
                 return;
             }
-            if (null == mAdapter) {
-                mAdapter = new OrderUndoSearchAdapter(mActivity,1,mResults);
-                mAdapter.setPrintOrder(this);
-                mAdapter.setRefundRetry(this);
-                lvSearchOrderLt.setAdapter(mAdapter);
-            } else {
-                mAdapter.notifyDataSetChanged();
-                if (currentPage > 1) {
-                    lvSearchOrderLt.getMoreComplete();
-                }
-
-                if (currentPage == last_page) {
-                    lvSearchOrderLt.setNoMore();
-                }
+            mAdapter = new OrderUndoSearchAdapter(mActivity,1,mResults);
+            mAdapter.setPrintOrder(this);
+            mAdapter.setRefundRetry(this);
+            lvSearchOrderLt.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
+            if (currentPage > 1) {
+                lvSearchOrderLt.getMoreComplete();
             }
+
+            if (currentPage == last_page) {
+                lvSearchOrderLt.setNoMore();
+            }
+
         }
     }
 

@@ -29,11 +29,6 @@ public class SaleRankModel extends BaseModel {
                 .subscribe(new CommonSubscriber<List<SaleRankBean>>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(List<SaleRankBean> beans) {
-
-                        for (int i =0;i<beans.size();i++){
-                            SaleRankBean bean = beans.get(i);
-                            bean.index = i+1;
-                        }
                         hint.successSaleRank(beans);
                     }
 

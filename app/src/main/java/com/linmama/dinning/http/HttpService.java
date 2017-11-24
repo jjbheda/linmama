@@ -150,9 +150,9 @@ public interface HttpService {
     @POST("historyAnalysis/")
     Observable<BaseHttpResult<List<BusinessParseBean>>> getHistoryAnalysisData(@Field("type") int type);
 
-    //店铺管理-营业分析-菜品分析  type://0 当日  1 昨日 2本月 3 上月
+    //店铺管理-营业分析-商品统计  type//0 当日单  1 预约次日单
     @FormUrlEncoded
-    @POST("productAnalysis/")
+    @POST("productSalesAnalysis/")
     Observable<BaseHttpResult<List<SaleRankBean>>> getProductAnalysisData(@Field("type") int type);
 
     //我的账单--历史账单
@@ -175,7 +175,7 @@ public interface HttpService {
     Observable<BaseHttpResult<ShopBaseInfoBean>> getStoreInfo();
 
     //营业/打烊开关接口
-    //op_flag为操作标记，0关闭 1 开启
+    //op_flag为操作标记，注意这是表示当前状态 0关闭 1 开启
     @FormUrlEncoded
     @POST("setOpenStatus/")
     Observable<BaseHttpResult> openOrClose(@Field("status") int status);

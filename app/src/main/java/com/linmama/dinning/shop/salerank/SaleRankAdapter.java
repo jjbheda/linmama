@@ -50,23 +50,26 @@ public class SaleRankAdapter extends BaseAdapter {
             holder = new ViewHolder();
             view = mInflater.inflate(R.layout.lv_item_rank_sale, viewGroup, false);
             holder.index = (TextView) view.findViewById(R.id.data_rank);
-            holder.income = (TextView) view.findViewById(R.id.data_product);
-            holder.saleNum = (TextView) view.findViewById(R.id.data_order_num);
+            holder.name = (TextView) view.findViewById(R.id.data_name);
+            holder.num = (TextView) view.findViewById(R.id.data_order_num);
+            holder.saleaccount = (TextView) view.findViewById(R.id.data_order_account);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
         SaleRankBean bean = mResults.get(i);
             holder.index.setTextColor(mContext.getResources().getColor(R.color.colorOrderAppoint));
-        holder.index.setText(bean.index+"");
-        holder.income.setText(bean.name);
-        holder.saleNum.setText(bean.count);
+        holder.index.setText(bean.num+"");
+        holder.name.setText(bean.product_name);
+        holder.num.setText(bean.amount);
+        holder.saleaccount.setText(bean.amount);
         return view;
     }
 
     private static class ViewHolder {
         TextView index;
-        TextView income;
-        TextView saleNum;
+        TextView name;
+        TextView num;
+        TextView saleaccount;
     }
 }

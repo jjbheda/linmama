@@ -60,7 +60,11 @@ public class NewOrderAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return mResults.get(i);
+        if (mResults != null && mResults.size() > i) {
+            return mResults.get(i);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -142,11 +146,13 @@ public class NewOrderAdapter extends BaseAdapter {
         holder1.tv_delivery_address.setText(bean.place.place_address);
         holder1.order_goods_lt.removeAllViews();
         for (OrderOrderMenuBean bean1:bean.order_list){
-            View lt_view = mInflater.inflate(R.layout.lv_item_goods_single,null);
+            View lt_view = mInflater.inflate(R.layout.lv_item_neworder_goods_single,null);
             TextView tv_name = (TextView) lt_view.findViewById(R.id.goods_name);
             TextView tv_price = (TextView) lt_view.findViewById(R.id.goods_price);
+            TextView date_order = (TextView) lt_view.findViewById(R.id.date_order);
             tv_name.setText(bean1.goods_list.get(0).name);
             tv_price.setText(bean1.goods_list.get(0).total_price);
+            date_order.setText(bean1.date);
             holder1.order_goods_lt.addView(lt_view);
         }
         holder1.order_time_list.removeAllViews();
@@ -219,6 +225,7 @@ public class NewOrderAdapter extends BaseAdapter {
         TextView cancel;
         TextView ok;
         TextView btnPrint;
+        TextView date_order;
     }
 
     public void setCommitOrder(ICommitOrder commitOrder){

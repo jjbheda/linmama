@@ -38,7 +38,11 @@ public class CompleteOrderAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return mResults.get(i);
+        if (mResults != null && mResults.size() > i) {
+            return mResults.get(i);
+        } else {
+            return null;
+        }
     }
 
     @Override

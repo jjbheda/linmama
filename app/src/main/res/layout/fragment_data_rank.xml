@@ -20,6 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:background="@android:color/white"
         android:orientation="horizontal">
 
@@ -27,22 +29,12 @@
             android:id="@+id/rankToday"
             style="@style/RankTabItem"
             android:checked="true"
-            android:text="@string/data_today" />
+            android:text="当日单" />
 
         <RadioButton
             android:id="@+id/rankYesterday"
             style="@style/RankTabItem"
-            android:text="@string/data_yesterday" />
-
-        <RadioButton
-            android:id="@+id/rankMonth"
-            style="@style/RankTabItem"
-            android:text="@string/data_month" />
-
-        <RadioButton
-            android:id="@+id/rankLastMonth"
-            style="@style/RankTabItem"
-            android:text="@string/data_lastmonth" />
+            android:text="预约次日单" />
 
     </RadioGroup>
 
@@ -60,7 +52,18 @@
             android:background="@drawable/rank_item_bg"
             android:gravity="center"
             android:padding="5dp"
-            android:text="@string/data_rank"
+            android:text="@string/data_index"
+            android:textColor="@color/colorLoginEdit"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rank_item_bg"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/data_product"
             android:textColor="@color/colorLoginEdit"
             android:textSize="14sp" />
 
@@ -71,7 +74,7 @@
             android:background="@drawable/rank_item_bg"
             android:gravity="center"
             android:padding="5dp"
-            android:text="@string/data_turnover"
+            android:text="@string/data_order_num"
             android:textColor="@color/colorLoginEdit"
             android:textSize="14sp" />
 
@@ -83,7 +86,7 @@
             android:background="@drawable/rank_item_bg"
             android:gravity="center"
             android:padding="5dp"
-            android:text="@string/data_orderenum"
+            android:text="@string/data_account"
             android:textColor="@color/colorLoginEdit"
             android:textSize="14sp" />
     </LinearLayout>

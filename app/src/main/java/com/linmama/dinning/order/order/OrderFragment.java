@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -45,9 +46,7 @@ import butterknife.ButterKnife;
  */
 
 public class OrderFragment extends BasePresenterFragment implements
-        RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener, View.OnClickListener,
-        NewFragment.INewHint,
-        NewFragment.INewReceiveOrder {
+        RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener, View.OnClickListener{
     @BindView(R.id.toolBar_common)
     Toolbar mToolBar_common;
     @BindView(R.id.toolBar_taking)
@@ -58,10 +57,10 @@ public class OrderFragment extends BasePresenterFragment implements
     RadioButton mNewOrder;
 
     @BindView(R.id.icon_today_search)
-    ImageView mIconTodaySearch;
+    LinearLayout mIconTodaySearch;
 
     @BindView(R.id.icon_taking_search)
-    ImageView mIconTakingSearch;
+    LinearLayout mIconTakingSearch;
 
     @BindView(R.id.takingOrder)
     RadioButton mTakingOrder;
@@ -107,6 +106,12 @@ public class OrderFragment extends BasePresenterFragment implements
         return R.layout.fragment_order;
     }
 
+    public interface CompleteOrderCallback{
+        void success(String orderType);     //0 当日单 1 预约单
+    }
+
+    CompleteOrderCallback completeOrderCallback;
+
     @Override
     protected void initView() {
         OrderAdapter mAdapter = new OrderAdapter(getChildFragmentManager());
@@ -128,25 +133,46 @@ public class OrderFragment extends BasePresenterFragment implements
 //        mViewPager.setOffscreenPageLimit(4);
         Bundle args = getArguments();
         if (args != null && args.getString("OrderType")!=null) {        //订单推送
-           String type = args.getString("OrderType","0");    // 订单类型  0 当日单 1预约单
+            String type = args.getString("OrderType", "0");    // 订单类型  0 当日单 1预约单
+            int id = args.getInt("ID", 0);    // 订单id
             boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);
             if (isAutoReceiveOrder) {
-                if (type.equals("1")) {
-                    mOrderGroup.check(R.id.takingOrder);
-                    showTileTaking();
-                    mViewPager.setCurrentItem(1);
-                } else {
-                    mOrderGroup.check(R.id.todayOrder);
-                    hideTileTaking(true);
-                    mViewPager.setCurrentItem(2);
-                }
+//                if (type.equals("1")) {
+//                    mOrderGroup.check(R.id.takingOrder);
+//                    showTileTaking();
+//                    mViewPager.setCurrentItem(1);
+//                } else {
+//                    mOrderGroup.check(R.id.todayOrder);
+//                    hideTileTaking(true);
+//                    mViewPager.setCurrentItem(2);
+//                mOrderGroup.check(R.id.newOrder);
+//                hideTileTaking(false);
+//                mViewPager.setCurrentItem(0);
+//
+//                }
 
-            } else {
-                mOrderGroup.check(R.id.newOrder);
-                hideTileTaking(false);
-                mViewPager.setCurrentItem(0);
+//            } else {
+//                mOrderGroup.check(R.id.newOrder);
+//                hideTileTaking(false);
+//                mViewPager.setCurrentItem(0);
+//            }
+//        } else {
+                mNewFragment.setId(id);
+                mNewFragment.setCompleteOrderCallback(new CompleteOrderCallback() {
+                    @Override
+                    public void success(String orderType) {
+                        if (orderType.equals("1")) {
+                            mOrderGroup.check(R.id.takingOrder);
+                            showTileTaking();
+                            mViewPager.setCurrentItem(1);
+                        } else {
+                            mOrderGroup.check(R.id.todayOrder);
+                            hideTileTaking(true);
+                            mViewPager.setCurrentItem(2);
+                        }
+                    }
+                });
             }
-        } else {
             mOrderGroup.check(R.id.newOrder);
             hideTileTaking(false);
             mViewPager.setCurrentItem(0);
@@ -297,12 +323,6 @@ public class OrderFragment extends BasePresenterFragment implements
         lastSelectView = tvName;
     }
 
-    @Override
-    public void newHint() {
-        int count = mNewBadge.getBadgeCount();
-        setNewHint(count - 1);
-    }
-
     private void setNewHint(int count) {
         if (null == mNewBadge) {
             mNewBadge = new BadgeView(mActivity);
@@ -313,18 +333,6 @@ public class OrderFragment extends BasePresenterFragment implements
         } else {
             mNewBadge.setBadgeCount(count);
         }
-    }
-
-    @Override
-    public void notifyReceiveOrder() {
-        if (null != mTakingFragment) {
-            mTakingFragment.refresh();
-        }
-    }
-
-    @Override
-    public void notifyNonPayOrder() {
-
     }
 
     public void registerMessageReceiver() {

@@ -41,7 +41,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/ivAvatar"
-                    android:text="@string/app_name"
+                    android:text=""
                     android:textColor="@color/colorLoginEdit"
                     android:textSize="16sp" />
 
@@ -87,7 +87,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/openTitle"
-                    android:text="@string/set_item0"
+                    android:text=""
                     android:textColor="@color/colorOrderText"
                     android:textSize="14sp" />
 
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="" />
+                    android:text="正在营业" />
             </RelativeLayout>
 
             <com.linmama.dinning.widget.SettingItem

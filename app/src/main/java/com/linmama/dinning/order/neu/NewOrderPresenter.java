@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NewOrderPresenter extends BasePresenter<NewFragment> implements
-        NewOrderContract.NewOrderPresenter, NewOrderContract.ReceiveOrderPresenter, NewOrderContract.PrintPresenter {
+        NewOrderContract.NewOrderPresenter, NewOrderContract.PrintPresenter {
 
     @Override
     public void getNewOrder(int page) {
@@ -40,30 +40,30 @@ public class NewOrderPresenter extends BasePresenter<NewFragment> implements
         });
     }
 
-    @Override
-    public void receiveOrder(String orderId) {
-        if (null == getIView())
-            return;
-        ((ReceiveOrderModel) getiModelMap().get("ReceiveOrder")).receivingOrder(orderId, new ReceiveOrderModel
-                .ReceiveHint() {
-            @Override
-            public void successReceive(String orderId) {
-                if (null == getIView())
-                    return;
-                LogUtils.d("successReceive", "success");
-                getIView().receiveOrderSuccess(orderId);
-            }
-
-            @Override
-            public void failReceive(String failMsg) {
-                if (null == getIView())
-                    return;
-                LogUtils.d("failReceive", "fail");
-                getIView().receiveOrderFail(failMsg);
-            }
-
-        });
-    }
+//    @Override
+//    public void receiveOrder(String orderId) {
+//        if (null == getIView())
+//            return;
+//        ((ReceiveOrderModel) getiModelMap().get("ReceiveOrder")).receivingOrder(orderId, new ReceiveOrderModel
+//                .ReceiveHint() {
+//            @Override
+//            public void successReceive(String orderId) {
+//                if (null == getIView())
+//                    return;
+//                LogUtils.d("successReceive", "success");
+//                getIView().receiveOrderSuccess(orderId);
+//            }
+//
+//            @Override
+//            public void failReceive(String failMsg) {
+//                if (null == getIView())
+//                    return;
+//                LogUtils.d("failReceive", "fail");
+//                getIView().receiveOrderFail(failMsg);
+//            }
+//
+//        });
+//    }
 
 
 

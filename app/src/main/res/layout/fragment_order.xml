@@ -12,14 +12,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <LinearLayout
                 android:id="@+id/icon_today_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:src="@mipmap/icon_search" />
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_search" />
+            </LinearLayout>
 
             <TextView
                 style="@style/ToolBarTitleStyle"
@@ -39,40 +43,45 @@
             android:orientation="horizontal">
 
             <RadioGroup
+                android:id="@+id/rg_lt"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="30dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
-                android:background="#f5f5f5"
                 android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/order_today_title_tv"
-                    style="@style/OrderTabItem"
+                    style="@style/TakingRankTabItem"
                     android:checked="true"
-                    android:text="@string/tab_toolbar_taking_title_01" />
+                    android:text="@string/tab_toolbar_taking_title_01"/>
 
                 <RadioButton
                     android:id="@+id/order_tomorrow_title_tv"
-                    style="@style/OrderTabItem"
-                    android:text="@string/tab_toolbar_taking_title_02" />
+                    style="@style/TakingRankTabItem"
+                    android:text="@string/tab_toolbar_taking_title_02"  />
 
                 <RadioButton
                     android:id="@+id/order_all_title_tv"
-                    style="@style/OrderTabItem"
-                    android:text="@string/tab_toolbar_taking_title_03" />
+                    style="@style/TakingRankTabItem"
+                    android:text="@string/tab_toolbar_taking_title_03"  />
             </RadioGroup>
-
-            <ImageView
+            <LinearLayout
                 android:id="@+id/icon_taking_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:src="@mipmap/icon_search" />
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_search" />
+            </LinearLayout>
         </RelativeLayout>
+
+
     </android.support.v7.widget.Toolbar>
 
     <RadioGroup

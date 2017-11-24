@@ -5,7 +5,7 @@
               android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/titleGoods"
+        android:id="@+id/titleshopManager"
         style="@style/ToolBarStyle">
 
         <TextView
@@ -35,7 +35,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/icon_shop_name"
             android:gravity="center"
-            android:text="东东包东关店"
+            android:text=""
             />
 
 
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="已连接"
+                android:text=""
                 android:textColor="#259B24" />
         </LinearLayout>
 
@@ -70,10 +70,11 @@
             android:layout_alignParentRight="true">
 
             <ImageView
+                android:id="@+id/shop_status_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/icon_on_sale"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_on_sale" />
 
             <TextView
                 android:id="@+id/shop_status"
@@ -83,7 +84,7 @@
                 android:textColor="#FFC000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="营业中"
+                android:text=""
                 />
         </LinearLayout>
     </RelativeLayout>

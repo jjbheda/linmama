@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class TakingOrderPresenter extends BasePresenter<TakingFragment> implements
         TakingOrderContract.TakingOrderPresenter,
-        TakingOrderContract.PrintPresenter, TakingOrderContract.CompleteOrderPresenter {
+       TakingOrderContract.CompleteOrderPresenter {
 
     @Override
     public void getTakingOrder(int page,int order_type,int range) {
@@ -73,34 +73,34 @@ public class TakingOrderPresenter extends BasePresenter<TakingFragment> implemen
 //                });
 //    }
 
-    @Override
-    public void getPrintData(int orderId) {
-        if (null == getIView())
-            return;
-
-        if (1 ==1 ){
-            getIView().getPrintDataSuccess(new OrderDetailBean());
-            return;
-        }
-
-
-        ((OrderDetailModel) getiModelMap().get("PrintData")).getOrderDetail(orderId,
-                new OrderDetailModel.OrderDetailHint() {
-                    @Override
-                    public void successOrderDetail(OrderDetailBean bean) {
-                        if (null == getIView())
-                            return;
-                        getIView().getPrintDataSuccess(bean);
-                    }
-
-                    @Override
-                    public void failOrderDetail(String failMsg) {
-                        if (null == getIView())
-                            return;
-                        getIView().getPrintDataFail(failMsg);
-                    }
-                });
-    }
+//    @Override
+//    public void getPrintData(int orderId) {
+//        if (null == getIView())
+//            return;
+//
+//        if (1 ==1 ){
+//            getIView().getPrintDataSuccess(new OrderDetailBean());
+//            return;
+//        }
+//
+//
+//        ((OrderDetailModel) getiModelMap().get("PrintData")).getOrderDetail(orderId,
+//                new OrderDetailModel.OrderDetailHint() {
+//                    @Override
+//                    public void successOrderDetail(OrderDetailBean bean) {
+//                        if (null == getIView())
+//                            return;
+//                        getIView().getPrintDataSuccess(bean);
+//                    }
+//
+//                    @Override
+//                    public void failOrderDetail(String failMsg) {
+//                        if (null == getIView())
+//                            return;
+//                        getIView().getPrintDataFail(failMsg);
+//                    }
+//                });
+//    }
 
     @Override
     public void completeOrder(int orderId) {

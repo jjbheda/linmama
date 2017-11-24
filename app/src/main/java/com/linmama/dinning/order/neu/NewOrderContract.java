@@ -20,20 +20,15 @@ public class NewOrderContract {
         void getPrintDataFail(String failMsg);
     }
 
-    public interface ReceiveOrderView {
-        void receiveOrderSuccess(String orderId);
-
-        void receiveOrderFail(String failMsg);
-    }
+//    public interface ReceiveOrderView {
+//        void receiveOrderSuccess(String orderId);
+//
+//        void receiveOrderFail(String failMsg);
+//    }
 
     public interface NewOrderPresenter {
         void getNewOrder(int page);
     }
-
-    public interface ReceiveOrderPresenter {
-        void receiveOrder(String orderId);
-    }
-
 
     public interface PrintPresenter {
         void getPrintData(int orderId);

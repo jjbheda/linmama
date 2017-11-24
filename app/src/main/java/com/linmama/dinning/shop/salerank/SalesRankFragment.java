@@ -25,10 +25,6 @@ public class SalesRankFragment extends BasePresenterFragment<SaleRankPresenter> 
     RadioButton rankToday;
     @BindView(R.id.rankYesterday)
     RadioButton rankYesterday;
-    @BindView(R.id.rankMonth)
-    RadioButton rankMonth;
-    @BindView(R.id.rankLastMonth)
-    RadioButton rankLastMonth;
     @BindView(R.id.rankGroup)
     RadioGroup rankGroup;
     @BindView(android.R.id.list)
@@ -79,18 +75,6 @@ public class SalesRankFragment extends BasePresenterFragment<SaleRankPresenter> 
     public void getYesterdayRank(View view) {
         showDialog("加载中...");
         mPresenter.getSaleRank(1);
-    }
-
-    @OnClick(R.id.rankMonth)
-    public void getMonthRank(View view) {
-        showDialog("加载中...");
-        mPresenter.getSaleRank(2);
-    }
-
-    @OnClick(R.id.rankLastMonth)
-    public void getLastMonthRank(View view) {
-        showDialog("加载中...");
-        mPresenter.getSaleRank(3);
     }
 
     @Override

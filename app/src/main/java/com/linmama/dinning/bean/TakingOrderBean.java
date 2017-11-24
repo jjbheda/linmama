@@ -16,7 +16,7 @@ public class TakingOrderBean {
     public String serial_number = "";//No20171010224933576179
     public int id = 0 ;//23,
     public String remark= "";
-    public String is_for_here = "";// "1"
+    public String is_for_here = "";//  1 堂食 0 自取
     public String pay_amount= "";// "0.07"
     public String order_datetime_bj= "";// "2017-10-10 22:49:33"
     public String status = "";//0 可取消 1已取消 2 已退款

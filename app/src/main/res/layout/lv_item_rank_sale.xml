@@ -9,7 +9,7 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:text="@string/data_rank"
+        android:text="@string/data_index"
         android:layout_marginLeft="10dp"
         android:gravity="center"
         android:background="@drawable/rank_item_bg"
@@ -17,7 +17,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/data_product"
+        android:id="@+id/data_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -30,6 +30,19 @@
 
     <TextView
         android:id="@+id/data_order_num"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:gravity="center"
+        android:background="@drawable/rank_item_bg"
+        android:text="@string/data_order_num"
+        android:textColor="@color/colorLoginEdit"
+        android:textSize="14sp" />
+
+
+    <TextView
+        android:id="@+id/data_order_account"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"

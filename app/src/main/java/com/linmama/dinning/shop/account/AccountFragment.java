@@ -59,14 +59,11 @@ public class AccountFragment extends BasePresenterFragment<AccountPresenter> imp
         LogUtils.d("getAccountSuccess", beans.toString());
         List<AccountBeanItem> results = beans;
         mResults.addAll(results);
-        if (null == mAdapter) {
-            mAdapter = new AccountAdapter(mActivity, mResults);
-            mLvAccount.setAdapter(mAdapter);
-        } else {
-            mAdapter.notifyDataSetChanged();
-            if (currentPage > 1) {
-                mLvAccount.getMoreComplete();
-            }
+        mAdapter = new AccountAdapter(mActivity, mResults);
+        mLvAccount.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+        if (currentPage > 1) {
+            mLvAccount.getMoreComplete();
         }
         if (beans.size() <= 20) {
             mLvAccount.setNoMore();
@@ -124,7 +121,6 @@ public class AccountFragment extends BasePresenterFragment<AccountPresenter> imp
                 if (null != mPresenter) {
                     mResults.clear();
                     currentPage = 1;
-                    type = 1;
                     mPresenter.getHistoryBillQueryData(currentPage, type);
                 }
             }
@@ -151,6 +147,6 @@ public class AccountFragment extends BasePresenterFragment<AccountPresenter> imp
             return;
         }
         currentPage++;
-        mPresenter.getHistoryBillQueryData(currentPage, 0);
+        mPresenter.getHistoryBillQueryData(currentPage, 1);
     }
 }
