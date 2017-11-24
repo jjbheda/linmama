@@ -173,10 +173,10 @@ public class OrderFragment extends BasePresenterFragment implements
                     }
                 });
             }
-            mOrderGroup.check(R.id.newOrder);
-            hideTileTaking(false);
-            mViewPager.setCurrentItem(0);
         }
+        mOrderGroup.check(R.id.newOrder);
+        hideTileTaking(false);
+        mViewPager.setCurrentItem(0);
     }
 
     @Override

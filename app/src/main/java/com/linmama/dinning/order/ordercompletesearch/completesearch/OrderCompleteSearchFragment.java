@@ -6,14 +6,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.linmama.dinning.R;
+import com.linmama.dinning.adapter.TakingOrderAdapter;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteContract;
-import com.linmama.dinning.order.ordercompletesearch.completesearch.OrderSearchCompletePresenter;
-import com.linmama.dinning.order.orderundosearch.OrderUndoSearchActivity;
-import com.linmama.dinning.order.orderundosearch.OrderUndoSearchAdapter;
 import com.linmama.dinning.utils.LogUtils;
+import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.ClearEditText;
 import com.linmama.dinning.widget.GetMoreListView;
@@ -33,8 +32,9 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 
 public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSearchCompletePresenter>
-        implements GetMoreListView.OnGetMoreListener, OrderCompleteContract.SearchOrderView, OrderCompleteContract.CancelView, OrderUndoSearchAdapter.ICancelFinishedOrder, OrderUndoSearchAdapter.IPrintOrder {
+        implements GetMoreListView.OnGetMoreListener, OrderCompleteContract.SearchOrderView, OrderCompleteContract.CancelView, OrderCompleteOrRefundSearchAdapter.ICancelFinishedOrder, OrderCompleteOrRefundSearchAdapter.IPrintOrder {
 
+    public static String TAG = "OrderCompleteSearchFragment";
     @BindView(R.id.lv_order_search)
     GetMoreListView mLvSearchOrder;
     @BindView(R.id.ptr_search)
@@ -43,8 +43,9 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
     ClearEditText mEtSearch;
 
     private List<TakingOrderBean> mResults = new ArrayList<>();
-    private OrderUndoSearchAdapter mAdapter;
+    private OrderCompleteOrRefundSearchAdapter mAdapter;
     private int currentPage = 1;
+    private int last_page = 1;
 
     @Override
     protected OrderSearchCompletePresenter loadPresenter() {
@@ -62,7 +63,7 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
         mPtrSearchFt.setHeaderView(header);
         mPtrSearchFt.addPtrUIHandler(header);
     }
-
+    private boolean isPullRefresh = false;
     @Override
     protected void initListener() {
         mLvSearchOrder.setOnGetMoreListener(this);
@@ -71,6 +72,15 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
                 if (null != mPresenter) {
                     currentPage = 1;
+                    mResults.clear();
+                    if (mLvSearchOrder!=null) {
+                        mLvSearchOrder.setNoMore();
+                    }
+                    currentPage = 1;
+                    isPullRefresh = true;
+                    if(mAdapter != null){
+                        mAdapter.notifyDataSetChanged();
+                    }
                     mPresenter.getSearchFinishedOrderListData(mEtSearch.getText().toString());
                 }
             }
@@ -95,18 +105,29 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
 
     @Override
     public void onGetMore() {
-
+        if (currentPage == last_page) {
+            mLvSearchOrder.setNoMore();
+            return;
+        }
+        currentPage++;
+        mPresenter.getSearchFinishedOrderListData(mEtSearch.getText().toString());
     }
 
     @Override
     public void getSearchOrderSuccess(TakingOrderMenuBean bean) {
         dismissDialog();
+        if (mAdapter == null || currentPage == 1 || isPullRefresh) {
+            mAdapter = new OrderCompleteOrRefundSearchAdapter(mActivity, 0, mResults);
+            mLvSearchOrder.setAdapter(mAdapter);
+        }
         if (currentPage == 1 && mPtrSearchFt.isRefreshing()) {
             mPtrSearchFt.refreshComplete();
         }
         if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
             mResults.clear();
         }
+        isPullRefresh = false;
+        last_page = bean.last_page;
 
         if (currentPage == 1 && bean.data.size() == 0) {
             if (mPtrSearchFt.getHeader() != null)
@@ -121,14 +142,18 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
             LogUtils.d("getTakingOrderSuccess", bean.data.toString());
             List<TakingOrderBean> results = bean.data;
             mResults.addAll(results);
-            mAdapter = new OrderUndoSearchAdapter(mActivity, 0, mResults);
-            mLvSearchOrder.setAdapter(mAdapter);
             mAdapter.setCancelOrder(this);
             mAdapter.setPrintOrder(this);
-            mLvSearchOrder.setNoMore();
-            mLvSearchOrder.getMoreComplete();
+            if (currentPage > 1) {
+                mLvSearchOrder.getMoreComplete();
+            }
+
+            if (currentPage == last_page) {
+                mLvSearchOrder.setNoMore();
+            } else {
+                mLvSearchOrder.setHasMore();
+            }
             mAdapter.notifyDataSetChanged();
-            mLvSearchOrder.setNoMore();
         }
     }
 
@@ -139,7 +164,8 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
 
     @Override
     public void printOrder(TakingOrderBean bean) {
-
+        PrintUtils.printOrder(TAG,bean);
+        dismissDialog();
     }
 
     @Override

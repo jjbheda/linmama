@@ -58,8 +58,15 @@
     </LinearLayout>
     <View
         style="@style/LineViewSingle"/>
-    <com.linmama.dinning.widget.GetMoreListView
-        android:id="@+id/lvSearchOrderLt"
-        style="@style/OrderListStyle" />
+
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/ptr_search_order"
+        style="@style/BothMatch"
+        android:background="@color/colorSettingBg">
+
+        <com.linmama.dinning.widget.GetMoreListView
+            android:id="@+id/lvSearchOrderLt"
+            style="@style/OrderListStyle" />
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
 </LinearLayout>

@@ -10,9 +10,9 @@ import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteContract;
-import com.linmama.dinning.order.ordercompletesearch.refund.OrderCompleteRefundPresenter;
-import com.linmama.dinning.order.orderundosearch.OrderUndoSearchAdapter;
+import com.linmama.dinning.order.ordercompletesearch.completesearch.OrderCompleteOrRefundSearchAdapter;
 import com.linmama.dinning.utils.LogUtils;
+import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.ClearEditText;
 import com.linmama.dinning.widget.GetMoreListView;
@@ -33,15 +33,15 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 
 public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefundSearchPresenter>
         implements OrderCompleteContract.SearchOrderView, OrderCompleteContract.RefundRetryView, GetMoreListView.OnGetMoreListener,
-        OrderUndoSearchAdapter.IRefundRetry, OrderUndoSearchAdapter.IPrintOrder {
-
+        OrderCompleteOrRefundSearchAdapter.IRefundRetry, OrderCompleteOrRefundSearchAdapter.IPrintOrder {
+    public static String TAG = "OrderRefundSearchFragment";
     @BindView(R.id.lv_order_search)
     GetMoreListView mLvSearchOrder;
     @BindView(R.id.ptr_search)
     PtrClassicFrameLayout mPtrSearchFt;
     @BindView(R.id.etSearch)
     ClearEditText mEtSearch;
-    private OrderUndoSearchAdapter mAdapter;
+    private OrderCompleteOrRefundSearchAdapter mAdapter;
     List<TakingOrderBean> mResults = new ArrayList<>();
 
     private int currentPage = 1;
@@ -50,6 +50,10 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
     @Override
     public void getSearchOrderSuccess(TakingOrderMenuBean bean) {
         dismissDialog();
+        if (mAdapter == null || currentPage == 1 || isPullRefresh) {
+            mAdapter = new OrderCompleteOrRefundSearchAdapter(mActivity, 1, mResults);
+            mLvSearchOrder.setAdapter(mAdapter);
+        }
         if (currentPage == 1 && mPtrSearchFt.isRefreshing()) {
             mPtrSearchFt.refreshComplete();
         }
@@ -57,7 +61,7 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
             mResults.clear();
         }
         last_page = bean.last_page;
-
+        isPullRefresh = false;
         if (bean.data.size() > 0) {
             LogUtils.d("getTakingOrderSuccess", bean.data.toString());
             List<TakingOrderBean> results = bean.data;
@@ -69,11 +73,17 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
                 }
                 return;
             }
-            mAdapter = new OrderUndoSearchAdapter(mActivity, 1, mResults);
             mAdapter.setPrintOrder(this);
             mAdapter.setRefundRetry(this);
-            mLvSearchOrder.setAdapter(mAdapter);
-            mLvSearchOrder.setNoMore();
+            if (currentPage > 1) {
+                mLvSearchOrder.getMoreComplete();
+            }
+
+            if (currentPage == last_page) {
+                mLvSearchOrder.setNoMore();
+            } else {
+                mLvSearchOrder.setHasMore();
+            }
             mAdapter.notifyDataSetChanged();
         }
     }
@@ -111,6 +121,7 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
         mPtrSearchFt.addPtrUIHandler(header);
     }
 
+    private boolean isPullRefresh = false;
     @Override
     protected void initListener() {
         mLvSearchOrder.setOnGetMoreListener(this);
@@ -118,8 +129,16 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
             @Override
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
                 if (null != mPresenter) {
-                    mResults.clear();
                     currentPage = 1;
+                    mResults.clear();
+                    if (mLvSearchOrder!=null) {
+                        mLvSearchOrder.setNoMore();
+                    }
+                    currentPage = 1;
+                    isPullRefresh = true;
+                    if(mAdapter != null){
+                        mAdapter.notifyDataSetChanged();
+                    }
                     mPresenter.getSearchRefundFailOrderListData(mEtSearch.getText().toString());
                 }
             }
@@ -133,11 +152,18 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
 
     @Override
     public void onGetMore() {
+        if (currentPage == last_page) {
+            mLvSearchOrder.setNoMore();
+            return;
+        }
+        currentPage++;
+        mPresenter.getSearchRefundFailOrderListData(mEtSearch.getText().toString());
     }
 
     @Override
     public void printOrder(TakingOrderBean bean) {
-
+        PrintUtils.printOrder(TAG,bean);
+        dismissDialog();
     }
 
     @Override
@@ -150,7 +176,7 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
         if (msg.equals("退款成功")) {
             for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
                 TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
-                if (rb.id == id) {
+                if (rb!=null && rb.id == id) {
                     mAdapter.removeItem(i);
                     mAdapter.notifyDataSetChanged();
                 }

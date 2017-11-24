@@ -11,8 +11,9 @@ import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteContract;
 import com.linmama.dinning.order.ordercompletesearch.refundsearch.OrderRefundSearchFragment;
-import com.linmama.dinning.order.orderundosearch.OrderUndoSearchAdapter;
+import com.linmama.dinning.order.ordercompletesearch.completesearch.OrderCompleteOrRefundSearchAdapter;
 import com.linmama.dinning.utils.LogUtils;
+import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.widget.header.WindmillHeader;
@@ -32,13 +33,13 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 
 public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefundPresenter>
         implements OrderCompleteContract.SearchOrderView,OrderCompleteContract.RefundRetryView,GetMoreListView.OnGetMoreListener,
-        OrderUndoSearchAdapter.IRefundRetry,OrderUndoSearchAdapter.IPrintOrder{
-
+        OrderCompleteOrRefundSearchAdapter.IRefundRetry,OrderCompleteOrRefundSearchAdapter.IPrintOrder{
+    private static String TAG = "OrderRefundFragment";
     @BindView(R.id.ptr_refund)
     PtrClassicFrameLayout mPreRefundLt;
     @BindView(R.id.lvSearchOrderLt)
     GetMoreListView lvSearchOrderLt;
-    private OrderUndoSearchAdapter mAdapter;
+    private OrderCompleteOrRefundSearchAdapter mAdapter;
     List<TakingOrderBean> mResults = new ArrayList<>();
 
     private int currentPage = 1;
@@ -47,6 +48,10 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
     @Override
     public void getSearchOrderSuccess(TakingOrderMenuBean bean) {
         dismissDialog();
+        if (mAdapter == null || currentPage == 1 || isPullRefresh) {
+            mAdapter = new OrderCompleteOrRefundSearchAdapter(mActivity, 0, mResults);
+            lvSearchOrderLt.setAdapter(mAdapter);
+        }
         if (currentPage == 1 && mPreRefundLt.isRefreshing()) {
             mPreRefundLt.refreshComplete();
         }
@@ -54,7 +59,7 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
             mResults.clear();
         }
         last_page = bean.last_page;
-
+        isPullRefresh = false;
         if (bean.data.size()>0){
             LogUtils.d("getTakingOrderSuccess", bean.data.toString());
             List<TakingOrderBean> results = bean.data;
@@ -66,18 +71,18 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
                 }
                 return;
             }
-            mAdapter = new OrderUndoSearchAdapter(mActivity,1,mResults);
             mAdapter.setPrintOrder(this);
             mAdapter.setRefundRetry(this);
-            lvSearchOrderLt.setAdapter(mAdapter);
-            mAdapter.notifyDataSetChanged();
             if (currentPage > 1) {
                 lvSearchOrderLt.getMoreComplete();
             }
 
             if (currentPage == last_page) {
                 lvSearchOrderLt.setNoMore();
+            } else {
+                lvSearchOrderLt.setHasMore();
             }
+            mAdapter.notifyDataSetChanged();
 
         }
     }
@@ -106,7 +111,7 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
         mPreRefundLt.setHeaderView(header);
         mPreRefundLt.addPtrUIHandler(header);
     }
-
+    private boolean isPullRefresh = false;
     @Override
     protected void initListener() {
         lvSearchOrderLt.setOnGetMoreListener(this);
@@ -114,9 +119,17 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
             @Override
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
                 if (null != mPresenter) {
-                    mResults.clear();
                     currentPage = 1;
+                    mResults.clear();
+                    if (lvSearchOrderLt!=null) {
+                        lvSearchOrderLt.setNoMore();
+                    }
+                    isPullRefresh = true;
+                    if(mAdapter != null){
+                        mAdapter.notifyDataSetChanged();
+                    }
                     mPresenter.getRefundFailOrderListData(currentPage);
+
                 }
             }
         });
@@ -139,7 +152,8 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
 
     @Override
     public void printOrder(TakingOrderBean bean) {
-
+        PrintUtils.printOrder(TAG,bean);
+        dismissDialog();
     }
 
     @Override
@@ -152,7 +166,7 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
         if (msg.equals("退款成功")) {
             for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
                 TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
-                if (rb.id  == id) {
+            if (rb != null && rb.id == id) {
                     mAdapter.removeItem(i);
                     mAdapter.notifyDataSetChanged();
                 }
@@ -165,6 +179,6 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
 
     @Override
     public void refundRetryFail(String failMsg) {
-
+        ViewUtils.showSnack(mPreRefundLt, failMsg);
     }
 }

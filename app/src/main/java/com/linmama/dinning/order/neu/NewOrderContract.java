@@ -30,7 +30,4 @@ public class NewOrderContract {
         void getNewOrder(int page);
     }
 
-    public interface PrintPresenter {
-        void getPrintData(int orderId);
-    }
 }

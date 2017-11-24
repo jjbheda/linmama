@@ -109,7 +109,7 @@ public class OffSaleFragment extends BasePresenterFragment<OffMenuItemListPresen
             ViewUtils.showSnack(mContent, "上架成功");
             for (int i = 0; i < mAdapter.getCount(); i++) {
                 ShopItemBean item = (ShopItemBean) mAdapter.getItem(i);
-                if (currentOnItemId == item.getId()) {
+                if (item!=null && currentOnItemId == item.getId()) {
                     mAdapter.removeItem(i);
                     if (null != mOnSaleNotify) {
                         mOnSaleNotify.onSaleNotify();

@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by jingkang onOrOff 2017/3/6
  */
-public class OrderUndoSearchAdapter extends BaseAdapter {
+public class OrdeUndoSearchAdapter extends BaseAdapter {
 
     private List<TakingOrderBean> mResults;
     private LayoutInflater mInflater;
@@ -26,9 +26,9 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
     private IRefundRetry mRefundRetry;
     private IPrintOrder mPrintOrder;
     private ICancelFinishedOrder mCancelOrder;
-    private int searchType = 0;  //0 已完成订单    1  退款未成功
+    private int searchType = 0;  //0 已完成订单    1  退款未成功    2 预约单、当日单搜索
 
-    public OrderUndoSearchAdapter(Activity context, int searchType, List<TakingOrderBean> results) {
+    public OrdeUndoSearchAdapter(Activity context, int searchType, List<TakingOrderBean> results) {
         this.mContext = context;
         this.mResults = results;
         this.searchType = searchType;
@@ -45,6 +45,16 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
 
     public void setCancelOrder(ICancelFinishedOrder cancelOrder) {
         mCancelOrder = cancelOrder;
+    }
+
+    public void updateCancelButton(int id){
+        for (TakingOrderBean bean : mResults) {
+            if (bean.id == id) {
+                bean.status = "1";
+                this.notifyDataSetChanged();
+                break;
+            }
+        }
     }
 
     @Override
@@ -72,8 +82,6 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
             this.notifyDataSetChanged();
         }
     }
-
-    LinearLayout shrintLt;
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
@@ -162,33 +170,7 @@ public class OrderUndoSearchAdapter extends BaseAdapter {
             }
         });
         String type = "已完成";
-        if (searchType == 0) {
-            //0 可取消 1已取消 2 已退款
-            if (bean.status.equals("0")) {
-                type = "已完成";
-                holder1.complete.setTextColor(mContext.getResources().getColor(R.color.gray_bg_color));
-                holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_commit_bg));
-            } else if (bean.status.equals("1")) {
-                type = "已取消";
-                holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
-            } else if (bean.status.equals("2")){
-                type = "已退款";
-                holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
-            }
-            holder1.complete.setText(type);
-
-        } else {
-            type = "已完成";
-            holder1.complete.setText("再次退款");
-            holder1.complete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mRefundRetry != null) {
-                        mRefundRetry.refundRetry(bean);
-                    }
-                }
-            });
-        }
+        //0 已完成订单    1  退款未成功    2 预约单、当日单搜索
         holder1.tv_order_status.setText(type);
         if (!bean.fail_reson.equals("")) {
             holder1.tv_notes_order.setVisibility(View.VISIBLE);

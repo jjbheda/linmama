@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NewOrderPresenter extends BasePresenter<NewFragment> implements
-        NewOrderContract.NewOrderPresenter, NewOrderContract.PrintPresenter {
+        NewOrderContract.NewOrderPresenter{
 
     @Override
     public void getNewOrder(int page) {
@@ -82,25 +82,4 @@ public class NewOrderPresenter extends BasePresenter<NewFragment> implements
         return map;
     }
 
-    @Override
-    public void getPrintData(int orderId) {
-        if (null == getIView())
-            return;
-        ((OrderDetailModel) getiModelMap().get("PrintData")).getOrderDetail(orderId,
-                new OrderDetailModel.OrderDetailHint() {
-                    @Override
-                    public void successOrderDetail(OrderDetailBean bean) {
-                        if (null == getIView())
-                            return;
-                        getIView().getPrintDataSuccess(bean);
-                    }
-
-                    @Override
-                    public void failOrderDetail(String failMsg) {
-                        if (null == getIView())
-                            return;
-                        getIView().getPrintDataFail(failMsg);
-                    }
-                });
-    }
 }

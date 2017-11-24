@@ -45,7 +45,7 @@ import cn.jpush.android.api.TagAliasCallback;
 // Jpush AppKey: 63c6a767cc9437077af1d0a1
 // Master Secret: f417e836aa6352486ac8f873
 public class MainActivity extends BaseActivity {
-    public static String TAG= "MainActivity";
+    public static String TAG = "MainActivity";
     @BindView(R.id.layTabOrder)
     LinearLayout layTabOrder;
     @BindView(R.id.layTabGoods)
@@ -78,8 +78,9 @@ public class MainActivity extends BaseActivity {
     private OrderCompleteFragment mData;
     private SettingFragment mSetting;
     private long exitTime = 0;
-    private String mOrdertype ="";   // 订单类型  0 当日单 1预约单
+    private String mOrdertype = "";   // 订单类型  0 当日单 1预约单
     private int mId = 0;   // 订单id
+
     @Override
     protected int getLayoutResID() {
         return R.layout.activity_main;
@@ -87,11 +88,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        if (getIntent()!=null && getIntent().getExtras()!=null) {
+        if (getIntent() != null && getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
             try {
                 JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-                Iterator<String> it =  json.keys();
+                Iterator<String> it = json.keys();
                 while (it.hasNext()) {
                     String myKey = it.next().toString();
                     if (myKey.equals("type")) {
@@ -104,7 +105,7 @@ public class MainActivity extends BaseActivity {
             } catch (JSONException e) {
                 Log.e(TAG, "Get message extra JSON error!");
             }
-    }
+        }
 
         mManager = getSupportFragmentManager();
 
@@ -113,8 +114,8 @@ public class MainActivity extends BaseActivity {
         }
         if (!mOrdertype.equals("") && mId != 0) {   // 订单类型  0 当日单 1预约单
             Bundle args = new Bundle();
-            args.putString("OrderType",mOrdertype);
-            args.putInt("ID",mId);
+            args.putString("OrderType", mOrdertype);
+            args.putInt("ID", mId);
             mOrder.setArguments(args);
         }
         switchContent(mOrder);
@@ -131,7 +132,7 @@ public class MainActivity extends BaseActivity {
         JPushInterface.init(this);
         String username = (String) SpUtils.get(Constants.USERNAME, "");
         String usercode = (String) SpUtils.get(Constants.USERCODE, "");
-        JPushInterface.setAlias(this, usercode + "_" +username, new TagAliasCallback() {
+        JPushInterface.setAlias(this, usercode + "_" + username, new TagAliasCallback() {
             @Override
             public void gotResult(int i, String s, Set<String> set) {
                 LogUtils.d("JPushAlias", "i:" + i);
@@ -218,7 +219,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.layTabOrder)
     public void showOrder(View view) {
-        Log.d(TAG,"new Order onclick begin");
+        Log.d(TAG, "new Order onclick begin");
         if (null == mOrder) {
             mOrder = new OrderFragment();
         }
@@ -228,12 +229,12 @@ public class MainActivity extends BaseActivity {
         resetSelected();
         imgimgPendingTreat.setImageResource(R.mipmap.pendingtreat_selected);
         menu_order_btn.setTextColor(getResources().getColor(R.color.actionsheet_red));
-        Log.d(TAG,"new Order onclick end");
+        Log.d(TAG, "new Order onclick end");
     }
 
     @OnClick(R.id.layTabGoods)
     public void showGoods(View view) {
-        Log.d(TAG,"shopmanager onclick begin");
+        Log.d(TAG, "shopmanager onclick begin");
         if (null == mshops) {
             mshops = new ShopManagerFragment();
         }
@@ -243,12 +244,12 @@ public class MainActivity extends BaseActivity {
         resetSelected();
         imgShopManager.setImageResource(R.mipmap.shop_manager_selected);
         mShopManagerTv.setTextColor(getResources().getColor(R.color.actionsheet_red));
-        Log.d(TAG,"shopmanager onclick end");
+        Log.d(TAG, "shopmanager onclick end");
     }
 
     @OnClick(R.id.ltTabDataQuery)
     public void showData(View view) {
-        Log.d(TAG,"orderQuery onclick begin");
+        Log.d(TAG, "orderQuery onclick begin");
         if (null == mData) {
             mData = new OrderCompleteFragment();
         }
@@ -258,12 +259,12 @@ public class MainActivity extends BaseActivity {
         resetSelected();
         imgOrderQuery.setImageResource(R.mipmap.order_query_selected);
         mOrderQueryTv.setTextColor(getResources().getColor(R.color.actionsheet_red));
-        Log.d(TAG,"orderQuery onclick end");
+        Log.d(TAG, "orderQuery onclick end");
     }
 
     @OnClick(R.id.layTabSettings)
     public void showSettings(View view) {
-        Log.d(TAG,"setting onclick begin");
+        Log.d(TAG, "setting onclick begin");
         if (null == mSetting) {
             mSetting = new SettingFragment();
         }
@@ -273,7 +274,7 @@ public class MainActivity extends BaseActivity {
         resetSelected();
         imgTabSettings.setImageResource(R.mipmap.tab_setting_selected);
         mSettingTv.setTextColor(getResources().getColor(R.color.actionsheet_red));
-        Log.d(TAG,"setting onclick end");
+        Log.d(TAG, "setting onclick end");
     }
 
     private void resetSelected() {

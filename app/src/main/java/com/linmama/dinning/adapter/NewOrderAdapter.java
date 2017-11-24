@@ -16,6 +16,7 @@ import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.bean.LResultNewOrderBean;
+import com.linmama.dinning.bean.OrderGoodBean;
 import com.linmama.dinning.bean.OrderOrderMenuBean;
 import com.linmama.dinning.bean.OrderPickupTimeBean;
 import com.linmama.dinning.bean.TakingOrderBean;
@@ -146,12 +147,19 @@ public class NewOrderAdapter extends BaseAdapter {
         holder1.tv_delivery_address.setText(bean.place.place_address);
         holder1.order_goods_lt.removeAllViews();
         for (OrderOrderMenuBean bean1:bean.order_list){
-            View lt_view = mInflater.inflate(R.layout.lv_item_neworder_goods_single,null);
-            TextView tv_name = (TextView) lt_view.findViewById(R.id.goods_name);
-            TextView tv_price = (TextView) lt_view.findViewById(R.id.goods_price);
+            View lt_view = mInflater.inflate(R.layout.lv_item_neworder_goods_menu,null);
             TextView date_order = (TextView) lt_view.findViewById(R.id.date_order);
-            tv_name.setText(bean1.goods_list.get(0).name);
-            tv_price.setText(bean1.goods_list.get(0).total_price);
+            LinearLayout goods_lt = (LinearLayout) lt_view.findViewById(R.id.new_order_goods_lt);
+            for (OrderGoodBean goodBean : bean1.goods_list) {
+                View lt_goods = mInflater.inflate(R.layout.lv_item_neworder_goods_single,null);
+                TextView tv_name = (TextView) lt_goods.findViewById(R.id.goods_name);
+                TextView goods_number = (TextView) lt_goods.findViewById(R.id.goods_number);
+                TextView tv_price = (TextView) lt_goods.findViewById(R.id.goods_price);
+                tv_name.setText(goodBean.name);
+                tv_price.setText(goodBean.total_price);
+                goods_number.setText("X" + goodBean.amount);
+                goods_lt.addView(lt_goods);
+            }
             date_order.setText(bean1.date);
             holder1.order_goods_lt.addView(lt_view);
         }
