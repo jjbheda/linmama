@@ -81,7 +81,9 @@ public class BTService {
         if (this.bluetoothAdapter.disable()) {
             this.bondDevices.clear();
             this.unbondDevices.clear();
-            this.allDevices.clear();
+            if (allDevices!=null){
+                this.allDevices.clear();
+            }
         }
     }
 

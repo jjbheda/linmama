@@ -177,17 +177,21 @@ public class OrderCompleteOrRefundSearchAdapter extends BaseAdapter {
                 type = "取消";
                 holder1.complete.setTextColor(mContext.getResources().getColor(R.color.gray_bg_color));
                 holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_commit_bg));
+                holder1.tv_order_status.setText("已完成");
             } else if (bean.status.equals("1")) {
                 type = "退款中";
                 holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
+                holder1.tv_order_status.setText("退款中");
             } else if (bean.status.equals("2")){
                 type = "已退款";
                 holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
+                holder1.tv_order_status.setText("已退款");
             }
             holder1.complete.setText(type);
 
         } else if (searchType == 1){
             type = "再次退款";
+            holder1.tv_order_status.setText("退款中");
             holder1.complete.setTextColor(mContext.getResources().getColor(R.color.gray_bg_color));
             holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_commit_bg));
             if (bean.status.equals("3")) {
@@ -196,7 +200,7 @@ public class OrderCompleteOrRefundSearchAdapter extends BaseAdapter {
             }
             holder1.complete.setText(type);
         }
-        holder1.tv_order_status.setText(type);
+
         if (!bean.fail_reson.equals("")) {
             holder1.tv_notes_order.setVisibility(View.VISIBLE);
             holder1.tv_notes_order.setText(bean.fail_reson);

@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.linmama.dinning">
-    <uses-feature android:required="true" android:name="android.hardware.usb.host" />
-    <uses-permission android:name="android.hardware.usb.UsbAccessory" />
 
     <permission
         android:name="com.linmama.dinning.permission.JPUSH_MESSAGE"
@@ -191,6 +189,32 @@
             android:enabled="true"
             android:exported="true">
         </service>
+
+        <receiver android:name="com.linmama.dinning.receiver.WarnAlarmReceiver"
+            android:exported="false"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.xcxid.dining.clock" />
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required  用户注册SDK的intent-->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required  用户接收SDK消息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.linmama.dinning" />
+            </intent-filter>
+        </receiver>
+        <meta-data
+            android:name="BUGLY_APPID"
+            android:value="13d768c20b" />
+        <!-- 配置APP版本号 -->
+        <meta-data
+            android:name="BUGLY_APP_VERSION"
+            android:value="1.0" />
+        <!-- 配置APP渠道号 -->
+        <!-- 配置Bugly调试模式（true或者false）-->
+        <meta-data
+            android:name="BUGLY_ENABLE_DEBUG"
+            android:value="true" />
     </application>
 
 </manifest>

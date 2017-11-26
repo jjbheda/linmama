@@ -104,7 +104,8 @@ public class OrderUndoSearchActivity extends BasePresenterActivity<OrderUndoSear
                     if(mAdapter != null){
                         mAdapter.notifyDataSetChanged();
                     }
-                    presenter.getSearchOrderData(orderType,mEtSearch.getText().toString());
+                     presenter.getSearchOrderData(orderType,mEtSearch.getText().toString());
+
                 }
             }
         });

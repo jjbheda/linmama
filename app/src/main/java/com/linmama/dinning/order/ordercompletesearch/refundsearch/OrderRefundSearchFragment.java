@@ -141,7 +141,9 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
                     if(mAdapter != null){
                         mAdapter.notifyDataSetChanged();
                     }
+                    dismissDialog();
                     mPresenter.getSearchRefundFailOrderListData(mEtSearch.getText().toString());
+
                 }
             }
         });

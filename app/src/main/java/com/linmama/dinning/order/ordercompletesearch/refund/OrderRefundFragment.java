@@ -49,7 +49,7 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
     public void getSearchOrderSuccess(TakingOrderMenuBean bean) {
         dismissDialog();
         if (mAdapter == null || currentPage == 1 || isPullRefresh) {
-            mAdapter = new OrderCompleteOrRefundSearchAdapter(mActivity, 0, mResults);
+            mAdapter = new OrderCompleteOrRefundSearchAdapter(mActivity, 1, mResults);
             lvSearchOrderLt.setAdapter(mAdapter);
         }
         if (currentPage == 1 && mPreRefundLt.isRefreshing()) {
@@ -177,7 +177,7 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
             mAdapter.updateCancelButton(id);
 
         } else {
-            Toast.makeText(mActivity,msg,Toast.LENGTH_SHORT).show();
+            ViewUtils.showSnack(mPreRefundLt, msg);
         }
 
     }

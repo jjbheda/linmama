@@ -37,6 +37,7 @@ import com.linmama.dinning.utils.asynctask.CallEarliest;
 import com.linmama.dinning.utils.asynctask.Callback;
 import com.linmama.dinning.utils.asynctask.IProgressListener;
 import com.linmama.dinning.utils.asynctask.ProgressCallable;
+import com.tencent.bugly.crashreport.CrashReport;
 
 
 import net.xprinter.service.XprinterService;
@@ -184,6 +185,7 @@ public class MainActivity extends BaseActivity {
                         }
                     });
         }
+        CrashReport.initCrashReport(getApplicationContext());
 
         //注册广播
 
@@ -202,37 +204,37 @@ public class MainActivity extends BaseActivity {
 //        </receiver>
 
 
-        warnAlarmReceiver  = new   WarnAlarmReceiver  ();
-         IntentFilter intentFilter = new IntentFilter();
-         intentFilter.addAction("com.xcxid.dining.clock");
-         intentFilter.addAction("cn.jpush.android.intent.REGISTRATION");
-         intentFilter.addAction("cn.jpush.android.intent.MESSAGE_RECEIVED");
-         intentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_RECEIVED");
-         intentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_OPENEDD");
-         intentFilter.addAction("cn.jpush.android.intent.CONNECTION");
-         intentFilter.addCategory("com.linmama.dinning");
-         registerReceiver(warnAlarmReceiver, intentFilter);
-
-
-    //绑定service，获取ImyBinder对象
-        Intent intent=new Intent(this,XprinterService.class);
-        bindService(intent, conn, BIND_AUTO_CREATE);
+//        warnAlarmReceiver  = new   WarnAlarmReceiver  ();
+//         IntentFilter intentFilter = new IntentFilter();
+//         intentFilter.addAction("com.xcxid.dining.clock");
+//         intentFilter.addAction("cn.jpush.android.intent.REGISTRATION");
+//         intentFilter.addAction("cn.jpush.android.intent.MESSAGE_RECEIVED");
+//         intentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_RECEIVED");
+//         intentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_OPENEDD");
+//         intentFilter.addAction("cn.jpush.android.intent.CONNECTION");
+//         intentFilter.addCategory("com.linmama.dinning");
+//         registerReceiver(warnAlarmReceiver, intentFilter);
+//
+//
+//    //绑定service，获取ImyBinder对象
+//        Intent intent=new Intent(this,XprinterService.class);
+//        bindService(intent, conn, BIND_AUTO_CREATE);
 
     }
     //bindService的参数conn
-    ServiceConnection conn = new ServiceConnection() {
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            // TODO Auto-generated method stub
-            //绑定成功
-                binder = (IMyBinder) service;
-        }
-    };
+//    ServiceConnection conn = new ServiceConnection() {
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+//        }
+//
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//            // TODO Auto-generated method stub
+//            //绑定成功
+//                binder = (IMyBinder) service;
+//        }
+//    };
     @Override
     protected void initListener() {
     }
@@ -430,7 +432,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(warnAlarmReceiver);
         if (PrintDataService.isConnection()) {
             PrintDataService.disconnect();
         }
@@ -446,7 +447,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void exit() {
-        if ((System.currentTimeMillis() - exitTime) > 500) {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
             ViewUtils.showToast(this, "再按一次退出程序");
             exitTime = System.currentTimeMillis();
         } else {

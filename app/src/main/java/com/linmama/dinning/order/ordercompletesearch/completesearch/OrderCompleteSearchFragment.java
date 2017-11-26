@@ -83,6 +83,7 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
                         mAdapter.notifyDataSetChanged();
                     }
                     mPresenter.getSearchFinishedOrderListData(mEtSearch.getText().toString());
+
                 }
             }
         });

@@ -368,6 +368,8 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                             }
                         }
                     });
+        } else {
+            printOrder2(bean);
         }
 
         dismissDialog();
