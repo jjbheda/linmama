@@ -61,7 +61,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
     PtrClassicFrameLayout mPtrNew;
     private NewOrderAdapter mAdapter;
     private List<LResultNewOrderBean> mResults = new ArrayList<>();
-    ;
+
     private MyAlertDialog mAlert;
     private int selectPosition = -1;
     private ResultsBean mPrintingBean = null;
@@ -168,6 +168,10 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                 for (LResultNewOrderBean model : mResults) {
                     if (model.id == mId) {
                         autoCompleteOrder(model.id);
+                        boolean isAutoPrint = (boolean) SpUtils.get(Constants.AUTO_PRINT, false);
+                        if (isAutoPrint) {               //自动打印
+                            printOrderWithCheck(model);
+                        }
                         break;
                     }
                 }
@@ -208,9 +212,9 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                                         for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
                                             LResultNewOrderBean rb = (LResultNewOrderBean) mAdapter.getItem(i);
                                             if (rb != null && rb.id == bean.id) {
+                                                printOrderWithCheck(rb);
                                                 mAdapter.removeItem(i);
                                                 mAdapter.notifyDataSetChanged();
-                                                printOrderWithCheck(rb);
                                                 EventBus.getDefault().post(new DataSynEvent(true));
                                                 break;
                                             }
@@ -242,7 +246,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
     public void onCancelOrder(final LResultNewOrderBean bean) {
 
         mAlert = new MyAlertDialog(mActivity).builder()
-                .setTitle("取消订单，款项将原路反馈")
+                .setTitle("取消订单，款项将原路返回")
                 .setConfirmButton("是", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -331,7 +335,6 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
 
     private void printOrderWithCheck(final LResultNewOrderBean bean){
-        final StringBuilder builder = new StringBuilder();
         if (bean == null)
             return;
 
@@ -373,10 +376,10 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
     private void printOrder2(LResultNewOrderBean bean){
         final StringBuilder builder = new StringBuilder();
-        builder.append("      林妈妈早餐 ");
+        builder.append("         林妈妈早餐 ");
         builder.append("\n");
 
-        builder.append("   已接单");
+        builder.append("       已接单");
         if (bean.is_for_here.equals(0)){
             builder.append("（自取）");
         } else {
@@ -394,17 +397,17 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         builder.append("\n");
         builder.append("---------------------------");
         builder.append("\n");
-        builder.append("      菜品");
-        builder.append("      数量");
-        builder.append("      价格");
+        builder.append("    菜品");
+        builder.append("    数量");
+        builder.append("    金额");
         builder.append("\n");
         for (OrderOrderMenuBean bean1:bean.order_list){
-            builder.append("      "+bean1.date);
+            builder.append("    "+bean1.date);
             builder.append("\n");
             for (OrderGoodBean goodBean : bean1.goods_list) {
-                builder.append("      " + goodBean.name);
-                builder.append("      " + goodBean.amount);
-                builder.append("      " + goodBean.total_price);
+                builder.append("    " + goodBean.name);
+                builder.append("    " + goodBean.amount);
+                builder.append("    " + goodBean.total_price);
                 builder.append("\n");
             }
             builder.append("\n");
@@ -420,10 +423,10 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
             builder.append("\n");
         }
 
-        builder.append("                      消费金额："+bean.pay_amount);
+        builder.append("               消费金额："+bean.pay_amount);
         builder.append("\n");
         builder.append("\n");
-        builder.append("       取餐时间：");
+        builder.append("取餐时间：");
         for (OrderPickupTimeBean bean1:bean.pickup_list) {
             builder.append("      "+bean1.pickup_date+ " "+bean1.pickup_start_time+"-"+bean1.pickup_end_time);
             builder.append("\n");
@@ -439,8 +442,18 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         builder.append("\n");
         builder.append("---------------------------");
         builder.append("\n");
-        PrintDataService.send(builder.toString());
+        builder.append("\n");
+
+        String printData = builder.toString();
+        int printNum = (int) SpUtils.get(Constants.PRINTER_NUM, 1);
+        if (printNum == 2) {
+            builder.append(printData);
+        } else if (printNum == 3) {
+            builder.append(printData);
+            builder.append(printData);
+        }
         Log.d(TAG,builder.toString());
+        PrintDataService.send(builder.toString());
     }
     @Override
     public void onDestroyView() {

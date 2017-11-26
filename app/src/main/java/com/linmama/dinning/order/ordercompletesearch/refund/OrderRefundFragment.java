@@ -58,19 +58,22 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
         if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
             mResults.clear();
         }
+
+        if (currentPage == 1 && bean.data.size() == 0) {
+            mPreRefundLt.getHeader().setVisibility(View.GONE);
+            if (mAdapter != null) {
+                lvSearchOrderLt.setNoMore();
+                mAdapter.notifyDataSetChanged();
+            }
+            return;
+        }
+
         last_page = bean.last_page;
         isPullRefresh = false;
         if (bean.data.size()>0){
             LogUtils.d("getTakingOrderSuccess", bean.data.toString());
             List<TakingOrderBean> results = bean.data;
             mResults.addAll(results);
-            if (currentPage == 1 && results.size() == 0) {
-                mPreRefundLt.getHeader().setVisibility(View.GONE);
-                if (mAdapter != null) {
-                    mAdapter.notifyDataSetChanged();
-                }
-                return;
-            }
             mAdapter.setPrintOrder(this);
             mAdapter.setRefundRetry(this);
             if (currentPage > 1) {
@@ -164,17 +167,19 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
     @Override
     public void refundRetrySuccess(int id,String msg) {
         if (msg.equals("退款成功")) {
-            for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-                TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
-            if (rb != null && rb.id == id) {
-                    mAdapter.removeItem(i);
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
+//            for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+//                TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
+//            if (rb != null && rb.id == id) {
+//                    mAdapter.removeItem(i);
+//                    mAdapter.notifyDataSetChanged();
+//                }
+//            }
+            mAdapter.updateCancelButton(id);
 
         } else {
             Toast.makeText(mActivity,msg,Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override

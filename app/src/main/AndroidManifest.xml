@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.linmama.dinning">
+    <uses-feature android:required="true" android:name="android.hardware.usb.host" />
+    <uses-permission android:name="android.hardware.usb.UsbAccessory" />
 
     <permission
         android:name="com.linmama.dinning.permission.JPUSH_MESSAGE"
@@ -177,25 +179,18 @@
             <!--</intent-filter>-->
         <!--</receiver>-->
 
-        <receiver android:name="com.linmama.dinning.receiver.WarnAlarmReceiver"
-            android:exported="false"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="com.xcxid.dining.clock" />
-                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required  用户注册SDK的intent-->
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required  用户接收SDK消息的intent-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
-                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <category android:name="com.linmama.dinning" />
-            </intent-filter>
-        </receiver>
 
         <!-- Required  . Enable it you can get statistics data with channel -->
         <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
         <meta-data android:name="JPUSH_APPKEY"
             tools:replace="android:value"
             android:value="7fec63afc1131b08fb61124f" /> <!--  </>值来自开发者平台取得的AppKey-->
+
+        <service
+            android:name="net.xprinter.service.XprinterService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
     </application>
 
 </manifest>

@@ -16,6 +16,7 @@ import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.ClearEditText;
 import com.linmama.dinning.widget.GetMoreListView;
+import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.header.WindmillHeader;
 
 import java.util.ArrayList;
@@ -167,21 +168,35 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
         PrintUtils.printOrder(TAG,bean);
         dismissDialog();
     }
-
+    private MyAlertDialog mAlert;
     @Override
-    public void cancelOrder(TakingOrderBean bean) {
-        mPresenter.cancelOrder(bean.id);
+    public void cancelOrder(final TakingOrderBean bean) {
+        mAlert = new MyAlertDialog(mActivity).builder()
+                .setTitle("取消订单，款项将原路返回")
+                .setConfirmButton("是", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPresenter.cancelOrder(bean.id);
+                    }
+                }).setPositiveButton("否", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+        mAlert.show();
     }
 
     @Override
     public void cancelOrderSuccess(int id, String msg) {
-        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
-            if (rb.id == id) {
-                mAdapter.removeItem(i);
-                mAdapter.notifyDataSetChanged();
-            }
-        }
+//        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
+//            TakingOrderBean rb = (TakingOrderBean) mAdapter.getItem(i);
+//            if (rb.id == id) {
+//                mAdapter.removeItem(i);
+//                mAdapter.notifyDataSetChanged();
+//                break;
+//            }
+//        }
+        mAdapter.updateCancelButton(id);
     }
 
     @Override

@@ -74,7 +74,7 @@ public interface HttpService {
     @POST("finishedOrderListQuery/")
     Observable<BaseHttpResult<TakingOrderMenuBean>> getSearchFinishedOrderListData(@Field("search") String search);
 
-    //已完成订单查询    选择日期
+    //已完成订单查询
     @FormUrlEncoded
     @POST("finishedOrderList/")
     Observable<BaseHttpResult<TakingOrderMenuBean>> getFinishedOrderListData

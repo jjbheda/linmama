@@ -87,6 +87,7 @@
     <View style="@style/LineViewSingle" />
     <in.srain.cube.views.ptr.PtrClassicFrameLayout
         android:id="@+id/ptr_complete"
+        android:background="@color/colorSettingBg"
         style="@style/BothMatch">
     <com.linmama.dinning.widget.GetMoreListView
         android:id="@+id/lvSearchOrderLt"

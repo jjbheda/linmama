@@ -140,6 +140,10 @@ public class ShopManagerFragment extends BaseFragment {
                             }
                         }
                     });
+        } else {
+            ViewUtils.showToast(mActivity, "已连接票据打印机");
+            mPrintStatusTv.setText("已连接");
+            mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_has_connect));
         }
     }
 

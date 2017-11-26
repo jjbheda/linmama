@@ -1,6 +1,7 @@
 package com.linmama.dinning.order.ordercompletesearch.refundsearch;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -69,6 +70,7 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
             if (currentPage == 1 && results.size() == 0) {
                 mPtrSearchFt.getHeader().setVisibility(View.GONE);
                 if (mAdapter != null) {
+                    mLvSearchOrder.setNoMore();
                     mAdapter.notifyDataSetChanged();
                 }
                 return;
@@ -189,7 +191,10 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
 
     @Override
     public void refundRetryFail(String failMsg) {
-
+        dismissDialog();
+        if (!TextUtils.isEmpty(failMsg)) {
+            ViewUtils.showSnack(mPtrSearchFt, failMsg);
+        }
     }
     @OnClick(R.id.back_lt)
     public void back(){

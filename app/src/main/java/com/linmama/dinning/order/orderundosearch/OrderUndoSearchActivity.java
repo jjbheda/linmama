@@ -174,7 +174,7 @@ public class OrderUndoSearchActivity extends BasePresenterActivity<OrderUndoSear
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.orderSearchtv){
-            if (mEtSearch.getText()!=null){
+            if (mEtSearch.getText()!=null && presenter!=null){
                 presenter.getSearchOrderData(orderType,mEtSearch.getText().toString());
             }
             InputMethodManager imm = (InputMethodManager) OrderUndoSearchActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);

@@ -178,7 +178,7 @@ public class OrderCompleteOrRefundSearchAdapter extends BaseAdapter {
                 holder1.complete.setTextColor(mContext.getResources().getColor(R.color.gray_bg_color));
                 holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_commit_bg));
             } else if (bean.status.equals("1")) {
-                type = "已取消";
+                type = "退款中";
                 holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
             } else if (bean.status.equals("2")){
                 type = "已退款";
@@ -187,21 +187,14 @@ public class OrderCompleteOrRefundSearchAdapter extends BaseAdapter {
             holder1.complete.setText(type);
 
         } else if (searchType == 1){
-            type = "已完成";
-            holder1.complete.setText("再次退款");
-            holder1.complete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mRefundRetry != null) {
-                        mRefundRetry.refundRetry(bean);
-                    }
-                }
-            });
-        } else if (searchType == 2 ){
-
-
-
-
+            type = "再次退款";
+            holder1.complete.setTextColor(mContext.getResources().getColor(R.color.gray_bg_color));
+            holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_commit_bg));
+            if (bean.status.equals("3")) {
+                type = "退款中";
+                holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
+            }
+            holder1.complete.setText(type);
         }
         holder1.tv_order_status.setText(type);
         if (!bean.fail_reson.equals("")) {
@@ -214,7 +207,7 @@ public class OrderCompleteOrRefundSearchAdapter extends BaseAdapter {
         holder1.complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (searchType == 1 && mRefundRetry != null) {        //退款未成功
+                if (searchType == 1 && mRefundRetry != null && !bean.status.equals("3")) {        //退款未成功
                     mRefundRetry.refundRetry(bean);
                 } else if (searchType == 0 && bean.status.equals("0") && mCancelOrder != null) {
                     mCancelOrder.cancelOrder(bean);

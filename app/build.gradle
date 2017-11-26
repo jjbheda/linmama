@@ -56,4 +56,5 @@ dependencies {
     compile 'cn.jiguang.sdk:jcore:1.1.1'
     compile files('libs/TencentMapSDK_Raster_v_1.2.8_e45bcd0.jar')
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile files('libs/xprinterconnectandsendsdk.jar')
 }

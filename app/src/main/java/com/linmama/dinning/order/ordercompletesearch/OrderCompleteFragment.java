@@ -7,24 +7,37 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.TakingOrderAdapter;
+import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.base.CommonActivity;
+import com.linmama.dinning.bean.DataSynEvent;
+import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
+import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.order.ordercompletesearch.completesearch.OrderCompleteSearchFragment;
 import com.linmama.dinning.order.ordercompletesearch.refund.OrderRefundFragment;
 import com.linmama.dinning.order.ordercompletesearch.completesearch.OrderCompleteOrRefundSearchAdapter;
+import com.linmama.dinning.subscriber.CommonSubscriber;
+import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.utils.DateRangePicker;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
+import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.header.WindmillHeader;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -86,6 +99,7 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
             if (mPreComplete.getHeader() != null)
                 mPreComplete.getHeader().setVisibility(View.GONE);
             if (mAdapter != null) {
+                lvSearchOrderLt.setNoMore();
                 mAdapter.notifyDataSetChanged();
             }
             return;
@@ -139,6 +153,10 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
                 mStartDate = startYear + "-" + startMonth + "-" + startDay;
                 mEndDate = endYear + "-" + endMonth + "-" + endDay;
                 if (!mStartDate.equals("") && !mEndDate.equals("")) {
+                    if (!checkDate(mStartDate,mEndDate)){
+                        ViewUtils.showSnack(mPreComplete, "查询结束时间不能大于开始时间");
+                        return;
+                    }
                     mSelectedDateTv.setVisibility(View.VISIBLE);
                     mSelectedDateTv.setText(mStartDate + " 至 " + mEndDate);
                     mPresenter.getFinishedOrderListData(1, mStartDate, mEndDate);
@@ -146,6 +164,20 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
             }
         });
         picker.show();
+    }
+
+    private boolean checkDate(String mStartDate,String mEndDate){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date dt1 = df.parse(mStartDate);
+            Date dt2 = df.parse(mEndDate);
+            if (dt1.getTime() > dt2.getTime()) {
+               return false;
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return true;
     }
 
     private int year() {
@@ -227,9 +259,23 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
         mPresenter.getFinishedOrderListData(currentPage, mStartDate, mEndDate);
     }
 
+    private MyAlertDialog mAlert;
     @Override
-    public void cancelOrder(TakingOrderBean bean) {
-        mPresenter.cancelOrder(bean.id);
+    public void cancelOrder(final TakingOrderBean bean) {
+
+        mAlert = new MyAlertDialog(mActivity).builder()
+                .setTitle("取消订单，款项将原路返回")
+                .setConfirmButton("是", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPresenter.cancelOrder(bean.id);
+                    }
+                }).setPositiveButton("否", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+        mAlert.show();
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.util.Log;
 import com.linmama.dinning.bean.OrderGoodBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bluetooth.PrintDataService;
+import com.linmama.dinning.url.Constants;
 
 /**
  * Created by jiangjingbo on 2017/11/24.
@@ -79,6 +80,15 @@ public class PrintUtils {
         builder.append("---------------------------");
         builder.append("\n");
         builder.append("\n");
+
+        String printData = builder.toString();
+        int printNum = (int) SpUtils.get(Constants.PRINTER_NUM, 1);
+        if (printNum == 2) {
+            builder.append(printData);
+        } else if (printNum == 3) {
+            builder.append(printData);
+            builder.append(printData);
+        }
         PrintDataService.send(builder.toString());
         Log.d(TAG, builder.toString());
     }

@@ -261,10 +261,6 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
             }
         }
         CommonActivity.start(mActivity, OrderCompleteFragment.class, new Bundle());
-//        Intent i = new Intent(mActivity, MainActivity.class);
-//        //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-//        mActivity.startActivity(i);
     }
 
     @Override

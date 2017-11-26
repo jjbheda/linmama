@@ -86,10 +86,8 @@ public class BusinessStatisticsFragment extends BasePresenterFragment<BusinessSt
     @Override
     public void saleMonthRankSuccess(List<BusinessParseBean> beans) {
         dismissDialog();
-        if (null != beans && beans.size()>0) {
-            BusinessStatisticsAdapter adapter = new BusinessStatisticsAdapter(mActivity, beans);
-            list.setAdapter(adapter);
-        }
+        BusinessStatisticsAdapter adapter = new BusinessStatisticsAdapter(mActivity, beans);
+        list.setAdapter(adapter);
     }
 
     @Override

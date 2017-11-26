@@ -20,7 +20,7 @@ public class TakingOrderModel extends BaseModel {
         if (hint == null)
             throw new RuntimeException("TakingOrderHint cannot be null.");
 
-        httpService.getReceivedOrder(1,1,range+"")
+        httpService.getReceivedOrder(page,order_type,range+"")
                 .compose(new CommonTransformer<TakingOrderMenuBean>())
                 .subscribe(new CommonSubscriber<TakingOrderMenuBean>(LmamaApplication.getInstance()) {
                     @Override

@@ -203,7 +203,7 @@ public class TakingOrderAdapter extends BaseAdapter {
         });
 
         holder1.ok.setText("完成");
-        holder1.cancel.setText("取消订单");
+        holder1.cancel.setText("取消");
         holder1.btnPrint.setVisibility(View.VISIBLE);
         holder1.btnPrint.setOnClickListener(new View.OnClickListener() {
             @Override

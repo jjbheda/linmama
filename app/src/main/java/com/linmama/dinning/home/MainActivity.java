@@ -1,7 +1,12 @@
 package com.linmama.dinning.home;
 
 import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,9 +17,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.linmama.dinning.base.BaseActivity;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteFragment;
+import com.linmama.dinning.receiver.WarnAlarmReceiver;
 import com.linmama.dinning.shop.ShopManagerFragment;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.BuildConfig;
@@ -31,6 +38,12 @@ import com.linmama.dinning.utils.asynctask.Callback;
 import com.linmama.dinning.utils.asynctask.IProgressListener;
 import com.linmama.dinning.utils.asynctask.ProgressCallable;
 
+
+import net.xprinter.service.XprinterService;
+import net.xprinter.utils.DataForSendToPrinterTSC;
+import net.xprinter.xpinterface.IMyBinder;
+import net.xprinter.xpinterface.UiExecute;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,6 +59,8 @@ import cn.jpush.android.api.TagAliasCallback;
 // Master Secret: f417e836aa6352486ac8f873
 public class MainActivity extends BaseActivity {
     public static String TAG = "MainActivity";
+    public static IMyBinder binder;
+    WarnAlarmReceiver warnAlarmReceiver;
     @BindView(R.id.layTabOrder)
     LinearLayout layTabOrder;
     @BindView(R.id.layTabGoods)
@@ -169,8 +184,55 @@ public class MainActivity extends BaseActivity {
                         }
                     });
         }
-    }
 
+        //注册广播
+
+//          <receiver android:name="com.linmama.dinning.receiver.WarnAlarmReceiver"
+//        android:exported="false"
+//        android:enabled="true">
+//            <intent-filter>
+//                <action android:name="com.xcxid.dining.clock" />
+//                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required  用户注册SDK的intent-->
+//                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required  用户接收SDK消息的intent-->
+//                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
+//                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
+//                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
+//                <category android:name="com.linmama.dinning" />
+//            </intent-filter>
+//        </receiver>
+
+
+        warnAlarmReceiver  = new   WarnAlarmReceiver  ();
+         IntentFilter intentFilter = new IntentFilter();
+         intentFilter.addAction("com.xcxid.dining.clock");
+         intentFilter.addAction("cn.jpush.android.intent.REGISTRATION");
+         intentFilter.addAction("cn.jpush.android.intent.MESSAGE_RECEIVED");
+         intentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_RECEIVED");
+         intentFilter.addAction("cn.jpush.android.intent.NOTIFICATION_OPENEDD");
+         intentFilter.addAction("cn.jpush.android.intent.CONNECTION");
+         intentFilter.addCategory("com.linmama.dinning");
+         registerReceiver(warnAlarmReceiver, intentFilter);
+
+
+    //绑定service，获取ImyBinder对象
+        Intent intent=new Intent(this,XprinterService.class);
+        bindService(intent, conn, BIND_AUTO_CREATE);
+
+    }
+    //bindService的参数conn
+    ServiceConnection conn = new ServiceConnection() {
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            // TODO Auto-generated method stub
+            //绑定成功
+                binder = (IMyBinder) service;
+        }
+    };
     @Override
     protected void initListener() {
     }
@@ -260,9 +322,85 @@ public class MainActivity extends BaseActivity {
         imgOrderQuery.setImageResource(R.mipmap.order_query_selected);
         mOrderQueryTv.setTextColor(getResources().getColor(R.color.actionsheet_red));
         Log.d(TAG, "orderQuery onclick end");
-    }
 
-    @OnClick(R.id.layTabSettings)
+
+//        byte[] data0= DataForSendToPrinterTSC.sizeBydot(480, 240);
+//        byte[] data1=DataForSendToPrinterTSC.cls();
+//
+//        byte[] data2=DataForSendToPrinterTSC.text(10, 10, "TSS24.BF2", 0, 2, 2, "色即是空 ");
+//        byte[] data3=DataForSendToPrinterTSC.print(1);
+//        byte[] data=byteMerger(byteMerger(byteMerger(data0, data1), data2), data3);
+//        if (binder == null)
+//            return;
+//        String btAddress = (String) SpUtils.get(Constants.BT_ADDRESS, "");
+//        if (TextUtils.isEmpty(btAddress)) {
+//            return;
+//        }
+//        binder.connectBtPort(btAddress, new UiExecute() {
+//
+//            @Override
+//            public void onsucess() {
+//                // TODO Auto-generated method stub
+//                //连接成功后在UI线程中的执行
+//                //此处也可以开启读取打印机的数据
+//                //参数同样是一个实现的UiExecute接口对象
+//                //如果读的过程重出现异常，可以判断连接也发生异常，已经断开
+//                //这个读取的方法中，会一直在一条子线程中执行读取打印机发生的数据，
+//                //直到连接断开或异常才结束，并执行onfailed
+//                binder.acceptdatafromprinter(new UiExecute() {
+//
+//                    @Override
+//                    public void onsucess() {
+//                        // TODO Auto-generated method stub
+//                        byte[] data6=DataForSendToPrinterTSC.disPlay("ccccccc");
+//                        binder.write(data6, new UiExecute() {
+//
+//                            @Override
+//                            public void onsucess() {
+//                                // TODO Auto-generated method stub
+//                                Toast.makeText(getApplicationContext(), "成功", Toast.LENGTH_SHORT)
+//                                        .show();
+//                            }
+//
+//                            @Override
+//                            public void onfailed() {
+//                                // TODO Auto-generated method stub
+//                                Toast.makeText(getApplicationContext(), "失败", Toast.LENGTH_SHORT)
+//                                        .show();
+//                            }
+//
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void onfailed() {
+//                        Log.d(TAG,"连接失败");
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onfailed() {
+//                // TODO Auto-generated method stub
+//                //连接失败后在UI线程中的执行
+//                Log.d(TAG,"连接失败");
+//            }
+//        });
+//
+//
+
+        }
+/**
+ * byte数组拼接
+ * */
+//private  byte[] byteMerger(byte[] byte_1, byte[] byte_2){
+//        byte[] byte_3 = new byte[byte_1.length+byte_2.length];
+//        System.arraycopy(byte_1, 0, byte_3, 0, byte_1.length);
+//        System.arraycopy(byte_2, 0, byte_3, byte_1.length, byte_2.length);
+//        return byte_3;
+//        }
+
+@OnClick(R.id.layTabSettings)
     public void showSettings(View view) {
         Log.d(TAG, "setting onclick begin");
         if (null == mSetting) {
@@ -292,6 +430,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(warnAlarmReceiver);
         if (PrintDataService.isConnection()) {
             PrintDataService.disconnect();
         }
@@ -307,11 +446,12 @@ public class MainActivity extends BaseActivity {
     }
 
     public void exit() {
-        if ((System.currentTimeMillis() - exitTime) > 1000) {
+        if ((System.currentTimeMillis() - exitTime) > 500) {
             ViewUtils.showToast(this, "再按一次退出程序");
             exitTime = System.currentTimeMillis();
         } else {
             finish();
+            exit();
         }
     }
 }

@@ -359,7 +359,7 @@
                     android:layout_toLeftOf="@+id/btnPrint"
                     android:background="@mipmap/icon_commit_bg"
                     android:gravity="center"
-                    android:text="取消订单"
+                    android:text="订单"
                     android:textColor="#C2C0C2"
                     android:textSize="16sp" />
                 <TextView
