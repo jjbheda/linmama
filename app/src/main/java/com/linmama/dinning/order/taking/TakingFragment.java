@@ -1,13 +1,9 @@
 package com.linmama.dinning.order.taking;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.linmama.dinning.LmamaApplication;
@@ -15,26 +11,18 @@ import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.base.CommonActivity;
 import com.linmama.dinning.bean.DataSynEvent;
-import com.linmama.dinning.bean.OrderDetailBean;
-import com.linmama.dinning.bean.OrderGoodBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.except.ApiException;
-import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteFragment;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
-import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.TakingOrderAdapter;
-import com.linmama.dinning.bean.OrderItemsBean;
-import com.linmama.dinning.bean.ResultsBean;
-import com.linmama.dinning.bluetooth.PrintDataService;
 import com.linmama.dinning.utils.LogUtils;
-import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.header.WindmillHeader;
 
@@ -42,7 +30,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -306,6 +293,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 
     @Override
     public void onPrintOrder(TakingOrderBean bean) {
+        bean.ordertype = 1;        //强制改为 预约单
         PrintUtils.printOrder(TAG,bean);
         dismissDialog();
     }

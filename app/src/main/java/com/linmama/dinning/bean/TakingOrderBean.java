@@ -23,4 +23,5 @@ public class TakingOrderBean {
     public int order_no= 0;// 序号
     public String is_ensure_order="1"; //1已接单 0未接单
     public String fail_reson = "";  //订单金额或退款金额与之前请求不一致，请核实后再试"
+    public int ordertype = 0;    //orderStyle  1 预约单 0 当日单          10 代表已完成 或者退款未成功
 }

@@ -155,6 +155,7 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
 
     @Override
     public void printOrder(TakingOrderBean bean) {
+        bean.ordertype = 10;
         PrintUtils.printOrder(TAG,bean);
         dismissDialog();
     }

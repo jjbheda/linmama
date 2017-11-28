@@ -7,22 +7,14 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.R;
-import com.linmama.dinning.adapter.TakingOrderAdapter;
-import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.base.CommonActivity;
-import com.linmama.dinning.bean.DataSynEvent;
-import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
-import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.order.ordercompletesearch.completesearch.OrderCompleteSearchFragment;
 import com.linmama.dinning.order.ordercompletesearch.refund.OrderRefundFragment;
 import com.linmama.dinning.order.ordercompletesearch.completesearch.OrderCompleteOrRefundSearchAdapter;
-import com.linmama.dinning.subscriber.CommonSubscriber;
-import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.utils.DateRangePicker;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.PrintUtils;
@@ -30,8 +22,6 @@ import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.header.WindmillHeader;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -290,6 +280,7 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
 
     @Override
     public void printOrder(TakingOrderBean bean) {
+        bean.ordertype = 10;
         PrintUtils.printOrder(TAG,bean);
         dismissDialog();
     }

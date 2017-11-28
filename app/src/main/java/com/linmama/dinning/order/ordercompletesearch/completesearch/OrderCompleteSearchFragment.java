@@ -166,6 +166,7 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
 
     @Override
     public void printOrder(TakingOrderBean bean) {
+        bean.ordertype = 10;
         PrintUtils.printOrder(TAG,bean);
         dismissDialog();
     }

@@ -39,6 +39,8 @@ public class PrintUtils {
                     ViewUtils.showToast(LmamaApplication.getInstance(), "票据打印机连接失败");
                 }
             });
+        } else {
+            printOrderData(TAG,bean);
         }
     }
 
@@ -52,7 +54,7 @@ public class PrintUtils {
         builder.append("\n");
         // 0 取消 1已取消 2 已退款
         builder.append(bean.is_ensure_order.equals("0") ? "         未接单" : "       已接单");
-        if (bean.is_for_here.equals(0)) {
+        if (bean.is_for_here.equals("0")) {
             builder.append("（自取）");
         } else {
             builder.append("（堂食）");
@@ -60,7 +62,15 @@ public class PrintUtils {
         builder.append("\n");
         builder.append("---------------------------");
         builder.append("\n");
-        builder.append("预约单:");
+        String orderTypestr ="";
+        if (bean.ordertype == 0) {
+            orderTypestr = "当日单：";
+        } else if (bean.ordertype == 1) {
+            orderTypestr = "预约单：";
+        } else if (bean.ordertype == 10){
+            orderTypestr = "单号：";
+        }
+        builder.append(orderTypestr);
         builder.append(bean.serial_number);
         builder.append("\n");
 
@@ -112,8 +122,12 @@ public class PrintUtils {
         int printNum = (int) SpUtils.get(Constants.PRINTER_NUM, 1);
         if (printNum == 2) {
             printData(str1,builder.toString(),stringBuilder2.toString());
+            printData(str1,builder.toString(),stringBuilder2.toString());
         } else if (printNum == 3) {
             printData(str1,builder.toString(),stringBuilder2.toString());
+            printData(str1,builder.toString(),stringBuilder2.toString());
+            printData(str1,builder.toString(),stringBuilder2.toString());
+        } else {
             printData(str1,builder.toString(),stringBuilder2.toString());
         }
 
@@ -126,7 +140,7 @@ public class PrintUtils {
         builder.append("\n");
 
         builder.append("       已接单");
-        if (bean.is_for_here.equals(0)){
+        if (bean.is_for_here.equals("0")){
             builder.append("（自取）");
         } else {
             builder.append("（堂食）");
@@ -134,7 +148,12 @@ public class PrintUtils {
         builder.append("\n");
         builder.append("---------------------------");
         builder.append("\n");
-        builder.append("预约单NO:");
+        if (bean.order_type.equals("1"))     {  //1预约单 0当日单
+            builder.append("预约单:");
+        } else {
+            builder.append("当日单:");
+        }
+
         builder.append(bean.serial_number);
         builder.append("\n");
 

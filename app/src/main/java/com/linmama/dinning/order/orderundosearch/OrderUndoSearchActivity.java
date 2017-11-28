@@ -13,13 +13,9 @@ import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.TakingOrderAdapter;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterActivity;
-import com.linmama.dinning.base.CommonActivity;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.except.ApiException;
-import com.linmama.dinning.order.ordercompletesearch.OrderCompleteFragment;
-import com.linmama.dinning.order.ordercompletesearch.completesearch.OrderCompleteOrRefundSearchAdapter;
-import com.linmama.dinning.order.today.TodayOrderContract;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.utils.LogUtils;
@@ -235,6 +231,7 @@ public class OrderUndoSearchActivity extends BasePresenterActivity<OrderUndoSear
 
     @Override
     public void onPrintOrder(TakingOrderBean bean) {
+        bean.ordertype = orderType;
         PrintUtils.printOrder(TAG,bean);
         dismissDialog();
     }
