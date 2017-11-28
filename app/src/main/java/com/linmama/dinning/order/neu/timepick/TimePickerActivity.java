@@ -211,7 +211,7 @@ public class TimePickerActivity extends BasePresenterActivity<TimePickerPresente
                     @Override
                     public void onClick(View view) {
                         showDialog("请稍后...");
-                        if (PrintDataService.isConnection()) {
+                        if (PrintDataService.getInstance().isConnection()) {
                             isPrinted = true;
                             mPresenter.receiveOrder(String.valueOf(orderId));
                         } else {
@@ -266,7 +266,7 @@ public class TimePickerActivity extends BasePresenterActivity<TimePickerPresente
                     .setPositiveButton("确定", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if (PrintDataService.isConnection()) {
+                            if (PrintDataService.getInstance().isConnection()) {
                                 showDialog("请稍候...");
                                 isPrinted = true;
                                 mPresenter.getPrintData(orderId);
@@ -400,7 +400,7 @@ public class TimePickerActivity extends BasePresenterActivity<TimePickerPresente
         builder.append("      欢迎下次光临");
         builder.append("\n");
         builder.append("\n");
-        if (PrintDataService.isConnection()) {
+        if (PrintDataService.getInstance().isConnection()) {
             String printData = builder.toString();
             int printNum = (int) SpUtils.get(Constants.PRINTER_NUM, 1);
             if (printNum == 2) {
@@ -409,7 +409,7 @@ public class TimePickerActivity extends BasePresenterActivity<TimePickerPresente
                 builder.append(printData);
                 builder.append(printData);
             }
-            PrintDataService.send(builder.toString());
+            PrintDataService.getInstance().send(builder.toString());
             dismissDialog();
         } else {
             dismissDialog();

@@ -62,7 +62,7 @@ public class SaleRankAdapter extends BaseAdapter {
         holder.index.setText(bean.num+"");
         holder.name.setText(bean.product_name);
         holder.num.setText(bean.amount);
-        holder.saleaccount.setText(bean.amount);
+        holder.saleaccount.setText(bean.total_price);
         return view;
     }
 

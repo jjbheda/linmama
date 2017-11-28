@@ -156,7 +156,7 @@ public class ReceiveOrderService extends IntentService implements ReceiveOrderMo
         builder.append("      欢迎下次光临");
         builder.append("\n");
         builder.append("\n");
-        if (PrintDataService.isConnection()) {
+        if (PrintDataService.getInstance().isConnection()) {
             String printData = builder.toString();
             int printNum = (int) SpUtils.get(Constants.PRINTER_NUM, 1);
             if (printNum == 2) {
@@ -165,7 +165,7 @@ public class ReceiveOrderService extends IntentService implements ReceiveOrderMo
                 builder.append(printData);
                 builder.append(printData);
             }
-            PrintDataService.send(builder.toString());
+            PrintDataService.getInstance().send(builder.toString());
         }
     }
 

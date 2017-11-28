@@ -18,6 +18,7 @@ import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
+import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.utils.asynctask.AsyncTaskUtils;
 import com.linmama.dinning.utils.asynctask.CallEarliest;
@@ -338,36 +339,23 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         if (bean == null)
             return;
 
-        if (!PrintDataService.isConnection()) {
-            AsyncTaskUtils.doProgressAsync(mActivity, ProgressDialog.STYLE_SPINNER, "请稍后...", "正在连接票据打印机",
-                    new CallEarliest<Void>() {
+        if (!PrintDataService.getInstance().isConnection()) {
+            showDialog("正在连接打印机");
+            PrintDataService.getInstance().connect(new PrintDataService.ConnectCallback() {
+                @Override
+                public void connectSucess() {
+                    dismissDialog();
+                    printOrder2(bean);
+                    ViewUtils.showToast(mActivity, "已连接票据打印机");
+                }
 
-                        @Override
-                        public void onCallEarliest() throws Exception {
+                @Override
+                public void connectFailed() {
+                    dismissDialog();
+                    ViewUtils.showToast(mActivity, "票据打印机连接失败");
+                }
+            });
 
-                        }
-
-                    }, new ProgressCallable<Void>() {
-
-                        @Override
-                        public Void call(IProgressListener pProgressListener)
-                                throws Exception {
-                            PrintDataService.init();
-                            return null;
-                        }
-
-                    }, new Callback<Void>() {
-
-                        @Override
-                        public void onCallback(Void pCallbackValue) {
-                            if (PrintDataService.isConnection()) {
-                                ViewUtils.showToast(mActivity, "已连接票据打印机");
-                                printOrder2(bean);
-                            } else {
-                                ViewUtils.showToast(mActivity, "票据打印机连接失败");
-                            }
-                        }
-                    });
         } else {
             printOrder2(bean);
         }
@@ -377,85 +365,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
 
     private void printOrder2(LResultNewOrderBean bean){
-        final StringBuilder builder = new StringBuilder();
-        builder.append("         林妈妈早餐 ");
-        builder.append("\n");
-
-        builder.append("       已接单");
-        if (bean.is_for_here.equals(0)){
-            builder.append("（自取）");
-        } else {
-            builder.append("（堂食）");
-        }
-        builder.append("\n");
-        builder.append("---------------------------");
-        builder.append("\n");
-        builder.append("预约单NO:");
-        builder.append(bean.serial_number);
-        builder.append("\n");
-
-        builder.append("下单时间:"+bean.order_datetime_bj);
-
-        builder.append("\n");
-        builder.append("---------------------------");
-        builder.append("\n");
-        builder.append("    菜品");
-        builder.append("    数量");
-        builder.append("    金额");
-        builder.append("\n");
-        for (OrderOrderMenuBean bean1:bean.order_list){
-            builder.append("    "+bean1.date);
-            builder.append("\n");
-            for (OrderGoodBean goodBean : bean1.goods_list) {
-                builder.append("    " + goodBean.name);
-                builder.append("    " + goodBean.amount);
-                builder.append("    " + goodBean.total_price);
-                builder.append("\n");
-            }
-            builder.append("\n");
-        }
-        builder.append("\n");
-
-        builder.append("---------------------------");
-        builder.append("\n");
-        if (!bean.remark.equals("")) {
-            builder.append("    备注："+bean.remark);
-            builder.append("\n");
-            builder.append("---------------------------");
-            builder.append("\n");
-        }
-
-        builder.append("               消费金额："+bean.pay_amount);
-        builder.append("\n");
-        builder.append("\n");
-        builder.append("取餐时间：");
-        for (OrderPickupTimeBean bean1:bean.pickup_list) {
-            builder.append("      "+bean1.pickup_date+ " "+bean1.pickup_start_time+"-"+bean1.pickup_end_time);
-            builder.append("\n");
-        }
-        builder.append("\n");
-        builder.append("    "+bean.place.place_name);
-        builder.append("\n");
-        builder.append("    "+bean.place.place_address);
-        builder.append("\n");
-        builder.append("    "+bean.user.user_name);
-        builder.append("\n");
-        builder.append("    "+bean.user.user_tel);
-        builder.append("\n");
-        builder.append("---------------------------");
-        builder.append("\n");
-        builder.append("\n");
-
-        String printData = builder.toString();
-        int printNum = (int) SpUtils.get(Constants.PRINTER_NUM, 1);
-        if (printNum == 2) {
-            builder.append(printData);
-        } else if (printNum == 3) {
-            builder.append(printData);
-            builder.append(printData);
-        }
-        Log.d(TAG,builder.toString());
-        PrintDataService.send(builder.toString());
+        PrintUtils.printNewOrder(TAG,bean);
     }
     @Override
     public void onDestroyView() {

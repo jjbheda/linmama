@@ -63,9 +63,9 @@ public class CheckBTActivity extends BaseActivity {
         }
         int num = Integer.parseInt(etNum.getText().toString());
         etNum.setText(String.valueOf(num));
-        if (PrintDataService.isConnection()) {
+        if (PrintDataService.getInstance().isConnection()) {
             rlConnectBT.setVisibility(View.VISIBLE);
-            btConnectName.setText(PrintDataService.getDeviceName());
+            btConnectName.setText(PrintDataService.getInstance().getDeviceName());
         } else {
             rlConnectBT.setVisibility(View.GONE);
         }
@@ -87,8 +87,8 @@ public class CheckBTActivity extends BaseActivity {
             btService.closeBluetooth();
             statusIcon.setImageResource(R.mipmap.icon_off);
             rlConnectBT.setVisibility(View.GONE);
-            if (PrintDataService.isConnection()) {
-                PrintDataService.disconnect();
+            if (PrintDataService.getInstance().isConnection()) {
+                PrintDataService.getInstance().disconnect();
             }
         }
     }

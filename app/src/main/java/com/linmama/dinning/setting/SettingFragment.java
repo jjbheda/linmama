@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.net.Uri;
+import android.printservice.PrintService;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.EventLog;
@@ -22,6 +23,7 @@ import com.linmama.dinning.bean.DataSynEvent;
 import com.linmama.dinning.bean.ShopBaseInfoBean;
 import com.linmama.dinning.bean.StoreSettingsBean;
 import com.linmama.dinning.bluetooth.CheckBTActivity;
+import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.login.LoginActivity;
 import com.linmama.dinning.setting.shopstatus.StoreInfoContract;
 import com.linmama.dinning.setting.shopstatus.StoreStatusPresenter;
@@ -41,6 +43,8 @@ import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.utils.asynctask.AsyncTaskUtils;
 import com.linmama.dinning.utils.asynctask.Callback;
 
+import net.posprinter.posprinterface.UiExecute;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -53,6 +57,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static com.linmama.dinning.home.MainActivity.binder;
 import static com.linmama.dinning.utils.SpUtils.get;
 
 /**
@@ -123,7 +128,7 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     @Override
     public void onResume() {
         super.onResume();
-        if (PrintDataService.isConnection()) {
+        if (PrintDataService.getInstance().isConnection()) {
             siPos.setSubTitle(R.string.set_item1_connect);
         } else {
             siPos.setSubTitle(R.string.set_item1_disconnect);
@@ -285,43 +290,73 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_BT_CONNECTION && resultCode == Activity.RESULT_OK) {
-            String btAddress = data.getStringExtra(Constants.BT_ADDRESS);
+            final String btAddress = data.getStringExtra(Constants.BT_ADDRESS);
             if (!TextUtils.isEmpty(btAddress)) {
                 LogUtils.d("BTAddress", btAddress);
                 if (!TextUtils.isEmpty(btAddress)) {
-                    if (PrintDataService.isConnection()) {
-                        PrintDataService.disconnect();
+                    if (PrintDataService.getInstance().isConnection()) {
+                        PrintDataService.getInstance().disconnect();
                     }
-                    AsyncTaskUtils.doProgressAsync(mActivity, ProgressDialog.STYLE_SPINNER, "请稍后...", "正在连接票据打印机",
-                            new CallEarliest<Void>() {
+//                    AsyncTaskUtils.doProgressAsync(mActivity, ProgressDialog.STYLE_SPINNER, "请稍后...", "正在连接票据打印机",
+//                            new CallEarliest<Void>() {
+//
+//                                @Override
+//                                public void onCallEarliest() throws Exception {
+//
+//                                }
+//
+//                            }, new ProgressCallable<Void>() {
+//
+//                                @Override
+//                                public Void call(IProgressListener pProgressListener)
+//                                        throws Exception {
+//                                    PrintDataService.init();
+//                                    return null;
+//                                }
+//
+//                            }, new Callback<Void>() {
+//
+//                                @Override
+//                                public void onCallback(Void pCallbackValue) {
+//                                    if (PrintDataService.isConnection()) {
+////                                        ViewUtils.showToast(mActivity, "已连接票据打印机");
+////                                        siPos.setSubTitle(R.string.set_item1_connect);
+//
+//                                        MainActivity.binder.connectBtPort(btAddress, new UiExecute() {
+//                                            @Override
+//                                            public void onsucess() {
+//                                                ViewUtils.showToast(mActivity, "已连接票据打印机");
+//                                                siPos.setSubTitle(R.string.set_item1_connect);
+//                                            }
+//
+//                                            @Override
+//                                            public void onfailed() {
+//                                                Toast.makeText(mActivity, "打印机未连接", Toast.LENGTH_SHORT).show();
+//                                            }
+//                                        });
+//
+//                                    } else {
+//                                        ViewUtils.showToast(mActivity, "票据打印机连接失败");
+//                                        siPos.setSubTitle(R.string.set_item1_disconnect);
+//                                    }
+//                                }
+//                            });
 
-                                @Override
-                                public void onCallEarliest() throws Exception {
 
-                                }
 
-                            }, new ProgressCallable<Void>() {
+                    PrintDataService.getInstance().connect(new PrintDataService.ConnectCallback() {
+                        @Override
+                        public void connectSucess() {
+                            ViewUtils.showToast(mActivity, "已连接票据打印机");
+                             siPos.setSubTitle(R.string.set_item1_connect);
+                        }
 
-                                @Override
-                                public Void call(IProgressListener pProgressListener)
-                                        throws Exception {
-                                    PrintDataService.init();
-                                    return null;
-                                }
-
-                            }, new Callback<Void>() {
-
-                                @Override
-                                public void onCallback(Void pCallbackValue) {
-                                    if (PrintDataService.isConnection()) {
-                                        ViewUtils.showToast(mActivity, "已连接票据打印机");
-                                        siPos.setSubTitle(R.string.set_item1_connect);
-                                    } else {
-                                        ViewUtils.showToast(mActivity, "票据打印机连接失败");
-                                        siPos.setSubTitle(R.string.set_item1_disconnect);
-                                    }
-                                }
-                            });
+                        @Override
+                        public void connectFailed() {
+                            ViewUtils.showToast(mActivity, "票据打印机连接失败");
+                            siPos.setSubTitle(R.string.set_item1_disconnect);
+                        }
+                    });
                 }
             }
         }

@@ -184,11 +184,7 @@
             tools:replace="android:value"
             android:value="7fec63afc1131b08fb61124f" /> <!--  </>值来自开发者平台取得的AppKey-->
 
-        <service
-            android:name="net.xprinter.service.XprinterService"
-            android:enabled="true"
-            android:exported="true">
-        </service>
+        <service android:name="net.posprinter.service.PosprinterService" />
 
         <receiver android:name="com.linmama.dinning.receiver.WarnAlarmReceiver"
             android:exported="false"

@@ -4,12 +4,17 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.linmama.dinning.LmamaApplication;
+import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.LogUtils;
+import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.utils.ViewUtils;
+
+import net.posprinter.posprinterface.UiExecute;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,22 +28,6 @@ public class PrintDataService {
     private static OutputStream outputStream = null;
     private static final UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static boolean isConnection = false;
-//    final String[] items = {"复位打印机", "标准ASCII字体", "压缩ASCII字体", "字体不放大", "宽高加倍", "取消加粗模式", "选择加粗模式", "取消倒置打印", "选择倒置打印",
-//            "取消黑白反显", "选择黑白反显", "取消顺时针旋转90°", "选择顺时针旋转90°"};
-//    final byte[][] byteCommands = {{0x1b, 0x40}, // 复位打印机
-//            {0x1b, 0x4d, 0x00}, // 标准ASCII字体
-//            {0x1b, 0x4d, 0x01}, // 压缩ASCII字体
-//            {0x1d, 0x21, 0x00}, // 字体不放大
-//            {0x1d, 0x21, 0x11}, // 宽高加倍
-//            {0x1b, 0x45, 0x00}, // 取消加粗模式
-//            {0x1b, 0x45, 0x01}, // 选择加粗模式
-//            {0x1b, 0x7b, 0x00}, // 取消倒置打印
-//            {0x1b, 0x7b, 0x01}, // 选择倒置打印
-//            {0x1d, 0x42, 0x00}, // 取消黑白反显
-//            {0x1d, 0x42, 0x01}, // 选择黑白反显
-//            {0x1b, 0x56, 0x00}, // 取消顺时针旋转90°
-//            {0x1b, 0x56, 0x01},// 选择顺时针旋转90°
-//    };
 
     public static PrintDataService getInstance() {
         if (mInstance == null) {
@@ -55,9 +44,17 @@ public class PrintDataService {
     public static void init() {
         String btAddress = (String) SpUtils.get(Constants.BT_ADDRESS, "");
         if (!TextUtils.isEmpty(btAddress)) {
-            device = bluetoothAdapter.getRemoteDevice(btAddress);
-            if (connect()) {
-                isConnection = true;
+            device = bluetoothAdapter.getRemoteDevice(btAddress);       //
+            if (!isConnection) {
+                try {
+                    bluetoothSocket = device.createRfcommSocketToServiceRecord(uuid);
+                    bluetoothSocket.connect();
+                    outputStream = bluetoothSocket.getOutputStream();
+                    if (bluetoothAdapter.isDiscovering()) {
+                        bluetoothAdapter.isDiscovering();
+                    }
+                } catch (Exception e) {
+                }
             }
         }
     }
@@ -67,32 +64,39 @@ public class PrintDataService {
      * @return String
      */
     public static String getDeviceName() {
-        return device.getName();
+        if (device!=null)
+            return device.getName();
+        else
+            return "";
     }
 
-    public static boolean isConnection() {
+    public interface ConnectCallback{
+        void connectSucess();
+        void connectFailed();
+    }
+
+    public boolean isConnection() {
         return isConnection;
     }
 
     /**
      * 连接蓝牙设备
      */
-    public static boolean connect() {
-        if (!isConnection) {
-            try {
-                bluetoothSocket = device.createRfcommSocketToServiceRecord(uuid);
-                bluetoothSocket.connect();
-                outputStream = bluetoothSocket.getOutputStream();
-                if (bluetoothAdapter.isDiscovering()) {
-                    bluetoothAdapter.isDiscovering();
+    public static void connect(final ConnectCallback callback) {
+            String btAddress = (String) SpUtils.get(Constants.BT_ADDRESS, "");
+            MainActivity.binder.connectBtPort(btAddress, new UiExecute() {
+                @Override
+                public void onsucess() {
+                    isConnection = true;
+                    callback.connectSucess();
                 }
-            } catch (Exception e) {
-                return false;
-            }
-            return true;
-        } else {
-            return true;
-        }
+
+                @Override
+                public void onfailed() {
+                    isConnection = false;
+                    callback.connectFailed();
+                }
+            });
     }
 
     /**
@@ -105,7 +109,7 @@ public class PrintDataService {
             bluetoothSocket = null;
             outputStream = null;
             isConnection = false;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

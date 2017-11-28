@@ -65,7 +65,7 @@ public class CompleteOrderListFragment extends BasePresenterFragment<CompleteOrd
                 .setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (PrintDataService.isConnection()) {
+                        if (PrintDataService.getInstance().isConnection()) {
                             showDialog("请稍后...");
                             mPrintingBean = mResults.get(position);
                             mPresenter.getPrintData(mPrintingBean.getId());
@@ -276,8 +276,8 @@ public class CompleteOrderListFragment extends BasePresenterFragment<CompleteOrd
             builder.append(printData);
             builder.append(printData);
         }
-        if (PrintDataService.isConnection()) {
-            PrintDataService.send(builder.toString());
+        if (PrintDataService.getInstance().isConnection()) {
+            PrintDataService.getInstance().send(builder.toString());
             dismissDialog();
         } else {
             dismissDialog();

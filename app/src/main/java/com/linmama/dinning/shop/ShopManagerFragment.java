@@ -107,7 +107,7 @@ public class ShopManagerFragment extends BaseFragment {
                     }
                 });
 
-        if (!PrintDataService.isConnection()) {
+        if (!PrintDataService.getInstance().isConnection()) {
             AsyncTaskUtils.doProgressAsync(mActivity, ProgressDialog.STYLE_SPINNER, "请稍后...", "正在连接票据打印机",
                     new CallEarliest<Void>() {
 
@@ -121,7 +121,7 @@ public class ShopManagerFragment extends BaseFragment {
                         @Override
                         public Void call(IProgressListener pProgressListener)
                                 throws Exception {
-                            PrintDataService.init();
+                            PrintDataService.getInstance().init();
                             return null;
                         }
 
@@ -129,7 +129,7 @@ public class ShopManagerFragment extends BaseFragment {
 
                         @Override
                         public void onCallback(Void pCallbackValue) {
-                            if (PrintDataService.isConnection()) {
+                            if (PrintDataService.getInstance().isConnection()) {
                                 ViewUtils.showToast(mActivity, "已连接票据打印机");
                                 mPrintStatusTv.setText("已连接");
                                 mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_has_connect));

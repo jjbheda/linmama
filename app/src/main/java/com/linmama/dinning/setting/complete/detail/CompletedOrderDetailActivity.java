@@ -178,7 +178,7 @@ implements CompleteOrderDetailContract.CompleteDetailView{
                 .setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (PrintDataService.isConnection()) {
+                        if (PrintDataService.getInstance().isConnection()) {
                             showDialog("请稍后...");
                             printData(buildPrintData());
                         } else {
@@ -314,8 +314,8 @@ implements CompleteOrderDetailContract.CompleteDetailView{
     private void printData(String data) {
         mAlert.dismiss();
         mAlert = null;
-        if (PrintDataService.isConnection()) {
-            PrintDataService.send(data);
+        if (PrintDataService.getInstance().isConnection()) {
+            PrintDataService.getInstance().send(data);
             dismissDialog();
         } else {
             dismissDialog();
