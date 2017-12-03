@@ -49,9 +49,9 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String token = (String) SpUtils.get(Constants.TOKEN, "");
-        String userserver = (String) SpUtils.get(Constants.USER_SERVER, "");
-        String usercode = (String) SpUtils.get(Constants.USERCODE, "");
-        if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(userserver) && !TextUtils.isEmpty(usercode)) {
+        String username = (String) SpUtils.get(Constants.USERNAME, "");
+        String password = (String) SpUtils.get(Constants.PASSWORD, "");
+        if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
             ActivityUtils.startActivity(this, MainActivity.class);
             finish();
         }
@@ -69,9 +69,9 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
 
     @Override
     protected void initView() {
-//     /   String username = (String) SpUtils.get(Constants.USERNAME, "");
-//        mLoginName.setText(username);
-        mLoginName.setText("account123");
+       String username = (String) SpUtils.get(Constants.USERNAME, "");
+        mLoginName.setText(username);
+//        mLoginName.setText("account123");
     }
 
     @Override
@@ -133,19 +133,20 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
     protected void initData() {
 
     }
+    private String userName = "";
+    private String password = "";
 
     @OnClick(R.id.login)
     public void login(View view) {
-        String userserver = (String) SpUtils.get(Constants.USER_SERVER, "");
-        String usercode = (String) SpUtils.get(Constants.USERCODE, "");
-//        if (TextUtils.isEmpty(userserver) || TextUtils.isEmpty(usercode)) {
-//            ViewUtils.showSnack(findViewById(android.R.id.content), "未进行用户验证");
-//            return;
-//        }
+
         showDialog("登录中...");
-//        if (!checkNull()) {
+
+        if (!checkNull()) {
+            userName = getUserName();
+            password = getPwd();
             LoginModel login = new LoginModel();
-            login.login("account123", getPwd(), new LoginModel.LoginHint() {
+
+            login.login(getUserName(), getPwd(), new LoginModel.LoginHint() {
                 @Override
                 public void successLogin(LoginBean loginBean) {
                     LoginActivity.this.loginSuccess(loginBean);
@@ -156,8 +157,7 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
                     LoginActivity.this.loginFail(failMsg);
                 }
             });
-//        }
-//        mPresenter.login(getUserName(), getPwd());
+        }
     }
 
     public boolean checkNull() {
@@ -186,11 +186,11 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
     public void loginSuccess(LoginBean loginBean) {
         dismissDialog();
         LogUtils.d("loginSuccess", loginBean.toString());
-        if (!TextUtils.isEmpty(loginBean.getUsername())) {
-            SpUtils.put(Constants.USERNAME, loginBean.getUsername());
+        if (!TextUtils.isEmpty(userName)) {
+            SpUtils.put(Constants.USERNAME, userName);
         }
-        if (!TextUtils.isEmpty(loginBean.getPassword())) {
-            SpUtils.put(Constants.PASSWORD, loginBean.getPassword());
+        if (!TextUtils.isEmpty(password)) {
+            SpUtils.put(Constants.PASSWORD, password);
         }
         if (!TextUtils.isEmpty(loginBean.getSession_id())) {
             SpUtils.put(Constants.COOKIE, loginBean.getSession_id());

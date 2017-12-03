@@ -41,7 +41,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/ivAvatar"
-                    android:text="林妈妈早餐"
+                    android:text="林妈妈自营早餐商城"
                     android:textColor="@color/colorLoginEdit"
                     android:textSize="16sp" />
 

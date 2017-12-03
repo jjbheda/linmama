@@ -31,7 +31,7 @@ public class PrintUtils {
                 @Override
                 public void connectSucess() {
                     ViewUtils.showToast(LmamaApplication.getInstance(), "已连接票据打印机");
-                    printOrderData(TAG,bean);
+                    printOrderData(TAG, bean);
                 }
 
                 @Override
@@ -40,189 +40,184 @@ public class PrintUtils {
                 }
             });
         } else {
-            printOrderData(TAG,bean);
+            printOrderData(TAG, bean);
         }
     }
 
 
-    public static void printOrderData(String TAG, TakingOrderBean bean){
+    public static void printOrderData(String TAG, TakingOrderBean bean) {
 
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder title_builder = new StringBuilder();
         if (bean == null)
             return;
-        String str1 = "      林 妈 妈 早 餐 ";
-        builder.append("\n");
-        // 0 取消 1已取消 2 已退款
-        builder.append(bean.is_ensure_order.equals("0") ? "         未接单" : "       已接单");
-        if (bean.is_for_here.equals("0")) {
-            builder.append("（自取）");
-        } else {
-            builder.append("（堂食）");
-        }
-        builder.append("\n");
-        builder.append("---------------------------");
-        builder.append("\n");
-        String orderTypestr ="";
+        title_builder.append("          #" + bean.order_no + " 林妈妈");
+        title_builder.append("\n");
+        title_builder.append("          自营早餐商城"+"\n");
+
+        final StringBuilder builder_sub_title = new StringBuilder();
+        String orderTypestr = "";
         if (bean.ordertype == 0) {
-            orderTypestr = "当日单：";
+            orderTypestr = "        当日单 ";
         } else if (bean.ordertype == 1) {
-            orderTypestr = "预约单：";
-        } else if (bean.ordertype == 10){
-            orderTypestr = "单号：";
+            orderTypestr = "        预约单 ";
+        } else if (bean.ordertype == 10) {
+            orderTypestr = "";
         }
-        builder.append(orderTypestr);
-        builder.append(bean.serial_number);
-        builder.append("\n");
-
-        builder.append("下单时间:" + bean.order_datetime_bj);
-
-        builder.append("\n");
-        builder.append("---------------------------");
-        builder.append("\n");
-        builder.append("    菜品");
-        builder.append("    数量");
-        builder.append("    金额");
-        builder.append("\n");
-        builder.append("    " + bean.pickup.pickup_date);
-        builder.append("\n");
-        for (OrderGoodBean bean1 : bean.goods_list) {
-            builder.append("    " + bean1.name);
-            builder.append("    " + bean1.amount);
-            builder.append("    " + bean1.total_price);
-            builder.append("\n");
+        builder_sub_title.append(orderTypestr);
+        if (bean.is_for_here.equals("0")) {
+            builder_sub_title.append("（自取）");
+        } else {
+            builder_sub_title.append("（堂食）");
         }
-
-        builder.append("---------------------------");
-        builder.append("\n");
+        StringBuilder builder_order_no = new StringBuilder();
+        builder_order_no.append("\n");
+        builder_order_no.append("  单号：");
+        builder_order_no.append(bean.serial_number);
+        builder_order_no.append("\n");
+        builder_order_no.append("  下单时间:" + bean.order_datetime_bj+"\n");
+        StringBuilder builder_remark = new StringBuilder();
         if (!bean.remark.equals("")) {
-            builder.append("    备注：" + bean.remark);
-            builder.append("\n");
-            builder.append("---------------------------");
-            builder.append("\n");
+            builder_remark.append("---------------------------");
+            builder_remark.append("      备注：" + bean.remark+"\n");
+        }
+        StringBuilder builder_star = new StringBuilder();
+        builder_star.append ("  ***************************"+"\n");
+        builder_star.append("    " +bean.pickup.pickup_date + " " + bean.pickup.pickup_start_time + "-" + bean.pickup.pickup_end_time+"\n");
+        StringBuilder builder_good = new StringBuilder();
+        for (OrderGoodBean bean1 : bean.goods_list) {
+            builder_good.append("    " + bean1.name);
+            builder_good.append("     " + bean1.amount);
+            builder_good.append("     " + bean1.total_price+"\n");
         }
 
-        builder.append("               消费金额：" + bean.pay_amount);
-        builder.append("\n");
-        builder.append("\n");
+        StringBuilder builder_account = new StringBuilder();
+        builder_account.append("  ---------------------------"+"\n");
+        builder_account.append("              消费金额："+bean.pay_amount+""+"\n");
 
-        builder.append("取餐时间：" + bean.pickup.pickup_date + " " + bean.pickup.pickup_start_time + "-" + bean.pickup.pickup_end_time);
-        builder.append("\n");
-        builder.append("" + bean.place.place_name);
-        builder.append("\n");
-        builder.append("" + bean.place.place_address);
-        builder.append("\n");
-        builder.append("" + bean.user.user_name);
-        builder.append("\n");
+//        StringBuilder builder_account_num = new StringBuilder();
+//        builder_account_num.append(bean.pay_amount+""+"\n");
 
+        StringBuilder builder = new StringBuilder();
+        builder.append("  ***************************"+"\n");
         StringBuilder stringBuilder2 = new StringBuilder();
-        stringBuilder2.append("" + bean.user.user_tel);
+        stringBuilder2.append("  " + bean.place.place_name);
         stringBuilder2.append("\n");
-        stringBuilder2.append("---------------------------");
+        stringBuilder2.append("  " + bean.place.place_address);
+        stringBuilder2.append("\n");
+        stringBuilder2.append("  " + (bean.user.user_tel));
+        stringBuilder2.append("\n");
+        stringBuilder2.append("  " + bean.user.user_name);
+        stringBuilder2.append("\n");
+        stringBuilder2.append("  ---------------------------");
+        stringBuilder2.append("\n");
+        stringBuilder2.append("\n");
+        stringBuilder2.append("\n");
 
         int printNum = (int) SpUtils.get(Constants.PRINTER_NUM, 1);
         if (printNum == 2) {
-            printData(str1,builder.toString(),stringBuilder2.toString());
-            printData(str1,builder.toString(),stringBuilder2.toString());
+            printData(title_builder.toString(),builder_sub_title.toString(),builder_order_no.toString(),builder_remark.toString(),builder_star.toString(),builder_good.toString(),
+                    builder_account.toString(),builder.toString(),stringBuilder2.toString());
+            printData(title_builder.toString(),builder_sub_title.toString(),builder_order_no.toString(),builder_remark.toString(),builder_star.toString(),builder_good.toString(),
+                    builder_account.toString(),builder.toString(),stringBuilder2.toString());
         } else if (printNum == 3) {
-            printData(str1,builder.toString(),stringBuilder2.toString());
-            printData(str1,builder.toString(),stringBuilder2.toString());
-            printData(str1,builder.toString(),stringBuilder2.toString());
+            printData(title_builder.toString(),builder_sub_title.toString(),builder_order_no.toString(),builder_remark.toString(),builder_star.toString(),builder_good.toString(),
+                    builder_account.toString(),builder.toString(),stringBuilder2.toString());
+            printData(title_builder.toString(),builder_sub_title.toString(),builder_order_no.toString(),builder_remark.toString(),builder_star.toString(),builder_good.toString(),
+                    builder_account.toString(),builder.toString(),stringBuilder2.toString());
+            printData(title_builder.toString(),builder_sub_title.toString(),builder_order_no.toString(),builder_remark.toString(),builder_star.toString(),builder_good.toString(),
+                    builder_account.toString(),builder.toString(),stringBuilder2.toString());
         } else {
-            printData(str1,builder.toString(),stringBuilder2.toString());
+            printData(title_builder.toString(),builder_sub_title.toString(),builder_order_no.toString(),builder_remark.toString(),builder_star.toString(),builder_good.toString(),
+                    builder_account.toString(),builder.toString(),stringBuilder2.toString());
         }
 
-        Log.d(TAG, builder.toString());
     }
 
     public static void printNewOrder(String TAG, LResultNewOrderBean bean) {
-        final StringBuilder builder = new StringBuilder();
-        String str1 = "      林 妈 妈 早 餐 ";
-        builder.append("\n");
+        final StringBuilder title_builder = new StringBuilder();
+        if (bean == null)
+            return;
+        title_builder.append("          #" + bean.order_no + " 林妈妈");
+        title_builder.append("\n");
+        title_builder.append("          自营早餐商城"+"\n");
 
-        builder.append("       已接单");
-        if (bean.is_for_here.equals("0")){
-            builder.append("（自取）");
+        final StringBuilder builder_sub_title = new StringBuilder();
+        String orderTypestr = "     当日单 ";
+        builder_sub_title.append(orderTypestr);
+        // 0 取消 1已取消 2 已退款
+        if (bean.is_for_here.equals("0")) {
+            builder_sub_title.append("（自取）"+"\n");
         } else {
-            builder.append("（堂食）");
+            builder_sub_title.append("（堂食）"+"\n");
         }
-        builder.append("\n");
-        builder.append("---------------------------");
-        builder.append("\n");
-        if (bean.order_type.equals("1"))     {  //1预约单 0当日单
-            builder.append("预约单:");
-        } else {
-            builder.append("当日单:");
-        }
+        StringBuilder builder_order_no = new StringBuilder();
+        builder_order_no.append("\n");
+        builder_order_no.append("  单号：");
+        builder_order_no.append(bean.serial_number);
+        builder_order_no.append("\n");
+        builder_order_no.append("  下单时间:" + bean.order_datetime_bj+"\n");
 
-        builder.append(bean.serial_number);
-        builder.append("\n");
-
-        builder.append("下单时间:"+bean.order_datetime_bj);
-
-        builder.append("\n");
-        builder.append("---------------------------");
-        builder.append("\n");
-        builder.append("    菜品");
-        builder.append("    数量");
-        builder.append("    金额");
-        builder.append("\n");
-        for (OrderOrderMenuBean bean1:bean.order_list){
-            builder.append("    "+bean1.date);
-            builder.append("\n");
-            for (OrderGoodBean goodBean : bean1.goods_list) {
-                builder.append("    " + goodBean.name);
-                builder.append("    " + goodBean.amount);
-                builder.append("    " + goodBean.total_price);
-                builder.append("\n");
-            }
-            builder.append("\n");
-        }
-        builder.append("\n");
-
-        builder.append("---------------------------");
-        builder.append("\n");
+        StringBuilder builder_remark = new StringBuilder();
         if (!bean.remark.equals("")) {
-            builder.append("    备注："+bean.remark);
-            builder.append("\n");
-            builder.append("---------------------------");
-            builder.append("\n");
+            builder_remark.append("  ---------------------------"+"\n");
+            builder_remark.append("      备注：" + bean.remark+"\n");
         }
+        StringBuilder builder_star = new StringBuilder();
+        builder_star.append ("  ***************************"+"\n");
+        StringBuilder builder_good = new StringBuilder();
+        for (OrderOrderMenuBean bean1 : bean.order_list) {
+            builder_good.append("    " + bean1.date+"\n");
+            for (OrderGoodBean goodBean : bean1.goods_list) {
+                builder_good.append("    " + goodBean.name);
+                builder_good.append("       " + goodBean.amount);
+                builder_good.append("      " + goodBean.total_price+"\n");
+            }
+        }
+        StringBuilder builder_account = new StringBuilder();
+        builder_account.append("  ---------------------------"+"\n");
+        builder_account.append("            消费金额："+bean.pay_amount+""+"\n");
 
-        builder.append("               消费金额："+bean.pay_amount);
-        builder.append("\n");
-        builder.append("\n");
-        builder.append("取餐时间：");
-        for (OrderPickupTimeBean bean1:bean.pickup_list) {
-            builder.append(""+bean1.pickup_date+ " "+bean1.pickup_start_time+"-"+bean1.pickup_end_time);
-            builder.append("\n");
-        }
-        builder.append("\n");
-        builder.append(""+bean.place.place_name);
-        builder.append("\n");
-        builder.append(""+bean.place.place_address);
-        builder.append("\n");
-        builder.append(""+bean.user.user_name);
-        builder.append("\n");
+
+//        StringBuilder builder_account_num = new StringBuilder();
+//        builder_account_num.append(bean.pay_amount+""+"\n");
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("  ***************************"+"\n");
+
         StringBuilder stringBuilder2 = new StringBuilder();
-        stringBuilder2.append("" + bean.user.user_tel);
+        stringBuilder2.append("  " + bean.place.place_name);
         stringBuilder2.append("\n");
-        stringBuilder2.append("---------------------------");
-
+        stringBuilder2.append("  " + bean.place.place_address);
+        stringBuilder2.append("\n");
+        stringBuilder2.append("  " + bean.user.user_tel);
+        stringBuilder2.append("\n");
+        stringBuilder2.append("  " + bean.user.user_name);
+        stringBuilder2.append("\n");
+        stringBuilder2.append("  ---------------------------");
+        stringBuilder2.append("\n");
+        stringBuilder2.append("\n");
+        stringBuilder2.append("\n");
         int printNum = (int) SpUtils.get(Constants.PRINTER_NUM, 1);
         if (printNum == 2) {
-            printData(str1,builder.toString(),stringBuilder2.toString());
-            printData(str1,builder.toString(),stringBuilder2.toString());
+            printData(title_builder.toString(),builder_sub_title.toString(),builder_order_no.toString(),builder_remark.toString(),builder_star.toString(),builder_good.toString(),
+                    builder_account.toString(),builder.toString(),stringBuilder2.toString());
+            printData(title_builder.toString(),builder_sub_title.toString(),builder_order_no.toString(),builder_remark.toString(),builder_star.toString(),builder_good.toString(),
+                    builder_account.toString(),builder.toString(),stringBuilder2.toString());
         } else if (printNum == 3) {
-            printData(str1,builder.toString(),stringBuilder2.toString());
-            printData(str1,builder.toString(),stringBuilder2.toString());
-            printData(str1,builder.toString(),stringBuilder2.toString());
+            printData(title_builder.toString(),builder_sub_title.toString(),builder_order_no.toString(),builder_remark.toString(),builder_star.toString(),builder_good.toString(),
+                    builder_account.toString(),builder.toString(),stringBuilder2.toString());
+            printData(title_builder.toString(),builder_sub_title.toString(),builder_order_no.toString(),builder_remark.toString(),builder_star.toString(),builder_good.toString(),
+                    builder_account.toString(),builder.toString(),stringBuilder2.toString());
+            printData(title_builder.toString(),builder_sub_title.toString(),builder_order_no.toString(),builder_remark.toString(),builder_star.toString(),builder_good.toString(),
+                    builder_account.toString(),builder.toString(),stringBuilder2.toString());
         } else {
-            printData(str1,builder.toString(),stringBuilder2.toString());
+            printData(title_builder.toString(),builder_sub_title.toString(),builder_order_no.toString(),builder_remark.toString(),builder_star.toString(),builder_good.toString(),
+                    builder_account.toString(),builder.toString(),stringBuilder2.toString());
         }
-        Log.d(TAG,builder.toString());
     }
 
-    public static void printData(final String str1,final  String str2,final String str3) {
+    public static void printData(final String str1, final String str2, final String str3, final String str4,final String str5, final String str6,
+                                 final String builder_account, final String str8,final String str9) {
         MainActivity.binder.writeDataByYouself(new UiExecute() {
             @Override
             public void onsucess() {
@@ -238,18 +233,64 @@ public class PrintUtils {
             public List<byte[]> processDataBeforeSend() {
                 List<byte[]> list = new ArrayList<>();
                 list.add(DataForSendToPrinterPos58.initializePrinter());
-                list.add(DataForSendToPrinterPos58.printAndFeedForward(2));
-                list.add(DataForSendToPrinterPos58.selectCharacterSize(4));
-                list.add(strTobytes(str1));
-                list.add(DataForSendToPrinterPos58.printAndFeedLine());
-                list.add(DataForSendToPrinterPos58.initializePrinter());
                 list.add(DataForSendToPrinterPos58.selectCharacterSize(2));
-                list.add(strTobytes(str2));
-                list.add(DataForSendToPrinterPos58.printAndFeedLine());
+                list.add(DataForSendToPrinterPos58.selectOrCancelBoldModel(1));
+                list.add(strTobytes(str1));
 
+                list.add(DataForSendToPrinterPos58.printAndFeed(1));
                 list.add(DataForSendToPrinterPos58.initializePrinter());
-                list.add(DataForSendToPrinterPos58.selectCharacterSize(3));
+                list.add(DataForSendToPrinterPos58.selectCharacterSize(0));
+                list.add(DataForSendToPrinterPos58.selectOrCancelBoldModel(1));
+                list.add(strTobytes(str2));
+
+                list.add(DataForSendToPrinterPos58.printAndFeed(1));
+                list.add(DataForSendToPrinterPos58.initializePrinter());
+                list.add(DataForSendToPrinterPos58.selectCharacterSize(0));
+                list.add(DataForSendToPrinterPos58.selectOrCancelBoldModel(0));
                 list.add(strTobytes(str3));
+
+                if (!str4.equals("")) {
+                    list.add(DataForSendToPrinterPos58.printAndFeed(1));
+                    list.add(DataForSendToPrinterPos58.selectCharacterSize(2));
+                    list.add(DataForSendToPrinterPos58.selectOrCancelBoldModel(1));
+                    list.add(strTobytes(str4));
+                }
+
+                list.add(DataForSendToPrinterPos58.printAndFeed(1));
+                list.add(DataForSendToPrinterPos58.initializePrinter());
+                list.add(DataForSendToPrinterPos58.selectCharacterSize(0));
+                list.add(DataForSendToPrinterPos58.selectOrCancelBoldModel(0));
+                list.add(strTobytes(str5));
+
+                list.add(DataForSendToPrinterPos58.printAndFeed(0));
+                list.add(DataForSendToPrinterPos58.initializePrinter());
+                list.add(DataForSendToPrinterPos58.selectCharacterSize(1));
+                list.add(DataForSendToPrinterPos58.selectOrCancelBoldModel(0));
+                list.add(strTobytes(str6));
+
+                list.add(DataForSendToPrinterPos58.printAndFeed(0));
+                list.add(DataForSendToPrinterPos58.initializePrinter());
+                list.add(DataForSendToPrinterPos58.selectCharacterSize(1));
+                list.add(DataForSendToPrinterPos58.selectOrCancelBoldModel(1));
+                list.add(strTobytes(builder_account));
+
+//                list.add(DataForSendToPrinterPos58.printAndFeed(0));
+//                list.add(DataForSendToPrinterPos58.initializePrinter());
+//                list.add(DataForSendToPrinterPos58.selectCharacterSize(1));
+//                list.add(DataForSendToPrinterPos58.selectOrCancelBoldModel(1));
+//                list.add(strTobytes(str8));
+
+                list.add(DataForSendToPrinterPos58.printAndFeed(1));
+                list.add(DataForSendToPrinterPos58.initializePrinter());
+                list.add(DataForSendToPrinterPos58.selectCharacterSize(0));
+                list.add(DataForSendToPrinterPos58.selectOrCancelBoldModel(0));
+                list.add(strTobytes(str8));
+
+                list.add(DataForSendToPrinterPos58.printAndFeed(1));
+                list.add(DataForSendToPrinterPos58.initializePrinter());
+                list.add(DataForSendToPrinterPos58.selectCharacterSize(1));
+                list.add(DataForSendToPrinterPos58.selectOrCancelBoldModel(1));
+                list.add(strTobytes(str9));
 
                 return list;
             }
@@ -258,18 +299,27 @@ public class PrintUtils {
 
     /**
      * 字符串转byte数组
-     * */
-    public static byte[] strTobytes(String str){
-        byte[] b=null,data=null;
+     */
+    public static byte[] strTobytes(String str) {
+        byte[] b = null, data = null;
         try {
             b = str.getBytes("utf-8");
-            data=new String(b,"utf-8").getBytes("gbk");
+            data = new String(b, "utf-8").getBytes("gbk");
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return data;
 
-}
+    }
+
+    private static String transform(String str){
+        StringBuilder sb  = new StringBuilder();
+        for (int i = 0;i<str.length();i++) {
+            char c = str.charAt(i);
+            sb.append(c+" ");
+        }
+        return sb.toString();
+    }
 }
 
