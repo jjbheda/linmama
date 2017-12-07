@@ -15,6 +15,7 @@
 
     <color name="break_line">#DDD</color>
     <color name="gray_bg_color">#EBEBEB</color>
+    <color name="gray_btn_color">#C2C0C2</color>
     <color name="gray_txt_color">#606060</color>
     <color name="colorPickerSelected">#333333</color>
 

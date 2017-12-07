@@ -61,20 +61,20 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
         if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
             mResults.clear();
         }
+        if (currentPage == 1 && bean.data.size() == 0) {
+            mPtrSearchFt.getHeader().setVisibility(View.GONE);
+            if (mAdapter != null) {
+                mLvSearchOrder.setNoMore();
+                mAdapter.notifyDataSetChanged();
+            }
+            return;
+        }
         last_page = bean.last_page;
         isPullRefresh = false;
         if (bean.data.size() > 0) {
             LogUtils.d("getTakingOrderSuccess", bean.data.toString());
             List<TakingOrderBean> results = bean.data;
             mResults.addAll(results);
-            if (currentPage == 1 && results.size() == 0) {
-                mPtrSearchFt.getHeader().setVisibility(View.GONE);
-                if (mAdapter != null) {
-                    mLvSearchOrder.setNoMore();
-                    mAdapter.notifyDataSetChanged();
-                }
-                return;
-            }
             mAdapter.setPrintOrder(this);
             mAdapter.setRefundRetry(this);
             if (currentPage > 1) {
@@ -93,7 +93,7 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
     @OnClick(R.id.orderSearchtv)
     public void getSearchData() {
         if (mEtSearch.getText() != null) {
-            mPresenter.getSearchRefundFailOrderListData(mEtSearch.getText().toString());
+            mPresenter.getSearchRefundFailOrderListData(currentPage,mEtSearch.getText().toString());
         }
         InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
         //隐藏软键盘 //
@@ -142,7 +142,7 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
                         mAdapter.notifyDataSetChanged();
                     }
                     dismissDialog();
-                    mPresenter.getSearchRefundFailOrderListData(mEtSearch.getText().toString());
+                    mPresenter.getSearchRefundFailOrderListData(currentPage,mEtSearch.getText().toString());
 
                 }
             }
@@ -161,7 +161,7 @@ public class OrderRefundSearchFragment extends BasePresenterFragment<OrderRefund
             return;
         }
         currentPage++;
-        mPresenter.getSearchRefundFailOrderListData(mEtSearch.getText().toString());
+        mPresenter.getSearchRefundFailOrderListData(currentPage,mEtSearch.getText().toString());
     }
 
     @Override

@@ -66,8 +66,8 @@ public class OrderRefundSearchPresenter extends BasePresenter<OrderRefundSearchF
         });
     }
 
-    public void getSearchRefundFailOrderListData(final String keyword) {
-        ((OrderCompleteModel) getiModelMap().get("OrderCompleteSearchModel")).getSearchRefundFailOrderListData(keyword, new OrderCompleteModel.SearchCompleteOrderHint(){
+    public void getSearchRefundFailOrderListData(final int page,final String keyword) {
+        ((OrderCompleteModel) getiModelMap().get("OrderCompleteSearchModel")).getSearchRefundFailOrderListData(page,keyword, new OrderCompleteModel.SearchCompleteOrderHint(){
 
             @Override
             public void successSearchOrder(TakingOrderMenuBean beans) {

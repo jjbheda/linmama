@@ -142,7 +142,7 @@ public class PrintUtils {
         title_builder.append("          自营早餐商城"+"\n");
 
         final StringBuilder builder_sub_title = new StringBuilder();
-        String orderTypestr = "     当日单 ";
+        String orderTypestr = "     "+(bean.order_type.equals("1") ? "预约单 ":"当日单 ");
         builder_sub_title.append(orderTypestr);
         // 0 取消 1已取消 2 已退款
         if (bean.is_for_here.equals("0")) {
@@ -165,8 +165,12 @@ public class PrintUtils {
         StringBuilder builder_star = new StringBuilder();
         builder_star.append ("  ***************************"+"\n");
         StringBuilder builder_good = new StringBuilder();
-        for (OrderOrderMenuBean bean1 : bean.order_list) {
-            builder_good.append("    " + bean1.date+"\n");
+        for (int i = 0;i<bean.order_list.size();i++) {
+            OrderOrderMenuBean bean1 = bean.order_list.get(i);
+            if (bean.pickup_list.get(i)!=null) {
+                builder_good.append("    " + bean.pickup_list.get(i).pickup_date+" "+
+                        bean.pickup_list.get(i).pickup_start_time+ "-" + bean.pickup_list.get(i).pickup_end_time+"\n");
+            }
             for (OrderGoodBean goodBean : bean1.goods_list) {
                 builder_good.append("    " + goodBean.name);
                 builder_good.append("       " + goodBean.amount);

@@ -158,6 +158,7 @@ public class OrderFragment extends BasePresenterFragment implements
 //            }
 //        } else {
                 mNewFragment.setId(id);
+                mNewFragment.setOrderType(type);
                 mNewFragment.setCompleteOrderCallback(new CompleteOrderCallback() {
                     @Override
                     public void success(String orderType) {

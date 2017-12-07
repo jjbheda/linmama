@@ -132,10 +132,10 @@ public class OrderCompleteModel extends BaseModel{
                 });
     }
 
-    public void getSearchRefundFailOrderListData(String keyword,final SearchCompleteOrderHint hint) {
+    public void getSearchRefundFailOrderListData(int page,String keyword,final SearchCompleteOrderHint hint) {
         if (hint == null)
             throw new RuntimeException("SearchCompleteOrderHint cannot be null.");
-        httpService.getSearchRefundFailOrderListData(keyword).compose(new CommonTransformer<TakingOrderMenuBean>())
+        httpService.getSearchRefundFailOrderListData(page,keyword).compose(new CommonTransformer<TakingOrderMenuBean>())
                 .subscribe(new CommonSubscriber<TakingOrderMenuBean>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(TakingOrderMenuBean bean) {

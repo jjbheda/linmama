@@ -338,7 +338,7 @@ public class MainActivity extends BaseActivity {
             exitTime = System.currentTimeMillis();
         } else {
             finish();
-            exit();
+            System.exit(0);
         }
     }
 }

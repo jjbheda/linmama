@@ -26,7 +26,7 @@ public class OrderCompleteOrRefundSearchAdapter extends BaseAdapter {
     private IRefundRetry mRefundRetry;
     private IPrintOrder mPrintOrder;
     private ICancelFinishedOrder mCancelOrder;
-    private int searchType = 0;  //0 已完成订单    1  退款未成功
+    private int searchType = 0;  //0 已完成订单    1  退款记录（status 0 退款中 1 退款失败 2 退款成功）
 
     public OrderCompleteOrRefundSearchAdapter(Activity context, int searchType, List<TakingOrderBean> results) {
         this.mContext = context;
@@ -88,7 +88,7 @@ public class OrderCompleteOrRefundSearchAdapter extends BaseAdapter {
         ViewHolder1 holder1 = null;
         if (view == null) {
             holder1 = new ViewHolder1();
-            view = mInflater.inflate(R.layout.order_search_common_layout, viewGroup, false);
+            view = mInflater.inflate(R.layout.order_search_undo_common_layout, viewGroup, false);
             holder1.tv_name = (TextView) view.findViewById(R.id.tv_name);
             holder1.order_time = (TextView) view.findViewById(R.id.order_time);
             holder1.table_num = (TextView) view.findViewById(R.id.table_num_search);
@@ -107,7 +107,7 @@ public class OrderCompleteOrRefundSearchAdapter extends BaseAdapter {
             holder1.shrint_btn = (TextView) view.findViewById(R.id.shrint_tv);
             holder1.goods_shrink_lt = (LinearLayout) view.findViewById(R.id.goods_shrink_lt);
             holder1.phone_lt = (LinearLayout) view.findViewById(R.id.phone_lt);
-            holder1.complete = (TextView) view.findViewById(R.id.btnNewCancel2);
+            holder1.refund_tv = (TextView) view.findViewById(R.id.btnNewCancel2);
             view.setTag(holder1);
         } else {
             holder1 = (ViewHolder1) view.getTag();
@@ -170,35 +170,40 @@ public class OrderCompleteOrRefundSearchAdapter extends BaseAdapter {
             }
         });
         String type = "已完成";
-        //0 已完成订单    1  退款未成功    2 预约单、当日单搜索
+        //0 已完成订单    1  退款未成功
         if (searchType == 0) {
             //0 可取消 1已取消 2 已退款
             if (bean.status.equals("0")) {
                 type = "取消";
-                holder1.complete.setTextColor(mContext.getResources().getColor(R.color.gray_bg_color));
-                holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_commit_bg));
+                holder1.refund_tv.setTextColor(mContext.getResources().getColor(R.color.gray_btn_color));
+                holder1.refund_tv.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_commit_bg));
                 holder1.tv_order_status.setText("已完成");
             } else if (bean.status.equals("1")) {
                 type = "退款中";
-                holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
+                holder1.refund_tv.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
                 holder1.tv_order_status.setText("退款中");
             } else if (bean.status.equals("2")){
                 type = "已退款";
-                holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
+                holder1.refund_tv.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
                 holder1.tv_order_status.setText("已退款");
             }
-            holder1.complete.setText(type);
+            holder1.refund_tv.setText(type);
 
-        } else if (searchType == 1){
-            type = "再次退款";
-            holder1.tv_order_status.setText("退款中");
-            holder1.complete.setTextColor(mContext.getResources().getColor(R.color.gray_bg_color));
-            holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_commit_bg));
-            if (bean.status.equals("3")) {
-                type = "退款中";
-                holder1.complete.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
+        } else if (searchType == 1){    //status 0 退款中 1 退款失败 2 退款成功
+            holder1.refund_tv.setTextColor(mContext.getResources().getColor(R.color.gray_btn_color));
+            if (bean.status.equals("0")){
+                holder1.tv_order_status.setText("退款中");
+                holder1.refund_tv.setText("退款中");
+                holder1.refund_tv.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
+            } else if (bean.status.equals("1")) {
+                holder1.tv_order_status.setText("退款失败");
+                holder1.refund_tv.setText("再次退款");
+                holder1.refund_tv.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_commit_bg));
+            } else if (bean.status.equals("2")) {
+                holder1.refund_tv.setBackground(mContext.getResources().getDrawable(R.mipmap.icon_cancel_bg));
+                holder1.tv_order_status.setText("退款成功");
+                holder1.refund_tv.setText("已完成");
             }
-            holder1.complete.setText(type);
         }
 
         if (!bean.fail_reson.equals("")) {
@@ -208,10 +213,10 @@ public class OrderCompleteOrRefundSearchAdapter extends BaseAdapter {
             holder1.tv_notes_order.setVisibility(View.GONE);
         }
 
-        holder1.complete.setOnClickListener(new View.OnClickListener() {
+        holder1.refund_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (searchType == 1 && mRefundRetry != null && !bean.status.equals("3")) {        //退款未成功
+                if (searchType == 1 && mRefundRetry != null && bean.status.equals("1")) {        //退款记录
                     mRefundRetry.refundRetry(bean);
                 } else if (searchType == 0 && bean.status.equals("0") && mCancelOrder != null) {
                     mCancelOrder.cancelOrder(bean);
@@ -255,7 +260,7 @@ public class OrderCompleteOrRefundSearchAdapter extends BaseAdapter {
         LinearLayout goods_shrink_lt;
         LinearLayout phone_lt;
         TextView tv_serial_number;
-        TextView complete;
+        TextView refund_tv;
         TextView btnPrint;
         TextView tv_notes_order;
 

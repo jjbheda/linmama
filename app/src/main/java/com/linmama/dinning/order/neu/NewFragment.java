@@ -107,6 +107,12 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         mId = id;
     }
 
+    private String mOrdertype;      // 订单类型  0 当日单 1预约单
+
+    public void setOrderType(String orderType){
+        mOrdertype = orderType;
+    }
+
     private OrderFragment.CompleteOrderCallback mCompleteOrderCallback;
 
     public void setCompleteOrderCallback(OrderFragment.CompleteOrderCallback callback) {

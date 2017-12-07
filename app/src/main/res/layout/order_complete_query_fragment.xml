@@ -79,7 +79,7 @@
         android:layout_gravity="right"
         android:paddingRight="20dp"
         android:paddingLeft="20dp"
-        android:text="退款未成功"
+        android:text="退款记录"
         android:textColor="@color/colorAccent"
         android:textSize="16sp" />
     </LinearLayout>
