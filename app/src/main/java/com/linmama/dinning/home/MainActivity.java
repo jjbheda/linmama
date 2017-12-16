@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,30 +22,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.linmama.dinning.base.BaseActivity;
+import com.linmama.dinning.bluetooth.CheckPrinterActivity;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteFragment;
 import com.linmama.dinning.receiver.WarnAlarmReceiver;
 import com.linmama.dinning.shop.ShopManagerFragment;
-import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.BuildConfig;
 import com.linmama.dinning.R;
-import com.linmama.dinning.bluetooth.PrintDataService;
 import com.linmama.dinning.order.order.OrderFragment;
 import com.linmama.dinning.setting.SettingFragment;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.SpUtils;
-import com.linmama.dinning.utils.asynctask.AsyncTaskUtils;
-import com.linmama.dinning.utils.asynctask.CallEarliest;
-import com.linmama.dinning.utils.asynctask.Callback;
-import com.linmama.dinning.utils.asynctask.IProgressListener;
-import com.linmama.dinning.utils.asynctask.ProgressCallable;
+import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.tencent.bugly.crashreport.CrashReport;
-
-import net.posprinter.posprinterface.IMyBinder;
-import net.posprinter.posprinterface.UiExecute;
-import net.posprinter.service.PosprinterService;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,6 +86,8 @@ public class MainActivity extends BaseActivity {
     private String mOrdertype = "";   // 订单类型  0 当日单 1预约单
     private int mId = 0;   // 订单id
 
+    private Handler handler;
+
     @Override
     protected int getLayoutResID() {
         return R.layout.activity_main;
@@ -101,6 +95,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        Log.d(TAG, "初始化MainActivity");
         if (getIntent() != null && getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
             try {
@@ -154,31 +149,53 @@ public class MainActivity extends BaseActivity {
 
         CrashReport.initCrashReport(getApplicationContext());
         //绑定service，获取ImyBinder对象
-        Intent intent = new Intent(this, PosprinterService.class);
-        bindService(intent, conn, BIND_AUTO_CREATE);
+//        Intent intent = new Intent(this, PosprinterService.class);
+//        bindService(intent, conn, BIND_AUTO_CREATE);
+
+
+        /**
+         * 连接打印机
+         *
+         */
+
+//        new Handler().postDelayed(new Runnable() {
+//            public void run() {
+//                Log.d(TAG, "请求打印机接口");
+//                String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
+//                if (FeiEPrinterUtils.queryPrinterStatus(sn)) {
+//                    ViewUtils.showToast(MainActivity.this, "票据打印机连接成功");
+//                    Log.d(TAG, "票据打印机连接成功");
+////                    Toast.makeText(MainActivity.this, "票据打印机连接成功", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    ViewUtils.showToast(MainActivity.this, "票据打印机连接失败");
+////                    Toast.makeText(MainActivity.this, "票据打印机连接失败", Toast.LENGTH_SHORT).show();
+//                    Log.d(TAG, "票据打印机连接失败");
+//                }
+//            }
+//        },1000);
+
+
+        HandlerThread thread = new HandlerThread("NetWork");
+        thread.start();
+        Handler handler = new Handler(thread.getLooper());
+        //延迟一秒后进行
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                Log.d(TAG, "请求打印机接口");
+                String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
+                if (FeiEPrinterUtils.queryPrinterStatus()) {
+                    ViewUtils.showToast(MainActivity.this, "票据打印机连接成功");
+                    Log.d(TAG, "票据打印机连接成功");
+//                    Toast.makeText(MainActivity.this, "票据打印机连接成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    ViewUtils.showToast(MainActivity.this, "票据打印机连接失败");
+//                    Toast.makeText(MainActivity.this, "票据打印机连接失败", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "票据打印机连接失败");
+                }
+            }
+        },100);
 
     }
-
-    //IMyBinder接口，所有可供调用的连接和发送数据的方法都封装在这个接口内
-    public static IMyBinder binder;
-
-    //bindService的参数connection
-    ServiceConnection conn = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            //绑定成功
-            binder = (IMyBinder) iBinder;
-            Log.e("binder", "connected");
-            if (binder != null) {
-                checkPrinter();
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            Log.e("disbinder", "disconnected");
-        }
-    };
 
     @Override
     protected void initListener() {
@@ -301,9 +318,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (PrintDataService.getInstance().isConnection()) {
-            PrintDataService.getInstance().disconnect();
-        }
+//        if (PrintDataService.getInstance().isConnection()) {
+//            PrintDataService.getInstance().disconnect();
+//        }
+//        handler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -313,23 +331,6 @@ public class MainActivity extends BaseActivity {
             return false;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    public void checkPrinter() {
-        if (!PrintDataService.getInstance().isConnection()) {
-            PrintDataService.getInstance().connect(new PrintDataService.ConnectCallback() {
-                @Override
-                public void connectSucess() {
-                    ViewUtils.showToast(MainActivity.this, "已连接票据打印机");
-                }
-
-                @Override
-                public void connectFailed() {
-                    ViewUtils.showToast(MainActivity.this, "票据打印机连接失败");
-                }
-            });
-        }
-
     }
 
     public void exit() {

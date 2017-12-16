@@ -34,6 +34,9 @@ public class Constants {
     public static String CATEGORY_SEARCH_ON = "categorysearchon";
     public static String CATEGORY_SEARCH_OFF = "categorysearchoff";
     public static String ORDER_AUTO_RECEIVE = "orderautoreceive";
+
+    public static String PRINT_DEVEICES = "PRINT_DEVEICES";
+    public static String PRINT_DEVEICES_SELECTED = "PRINT_DEVEICES_SELECTED";
     // Reveiver
     public static String RECEIVER_INTERVAL_MILLS = "intervalMillis";
     public static String RECEIVER_MSG = "msg";

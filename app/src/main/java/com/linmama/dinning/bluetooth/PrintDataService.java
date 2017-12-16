@@ -7,10 +7,8 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.linmama.dinning.LmamaApplication;
-import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.LogUtils;
-import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.utils.ViewUtils;
 
@@ -79,24 +77,17 @@ public class PrintDataService {
         return isConnection;
     }
 
+
+    public void UnConnectDevice(){
+        isConnection = false;
+    }
+
     /**
      * 连接蓝牙设备
      */
     public static void connect(final ConnectCallback callback) {
             String btAddress = (String) SpUtils.get(Constants.BT_ADDRESS, "");
-            MainActivity.binder.connectBtPort(btAddress, new UiExecute() {
-                @Override
-                public void onsucess() {
-                    isConnection = true;
-                    callback.connectSucess();
-                }
 
-                @Override
-                public void onfailed() {
-                    isConnection = false;
-                    callback.connectFailed();
-                }
-            });
     }
 
     /**

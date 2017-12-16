@@ -18,13 +18,8 @@ import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
-import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
-import com.linmama.dinning.utils.asynctask.AsyncTaskUtils;
-import com.linmama.dinning.utils.asynctask.CallEarliest;
-import com.linmama.dinning.utils.asynctask.Callback;
-import com.linmama.dinning.utils.asynctask.IProgressListener;
-import com.linmama.dinning.utils.asynctask.ProgressCallable;
+import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.NewOrderAdapter;
@@ -124,6 +119,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         if (null != mPresenter) {
             mPtrNew.autoRefresh(true);
         }
+        showDialog("加载中...");
     }
 
     public void refresh() {
@@ -342,36 +338,37 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
 
     private void printOrderWithCheck(final LResultNewOrderBean bean){
-        if (bean == null)
-            return;
-
-        if (!PrintDataService.getInstance().isConnection()) {
-            showDialog("正在连接打印机");
-            PrintDataService.getInstance().connect(new PrintDataService.ConnectCallback() {
-                @Override
-                public void connectSucess() {
-                    dismissDialog();
-                    printOrder2(bean);
-                    ViewUtils.showToast(mActivity, "已连接票据打印机");
-                }
-
-                @Override
-                public void connectFailed() {
-                    dismissDialog();
-                    ViewUtils.showToast(mActivity, "票据打印机连接失败");
-                }
-            });
-
-        } else {
-            printOrder2(bean);
-        }
+//        if (bean == null)
+//            return;
+//
+//        if (!PrintDataService.getInstance().isConnection()) {
+//            showDialog("正在连接打印机");
+//            PrintDataService.getInstance().connect(new PrintDataService.ConnectCallback() {
+//                @Override
+//                public void connectSucess() {
+//                    dismissDialog();
+//                    printOrder2(bean);
+//                    ViewUtils.showToast(mActivity, "已连接票据打印机");
+//                }
+//
+//                @Override
+//                public void connectFailed() {
+//                    dismissDialog();
+//                    ViewUtils.showToast(mActivity, "票据打印机连接失败");
+//                }
+//            });
+//
+//        } else {
+//            printOrder2(bean);
+//        }
+        printOrder2(bean);
 
         dismissDialog();
     }
 
 
     private void printOrder2(LResultNewOrderBean bean){
-        PrintUtils.printNewOrder(TAG,bean);
+        FeiEPrinterUtils.FeiprintNewOrderWithLoading(mActivity,bean);
     }
     @Override
     public void onDestroyView() {

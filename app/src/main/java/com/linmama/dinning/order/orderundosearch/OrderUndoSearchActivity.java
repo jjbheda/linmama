@@ -19,8 +19,8 @@ import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.utils.LogUtils;
-import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
+import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.linmama.dinning.widget.ClearEditText;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.widget.MyAlertDialog;
@@ -232,7 +232,8 @@ public class OrderUndoSearchActivity extends BasePresenterActivity<OrderUndoSear
     @Override
     public void onPrintOrder(TakingOrderBean bean) {
         bean.ordertype = orderType;
-        PrintUtils.printOrder(TAG,bean);
+//        PrintUtils.printOrder(TAG,bean);
+        FeiEPrinterUtils.FeiprintOrderWithLoading(OrderUndoSearchActivity.this,bean);
         dismissDialog();
     }
 

@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/BothMatch"
     android:background="@color/colorSettingBg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolBar"
@@ -130,12 +132,34 @@
         android:layout_marginTop="20dp"
         android:layout_weight="1" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="30dp"
+        >
+    <com.linmama.dinning.widget.ClearEditText
+        android:id="@+id/printer_sn"
+        style="@style/ClearEditText"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_below="@id/loginName"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="0dp"
+        android:hint="SN号"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/gray_btn_color" />
     <Button
         android:id="@+id/search"
         style="@style/ClearEditText"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="25dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginRight="5dp"
         android:background="@drawable/login_button_selector"
         android:text="@string/set_search_device"
         android:textColor="@android:color/white" />
+    </LinearLayout>
 </LinearLayout>

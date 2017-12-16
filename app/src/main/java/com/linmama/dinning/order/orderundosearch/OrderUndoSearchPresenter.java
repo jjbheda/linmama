@@ -43,6 +43,8 @@ public class OrderUndoSearchPresenter extends BasePresenter<OrderUndoSearchActiv
 
             @Override
             public void failSearchOrder(String failMsg) {
+                if (null == getIView())
+                    return;
                 getIView().getSearchOrderFail(failMsg);
 
             }

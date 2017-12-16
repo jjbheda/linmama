@@ -12,6 +12,8 @@ import com.linmama.dinning.R;
 import com.linmama.dinning.base.BaseActivity;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.SpUtils;
+import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
+import com.linmama.dinning.widget.ClearEditText;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,6 +43,8 @@ public class CheckBTActivity extends BaseActivity {
     TextView btConnectName;
     @BindView(R.id.rlConnectBT)
     RelativeLayout rlConnectBT;
+    @BindView(R.id.printer_sn)
+    ClearEditText snEt;
 
     private BTService btService;
 
@@ -53,29 +57,33 @@ public class CheckBTActivity extends BaseActivity {
     protected void initView() {
         int printNum = (int) SpUtils.get(Constants.PRINTER_NUM, 1);
         etNum.setText(String.valueOf(printNum));
-        btService = new BTService(this, btList, statusIcon, status, search);
-        if (btService.isOpen()) {
-            statusIcon.setImageResource(R.mipmap.icon_on);
-            status.setText("关闭蓝牙");
-        } else {
-            statusIcon.setImageResource(R.mipmap.icon_off);
-            status.setText("打开蓝牙");
-        }
+//        btService = new BTService(this, btList, statusIcon, status, search);
+//        if (btService.isOpen()) {
+//            statusIcon.setImageResource(R.mipmap.icon_on);
+//            status.setText("关闭蓝牙");
+//        } else {
+//            statusIcon.setImageResource(R.mipmap.icon_off);
+//            status.setText("打开蓝牙");
+//        }
         int num = Integer.parseInt(etNum.getText().toString());
         etNum.setText(String.valueOf(num));
-        if (PrintDataService.getInstance().isConnection()) {
-            rlConnectBT.setVisibility(View.VISIBLE);
-            btConnectName.setText(PrintDataService.getInstance().getDeviceName());
-        } else {
-            rlConnectBT.setVisibility(View.GONE);
-        }
+//        if (PrintDataService.getInstance().isConnection()) {
+//            rlConnectBT.setVisibility(View.VISIBLE);
+//            btConnectName.setText(PrintDataService.getInstance().getDeviceName());
+//        } else {
+//            rlConnectBT.setVisibility(View.GONE);
+//        }
     }
 
     @OnClick(R.id.search)
     public void searchDevices(View view) {
-        if (btService.isOpen()) {
-            btService.searchDevices();
-        }
+//        if (btService.isOpen()) {
+//            btService.searchDevices();
+//        }
+
+
+
+
     }
 
     @OnClick(R.id.rightIcon)

@@ -13,8 +13,8 @@ import com.linmama.dinning.order.ordercompletesearch.OrderCompleteContract;
 import com.linmama.dinning.order.ordercompletesearch.refundsearch.OrderRefundSearchFragment;
 import com.linmama.dinning.order.ordercompletesearch.completesearch.OrderCompleteOrRefundSearchAdapter;
 import com.linmama.dinning.utils.LogUtils;
-import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
+import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.widget.header.WindmillHeader;
 
@@ -156,7 +156,8 @@ public class OrderRefundFragment extends BasePresenterFragment<OrderCompleteRefu
     @Override
     public void printOrder(TakingOrderBean bean) {
         bean.ordertype = 10;
-        PrintUtils.printOrder(TAG,bean);
+//        PrintUtils.printOrder(TAG,bean);
+        FeiEPrinterUtils.FeiprintOrderWithLoading(mActivity,bean);
         dismissDialog();
     }
 

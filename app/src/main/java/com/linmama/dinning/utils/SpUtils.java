@@ -132,7 +132,7 @@ public class SpUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T getObject(String key, Class<T> clazz) {
+    public static <T> T getObject(String key) {
         SharedPreferences sp = LmamaApplication.getInstance().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
 

@@ -12,8 +12,8 @@ import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteContract;
 import com.linmama.dinning.utils.LogUtils;
-import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
+import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.linmama.dinning.widget.ClearEditText;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.widget.MyAlertDialog;
@@ -103,6 +103,7 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
 
     @Override
     protected void initData() {
+        showDialog("加载中...");
     }
 
     @Override
@@ -161,13 +162,15 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
 
     @Override
     public void getSearchOrderFail(String failMsg) {
+        dismissDialog();
         Toast.makeText(mActivity, failMsg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void printOrder(TakingOrderBean bean) {
         bean.ordertype = 10;
-        PrintUtils.printOrder(TAG,bean);
+//        PrintUtils.printOrder(TAG,bean);
+        FeiEPrinterUtils.FeiprintOrderWithLoading(mActivity,bean);
         dismissDialog();
     }
     private MyAlertDialog mAlert;

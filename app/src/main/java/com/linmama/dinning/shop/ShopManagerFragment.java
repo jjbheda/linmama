@@ -2,7 +2,10 @@ package com.linmama.dinning.shop;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,12 +23,15 @@ import com.linmama.dinning.shop.account.AccountFragment;
 import com.linmama.dinning.shop.bean.ShopBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
+import com.linmama.dinning.url.Constants;
+import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.utils.asynctask.AsyncTaskUtils;
 import com.linmama.dinning.utils.asynctask.CallEarliest;
 import com.linmama.dinning.utils.asynctask.Callback;
 import com.linmama.dinning.utils.asynctask.IProgressListener;
 import com.linmama.dinning.utils.asynctask.ProgressCallable;
+import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -38,6 +44,7 @@ import static com.linmama.dinning.base.BaseModel.httpService;
  */
 
 public class ShopManagerFragment extends BaseFragment {
+    public static String TAG = "ShopManagerFragment";
     @BindView(R.id.shop_status)
     TextView mShopStatus;
     @BindView(R.id.shop_status_iv)
@@ -107,44 +114,86 @@ public class ShopManagerFragment extends BaseFragment {
                     }
                 });
 
-        if (!PrintDataService.getInstance().isConnection()) {
-            AsyncTaskUtils.doProgressAsync(mActivity, ProgressDialog.STYLE_SPINNER, "请稍后...", "正在连接票据打印机",
-                    new CallEarliest<Void>() {
+//        if (!PrintDataService.getInstance().isConnection()) {
+//            AsyncTaskUtils.doProgressAsync(mActivity, ProgressDialog.STYLE_SPINNER, "请稍后...", "正在连接票据打印机",
+//                    new CallEarliest<Void>() {
+//
+//                        @Override
+//                        public void onCallEarliest() throws Exception {
+//
+//                        }
+//
+//                    }, new ProgressCallable<Void>() {
+//
+//                        @Override
+//                        public Void call(IProgressListener pProgressListener)
+//                                throws Exception {
+//                            PrintDataService.getInstance().init();
+//                            return null;
+//                        }
+//
+//                    }, new Callback<Void>() {
+//
+//                        @Override
+//                        public void onCallback(Void pCallbackValue) {
+//                            if (PrintDataService.getInstance().isConnection()) {
+//                                ViewUtils.showToast(mActivity, "已连接票据打印机");
+//                                mPrintStatusTv.setText("已连接");
+//                                mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_has_connect));
+//                            } else {
+//                                ViewUtils.showToast(mActivity, "票据打印机连接失败");
+//                                mPrintStatusTv.setText("未连接");
+//                                mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_off_connect));
+//                            }
+//                        }
+//                    });
+//        } else {
+//            ViewUtils.showToast(mActivity, "已连接票据打印机");
+//            mPrintStatusTv.setText("已连接");
+//            mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_has_connect));
+//        }
+        showDialog("检测中...");
+//        HandlerThread thread = new HandlerThread("NetWork");
+//        thread.start();
+        Handler handler = new Handler(mActivity.getMainLooper());
+        //延迟一秒后进行
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                Log.d(TAG, "请求打印机接口");
+                String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
+                if (FeiEPrinterUtils.queryPrinterStatus()) {
+                    Log.d(TAG, "票据打印机连接成功");
 
-                        @Override
-                        public void onCallEarliest() throws Exception {
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+                            mPrintStatusTv.setText("已连接");
+                            mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_has_connect));
+//                        }
+//                    },100);
 
-                        }
+//                    Toast.makeText(MainActivity.this, "票据打印机连接成功", Toast.LENGTH_SHORT).show();
+                } else {
+//                    Toast.makeText(MainActivity.this, "票据打印机连接失败", Toast.LENGTH_SHORT).show();
+//                    HandlerThread thread2 = new HandlerThread("NetWork2");
+//                    thread2.start();
+//                    Handler handler = new Handler(thread2.getLooper());
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                            Log.d(TAG, "票据打印机连接失败");
+                            mPrintStatusTv.setText("未连接");
+                            mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_off_connect));
+//                        }
+//                    },100);
 
-                    }, new ProgressCallable<Void>() {
 
-                        @Override
-                        public Void call(IProgressListener pProgressListener)
-                                throws Exception {
-                            PrintDataService.getInstance().init();
-                            return null;
-                        }
-
-                    }, new Callback<Void>() {
-
-                        @Override
-                        public void onCallback(Void pCallbackValue) {
-                            if (PrintDataService.getInstance().isConnection()) {
-                                ViewUtils.showToast(mActivity, "已连接票据打印机");
-                                mPrintStatusTv.setText("已连接");
-                                mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_has_connect));
-                            } else {
-                                ViewUtils.showToast(mActivity, "票据打印机连接失败");
-                                mPrintStatusTv.setText("未连接");
-                                mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_off_connect));
-                            }
-                        }
-                    });
-        } else {
-            ViewUtils.showToast(mActivity, "已连接票据打印机");
-            mPrintStatusTv.setText("已连接");
-            mPrintIv.setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.icon_has_connect));
-        }
+                }
+                dismissDialog();
+            }
+        },100);
     }
 
     @Override

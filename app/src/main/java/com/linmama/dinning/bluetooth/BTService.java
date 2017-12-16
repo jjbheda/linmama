@@ -178,10 +178,12 @@ public class BTService {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     BTDeviceBean bt = allDevices.get(i);
+                    PrintDataService.getInstance().disconnect();
                     if (bt.isBonded()) {
                         String address = bt.getDevice().getAddress();
                         SpUtils.put(Constants.BT_ADDRESS, address);
                         ViewUtils.showToast(context, "已选择" + bt.getDevice().getName() + "设备");
+
                         Intent data = new Intent();
                         data.putExtra(Constants.BT_ADDRESS, address);
                         context.setResult(Activity.RESULT_OK, data);

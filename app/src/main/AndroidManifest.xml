@@ -73,6 +73,11 @@
         <activity
             android:name="com.linmama.dinning.bluetooth.CheckBTActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.linmama.dinning.bluetooth.CheckPrinterActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name="com.linmama.dinning.setting.login.ModifyLoginPwdActivity"
             android:screenOrientation="portrait" />
@@ -103,7 +108,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.linmama.dinning.base.MapActivity"/>
         <!-- Required  SDK核心功能-->
         <service
             android:name="cn.jpush.android.service.DownloadService"

@@ -1,6 +1,8 @@
 package com.linmama.dinning.order.taking;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -14,10 +16,13 @@ import com.linmama.dinning.bean.DataSynEvent;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.except.ApiException;
+import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteFragment;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
-import com.linmama.dinning.utils.PrintUtils;
+import com.linmama.dinning.url.Constants;
+import com.linmama.dinning.utils.SpUtils;
+import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.R;
@@ -114,6 +119,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
             mPtrTaking.autoRefresh(true);
             mPresenter.getTakingOrder(currentPage, 1, mRange);
         }
+        showDialog("加载中...");
     }
 
     private int mRange;
@@ -294,7 +300,9 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     @Override
     public void onPrintOrder(TakingOrderBean bean) {
         bean.ordertype = 1;        //强制改为 预约单
-        PrintUtils.printOrder(TAG,bean);
         dismissDialog();
+        FeiEPrinterUtils.FeiprintOrderWithLoading(mActivity,bean);
+
     }
+
 }

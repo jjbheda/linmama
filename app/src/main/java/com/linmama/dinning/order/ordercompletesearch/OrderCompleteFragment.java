@@ -17,8 +17,8 @@ import com.linmama.dinning.order.ordercompletesearch.refund.OrderRefundFragment;
 import com.linmama.dinning.order.ordercompletesearch.completesearch.OrderCompleteOrRefundSearchAdapter;
 import com.linmama.dinning.utils.DateRangePicker;
 import com.linmama.dinning.utils.LogUtils;
-import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
+import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.header.WindmillHeader;
@@ -119,6 +119,7 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
 
     @Override
     public void getSearchOrderFail(String failMsg) {
+        dismissDialog();
         Toast.makeText(mActivity, failMsg, Toast.LENGTH_SHORT).show();
     }
 
@@ -281,7 +282,9 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
     @Override
     public void printOrder(TakingOrderBean bean) {
         bean.ordertype = 10;
-        PrintUtils.printOrder(TAG,bean);
+//        PrintUtils.printOrder(TAG,bean);
+
+        FeiEPrinterUtils.FeiprintOrderWithLoading(mActivity,bean);
         dismissDialog();
     }
 }

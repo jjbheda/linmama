@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  */
 public abstract class BasePresenterFragment<P extends BasePresenter> extends Fragment implements
         IView {
-    protected Activity mActivity;
+    protected BaseActivity mActivity;
     protected View view;
     protected P mPresenter;
     private ProgressDialog mLoadingDialog;
@@ -29,7 +29,7 @@ public abstract class BasePresenterFragment<P extends BasePresenter> extends Fra
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivity = (Activity) context;
+        mActivity = (BaseActivity) context;
     }
 
     @Nullable

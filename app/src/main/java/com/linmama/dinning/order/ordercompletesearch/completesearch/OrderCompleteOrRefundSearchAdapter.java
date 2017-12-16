@@ -206,7 +206,7 @@ public class OrderCompleteOrRefundSearchAdapter extends BaseAdapter {
             }
         }
 
-        if (!bean.fail_reson.equals("")) {
+        if (bean.fail_reson!=null && !bean.fail_reson.equals("")) {
             holder1.tv_notes_order.setVisibility(View.VISIBLE);
             holder1.tv_notes_order.setText(bean.fail_reson);
         } else {

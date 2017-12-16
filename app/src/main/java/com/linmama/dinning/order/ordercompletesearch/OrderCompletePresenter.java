@@ -40,6 +40,8 @@ public class OrderCompletePresenter extends BasePresenter<OrderCompleteFragment>
 
             @Override
             public void failSearchOrder(String failMsg) {
+                if (null == getIView())
+                    return;
                 getIView().getSearchOrderFail(failMsg);
 
             }
@@ -59,6 +61,8 @@ public class OrderCompletePresenter extends BasePresenter<OrderCompleteFragment>
 
             @Override
             public void failSearchOrder(String failMsg) {
+                if (null == getIView())
+                    return;
                 getIView().getSearchOrderFail(failMsg);
 
             }

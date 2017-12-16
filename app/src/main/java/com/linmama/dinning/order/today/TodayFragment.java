@@ -24,8 +24,8 @@ import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.LogUtils;
-import com.linmama.dinning.utils.PrintUtils;
 import com.linmama.dinning.utils.ViewUtils;
+import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.header.WindmillHeader;
@@ -179,7 +179,8 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
     @Override
     public void onPrintOrder(TakingOrderBean bean) {
         bean.ordertype = 0;        //强制改为 当日单类型
-        PrintUtils.printOrder(TAG,bean);
+//        PrintUtils.printOrder(TAG,bean);
+        FeiEPrinterUtils.FeiprintOrderWithLoading(mActivity,bean);
         dismissDialog();
     }
 
