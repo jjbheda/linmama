@@ -131,8 +131,9 @@
     <string name="set_submit">提交</string>
 
     <string name="set_bt_printernum">出票张数</string>
+    <string name="set_printersn">SN码 : </string>
 
-    <string name="set_search_device">添加设备</string>
+    <string name="set_search_device">添加</string>
     <string name="bluetooth_not_available">您的设备不支持蓝牙</string>
 
     <string name="pop_done">完成</string>

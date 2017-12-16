@@ -1,66 +1,36 @@
 package com.linmama.dinning.setting;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Message;
-import android.printservice.PrintService;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.EventLog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.linmama.dinning.base.BasePresenterFragment;
-import com.linmama.dinning.bean.AppVersionBean;
-import com.linmama.dinning.bean.DataSynEvent;
 import com.linmama.dinning.bean.ShopBaseInfoBean;
-import com.linmama.dinning.bean.StoreSettingsBean;
-import com.linmama.dinning.bluetooth.CheckBTActivity;
 import com.linmama.dinning.bluetooth.CheckPrinterActivity;
-import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.login.LoginActivity;
 import com.linmama.dinning.setting.shopstatus.StoreInfoContract;
 import com.linmama.dinning.setting.shopstatus.StoreStatusPresenter;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.ActivityUtils;
-import com.linmama.dinning.utils.AppUtils;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.ViewUtils;
-import com.linmama.dinning.utils.asynctask.CallEarliest;
-import com.linmama.dinning.utils.asynctask.IProgressListener;
-import com.linmama.dinning.utils.asynctask.ProgressCallable;
 import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.SettingItem;
 import com.linmama.dinning.R;
 import com.linmama.dinning.bluetooth.PrintDataService;
 import com.linmama.dinning.utils.SpUtils;
-import com.linmama.dinning.utils.asynctask.AsyncTaskUtils;
-import com.linmama.dinning.utils.asynctask.Callback;
 
-import net.posprinter.posprinterface.UiExecute;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
 
@@ -170,7 +140,6 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
         handler.postDelayed(new Runnable() {
             public void run() {
                 Log.d(TAG, "请求打印机接口");
-                String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
                 boolean isConnect = false;
                 if (FeiEPrinterUtils.queryPrinterStatus()) {
                     isConnect = true;

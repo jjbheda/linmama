@@ -103,7 +103,7 @@ public class OrderCompleteSearchFragment extends BasePresenterFragment<OrderSear
 
     @Override
     protected void initData() {
-        showDialog("加载中...");
+//        showDialog("加载中...");
     }
 
     @Override

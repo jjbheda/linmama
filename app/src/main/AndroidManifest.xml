@@ -71,10 +71,6 @@
             android:name="com.linmama.dinning.goods.search.SearchCategoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.linmama.dinning.bluetooth.CheckBTActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name="com.linmama.dinning.bluetooth.CheckPrinterActivity"
             android:screenOrientation="portrait" />
 

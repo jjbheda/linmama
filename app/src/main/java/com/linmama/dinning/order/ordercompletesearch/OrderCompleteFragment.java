@@ -236,6 +236,7 @@ public class OrderCompleteFragment extends BasePresenterFragment<OrderCompletePr
 
     @Override
     protected void initData() {
+//        showDialog("加载中...");
         mPreComplete.autoRefresh(true);
         mPresenter.getFinishedOrderListData(1, "", "");
     }

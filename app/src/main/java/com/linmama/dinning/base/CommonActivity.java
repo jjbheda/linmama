@@ -9,19 +9,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.linmama.dinning.R;
+
 import butterknife.ButterKnife;
 
 /**
  * Created by jingkang on 2017/2/26
  */
-public class CommonActivity extends AppCompatActivity {
+public class CommonActivity extends BaseActivity {
     private static Fragment mInstancefragment;
+
     @Override
-    protected void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        FrameLayout layout = new FrameLayout(this);
-        layout.setId((int) (Math.random() * 1000000));
-        setContentView(layout, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    protected int getLayoutResID() {
+        return R.layout.activity_common;
+    }
+
+    @Override
+    protected void initView() {
         Bundle args = getIntent().getExtras();
         try {
             String fragmentClassName = args.getString(BundleKey.FRAGMENT_CLASS);
@@ -37,6 +41,12 @@ public class CommonActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    @Override
+    protected void initListener() {
+
+    }
+
     public static void start(Activity from, Class<?> fragmentClass, Bundle args) {
         if (from == null || from.isFinishing()) return;
         Intent intent = new Intent(from, CommonActivity.class);
