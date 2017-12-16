@@ -71,14 +71,6 @@ public class CheckPrinterActivity extends BaseActivity {
     protected void initView() {
         int printNum = (int) SpUtils.get(Constants.PRINTER_NUM, 1);
         etNum.setText(String.valueOf(printNum));
-//        btService = new BTService(this, btList, statusIcon, status, search);
-//        if (btService.isOpen()) {
-//            statusIcon.setImageResource(R.mipmap.icon_on);
-//            status.setText("关闭蓝牙");
-//        } else {
-//            statusIcon.setImageResource(R.mipmap.icon_off);
-//            status.setText("打开蓝牙");
-//        }
         int num = Integer.parseInt(etNum.getText().toString());
         etNum.setText(String.valueOf(num));
         String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
@@ -87,7 +79,6 @@ public class CheckPrinterActivity extends BaseActivity {
               boolean isConnect = false;
               if (FeiEPrinterUtils.queryPrinterStatus()) {
                   isConnect = true;
-//                    Toast.makeText(MainActivity.this, "票据打印机连接成功", Toast.LENGTH_SHORT).show();
               }
               Message msg = new Message();
               Bundle data = new Bundle();
@@ -167,83 +158,6 @@ public class CheckPrinterActivity extends BaseActivity {
                 finish();
             }
         });
-//        btList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                       final PrintBean bean = (PrintBean)parent.getItemAtPosition(position);
-//                        CheckPrinterActivity.this.showDialog("","检测中");
-//                        HandlerThread thread = new HandlerThread("NetWork2");
-//                        thread.start();
-//                        Handler handler = new Handler(thread.getLooper());
-//                        //延迟一秒后进行
-//                        handler.postDelayed(new Runnable() {
-//                            public void run() {
-//                                Log.d(TAG, "请求打印机接口");
-//                                if (FeiEPrinterUtils.queryPrinterStatus()) {
-//                                    bean.conStatus = true;
-//                                    SpUtils.put(Constants.PRINT_DEVEICES_SELECTED, bean.printSn);
-//                                } else {
-//                                    Log.d(TAG, "票据打印机连接失败");
-//                                    bean.conStatus = false;
-//                                }
-//
-//                                new Handler(getMainLooper()).postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if (adapter != null) {
-//                                            adapter.notifyDataSetChanged();
-//                                        }
-//                                    }
-//                                }, 10);
-//
-//                                CheckPrinterActivity.this.dismissDialog();
-//                            }
-//                        },100);
-//
-//            }
-//        });
-
-
-//        btList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                final PrintBean bean = (PrintBean) parent.getItemAtPosition(position);
-//                MyAlertDialog mAlert = new MyAlertDialog(CheckPrinterActivity.this).builder()
-//                        .setTitle("是否删除")
-//                        .setConfirmButton("是", new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                if (arrayList.contains(bean)) {
-//                                    arrayList.remove(bean);
-//                                }
-//                               if (adapter != null){
-//                                   adapter.notifyDataSetChanged();
-//                               }
-//
-//                                try {
-//                                    ArrayList<PrintBean> arrayList = SpUtils.getObject(Constants.PRINT_DEVEICES);
-//                                    if (arrayList == null){
-//                                        arrayList = new ArrayList<>();
-//                                    } else {
-//                                        arrayList.remove(bean);
-//                                    }
-//                                    SpUtils.setObject(Constants.PRINT_DEVEICES,arrayList);
-//
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-//
-//                            }
-//                        }).setPositiveButton("否", new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//
-//                            }
-//                        });
-//                mAlert.show();
-//                return true;
-//            }
-//        });
 
     }
 
@@ -274,7 +188,6 @@ public class CheckPrinterActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        btService.unregisterReceiver();
     }
 
 }
