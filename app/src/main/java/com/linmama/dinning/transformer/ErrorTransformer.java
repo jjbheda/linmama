@@ -37,12 +37,12 @@ public class ErrorTransformer<T> implements Observable.Transformer<BaseHttpResul
                     } else  if (httpResult.getData()!=null && httpResult.getData() instanceof Map && ((Map)httpResult.getData()).containsKey("errors_info")) {
                         errorInfo = (String) ((Map)httpResult.getData()).get("errors_info");
                     }  else {
-                        throw new ServerException(ErrorType.HTTP_ERROR, "Network Error.");
+                        throw new ServerException(ErrorType.HTTP_ERROR, "服务器连接异常");
                     }
                     if (!TextUtils.isEmpty(errorInfo)) {
                         throw new ServerException(ErrorType.HTTP_ERROR, errorInfo);
                     } else {
-                        throw new ServerException(ErrorType.HTTP_ERROR, "Network Error.");
+                        throw new ServerException(ErrorType.HTTP_ERROR, "服务器连接异常");
                     }
                 }
 

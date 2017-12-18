@@ -103,11 +103,6 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     @Override
     public void onResume() {
         super.onResume();
-        if (PrintDataService.getInstance().isConnection()) {
-            siPos.setSubTitle(R.string.set_item1_connect);
-        } else {
-            siPos.setSubTitle(R.string.set_item1_disconnect);
-        }
     }
 
     @Override

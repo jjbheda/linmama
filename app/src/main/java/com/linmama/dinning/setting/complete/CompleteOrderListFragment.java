@@ -1,6 +1,5 @@
 package com.linmama.dinning.setting.complete;
 
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,21 +8,15 @@ import com.linmama.dinning.adapter.CompleteOrderAdapter;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.CompleteOrderBean;
 import com.linmama.dinning.bean.OrderDetailBean;
-import com.linmama.dinning.setting.complete.detail.CompletedOrderDetailActivity;
-import com.linmama.dinning.url.Constants;
-import com.linmama.dinning.utils.ActivityUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.widget.header.WindmillHeader;
 import com.linmama.dinning.R;
-import com.linmama.dinning.bean.OrderItemsBean;
 import com.linmama.dinning.bean.ResultsBean;
 import com.linmama.dinning.bluetooth.PrintDataService;
 import com.linmama.dinning.utils.LogUtils;
-import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.widget.MyAlertDialog;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,10 +44,6 @@ public class CompleteOrderListFragment extends BasePresenterFragment<CompleteOrd
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        ResultsBean rb = mResults.get(i);
-        Bundle data = new Bundle();
-        data.putParcelable(Constants.ORDER_COMPLETE_DETAIL, rb);
-        ActivityUtils.startActivity(mActivity, CompletedOrderDetailActivity.class, data);
     }
 
     @Override
@@ -158,130 +147,7 @@ public class CompleteOrderListFragment extends BasePresenterFragment<CompleteOrd
 
     @Override
     public void getPrintDataSuccess(OrderDetailBean bean) {
-        final StringBuilder builder = new StringBuilder();
-        BigDecimal bd = null;
-        String fullname = (String) SpUtils.get(Constants.USER_FULLNAME, "");
-        if (!TextUtils.isEmpty(fullname)) {
-            builder.append("      ");
-            builder.append(fullname);
-            builder.append("\n");
-        }
-        if (null != mPrintingBean) {
-            builder.append("      ");
-            String payStatus = mPrintingBean.getPay_status();
-            String payChannel = mPrintingBean.getPay_channel();
-            if (payStatus.equals("1")) {
-                builder.append("未支付");
-            } else if (payStatus.equals("2")) {
-                if (payChannel.equals("1")) {
-                    builder.append("已在线支付");
-                } else if (payChannel.equals("2")) {
-                    builder.append("已吧台支付");
-                }
-            }
-            String diningWay = mPrintingBean.getDining_way();
-            if (diningWay.equals("1")) {
-                builder.append("(堂食)");
-            } else if (diningWay.equals("2")) {
-                builder.append("(外带)");
-            }
-            builder.append("\n");
-            builder.append("---------------------------");
-            builder.append("\n");
-            String serialNumber = mPrintingBean.getSerial_number();
-            builder.append("  NO:");
-            builder.append(serialNumber);
-            builder.append("\n");
-            String deskNum = mPrintingBean.getDesk_num();
-            builder.append("桌号:");
-            builder.append(deskNum);
-            builder.append("    ");
-            int diningNum = mPrintingBean.getDine_num();
-            builder.append("人数:");
-            builder.append(diningNum);
-            builder.append("\n");
-            String orderDatetimeBj = mPrintingBean.getOrder_datetime_bj();
-            builder.append("时间:");
-            builder.append(orderDatetimeBj);
-            builder.append("\n");
-            builder.append("---------------------------");
-            builder.append("\n");
-            builder.append("菜品");
-            builder.append("      数量");
-//            builder.append("  价格");
-            builder.append("    金额");
-            builder.append("\n");
-            builder.append("\n");
-        }
-        if (null != bean && bean.getOrderItems() != null) {
-            List<OrderItemsBean> items = bean.getOrderItems();
-            for (OrderItemsBean item : items) {
-                builder.append(item.getName());
-                builder.append("    ");
-                int num = item.getNum();
-                builder.append(num);
-                builder.append("    ");
-                String cost = item.getClosing_cost();
-                BigDecimal costBd = new BigDecimal(cost);
-                if (num > 1) {
-                    costBd = costBd.multiply(new BigDecimal(num));
-                }
-                if (null == bd) {
-                    bd = new BigDecimal(0);
-                    bd = bd.add(costBd);
-                } else {
-                    bd = bd.add(costBd);
-                }
-                builder.append(costBd.toString());
-                builder.append("\n");
-            }
-            builder.append("---------------------------");
-            builder.append("\n");
-        }
-        if (null != mPrintingBean) {
-            String remark = mPrintingBean.getRemark();
-            if (!TextUtils.isEmpty(remark)) {
-                builder.append("备注:");
-                builder.append(remark);
-                builder.append("\n");
-            }
-        }
-        builder.append("---------------------------");
-        builder.append("\n");
-        builder.append("消费金额: ");
-        if (bd != null) {
-            builder.append(bd.toString());
-        }
-        builder.append("\n");
-        builder.append("应收金额: ");
-        if (bd != null) {
-            builder.append(bd.toString());
-        }
-        builder.append("\n");
-        builder.append("---------------------------");
-        builder.append("\n");
-        builder.append("---------------------------");
-        builder.append("\n");
-        builder.append("小不点点餐  www.xcxid.com");
-        builder.append("\n");
-        builder.append("      欢迎下次光临");
-        builder.append("\n");
-        builder.append("\n");
-
-        String printData = builder.toString();
-        int printNum = (int) SpUtils.get(Constants.PRINTER_NUM, 1);
-        if (printNum == 2) {
-            builder.append(printData);
-        } else if (printNum == 3) {
-            builder.append(printData);
-            builder.append(printData);
-        }
-        if (PrintDataService.getInstance().isConnection()) {
-            PrintDataService.getInstance().send(builder.toString());
-            dismissDialog();
-        } else {
-            dismissDialog();
-        }
+     dismissDialog();
     }
 
     @Override

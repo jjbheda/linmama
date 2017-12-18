@@ -338,29 +338,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
 
     private void printOrderWithCheck(final LResultNewOrderBean bean){
-//        if (bean == null)
-//            return;
-//
-//        if (!PrintDataService.getInstance().isConnection()) {
-//            showDialog("正在连接打印机");
-//            PrintDataService.getInstance().connect(new PrintDataService.ConnectCallback() {
-//                @Override
-//                public void connectSucess() {
-//                    dismissDialog();
-//                    printOrder2(bean);
-//                    ViewUtils.showToast(mActivity, "已连接票据打印机");
-//                }
-//
-//                @Override
-//                public void connectFailed() {
-//                    dismissDialog();
-//                    ViewUtils.showToast(mActivity, "票据打印机连接失败");
-//                }
-//            });
-//
-//        } else {
-//            printOrder2(bean);
-//        }
+
         printOrder2(bean);
 
         dismissDialog();
