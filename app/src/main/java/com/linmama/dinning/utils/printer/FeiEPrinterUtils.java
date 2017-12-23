@@ -200,6 +200,7 @@ public class FeiEPrinterUtils {
 
     //方法4
     public static boolean queryPrinterStatus(){
+
         String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
         if (sn.equals(""))
             return false;

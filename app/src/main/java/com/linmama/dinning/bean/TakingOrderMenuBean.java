@@ -9,7 +9,7 @@ import java.util.List;
  * Created by jiangjingbo on 2017/11/2.
  */
 
-public class TakingOrderMenuBean  {
+public class TakingOrderMenuBean  extends BaseBean{
     private String status;
     public int per_page = 0;
     public int current_page = 0;

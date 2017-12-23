@@ -4,18 +4,16 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.linmama.dinning.R;
 import com.linmama.dinning.adapter.CompleteOrderAdapter;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.CompleteOrderBean;
 import com.linmama.dinning.bean.OrderDetailBean;
+import com.linmama.dinning.bean.ResultsBean;
+import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.widget.header.WindmillHeader;
-import com.linmama.dinning.R;
-import com.linmama.dinning.bean.ResultsBean;
-import com.linmama.dinning.bluetooth.PrintDataService;
-import com.linmama.dinning.utils.LogUtils;
-import com.linmama.dinning.widget.MyAlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +38,6 @@ public class CompleteOrderListFragment extends BasePresenterFragment<CompleteOrd
     private CompleteOrderAdapter mAdapter;
     private int currentPage = 1;
     private List<ResultsBean> mResults;
-    private ResultsBean mPrintingBean;
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -48,21 +45,7 @@ public class CompleteOrderListFragment extends BasePresenterFragment<CompleteOrd
 
     @Override
     public void posOrder(final int position) {
-        new MyAlertDialog(mActivity).builder()
-                .setMsg("是否打印小票")
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确定", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (PrintDataService.getInstance().isConnection()) {
-                            showDialog("请稍后...");
-                            mPrintingBean = mResults.get(position);
-                            mPresenter.getPrintData(mPrintingBean.getId());
-                        } else {
-                            ViewUtils.showSnack(ptrComplete, "未连接票据打印机");
-                        }
-                    }
-                }).show();
+
     }
 
     @Override

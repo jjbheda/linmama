@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by jiangjingbo on 2017/11/9.
  */
 
-public class ShopBaseInfoBean implements Serializable {
+public class ShopBaseInfoBean extends BaseBean {
     public  String shop_name = "";
     public  String shop_logo = "";
     public  String is_open = "";  //"1"

@@ -2,6 +2,7 @@ package com.linmama.dinning.setting;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.linmama.dinning.R;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.ShopBaseInfoBean;
 import com.linmama.dinning.bluetooth.CheckPrinterActivity;
@@ -20,14 +22,11 @@ import com.linmama.dinning.setting.shopstatus.StoreStatusPresenter;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.ActivityUtils;
 import com.linmama.dinning.utils.LogUtils;
+import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.SettingItem;
-import com.linmama.dinning.R;
-import com.linmama.dinning.bluetooth.PrintDataService;
-import com.linmama.dinning.utils.SpUtils;
-
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -130,7 +129,9 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     @Override
     protected void initData() {
         mPresenter.getStoreInfo();
-        Handler handler = new Handler(mActivity.getMainLooper());
+        HandlerThread thread = new HandlerThread("checkNetWork");
+        thread.start();
+        Handler handler = new Handler(thread.getLooper());
         //延迟一秒后进行
         handler.postDelayed(new Runnable() {
             public void run() {

@@ -1,8 +1,6 @@
 package com.linmama.dinning.setting.complete;
 
-import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.mvp.IModel;
-import com.linmama.dinning.order.model.OrderDetailModel;
 import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.bean.CompleteOrderBean;
 
@@ -40,36 +38,17 @@ public class CompleteOrderListPresenter extends BasePresenter<CompleteOrderListF
 
     @Override
     public HashMap<String, IModel> getiModelMap() {
-        return loadModelMap(new CompleteOrderListModel(), new OrderDetailModel());
+        return loadModelMap(new CompleteOrderListModel());
     }
 
     @Override
     public HashMap<String, IModel> loadModelMap(IModel... models) {
         HashMap<String, IModel> map = new HashMap<>();
         map.put("CompleteOrderList", models[0]);
-        map.put("PrintData", models[1]);
         return map;
     }
 
     @Override
     public void getPrintData(int orderId) {
-        if (null == getIView())
-            return;
-        ((OrderDetailModel) getiModelMap().get("PrintData")).getOrderDetail(orderId,
-                new OrderDetailModel.OrderDetailHint() {
-                    @Override
-                    public void successOrderDetail(OrderDetailBean bean) {
-                        if (null == getIView())
-                            return;
-                        getIView().getPrintDataSuccess(bean);
-                    }
-
-                    @Override
-                    public void failOrderDetail(String failMsg) {
-                        if (null == getIView())
-                            return;
-                        getIView().getPrintDataFail(failMsg);
-                    }
-                });
     }
 }

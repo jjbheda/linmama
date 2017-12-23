@@ -110,8 +110,6 @@ public class OrderFragment extends BasePresenterFragment implements
         void success(String orderType);     //0 当日单 1 预约单
     }
 
-    CompleteOrderCallback completeOrderCallback;
-
     @Override
     protected void initView() {
         OrderAdapter mAdapter = new OrderAdapter(getChildFragmentManager());

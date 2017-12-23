@@ -74,6 +74,9 @@ public class NewOrderAdapter extends BaseAdapter {
     }
 
     public void removeItem(int i) {
+        if (mResults.get(i) == null) {
+            return;
+        }
         LResultNewOrderBean rb = mResults.remove(i);
         if (null != rb) {
             this.notifyDataSetChanged();

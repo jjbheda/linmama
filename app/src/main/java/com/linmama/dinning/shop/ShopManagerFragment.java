@@ -1,13 +1,10 @@
 package com.linmama.dinning.shop;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,22 +13,14 @@ import com.linmama.dinning.LmamaApplication;
 import com.linmama.dinning.R;
 import com.linmama.dinning.base.BaseFragment;
 import com.linmama.dinning.base.CommonActivity;
-import com.linmama.dinning.bluetooth.PrintDataService;
 import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.goods.GoodsFragment;
-import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.shop.account.AccountFragment;
 import com.linmama.dinning.shop.bean.ShopBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.SpUtils;
-import com.linmama.dinning.utils.ViewUtils;
-import com.linmama.dinning.utils.asynctask.AsyncTaskUtils;
-import com.linmama.dinning.utils.asynctask.CallEarliest;
-import com.linmama.dinning.utils.asynctask.Callback;
-import com.linmama.dinning.utils.asynctask.IProgressListener;
-import com.linmama.dinning.utils.asynctask.ProgressCallable;
 import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.squareup.picasso.Picasso;
 
@@ -132,7 +121,9 @@ public class ShopManagerFragment extends BaseFragment {
                     }
                 });
         showDialog("检测中...");
-        Handler handler = new Handler(mActivity.getMainLooper());
+        HandlerThread thread = new HandlerThread("checkNetWork");
+        thread.start();
+        Handler handler = new Handler(thread.getLooper());
         //延迟一秒后进行
         handler.postDelayed(new Runnable() {
             public void run() {

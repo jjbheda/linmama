@@ -7,7 +7,7 @@ import java.util.List;
  * Created by jingkang on 2017/3/5
  */
 
-public class TakingOrderBean {
+public class TakingOrderBean extends BaseBean {
     public int amount = 0;
     public List<OrderGoodBean>  goods_list = new ArrayList<>();
     public OrderPickupTimeBean pickup = new OrderPickupTimeBean();

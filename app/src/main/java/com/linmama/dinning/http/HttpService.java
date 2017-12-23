@@ -11,14 +11,6 @@ import com.linmama.dinning.bean.ShopSearchBean;
 import com.linmama.dinning.bean.SingleAccountBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.base.BaseHttpResult;
-import com.linmama.dinning.bean.CompleteOrderBean;
-import com.linmama.dinning.bean.NonPayOrderBean;
-import com.linmama.dinning.bean.QuitOrderBean;
-import com.linmama.dinning.bean.RemindBean;
-import com.linmama.dinning.bean.SaleReportBean;
-import com.linmama.dinning.bean.SarchItemBean;
-import com.linmama.dinning.bean.StoreSettingsBean;
-import com.linmama.dinning.bean.UserServerBean;
 import com.linmama.dinning.goods.category.MenuCategoryBean;
 import com.linmama.dinning.goods.onsale.ShopItemBean;
 import com.linmama.dinning.goods.onsale.ShopTotalBean;
@@ -50,7 +42,7 @@ public interface HttpService {
 
     //2	新订单列表接口
     @POST("newOrderList/")
-    Observable<BaseHttpResult<List<LResultNewOrderBean>>> getNewOrder();
+    Observable<BaseHttpResult<List<LResultNewOrderBean>>> getNewOrder(@Query("page") int page);
 
     //3	预约单列表接口     order_type：1预约单 0 当日单  range 0今天 1 明天 2全部
     @FormUrlEncoded

@@ -1,14 +1,10 @@
 package com.linmama.dinning.order.today;
 
-import com.linmama.dinning.bean.OrderDetailBean;
+import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.order.model.CompleteOrderModel;
-import com.linmama.dinning.order.model.OrderDetailModel;
 import com.linmama.dinning.order.model.TodayListModel;
-import com.linmama.dinning.order.model.RefundModel;
-import com.linmama.dinning.order.model.RefuseRefundModel;
-import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.utils.LogUtils;
 
 import java.util.HashMap;

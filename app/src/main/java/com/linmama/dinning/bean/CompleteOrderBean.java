@@ -6,7 +6,7 @@ import java.util.List;
  * Created by jingkang on 2017/3/5
  */
 
-public class CompleteOrderBean {
+public class CompleteOrderBean extends BaseBean{
     private int count;
     private String next;
     private int previous_page_number;

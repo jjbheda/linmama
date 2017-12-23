@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.linmama.dinning.R;
 import com.linmama.dinning.base.BaseActivity;
+import com.linmama.dinning.home.MainActivity;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.SpUtils;
 import com.linmama.dinning.utils.ViewUtils;
@@ -67,28 +68,42 @@ public class CheckPrinterActivity extends BaseActivity {
         return R.layout.activity_printer;
     }
 
+    boolean isConnect;
+    String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
     @Override
     protected void initView() {
         int printNum = (int) SpUtils.get(Constants.PRINTER_NUM, 1);
         etNum.setText(String.valueOf(printNum));
         int num = Integer.parseInt(etNum.getText().toString());
         etNum.setText(String.valueOf(num));
-        String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
+
           if (!sn.equals("")) {
               showDialog("","检测中...");
-              boolean isConnect = false;
-              if (FeiEPrinterUtils.queryPrinterStatus()) {
-                  isConnect = true;
-              }
-              Message msg = new Message();
-              Bundle data = new Bundle();
-              data.putBoolean("IS_CONNECT",isConnect);
-              data.putString("SN",sn);
-              msg.setData(data);
-              updateHandler.sendMessage(msg);
-              dismissDialog();
-        }
+              isConnect = false;
 
+              HandlerThread thread = new HandlerThread("checkNetWork");
+              thread.start();
+              Handler handler = new Handler(thread.getLooper());
+              handler.postDelayed(new Runnable() {
+                  public void run() {
+                      Log.d(TAG, "请求打印机接口");
+                      String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
+                      if (FeiEPrinterUtils.queryPrinterStatus()) {
+                          isConnect = true;
+                      }
+
+                      Message msg = new Message();
+                      Bundle data = new Bundle();
+                      data.putBoolean("IS_CONNECT",isConnect);
+                      data.putString("SN",sn);
+                      msg.setData(data);
+                      updateHandler.sendMessage(msg);
+                      dismissDialog();
+
+                  }
+              },100);
+
+          }
     }
 
     //handler 处理返回的请求结果
@@ -111,7 +126,7 @@ public class CheckPrinterActivity extends BaseActivity {
             }
         }
     };
-
+    boolean isAddDeviceConnect;
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     @OnClick(R.id.add_print_btn)
     public void searchDevices(View view) {
@@ -122,25 +137,30 @@ public class CheckPrinterActivity extends BaseActivity {
             return;
         }
         showDialog("","检测中...");
-        Handler handler = new Handler(CheckPrinterActivity.this.getMainLooper());
-        //延迟一秒后进行
+        isAddDeviceConnect = false;
+        SpUtils.put(Constants.PRINT_DEVEICES_SELECTED, printSn);
+        HandlerThread thread = new HandlerThread("checkNetWork");
+        thread.start();
+        Handler handler = new Handler(thread.getLooper());
         handler.postDelayed(new Runnable() {
             public void run() {
                 Log.d(TAG, "请求打印机接口");
                 String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
-                boolean isConnect = false;
                 if (FeiEPrinterUtils.queryPrinterStatus()) {
-                    isConnect = true;
+                    isAddDeviceConnect = true;
                 }
+
                 Message msg = new Message();
                 Bundle data = new Bundle();
-                data.putBoolean("IS_CONNECT",isConnect);
-                data.putString("SN",printSn);
+                data.putBoolean("IS_CONNECT",isAddDeviceConnect);
+                data.putString("SN",sn);
                 msg.setData(data);
                 updateHandler.sendMessage(msg);
                 dismissDialog();
+
             }
         },100);
+
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         boolean isOpen=imm.isActive();//isOpen若返回true，则表示输入法打开
         if (isOpen) {

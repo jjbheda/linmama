@@ -1,8 +1,6 @@
 package com.linmama.dinning.order.neu;
 
-import com.linmama.dinning.bean.CancelBean;
 import com.linmama.dinning.bean.LResultNewOrderBean;
-import com.linmama.dinning.bean.OrderDetailBean;
 
 import java.util.List;
 
@@ -13,19 +11,6 @@ public class NewOrderContract {
 
         void getNewOrderFail(String failMsg);
     }
-
-    public interface PrintView {
-        void getPrintDataSuccess(OrderDetailBean bean);
-
-        void getPrintDataFail(String failMsg);
-    }
-
-//    public interface ReceiveOrderView {
-//        void receiveOrderSuccess(String orderId);
-//
-//        void receiveOrderFail(String failMsg);
-//    }
-
     public interface NewOrderPresenter {
         void getNewOrder(int page);
     }

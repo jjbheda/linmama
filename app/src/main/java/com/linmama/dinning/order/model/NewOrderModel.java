@@ -17,7 +17,7 @@ public class NewOrderModel extends BaseModel {
 
         if (hint == null)
             throw new RuntimeException("NewOrderHint cannot be null.");
-        httpService.getNewOrder()
+        httpService.getNewOrder(page)
                 .compose(new CommonTransformer<List<LResultNewOrderBean>>())
                 .subscribe(new CommonSubscriber<List<LResultNewOrderBean>>(LmamaApplication.getInstance()) {
                     @Override

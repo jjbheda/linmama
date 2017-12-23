@@ -1,7 +1,7 @@
 package com.linmama.dinning.bean;
 
 
-public class LoginBean {
+public class LoginBean extends BaseBean{
 
     private String username;
     private String password;

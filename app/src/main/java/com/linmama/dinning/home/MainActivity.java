@@ -1,7 +1,9 @@
 package com.linmama.dinning.home;
 
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -124,6 +126,7 @@ public class MainActivity extends BaseActivity {
             Bundle args = new Bundle();
             args.putString("OrderType", mOrdertype);
             args.putInt("ID", mId);
+            Log.e(TAG,"接收到推送下来的ID值"+mId);
             mOrder.setArguments(args);
         }
         switchContent(mOrder);
@@ -148,32 +151,6 @@ public class MainActivity extends BaseActivity {
         });
 
         CrashReport.initCrashReport(getApplicationContext());
-        //绑定service，获取ImyBinder对象
-//        Intent intent = new Intent(this, PosprinterService.class);
-//        bindService(intent, conn, BIND_AUTO_CREATE);
-
-
-        /**
-         * 连接打印机
-         *
-         */
-
-//        new Handler().postDelayed(new Runnable() {
-//            public void run() {
-//                Log.d(TAG, "请求打印机接口");
-//                String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
-//                if (FeiEPrinterUtils.queryPrinterStatus(sn)) {
-//                    ViewUtils.showToast(MainActivity.this, "票据打印机连接成功");
-//                    Log.d(TAG, "票据打印机连接成功");
-////                    Toast.makeText(MainActivity.this, "票据打印机连接成功", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    ViewUtils.showToast(MainActivity.this, "票据打印机连接失败");
-////                    Toast.makeText(MainActivity.this, "票据打印机连接失败", Toast.LENGTH_SHORT).show();
-//                    Log.d(TAG, "票据打印机连接失败");
-//                }
-//            }
-//        },1000);
-
 
         HandlerThread thread = new HandlerThread("NetWork");
         thread.start();
@@ -338,8 +315,12 @@ public class MainActivity extends BaseActivity {
             ViewUtils.showToast(this, "再按一次退出程序");
             exitTime = System.currentTimeMillis();
         } else {
-            finish();
-            System.exit(0);
+            try {
+                finish();
+                android.os.Process.killProcess(android.os.Process.myPid());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

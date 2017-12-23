@@ -2,6 +2,7 @@ package com.linmama.dinning.transformer;
 
 import android.text.TextUtils;
 
+import com.linmama.dinning.bean.BaseBean;
 import com.linmama.dinning.url.UrlHelper;
 import com.linmama.dinning.base.BaseHttpResult;
 import com.linmama.dinning.except.ErrorType;
@@ -31,19 +32,20 @@ public class ErrorTransformer<T> implements Observable.Transformer<BaseHttpResul
                 LogUtils.e("ErrorTransformer", httpResult.toString());
 
                 if (httpResult.getStatus().equals(UrlHelper.STATIC_FAIL)) {
-                    String errorInfo;
                     if (null != httpResult.getErrors_info()) {
-                        errorInfo = httpResult.getErrors_info().toString();
-                    } else  if (httpResult.getData()!=null && httpResult.getData() instanceof Map && ((Map)httpResult.getData()).containsKey("errors_info")) {
-                        errorInfo = (String) ((Map)httpResult.getData()).get("errors_info");
+                        throw new ServerException(ErrorType.HTTP_ERROR,  httpResult.getErrors_info().toString());
+                    } else  if (httpResult.getData()!=null && httpResult.getData() instanceof BaseBean){
+                        BaseBean bean = (BaseBean) httpResult.getData();
+                        if (bean.error_code == -10000) {
+                            throw new ServerException(ErrorType.HTTP_ERROR, "登录失效，请退出当前用户，重新登录");
+                        } else if (!bean.errors_info.equals("")) {
+                            throw new ServerException(ErrorType.HTTP_ERROR, bean.errors_info);
+                        }
+
                     }  else {
                         throw new ServerException(ErrorType.HTTP_ERROR, "服务器连接异常");
                     }
-                    if (!TextUtils.isEmpty(errorInfo)) {
-                        throw new ServerException(ErrorType.HTTP_ERROR, errorInfo);
-                    } else {
-                        throw new ServerException(ErrorType.HTTP_ERROR, "服务器连接异常");
-                    }
+
                 }
 
                 return httpResult.getData();

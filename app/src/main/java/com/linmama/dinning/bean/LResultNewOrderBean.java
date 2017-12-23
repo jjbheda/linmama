@@ -8,7 +8,7 @@ import java.util.List;
  * Created by jiangjingbo on 2017/10/23.
  */
 
-public class LResultNewOrderBean implements Serializable {
+public class LResultNewOrderBean extends BaseBean {
     public List<OrderOrderMenuBean> order_list = new ArrayList<>();
     public List<OrderPickupTimeBean> pickup_list = new ArrayList<>();
     public OrderPlace place = new OrderPlace();

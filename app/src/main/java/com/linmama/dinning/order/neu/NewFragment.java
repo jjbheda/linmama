@@ -1,34 +1,28 @@
 package com.linmama.dinning.order.neu;
 
-import android.app.ProgressDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.linmama.dinning.LmamaApplication;
+import com.linmama.dinning.R;
+import com.linmama.dinning.adapter.NewOrderAdapter;
 import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.DataSynEvent;
 import com.linmama.dinning.bean.LResultNewOrderBean;
-import com.linmama.dinning.bean.OrderGoodBean;
-import com.linmama.dinning.bean.OrderOrderMenuBean;
-import com.linmama.dinning.bean.OrderPickupTimeBean;
+import com.linmama.dinning.bean.ResultsBean;
 import com.linmama.dinning.except.ApiException;
-import com.linmama.dinning.home.MainActivity;
+import com.linmama.dinning.order.order.OrderFragment;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
-import com.linmama.dinning.utils.ViewUtils;
-import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
-import com.linmama.dinning.widget.GetMoreListView;
-import com.linmama.dinning.R;
-import com.linmama.dinning.adapter.NewOrderAdapter;
-import com.linmama.dinning.bean.ResultsBean;
-import com.linmama.dinning.bluetooth.PrintDataService;
-import com.linmama.dinning.order.order.OrderFragment;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.SpUtils;
+import com.linmama.dinning.utils.ViewUtils;
+import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
+import com.linmama.dinning.widget.GetMoreListView;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.header.WindmillHeader;
 
@@ -156,30 +150,31 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
             mResults.clear();
         }
-        mLvNewOrder.setNoMore();
+//        mLvNewOrder.setNoMore();
         mResults.addAll(bean);
         LogUtils.d("Results", bean.size() + "");
 
-        mAdapter = new NewOrderAdapter(mActivity, mResults);
-        mLvNewOrder.setAdapter(mAdapter);
-        mAdapter.setCommitOrder(this);
-        mAdapter.setCancelOrder(this);
+//        mAdapter = new NewOrderAdapter(mActivity, mResults);
+//        mLvNewOrder.setAdapter(mAdapter);
+//        mAdapter.setCommitOrder(this);
+//        mAdapter.setCancelOrder(this);
 
-        boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);
-        if (isAutoReceiveOrder && mId != 0) {
-            if (mResults.size() > 0 && mAdapter != null) {
+//        boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);
+//        if (isAutoReceiveOrder && mId != 0) {
+            if (mResults.size() > 0) {
                 for (LResultNewOrderBean model : mResults) {
-                    if (model.id == mId) {
+//                    if (model.id == mId) {
                         autoCompleteOrder(model.id);
                         boolean isAutoPrint = (boolean) SpUtils.get(Constants.AUTO_PRINT, false);
                         if (isAutoPrint) {               //自动打印
                             printOrderWithCheck(model);
+                            Log.e(TAG,model.order_no+"");
                         }
-                        break;
-                    }
+//                        break;
+//                    }
                 }
                 EventBus.getDefault().post(new DataSynEvent(true));     //通知预约单、当日单刷新
-            }
+//            }
         }
     }
 
@@ -305,16 +300,20 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                     @Override
                     public void onNext(String msg) {
                         Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-                        for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
-                            LResultNewOrderBean rb = (LResultNewOrderBean) mAdapter.getItem(i);
+                        for (int i = 0, size = mResults.size(); i < size; i++) {
+                            LResultNewOrderBean rb =  mResults.get(i);
                             if (rb != null && rb.id == id) {
-                                mAdapter.removeItem(i);
-                                mAdapter.notifyDataSetChanged();
+                                if (mAdapter !=null) {
+                                    mAdapter.removeItem(i);
+                                    mAdapter.notifyDataSetChanged();
+                                }
+
                                 Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
                                 EventBus.getDefault().post(new DataSynEvent(true));     //通知当日单，预约单刷新数据
                                 Log.d(TAG, "今日订单,订单序号" + id + "确认成功!");
-                                boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);        //再判断一次
-                                if (isAutoReceiveOrder && mCompleteOrderCallback != null) {       //自动接单情况下，自动确认该订单成功后，自动跳转
+//                                boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);        //再判断一次
+//                                if (isAutoReceiveOrder && mCompleteOrderCallback != null) {       //自动接单情况下，自动确认该订单成功后，自动跳转上方menu
+                                  if (mCompleteOrderCallback != null) {       //自动接单情况下，自动确认该订单成功后，自动跳转上方menu
                                     mCompleteOrderCallback.success(rb.order_type); //1预约单 0当日单
                                     mId = 0;
                                 }
@@ -327,7 +326,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                     @Override
                     public void onError(ApiException e) {
                         super.onError(e);
-                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_LONG).show();
                         if (null != mPresenter) {
                             currentPage = 1;
                             mPresenter.getNewOrder(1);
