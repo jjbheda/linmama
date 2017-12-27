@@ -77,14 +77,14 @@ public class WarnAlarmReceiver extends BroadcastReceiver {
             if (isVoiceWarn){
                 playMp3(context,type);
             }
-            boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);
-            if (isAutoReceiveOrder) {
+//            boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);
+//            if (isAutoReceiveOrder) {
                 Intent i = new Intent(context, MainActivity.class);
                 i.putExtras(bundle);
                 //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
                 context.startActivity(i);
-            }
+//            }
 //            processCustomMessage(context, bundle);
 //            NotificationUtils.showNotification(context, "测试", 1);
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {

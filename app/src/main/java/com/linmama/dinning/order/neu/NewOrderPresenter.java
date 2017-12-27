@@ -2,6 +2,7 @@ package com.linmama.dinning.order.neu;
 
 import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.bean.LResultNewOrderBean;
+import com.linmama.dinning.bean.NewOrderMenuBean;
 import com.linmama.dinning.mvp.IModel;
 import com.linmama.dinning.order.model.NewOrderModel;
 import com.linmama.dinning.utils.LogUtils;
@@ -19,7 +20,7 @@ public class NewOrderPresenter extends BasePresenter<NewFragment> implements
         ((NewOrderModel) getiModelMap().get("NewOrderList")).getNewOrder(page, new NewOrderModel.NewOrderHint() {
 
             @Override
-            public void successNewOrder(List<LResultNewOrderBean> bean) {
+            public void successNewOrder(NewOrderMenuBean bean) {
                 if (null == getIView())
                     return;
                 getIView().getNewOrderSuccess(bean);

@@ -122,6 +122,7 @@
 
             <com.linmama.dinning.widget.SettingItem
                 android:id="@+id/siAutoReceiveOrder"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="1dp"

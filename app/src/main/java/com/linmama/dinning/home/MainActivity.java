@@ -159,14 +159,11 @@ public class MainActivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             public void run() {
                 Log.d(TAG, "请求打印机接口");
-                String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
                 if (FeiEPrinterUtils.queryPrinterStatus()) {
                     ViewUtils.showToast(MainActivity.this, "票据打印机连接成功");
                     Log.d(TAG, "票据打印机连接成功");
-//                    Toast.makeText(MainActivity.this, "票据打印机连接成功", Toast.LENGTH_SHORT).show();
                 } else {
                     ViewUtils.showToast(MainActivity.this, "票据打印机连接失败");
-//                    Toast.makeText(MainActivity.this, "票据打印机连接失败", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "票据打印机连接失败");
                 }
             }
@@ -295,10 +292,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        if (PrintDataService.getInstance().isConnection()) {
-//            PrintDataService.getInstance().disconnect();
-//        }
-//        handler.removeCallbacksAndMessages(null);
     }
 
     @Override

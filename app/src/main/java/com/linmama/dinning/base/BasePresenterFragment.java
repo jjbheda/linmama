@@ -3,8 +3,11 @@ package com.linmama.dinning.base;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,8 +82,21 @@ public abstract class BasePresenterFragment<P extends BasePresenter> extends Fra
 
     protected void dismissDialog() {
         if (null != mLoadingDialog && mLoadingDialog.isShowing()) {
-            mLoadingDialog.dismiss();
+            //get the Context object that was used to great the dialog
+            Context context = ((ContextWrapper)mLoadingDialog.getContext()).getBaseContext();
+            //if the Context used here was an activity AND it hasn't been finished or destroyed
+            //then dismiss it
+            if(context instanceof Activity) {
+                if(!((Activity)context).isFinishing() && !((Activity)context).isDestroyed())
+                    mLoadingDialog.dismiss();
+            } else //if the Context used wasnt an Activity, then dismiss it too
+                mLoadingDialog.dismiss();
         }
+        mLoadingDialog = null;
+    }
+
+    protected boolean isDialogShowing () {
+        return  mLoadingDialog != null &&mLoadingDialog.isShowing();
     }
 
 }

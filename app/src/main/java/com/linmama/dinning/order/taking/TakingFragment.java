@@ -63,7 +63,6 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     private List<TakingOrderBean> mResults = new ArrayList<>();
     private int currentPage = 1;
     private int last_page = 1;
-    private static final int REQUEST_TAKE_ORDER_DETAIL = 0x20;
     private TakingOrderPresenter presenter;
 
     @Override

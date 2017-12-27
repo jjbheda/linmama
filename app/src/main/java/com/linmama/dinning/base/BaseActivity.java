@@ -43,4 +43,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        if (null != mLoadingDialog && mLoadingDialog.isShowing()) {
+            mLoadingDialog.dismiss();
+        }
+    }
 }

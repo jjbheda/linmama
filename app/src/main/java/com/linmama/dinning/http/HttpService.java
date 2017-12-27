@@ -5,6 +5,7 @@ import com.linmama.dinning.bean.AppVersionBean;
 import com.linmama.dinning.bean.DataBean;
 import com.linmama.dinning.bean.LResultNewOrderBean;
 import com.linmama.dinning.bean.LoginBean;
+import com.linmama.dinning.bean.NewOrderMenuBean;
 import com.linmama.dinning.bean.OrderDetailBean;
 import com.linmama.dinning.bean.ShopBaseInfoBean;
 import com.linmama.dinning.bean.ShopSearchBean;
@@ -42,7 +43,7 @@ public interface HttpService {
 
     //2	新订单列表接口
     @POST("newOrderList/")
-    Observable<BaseHttpResult<List<LResultNewOrderBean>>> getNewOrder(@Query("page") int page);
+    Observable<BaseHttpResult<NewOrderMenuBean>> getNewOrder(@Query("page") int page);
 
     //3	预约单列表接口     order_type：1预约单 0 当日单  range 0今天 1 明天 2全部
     @FormUrlEncoded

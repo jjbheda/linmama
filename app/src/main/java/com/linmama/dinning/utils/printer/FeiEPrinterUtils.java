@@ -312,7 +312,7 @@ public class FeiEPrinterUtils {
             builder.append("<L><BOLD>   备注：" + bean.remark+"</L></BOLD><BR>");
         }
         builder.append ("  ***************************"+"<BR>");
-        builder.append("   "+bean.pickup.pickup_date + " " + bean.pickup.pickup_start_time + "-" + bean.pickup.pickup_end_time+"<BR>");
+        builder.append("   <L>"+bean.pickup.pickup_date + " " + bean.pickup.pickup_start_time + "-" + bean.pickup.pickup_end_time+"</L><BR>");
         for (OrderGoodBean bean1 : bean.goods_list) {
             builder.append("   <L>" + getShopName(bean1.name)+"</L>");
             builder.append("<L>    " + bean1.amount+"</L>");
@@ -335,7 +335,23 @@ public class FeiEPrinterUtils {
        return builder.toString();
     }
 
-    private static String getNewOrderPrintData(LResultNewOrderBean bean) {
+    /**
+     *
+     * @param bean
+     * @param innerMenuBeanIndex   新订单拆分打印
+     * @return
+     */
+
+    //标签说明：
+    //单标签:
+    //"<BR>"为换行,"<CUT>"为切刀指令(主动切纸,仅限切刀打印机使用才有效果)
+    //"<LOGO>"为打印LOGO指令(前提是预先在机器内置LOGO图片),"<PLUGIN>"为钱箱或者外置音响指令
+    //成对标签：
+    //"<CB></CB>"为居中放大一倍,"<B></B>"为放大一倍,"<C></C>"为居中,<L></L>字体变高一倍
+    //<W></W>字体变宽一倍,"<QR></QR>"为二维码,"<BOLD></BOLD>"为字体加粗,"<RIGHT></RIGHT>"为右对齐
+    //拼凑订单内容时可参考如下格式
+    //根据打印纸张的宽度，自行调整内容的格式，可参考下面的样例格式
+    private static String getNewOrderPrintData(LResultNewOrderBean bean,int innerMenuBeanIndex) {
 
         final StringBuilder builder = new StringBuilder();
         if (bean == null)
@@ -359,21 +375,22 @@ public class FeiEPrinterUtils {
             builder.append("<L>   <BOLD>备注：" + bean.remark+"</L><BOLD><BR>");
         }
         builder.append ("  ***************************"+"<BR>");
-        for (int i = 0;i<bean.order_list.size();i++) {
-            OrderOrderMenuBean bean1 = bean.order_list.get(i);
-            if (bean.pickup_list.get(i)!=null) {
-                builder.append("  " + bean.pickup_list.get(i).pickup_date+" "+
-                        bean.pickup_list.get(i).pickup_start_time+ "-" + bean.pickup_list.get(i).pickup_end_time+"<BR>");
-            }
-            for (OrderGoodBean goodBean : bean1.goods_list) {
-                builder.append("   <L>" + getShopName(goodBean.name)+"</L>");
-                builder.append("<L>    " + goodBean.amount+"</L>");
-                builder.append("<L>    " + goodBean.total_price+"</L><BR>");
-            }
-        }
-        builder.append("  ---------------------------"+"<BR>");
-        builder.append("             消费金额："+" <L><BOLD>"+bean.pay_amount+""+"</L></BOLD><BR>");
 
+        OrderOrderMenuBean bean1 = bean.order_list.get(innerMenuBeanIndex);
+        if (bean.pickup_list.get(innerMenuBeanIndex)!=null) {
+            builder.append("  <L>" + bean.pickup_list.get(innerMenuBeanIndex).pickup_date+" "+
+                    bean.pickup_list.get(innerMenuBeanIndex).pickup_start_time+ "-" + bean.pickup_list.get(innerMenuBeanIndex).pickup_end_time+"</L><BR>");
+        }
+        double price = 0.00;
+        for (OrderGoodBean goodBean : bean1.goods_list) {
+            builder.append("   <L>" + getShopName(goodBean.name)+"</L>");
+            builder.append("<L>    " + goodBean.amount+"</L>");
+            builder.append("<L>    " + goodBean.total_price+"</L><BR>");
+            price = price + Double.parseDouble(goodBean.total_price);
+        }
+
+        builder.append("  ---------------------------"+"<BR>");
+        builder.append("             消费金额："+" <L><BOLD>"+ price + ""+"</L></BOLD><BR>");
 
 //        StringBuilder builder_account_num = new StringBuilder();
 //        builder_account_num.append(bean.pay_amount+""+"\n");
@@ -440,8 +457,10 @@ public class FeiEPrinterUtils {
         handler.postDelayed(new Runnable() {
             public void run() {
                 String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
-                String printData = getNewOrderPrintData(bean);
-                printOrder(printData,sn);
+                for (int i = 0;i<bean.order_list.size();i++) {
+                    String printData = getNewOrderPrintData(bean,i);
+                    printOrder(printData,sn);
+                }
                 context.dismissDialog();
             }
         },100);

@@ -46,8 +46,14 @@ public class ExceptionEngine implements ErrorType {
         } else if (e instanceof ServerException) {
             ServerException se = (ServerException) e;
             ex = new ApiException(e, se.code, se.message);
+        } else if (e instanceof NullPointerException) {
+//            ex = new ApiException(e, ErrorType.OTHER_ERROR, "Network Error");
+            throw new NullPointerException(e.getStackTrace().toString());
+        } else if (e instanceof ArrayIndexOutOfBoundsException) {
+//            ex = new ApiException(e, ErrorType.OTHER_ERROR, "Network Error");
+            throw new ArrayIndexOutOfBoundsException(e.getStackTrace().toString());
         } else if (e instanceof Exception) {
-            ex = new ApiException(e, ErrorType.OTHER_ERROR, "Network Error");
+            ex = new ApiException(e, ErrorType.OTHER_ERROR, "服务连接异常");
         } else {
             ex = new ApiException(e, ErrorType.OTHER_ERROR, getErrorMsg(ErrorType.OTHER_ERROR));
         }

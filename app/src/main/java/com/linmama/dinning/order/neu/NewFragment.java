@@ -1,5 +1,12 @@
 package com.linmama.dinning.order.neu;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +19,9 @@ import com.linmama.dinning.base.BaseModel;
 import com.linmama.dinning.base.BasePresenterFragment;
 import com.linmama.dinning.bean.DataSynEvent;
 import com.linmama.dinning.bean.LResultNewOrderBean;
+import com.linmama.dinning.bean.NewOrderMenuBean;
 import com.linmama.dinning.bean.ResultsBean;
+import com.linmama.dinning.bluetooth.CheckPrinterActivity;
 import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.order.order.OrderFragment;
 import com.linmama.dinning.subscriber.CommonSubscriber;
@@ -32,6 +41,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
@@ -45,6 +56,9 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implements
         NewOrderContract.NewOrderView, MyAlertDialog.ICallBack, NewOrderAdapter.ICommitOrder, NewOrderAdapter.ICancelOrder,GetMoreListView.OnGetMoreListener {
     private static String TAG = "NewFragment";
+    private long period = 5000*60L;
+    private Timer timer = new Timer();
+
     @BindView(R.id.lvNewOrder)
     GetMoreListView mLvNewOrder;
     @BindView(R.id.ptr_new)
@@ -54,9 +68,8 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
     private MyAlertDialog mAlert;
     private int selectPosition = -1;
-    private ResultsBean mPrintingBean = null;
-    private boolean isPrinted = false;
     private int currentPage = 1;
+    private int last_page = 1;
 
     @Override
     protected NewOrderPresenter loadPresenter() {
@@ -74,6 +87,10 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         mPtrNew.setHeaderView(header);
         mPtrNew.addPtrUIHandler(header);
         EventBus.getDefault().register(this);//订阅
+
+
+        RefreshTask localMyTask = new RefreshTask();
+        this.timer.schedule(localMyTask, 100, period);
     }
 
     @Override
@@ -88,6 +105,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                 }
             }
         });
+
     }
 
     private int mId;    //推送订单的ID值
@@ -142,7 +160,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
     }
 
     @Override
-    public void getNewOrderSuccess(List<LResultNewOrderBean> bean) {
+    public void getNewOrderSuccess(NewOrderMenuBean bean) {
         dismissDialog();
         if (currentPage == 1 && mPtrNew.isRefreshing()) {
             mPtrNew.refreshComplete();
@@ -151,8 +169,9 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
             mResults.clear();
         }
 //        mLvNewOrder.setNoMore();
-        mResults.addAll(bean);
-        LogUtils.d("Results", bean.size() + "");
+        last_page = bean.last_page;
+        mResults.addAll(bean.data);
+        LogUtils.d("Results", bean.data.size() + "");
 
 //        mAdapter = new NewOrderAdapter(mActivity, mResults);
 //        mLvNewOrder.setAdapter(mAdapter);
@@ -161,25 +180,49 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
 //        boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);
 //        if (isAutoReceiveOrder && mId != 0) {
-            if (mResults.size() > 0) {
-                for (LResultNewOrderBean model : mResults) {
-//                    if (model.id == mId) {
-                        autoCompleteOrder(model.id);
-                        boolean isAutoPrint = (boolean) SpUtils.get(Constants.AUTO_PRINT, false);
-                        if (isAutoPrint) {               //自动打印
-                            printOrderWithCheck(model);
-                            Log.e(TAG,model.order_no+"");
-                        }
-//                        break;
-//                    }
-                }
-                EventBus.getDefault().post(new DataSynEvent(true));     //通知预约单、当日单刷新
-//            }
-        }
+        updateNextPage();
     }
 
     @Override
     public void onGetMore() {
+    }
+
+    public void updateNextPage() {
+
+        if (currentPage >= last_page) {
+            commitAndPrint();
+            return;
+        }
+        if (last_page == 0) {
+            return;
+        }
+        showDialog("加载中...");
+        currentPage++;
+        mPresenter.getNewOrder(currentPage);
+    }
+
+    private void commitAndPrint() {
+        if (mResults.size() > 0) {
+            HandlerThread thread = new HandlerThread("NetWork");
+            thread.start();
+            Handler handler = new Handler(thread.getLooper());
+            handler.postDelayed(new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+                @Override
+                public void run() {
+                    for (LResultNewOrderBean model : mResults) {
+                        autoCompleteOrder(model.id,model.order_type);
+                        boolean isAutoPrint = (boolean) SpUtils.get(Constants.AUTO_PRINT, false);
+                        if (isAutoPrint) {               //自动打印
+                            printOrderWithFeiE(model);
+                            Log.e(TAG,model.order_no+"");
+                        }
+                    }
+                    EventBus.getDefault().post(new DataSynEvent(true));     //通知预约单、当日单刷新
+                }
+            },100);
+
+        }
     }
 
     @Override
@@ -204,13 +247,14 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                     public void onClick(View v) {
                         BaseModel.httpService.commitOrder(bean.id + "").compose(new CommonTransformer())
                                 .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
                                     @Override
                                     public void onNext(String msg) {
                                         Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
                                         for (int i = 0, size = mAdapter.getCount(); i < size; i++) {
                                             LResultNewOrderBean rb = (LResultNewOrderBean) mAdapter.getItem(i);
                                             if (rb != null && rb.id == bean.id) {
-                                                printOrderWithCheck(rb);
+                                                printOrderWithFeiE(rb);
                                                 mAdapter.removeItem(i);
                                                 mAdapter.notifyDataSetChanged();
                                                 EventBus.getDefault().post(new DataSynEvent(true));
@@ -286,6 +330,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void onDataSynEvent(DataSynEvent event) {
+
     }
 
     /**
@@ -294,32 +339,16 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
      * @param id
      */
 
-    public void autoCompleteOrder(final int id) {
+    public void autoCompleteOrder(final int id,final String order_type) {
         BaseModel.httpService.commitOrder(id + "").compose(new CommonTransformer())
                 .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
                     @Override
                     public void onNext(String msg) {
-                        Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-                        for (int i = 0, size = mResults.size(); i < size; i++) {
-                            LResultNewOrderBean rb =  mResults.get(i);
-                            if (rb != null && rb.id == id) {
-                                if (mAdapter !=null) {
-                                    mAdapter.removeItem(i);
-                                    mAdapter.notifyDataSetChanged();
-                                }
-
-                                Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
-                                EventBus.getDefault().post(new DataSynEvent(true));     //通知当日单，预约单刷新数据
-                                Log.d(TAG, "今日订单,订单序号" + id + "确认成功!");
-//                                boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);        //再判断一次
-//                                if (isAutoReceiveOrder && mCompleteOrderCallback != null) {       //自动接单情况下，自动确认该订单成功后，自动跳转上方menu
-                                  if (mCompleteOrderCallback != null) {       //自动接单情况下，自动确认该订单成功后，自动跳转上方menu
-                                    mCompleteOrderCallback.success(rb.order_type); //1预约单 0当日单
-                                    mId = 0;
-                                }
-
-                                break;
-                            }
+                        ViewUtils.showToast(mActivity, msg);
+                            EventBus.getDefault().post(new DataSynEvent(true));     //通知当日单，预约单刷新数据
+                            Log.d(TAG, "今日订单,订单序号" + id + "确认成功!");
+                            if (mCompleteOrderCallback != null) {       //自动接单情况下，自动确认该订单成功后，自动跳转上方menu
+                            mCompleteOrderCallback.success(order_type); //1预约单 0当日单
                         }
                     }
 
@@ -335,23 +364,51 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                 });
     }
 
-
-    private void printOrderWithCheck(final LResultNewOrderBean bean){
-
-        printOrder2(bean);
-
+    private void printOrderWithFeiE(final LResultNewOrderBean bean){
+        FeiEPrinterUtils.FeiprintNewOrderWithLoading(mActivity,bean);
         dismissDialog();
     }
 
-
-    private void printOrder2(LResultNewOrderBean bean){
-        FeiEPrinterUtils.FeiprintNewOrderWithLoading(mActivity,bean);
-    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         currentPage = 1;
         mAdapter = null;
         EventBus.getDefault().unregister(this);//解除订阅
+    }
+
+
+    //handler 处理返回的请求结果
+    Handler updateHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            boolean refesh_now = data.getBoolean("Refesh",false);
+            if (refesh_now) {
+                if (null != mPresenter) {
+                    currentPage = 1;
+                    mPresenter.getNewOrder(1);
+                }
+            }
+
+        }
+    };
+    class RefreshTask extends TimerTask {
+        RefreshTask() {
+        }
+
+        @Override
+        public void run() {
+            Message msg = new Message();
+            Bundle data = new Bundle();
+            data.putBoolean("Refesh",true);
+            msg.setData(data);
+
+            if (mResults.size() == 0 && !isDialogShowing()) {
+                updateHandler.sendMessage(msg);
+            }
+
+        }
     }
 }

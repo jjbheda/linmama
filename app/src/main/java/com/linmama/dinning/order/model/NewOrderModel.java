@@ -3,6 +3,7 @@ package com.linmama.dinning.order.model;
 import android.support.annotation.NonNull;
 
 import com.linmama.dinning.bean.LResultNewOrderBean;
+import com.linmama.dinning.bean.NewOrderMenuBean;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
 import com.linmama.dinning.LmamaApplication;
@@ -18,10 +19,10 @@ public class NewOrderModel extends BaseModel {
         if (hint == null)
             throw new RuntimeException("NewOrderHint cannot be null.");
         httpService.getNewOrder(page)
-                .compose(new CommonTransformer<List<LResultNewOrderBean>>())
-                .subscribe(new CommonSubscriber<List<LResultNewOrderBean>>(LmamaApplication.getInstance()) {
+                .compose(new CommonTransformer<NewOrderMenuBean>())
+                .subscribe(new CommonSubscriber<NewOrderMenuBean>(LmamaApplication.getInstance()) {
                     @Override
-                    public void onNext(List<LResultNewOrderBean> bean) {
+                    public void onNext(NewOrderMenuBean bean) {
                         hint.successNewOrder(bean);
                     }
 
@@ -35,7 +36,7 @@ public class NewOrderModel extends BaseModel {
     }
 
     public interface NewOrderHint {
-        void successNewOrder(List<LResultNewOrderBean> bean);
+        void successNewOrder(NewOrderMenuBean bean);
 
         void failNewOrder(String failMsg);
     }

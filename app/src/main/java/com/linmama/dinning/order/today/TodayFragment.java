@@ -58,12 +58,11 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
 
     private TakingOrderAdapter mAdapter;
     private MyAlertDialog mAlert;
-    private int selectPosition = -1;
-    private ResultsBean mPrintingBean = null;
     private List<TakingOrderBean> mResults;
     private int currentPage = 1;
     private int last_page = 1;
     private static final int REQUEST_TAKE_ORDER_DETAIL = 0x20;
+    private boolean isPullRefresh = false;
 
     @Override
     protected TodayOrderPresenter loadPresenter() {
@@ -91,8 +90,19 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
             @Override
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
                 if (null != mPresenter) {
+                    mResults.clear();
+                    if (mLvTakingOrder!=null) {
+                        mLvTakingOrder.setNoMore();
+                    }
                     currentPage = 1;
-                    mPresenter.getTodayOrder(currentPage);
+                    isPullRefresh = true;
+                    if(mAdapter != null){
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    if (null != mPresenter) {
+                        mPresenter.getTodayOrder(currentPage);
+                    }
+
                 }
             }
         });
@@ -130,13 +140,19 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
     @Override
     public void getTodayOrderSuccess(TakingOrderMenuBean resultBean) {
         dismissDialog();
+
+        if (mAdapter == null || currentPage == 1 || isPullRefresh) {
+            mAdapter = new TakingOrderAdapter(mActivity, 0, mResults);
+            mLvTakingOrder.setAdapter(mAdapter);
+        }
+
         if (currentPage == 1 && mPtrTaking.isRefreshing()) {
             mPtrTaking.refreshComplete();
         }
         if (currentPage == 1 && !ViewUtils.isListEmpty(mResults)) {
             mResults.clear();
         }
-        mAdapter = new TakingOrderAdapter(mActivity, 0, mResults);
+        last_page = resultBean.last_page;
         if (currentPage == 1 && resultBean.data.size() == 0) {
             if (mPtrTaking.getHeader() != null)
                 mPtrTaking.getHeader().setVisibility(View.GONE);
@@ -145,7 +161,8 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
             }
             return;
         }
-        last_page = resultBean.last_page;
+        isPullRefresh = false;
+
         if (null != resultBean.data && resultBean.data.size() > 0) {
             LogUtils.d("getTakingOrderSuccess", resultBean.data.toString());
             mResults.addAll(resultBean.data);
@@ -154,15 +171,17 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
             mAdapter.setCommitOrder(this);
             mAdapter.setCancelOrder(this);
             mAdapter.setPrintOrder(this);
-            mLvTakingOrder.setAdapter(mAdapter);
 
-            mAdapter.notifyDataSetChanged();
             if (currentPage > 1) {
                 mLvTakingOrder.getMoreComplete();
             }
+
             if (currentPage == last_page) {
                 mLvTakingOrder.setNoMore();
+            } else {
+                mLvTakingOrder.setHasMore();
             }
+            mAdapter.notifyDataSetChanged();
 
         }
 
