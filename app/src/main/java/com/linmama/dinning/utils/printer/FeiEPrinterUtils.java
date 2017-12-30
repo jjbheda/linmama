@@ -386,7 +386,9 @@ public class FeiEPrinterUtils {
             builder.append("   <L>" + getShopName(goodBean.name)+"</L>");
             builder.append("<L>    " + goodBean.amount+"</L>");
             builder.append("<L>    " + goodBean.total_price+"</L><BR>");
-            price = price + Double.parseDouble(goodBean.total_price);
+            if (Double.parseDouble(goodBean.total_price) != 0) {
+                price = price + Double.parseDouble(goodBean.total_price);
+            }
         }
 
         builder.append("  ---------------------------"+"<BR>");
