@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Handler;
@@ -392,7 +393,8 @@ public class FeiEPrinterUtils {
         }
 
         builder.append("  ---------------------------"+"<BR>");
-        builder.append("             消费金额："+" <L><BOLD>"+ price + ""+"</L></BOLD><BR>");
+        DecimalFormat df   = new DecimalFormat("######0.00");
+        builder.append("             消费金额："+" <L><BOLD>"+ df.format(price) + ""+"</L></BOLD><BR>");
 
 //        StringBuilder builder_account_num = new StringBuilder();
 //        builder_account_num.append(bean.pay_amount+""+"\n");

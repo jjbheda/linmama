@@ -154,6 +154,7 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     @OnClick(R.id.btnOpen)
     public void openStore(View view) {
         showDialog("加载中...");
+        Log.d("http","加载中  Setting openStore .....。。。。。。。。。。。。。。。。。。。。。。");
         if (isClosed) {
             mPresenter.modifyStoreStatus(0);
         } else {

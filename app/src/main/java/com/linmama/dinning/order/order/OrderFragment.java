@@ -129,53 +129,42 @@ public class OrderFragment extends BasePresenterFragment implements
         mAdapter.setFragments(mFragmentList);
         mViewPager.setAdapter(mAdapter);
 //        mViewPager.setOffscreenPageLimit(4);
-        Bundle args = getArguments();
-        if (args != null && args.getString("OrderType")!=null) {        //订单推送
-            String type = args.getString("OrderType", "0");    // 订单类型  0 当日单 1预约单
-            int id = args.getInt("ID", 0);    // 订单id
-            boolean isAutoReceiveOrder = (boolean) SpUtils.get(Constants.AUTO_RECEIVE_ORDER, false);
-            if (isAutoReceiveOrder) {
-//                if (type.equals("1")) {
-//                    mOrderGroup.check(R.id.takingOrder);
-//                    showTileTaking();
-//                    mViewPager.setCurrentItem(1);
-//                } else {
-//                    mOrderGroup.check(R.id.todayOrder);
-//                    hideTileTaking(true);
-//                    mViewPager.setCurrentItem(2);
-//                mOrderGroup.check(R.id.newOrder);
-//                hideTileTaking(false);
-//                mViewPager.setCurrentItem(0);
-//
-//                }
 
-//            } else {
-//                mOrderGroup.check(R.id.newOrder);
-//                hideTileTaking(false);
-//                mViewPager.setCurrentItem(0);
-//            }
-//        } else {
-                mNewFragment.setId(id);
-                mNewFragment.setOrderType(type);
-                mNewFragment.setCompleteOrderCallback(new CompleteOrderCallback() {
-                    @Override
-                    public void success(String orderType) {
-                        if (orderType.equals("1")) {
-                            mOrderGroup.check(R.id.takingOrder);
-                            showTileTaking();
-                            mViewPager.setCurrentItem(1);
-                        } else {
-                            mOrderGroup.check(R.id.todayOrder);
-                            hideTileTaking(true);
-                            mViewPager.setCurrentItem(2);
-                        }
-                    }
-                });
-            }
-        }
         mOrderGroup.check(R.id.newOrder);
         hideTileTaking(false);
         mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(0, true);
+    }
+
+    /**
+     * 新订单推送
+     */
+    public void setNewOrder(Bundle args){
+//        if (args != null && args.getString("OrderType")!=null) {        //订单推送
+//            String type = args.getString("OrderType", "0");    // 订单类型  0 当日单 1预约单
+//            int id = args.getInt("ID", 0);    // 订单id
+//            mNewFragment.setId(id);
+//            mNewFragment.setOrderType(type);
+//            mNewFragment.refresh();
+//            mNewFragment.setCompleteOrderCallback(new CompleteOrderCallback() {
+//                @Override
+//                public void success(String orderType) {
+//                    if (orderType.equals("1")) {
+//                        mOrderGroup.check(R.id.takingOrder);
+//                        showTileTaking();
+//                        mViewPager.setCurrentItem(1);
+//                    } else {
+//                        mOrderGroup.check(R.id.todayOrder);
+//                        hideTileTaking(true);
+//                        mViewPager.setCurrentItem(2);
+//                    }
+//                }
+//            });
+//        }
+//        mOrderGroup.check(R.id.newOrder);
+//        hideTileTaking(false);
+//        mViewPager.setCurrentItem(em(0);
+//        mViewPager.setCurrentIt0, true);
     }
 
     @Override
@@ -366,7 +355,7 @@ public class OrderFragment extends BasePresenterFragment implements
         public void onReceive(Context context, Intent intent) {
             if (NEWORDER_REFRESH_ACTION.equals(intent.getAction())) {
                 if (null != mNewFragment) {
-                    mNewFragment.refresh();
+//                    mNewFragment.refresh();
                 }
             }
         }

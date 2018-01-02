@@ -115,10 +115,11 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
     @Override
     protected void initData() {
         if (null != mPresenter) {
-            mPtrTaking.autoRefresh(true);
+//            mPtrTaking.autoRefresh(true);
             mPresenter.getTakingOrder(currentPage, 1, mRange);
         }
-        showDialog("加载中...");
+//        showDialog("加载中...");
+        Log.d("http","加载中  TakingFragment initData .....。。。。。。。。。。。。。。。。。。。。。。");
     }
 
     private int mRange;
@@ -129,7 +130,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 
     public void refresh() {
         if (null != mPresenter) {
-            mPtrTaking.autoRefresh(true);
+//            mPtrTaking.autoRefresh(true);
             currentPage = 1;
             mPresenter.getTakingOrder(currentPage, 1, mRange);
         }

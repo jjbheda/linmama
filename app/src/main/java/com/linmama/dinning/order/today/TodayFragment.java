@@ -111,7 +111,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
     @Override
     protected void initData() {
         if (null != mPresenter) {
-            mPtrTaking.autoRefresh(true);
+//            mPtrTaking.autoRefresh(true);
             currentPage = 1;
             mPresenter.getTodayOrder(currentPage);
         }
@@ -119,7 +119,7 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
 
     public void refresh() {
         if (null != mPresenter) {
-            mPtrTaking.autoRefresh(true);
+//            mPtrTaking.autoRefresh(true);
         }
     }
 
@@ -128,7 +128,13 @@ public class TodayFragment extends BasePresenterFragment<TodayOrderPresenter> im
         Log.e("TodayFragment", "event---->" + event.isShouldUpdateData());
 //        Toast.makeText(mActivity, "TodayFragment 数据刷新", Toast.LENGTH_SHORT).show();
         if (event.isShouldUpdateData()) {
-            refresh();
+//            refresh();
+
+            if (null != mPresenter) {
+//            mPtrTaking.autoRefresh(true);
+                currentPage = 1;
+                mPresenter.getTodayOrder(currentPage);
+            }
         }
     }
 

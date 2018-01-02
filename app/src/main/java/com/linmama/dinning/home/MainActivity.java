@@ -98,27 +98,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initView() {
         Log.d(TAG, "初始化MainActivity");
-        if (getIntent() != null && getIntent().getExtras() != null) {
-            Bundle bundle = getIntent().getExtras();
-            try {
-                JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-                Iterator<String> it = json.keys();
-                while (it.hasNext()) {
-                    String myKey = it.next().toString();
-                    if (myKey.equals("type")) {
-                        mOrdertype = json.optString(myKey);
-                    }
-                    if (myKey.equals("id")) {
-                        mId = json.optInt(myKey);
-                    }
-                }
-            } catch (JSONException e) {
-                Log.e(TAG, "Get message extra JSON error!");
-            }
-        }
-
         mManager = getSupportFragmentManager();
-
         if (null == mOrder) {
             mOrder = new OrderFragment();
         }
@@ -127,7 +107,7 @@ public class MainActivity extends BaseActivity {
             args.putString("OrderType", mOrdertype);
             args.putInt("ID", mId);
             Log.e(TAG,"接收到推送下来的ID值"+mId);
-            mOrder.setArguments(args);
+            mOrder.setNewOrder(args);
         }
         switchContent(mOrder);
 
@@ -182,6 +162,48 @@ public class MainActivity extends BaseActivity {
         transaction.commit();
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null && intent.getExtras() != null) {
+            Bundle bundle = intent.getExtras();
+            try {
+                JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+                Iterator<String> it = json.keys();
+                while (it.hasNext()) {
+                    String myKey = it.next().toString();
+                    if (myKey.equals("type")) {
+                        mOrdertype = json.optString(myKey);
+                    }
+                    if (myKey.equals("id")) {
+                        mId = json.optInt(myKey);
+                    }
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "Get message extra JSON error!");
+            }
+        }
+
+         mOrder = new OrderFragment();
+
+
+        if (!mOrdertype.equals("") && mId != 0) {   // 订单类型  0 当日单 1预约单
+            Bundle args = new Bundle();
+            args.putString("OrderType", mOrdertype);
+            args.putInt("ID", mId);
+            Log.e(TAG,"接收到推送下来的ID值"+mId);
+            mOrder.setNewOrder(args);
+        }
+        switchContent(mOrder);
+
+//        replaceContent(new OrderFragment());
+        resetSelected();
+        menu_order_btn.setTextColor(getResources().getColor(R.color.actionsheet_red));
+        imgimgPendingTreat.setImageResource(R.mipmap.pendingtreat_selected);
+
+    }
+
     private void switchContent(Fragment fragment) {
         FragmentTransaction transaction = mManager.beginTransaction();
         hideFragments(transaction);
@@ -189,7 +211,7 @@ public class MainActivity extends BaseActivity {
             String tag = fragment.getClass().getName();
             transaction.add(R.id.content, fragment, tag);
             transaction.commit();
-        } else {
+        } else if (!fragment.isVisible()){
             transaction.show(fragment).commit();
         }
     }

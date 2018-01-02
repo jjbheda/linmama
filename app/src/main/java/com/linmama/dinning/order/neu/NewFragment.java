@@ -56,7 +56,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implements
         NewOrderContract.NewOrderView, MyAlertDialog.ICallBack, NewOrderAdapter.ICommitOrder, NewOrderAdapter.ICancelOrder,GetMoreListView.OnGetMoreListener {
     private static String TAG = "NewFragment";
-    private long period = 5000*60L;
+    private long period = 1000*30;
     private Timer timer = new Timer();
 
     @BindView(R.id.lvNewOrder)
@@ -70,6 +70,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
     private int selectPosition = -1;
     private int currentPage = 1;
     private int last_page = 1;
+    private boolean isLoading = false;
 
     @Override
     protected NewOrderPresenter loadPresenter() {
@@ -87,8 +88,6 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         mPtrNew.setHeaderView(header);
         mPtrNew.addPtrUIHandler(header);
         EventBus.getDefault().register(this);//订阅
-
-
         RefreshTask localMyTask = new RefreshTask();
         this.timer.schedule(localMyTask, 100, period);
     }
@@ -99,9 +98,10 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
         mPtrNew.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
-                if (null != mPresenter) {
+                if (null != mPresenter && !isLoading) {
                     currentPage = 1;
                     mPresenter.getNewOrder(1);
+                    isLoading = true;
                 }
             }
         });
@@ -128,15 +128,23 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
     @Override
     protected void initData() {
-        if (null != mPresenter) {
-            mPtrNew.autoRefresh(true);
-        }
-        showDialog("加载中...");
+//        if (null != mPresenter) {
+//            mPtrNew.autoRefresh(true);
+//        }
+            showDialog("加载中...");
+            Log.d("http","加载中  initData  ..........。。。。。。。。。。。。。。。。。。。。。。");
+            currentPage = 1;
+            mPresenter.getNewOrder(1);
+            isLoading = true;
     }
 
     public void refresh() {
-        if (null != mPresenter) {
-            mPtrNew.autoRefresh(true);
+        if (isVisible() && null != mPresenter && !isLoading) {
+            showDialog("加载中...");
+            Log.d("http","加载中  newFragment refresh ..........。。。。。。。。。。。。。。。。。。。。。。");
+            currentPage = 1;
+            mPresenter.getNewOrder(1);
+            isLoading = true;
         }
     }
 
@@ -155,7 +163,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
             rb = mResults.get(selectPosition);
         }
         if (null != rb && null != mPresenter) {
-            showDialog("加载中...");
+//            showDialog("加载中...");
         }
     }
 
@@ -191,12 +199,14 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
         if (currentPage >= last_page) {
             commitAndPrint();
+            isLoading = false;
             return;
         }
         if (last_page == 0) {
             return;
         }
         showDialog("加载中...");
+        Log.d("http","加载中  newFragment updateNextPage ..........。。。。。。。。。。。。。。。。。。。。。。");
         currentPage++;
         mPresenter.getNewOrder(currentPage);
     }
@@ -228,6 +238,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
     @Override
     public void getNewOrderFail(String failMsg) {
         dismissDialog();
+        isLoading = false;
         if (!TextUtils.isEmpty(failMsg)) {
             ViewUtils.showSnack(mPtrNew, failMsg);
         }
@@ -345,6 +356,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                     @Override
                     public void onNext(String msg) {
                         ViewUtils.showToast(mActivity, msg);
+                        dismissDialog();
                             EventBus.getDefault().post(new DataSynEvent(true));     //通知当日单，预约单刷新数据
                             Log.d(TAG, "今日订单,订单序号" + id + "确认成功!");
                             if (mCompleteOrderCallback != null) {       //自动接单情况下，自动确认该订单成功后，自动跳转上方menu
@@ -354,6 +366,7 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
 
                     @Override
                     public void onError(ApiException e) {
+                        dismissDialog();
                         super.onError(e);
                         Toast.makeText(mActivity, e.getMessage(), Toast.LENGTH_LONG).show();
                         if (null != mPresenter) {
@@ -385,8 +398,9 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
             super.handleMessage(msg);
             Bundle data = msg.getData();
             boolean refesh_now = data.getBoolean("Refesh",false);
-            if (refesh_now) {
+            if (refesh_now && !isLoading) {
                 if (null != mPresenter) {
+                    isLoading = true;
                     currentPage = 1;
                     mPresenter.getNewOrder(1);
                 }
@@ -404,7 +418,6 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
             Bundle data = new Bundle();
             data.putBoolean("Refesh",true);
             msg.setData(data);
-
             if (mResults.size() == 0 && !isDialogShowing()) {
                 updateHandler.sendMessage(msg);
             }
