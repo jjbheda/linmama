@@ -139,8 +139,10 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
     }
 
     public void refresh() {
-        if (isVisible() && null != mPresenter && !isLoading) {
-            showDialog("加载中...");
+        if (null != mPresenter && !isLoading) {
+            if (isVisible()) {
+                showDialog("加载中...");
+            }
             Log.d("http","加载中  newFragment refresh ..........。。。。。。。。。。。。。。。。。。。。。。");
             currentPage = 1;
             mPresenter.getNewOrder(1);

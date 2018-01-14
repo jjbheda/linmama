@@ -184,9 +184,9 @@ public class MainActivity extends BaseActivity {
                 Log.e(TAG, "Get message extra JSON error!");
             }
         }
-
-         mOrder = new OrderFragment();
-
+        if (mOrder == null) {
+            mOrder = new OrderFragment();
+        }
 
         if (!mOrdertype.equals("") && mId != 0) {   // 订单类型  0 当日单 1预约单
             Bundle args = new Bundle();
