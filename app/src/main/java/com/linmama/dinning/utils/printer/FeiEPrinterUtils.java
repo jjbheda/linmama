@@ -316,8 +316,8 @@ public class FeiEPrinterUtils {
         builder.append("   <L>"+bean.pickup.pickup_date + " " + bean.pickup.pickup_start_time + "-" + bean.pickup.pickup_end_time+"</L><BR>");
         for (OrderGoodBean bean1 : bean.goods_list) {
             builder.append("   <L>" + getShopName(bean1.name)+"</L>");
-            builder.append("<L>    " + bean1.amount+"</L>");
-            builder.append("<L>    " + bean1.total_price+"</L><BR>");
+            builder.append("<L>   " + getCount(bean1.amount)+"</L>");
+            builder.append("<L>   " + bean1.total_price+"</L><BR>");
         }
 
         builder.append("  ---------------------------"+"<BR>");
@@ -329,7 +329,7 @@ public class FeiEPrinterUtils {
         builder.append("  ***************************"+"<BR>");
         builder.append("  <B>" + bean.place.place_name+"</B>");
         builder.append("<BR>");
-        builder.append("  <B>" + bean.place.place_address+"</B><BR>");
+//        builder.append("  <B>" + bean.place.place_address+"</B><BR>");
         builder.append("  <B>" + (bean.user.user_tel)+"</B><BR>");
         builder.append("  <B>" + bean.user.user_name+"</B><BR>");
         builder.append("  ---------------------------");
@@ -385,8 +385,8 @@ public class FeiEPrinterUtils {
         double price = 0.00;
         for (OrderGoodBean goodBean : bean1.goods_list) {
             builder.append("   <L>" + getShopName(goodBean.name)+"</L>");
-            builder.append("<L>    " + goodBean.amount+"</L>");
-            builder.append("<L>    " + goodBean.total_price+"</L><BR>");
+            builder.append("<L>   " + getCount(goodBean.amount)+"</L>");
+            builder.append("<L>   " + goodBean.total_price+"</L><BR>");
             if (Double.parseDouble(goodBean.total_price) != 0) {
                 price = price + Double.parseDouble(goodBean.total_price);
             }
@@ -403,7 +403,7 @@ public class FeiEPrinterUtils {
 
         builder.append("  <B>" + bean.place.place_name+"</B>");
         builder.append("<BR>");
-        builder.append("  <B>" + bean.place.place_address+"</B><BR>");
+//        builder.append("  <B>" + bean.place.place_address+"</B><BR>");
         builder.append("  <B>" + (bean.user.user_tel)+"</B><BR>");
         builder.append("  <B>" + bean.user.user_name+"</B><BR>");
         builder.append("  ---------------------------");
@@ -417,6 +417,14 @@ public class FeiEPrinterUtils {
         return s;
     }
 
+    private  static String getCount (int count){
+        String result= count + "";
+        if (result.length()  == 1) {
+            result = result+ " ";
+        }
+        return result;
+    }
+
     private static String getShopName (String name){
         Integer name_len  = 0;								//字符串长度，给初始值0
         char[] char_name = name.toCharArray();				//将字符串转为char[]数组
@@ -427,13 +435,27 @@ public class FeiEPrinterUtils {
                 name_len ++;								//英文字节长度为1
             }
         }
-        Integer add_len = 10 - name_len;						//10是预计字符占用的最大长度，即最多十个汉字或10个英文字符，add_len是需要补充的长度
+
+        int add_len = 0;
+
+        if (name_len >  36) {
+            add_len = 11 - (name_len - 36);
+
+        } else if (name_len >= 18) {
+            add_len = 11 - (name_len - 18);
+        } else {
+            add_len = 11 - name_len;						//11是预计字符占用的最大长度，即最多十个汉字或12个英文字符，add_len是需要补充的长度
+
+        }
         for(int i = 0; i < add_len; i++) {
             name+= " ";									//循环得到的需要补充长度的空格，加在字符后边
         }
-
        return name;
     }
+
+
+
+
 
     public static void FeiprintOrderWithLoading(final BaseActivity context, final TakingOrderBean bean) {
         HandlerThread thread = new HandlerThread("NetWork");
@@ -554,10 +576,6 @@ public class FeiEPrinterUtils {
         }
         return false;
     }
-
-
-
-
 
 
 }

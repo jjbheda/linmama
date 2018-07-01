@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '26.0.2'
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.linmama.dinning"
@@ -55,14 +55,11 @@ dependencies {
     compile project(':libWheel')
     compile 'cn.jiguang.sdk:jpush:3.0.3'
     compile 'cn.jiguang.sdk:jcore:1.1.1'
-    compile files('libs/TencentMapSDK_Raster_v_1.2.8_e45bcd0.jar')
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile files('libs/xprinterconnectandsendsdk.jar')
     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
     //其中latest.release指代最新版本号，也可以指定明确的版
     compile files('libs/posprinterconnectandsendsdk.jar')
     compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
-    compile files('libs/json-lib-2.4-jdk15.jar')
 }

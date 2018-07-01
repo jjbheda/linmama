@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="D:\file\xiaobudian\linmama\linmanma_code\linmanma\libWheel\src\main\shaders"/></dataSet><dataSet config="release"><source path="D:\file\xiaobudian\linmama\linmanma_code\linmanma\libWheel\src\release\shaders"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/Users/jiangjingbo/github_gavin/linmama/libWheel/src/main/shaders"/></dataSet><dataSet config="release"><source path="/Users/jiangjingbo/github_gavin/linmama/libWheel/src/release/shaders"/></dataSet></merger>
