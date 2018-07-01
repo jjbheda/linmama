@@ -151,12 +151,12 @@ public class SearchCategoryActivity extends BasePresenterActivity<SearchCategory
     }
 
     @Override
-    public void offItemSuccess(int id,String msg) {
+    public void offItemSuccess(String id,String msg) {
         ViewUtils.showSnack(content, "下架成功");
         isOff = true;
         for (int i = 0; i < mAdapter.getCount(); i++) {
             ShopSearchBean item = (ShopSearchBean)mAdapter.getItem(i);
-            if (id == item.id) {
+            if (id .equals(item.id)) {
                 mAdapter.updateItem(i);
                 return;
             }
@@ -172,12 +172,12 @@ public class SearchCategoryActivity extends BasePresenterActivity<SearchCategory
     }
 
     @Override
-    public void onItemSuccess(int id,String msg) {
+    public void onItemSuccess(String id,String msg) {
         isOn = true;
         ViewUtils.showSnack(content, "上架成功");
         for (int i = 0; i < mAdapter.getCount(); i++) {
             ShopSearchBean item = (ShopSearchBean)mAdapter.getItem(i);
-            if (id == item.id) {
+            if (id .equals(item.id) ) {
                 mAdapter.updateItem(i);
                 return;
             }

@@ -185,7 +185,7 @@ public class OnSaleFragment extends BasePresenterFragment<MenuCategoryPresenter>
             ViewUtils.showSnack(mContent, failMsg);
         }
     }
-    int currentOffItemId = 0;
+    String currentOffItemId = "";
     @Override
     public void offItem(ShopItemBean bean) {
         if (null != bean) {
@@ -201,7 +201,7 @@ public class OnSaleFragment extends BasePresenterFragment<MenuCategoryPresenter>
         ViewUtils.showSnack(mContent, bean);
         for (int i = 0; i < mSaleAdapter.getCount(); i++) {
             ShopItemBean item = (ShopItemBean)mSaleAdapter.getItem(i);
-            if (currentOffItemId == item.getId()) {
+            if (currentOffItemId .equals(item.getId())) {
                 mSaleAdapter.removeItem(i);
                 if (null != mOffSaleNotify) {
                     mOffSaleNotify.offSaleNotify();

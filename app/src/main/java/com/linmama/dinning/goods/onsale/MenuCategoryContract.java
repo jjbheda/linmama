@@ -36,6 +36,6 @@ public class MenuCategoryContract {
     }
 
     public interface OffItemPresenter {
-        void offItem(int id);
+        void offItem(String id);
     }
 }

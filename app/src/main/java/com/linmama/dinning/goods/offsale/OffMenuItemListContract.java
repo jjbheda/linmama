@@ -27,6 +27,6 @@ public class OffMenuItemListContract {
     }
 
     public interface OnItemPresenter {
-        void onItem(int item_id);
+        void onItem(String item_id);
     }
 }

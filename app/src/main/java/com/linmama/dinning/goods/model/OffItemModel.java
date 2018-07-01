@@ -13,7 +13,7 @@ import com.linmama.dinning.except.ApiException;
 
 public class OffItemModel extends BaseModel {
 
-    public void offItem(int id, final OffItemHint hint) {
+    public void offItem(String id, final OffItemHint hint) {
         if (null == hint) {
             throw new RuntimeException("OnItemHint cannot be null.");
         }

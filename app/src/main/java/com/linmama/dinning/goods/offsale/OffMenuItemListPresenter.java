@@ -50,7 +50,7 @@ public class OffMenuItemListPresenter extends BasePresenter<OffSaleFragment> imp
     }
 
     @Override
-    public void onItem(int item_id) {
+    public void onItem(String item_id) {
         if (null == getIView())
             return;
         ((OnItemModel) getiModelMap().get("OnItem")).onItem( item_id,

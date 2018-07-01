@@ -315,9 +315,9 @@ public class FeiEPrinterUtils {
         builder.append ("  ***************************"+"<BR>");
         builder.append("   <L>"+bean.pickup.pickup_date + " " + bean.pickup.pickup_start_time + "-" + bean.pickup.pickup_end_time+"</L><BR>");
         for (OrderGoodBean bean1 : bean.goods_list) {
-            builder.append("   <L>" + getShopName(bean1.name)+"</L>");
-            builder.append("<L>   " + getCount(bean1.amount)+"</L>");
-            builder.append("<L>   " + bean1.total_price+"</L><BR>");
+            builder.append("   <L><BOLD>" + getShopName(bean1.name,bean1.total_price)+"</L></BOLD>");
+            builder.append("<L><BOLD>   " + getCount(bean1.amount)+"</L></BOLD>");
+            builder.append("<L><BOLD>   " + bean1.total_price+"</L></BOLD><BR>");
         }
 
         builder.append("  ---------------------------"+"<BR>");
@@ -384,9 +384,9 @@ public class FeiEPrinterUtils {
         }
         double price = 0.00;
         for (OrderGoodBean goodBean : bean1.goods_list) {
-            builder.append("   <L>" + getShopName(goodBean.name)+"</L>");
-            builder.append("<L>   " + getCount(goodBean.amount)+"</L>");
-            builder.append("<L>   " + goodBean.total_price+"</L><BR>");
+            builder.append("   <L><BOLD>" + getShopName(goodBean.name, goodBean.total_price)+"</L></BOLD>");
+            builder.append("<L><BOLD>   " + getCount(goodBean.amount)+"</L></BOLD>");
+            builder.append("<L><BOLD>   " + goodBean.total_price+"</L></BOLD><BR>");
             if (Double.parseDouble(goodBean.total_price) != 0) {
                 price = price + Double.parseDouble(goodBean.total_price);
             }
@@ -425,37 +425,29 @@ public class FeiEPrinterUtils {
         return result;
     }
 
-    private static String getShopName (String name){
-        Integer name_len  = 0;								//字符串长度，给初始值0
+    /**
+     *      打印纸 最大一行显示22字符   数量默认最大为2位数
+     * @param name
+     * @return
+     */
+    private static String getShopName (String name,String priceNum){
+        int name_len;								//字符串长度，给初始值0
         char[] char_name = name.toCharArray();				//将字符串转为char[]数组
-        for (int i = 0; i < char_name.length; i++) {		//遍历数组判断字符是否为中文
-            if(isChinese(char_name[i])){
-                name_len += 2;								//中文字节长度为2
-            }else{
-                name_len ++;								//英文字节长度为1
-            }
-        }
-
+        name_len = char_name.length;
         int add_len = 0;
 
-        if (name_len >  36) {
-            add_len = 11 - (name_len - 36);
-
-        } else if (name_len >= 18) {
-            add_len = 11 - (name_len - 18);
-        } else {
-            add_len = 11 - name_len;						//11是预计字符占用的最大长度，即最多十个汉字或12个英文字符，add_len是需要补充的长度
-
+        int m =  priceNum.length() - 4 >0 ? priceNum.length() - 4 : 0;
+        if (name_len <= 8) {
+            add_len = 8 - m - name_len;
+        } else if (name_len <= 22) {
+            add_len = 22 - name_len - m + 8;
         }
+
         for(int i = 0; i < add_len; i++) {
-            name+= " ";									//循环得到的需要补充长度的空格，加在字符后边
+            name += " ";									//循环得到的需要补充长度的空格，加在字符后边
         }
        return name;
     }
-
-
-
-
 
     public static void FeiprintOrderWithLoading(final BaseActivity context, final TakingOrderBean bean) {
         HandlerThread thread = new HandlerThread("NetWork");

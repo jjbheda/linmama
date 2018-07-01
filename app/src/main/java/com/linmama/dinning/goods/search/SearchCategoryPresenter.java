@@ -57,7 +57,7 @@ public class SearchCategoryPresenter extends BasePresenter<SearchCategoryActivit
     }
 
     @Override
-    public void offItem(final int item_id) {
+    public void offItem(final String item_id) {
         if (null == getIView())
             return;
         ((OffItemModel) getiModelMap().get("OffItem")).offItem( item_id,
@@ -79,7 +79,7 @@ public class SearchCategoryPresenter extends BasePresenter<SearchCategoryActivit
     }
 
     @Override
-    public void onItem(final int item_id) {
+    public void onItem(final String item_id) {
         if (null == getIView())
             return;
         ((OnItemModel) getiModelMap().get("OnItem")).onItem(item_id,

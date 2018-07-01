@@ -78,7 +78,7 @@ public class MenuCategoryPresenter extends BasePresenter<OnSaleFragment> impleme
     }
 
     @Override
-    public void offItem(final int id) {
+    public void offItem(final String id) {
         if (null == getIView())
             return;
         ((OffItemModel) getiModelMap().get("OffItem")).offItem(id,

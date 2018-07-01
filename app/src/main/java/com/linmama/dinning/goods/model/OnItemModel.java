@@ -13,7 +13,7 @@ import com.linmama.dinning.except.ApiException;
 
 public class OnItemModel extends BaseModel {
 
-    public void onItem(final int item_id, final OnItemHint hint) {
+    public void onItem(final String item_id, final OnItemHint hint) {
         if (null == hint) {
             throw new RuntimeException("OnItemHint cannot be null.");
         }

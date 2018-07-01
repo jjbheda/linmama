@@ -20,13 +20,13 @@ public class SearchCategoryContract {
     }
 
     public interface OnItemView {
-        void onItemSuccess(int id,String msg);
+        void onItemSuccess(String id,String msg);
 
         void onItemFail(String failMsg);
     }
 
     public interface OffItemView {
-        void offItemSuccess(int id,String msg);
+        void offItemSuccess(String id,String msg);
 
         void offItemFail(String failMsg);
     }
@@ -36,10 +36,10 @@ public class SearchCategoryContract {
     }
 
     public interface OnItemPresenter {
-        void onItem(int item_id);
+        void onItem(String item_id);
     }
 
     public interface OffItemPresenter {
-        void offItem(int item_id);
+        void offItem(String item_id);
     }
 }

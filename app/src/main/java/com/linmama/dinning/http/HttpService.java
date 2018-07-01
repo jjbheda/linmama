@@ -127,12 +127,12 @@ public interface HttpService {
     //下架商品
     @FormUrlEncoded
     @POST("underProduct/")
-    Observable<BaseHttpResult> underProduct(@Field("id") int id);
+    Observable<BaseHttpResult> underProduct(@Field("id") String id);
 
     //上架商品列表
     @FormUrlEncoded
     @POST("upProduct/")
-    Observable<BaseHttpResult> upProduct(@Field("id") int id);
+    Observable<BaseHttpResult> upProduct(@Field("id") String id);
 
     // 店铺管理-营业分析
     @POST("businessAnalysis/")

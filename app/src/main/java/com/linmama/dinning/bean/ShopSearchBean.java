@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class ShopSearchBean implements Serializable {
 
-    public int id = 0;
+    public String id = "";
     public String name = "";
     public String thumbnail = "";
     public String is_onsale = "";   //0 表示下架  1表示在售

@@ -86,9 +86,9 @@ public class OffSaleFragment extends BasePresenterFragment<OffMenuItemListPresen
         LogUtils.d("onAllItems", "onAllItems");
         showDialog("加载中...");
         isOnAll = true;
-        mPresenter.onItem(0);
+        mPresenter.onItem("");
     }
-    int currentOnItemId = 0;
+    String currentOnItemId = "";
     @Override
     public void onItem(ShopItemBean bean) {
             showDialog("加载中...");
