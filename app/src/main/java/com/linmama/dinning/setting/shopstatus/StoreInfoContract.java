@@ -7,7 +7,11 @@ import com.linmama.dinning.bean.StoreSettingsBean;
 
 /**
  * Created by jingkang on 2017/3/16
+ *
+ * 店铺状态 当日单状态
+ *
  */
+
 
 public class StoreInfoContract {
     public interface StoreInfoView {
@@ -22,11 +26,21 @@ public class StoreInfoContract {
         void setStoreStatusModifyFail(String failMsg);
     }
 
+    public interface TodayStatusModifyView {
+        void setTodayOrderStatusModifySuccess(String bean);
+
+        void setTodayOrderStatusModifyFail(String failMsg);
+    }
+
     public interface getStoreInfo {
         void getStoreInfo();
     }
 
     public interface modifyStoreStatus {
         void modifyStoreStatus(int status);
+    }
+
+    public interface modifyTodayOrderStatus {
+        void modifyTodayOrderStatus(int status);
     }
 }

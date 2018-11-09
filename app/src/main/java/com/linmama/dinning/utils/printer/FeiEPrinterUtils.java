@@ -10,6 +10,7 @@ import com.linmama.dinning.bean.OrderOrderMenuBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.SpUtils;
+import com.linmama.dinning.utils.XlogUtils;
 import com.linmama.dinning.utils.printer.DigestUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -426,27 +427,52 @@ public class FeiEPrinterUtils {
     }
 
     /**
-     *      打印纸 最大一行显示22字符   数量默认最大为2位数
+     *      打印纸 最大一行显示32个字节  中文2个字节  英文一个字节
      * @param name
      * @return
      */
     private static String getShopName (String name,String priceNum){
-        int name_len;								//字符串长度，给初始值0
+//        int name_len;								//字符串长度，给初始值0
+//        char[] char_name = name.toCharArray();				//将字符串转为char[]数组
+//        name_len = char_name.length;
+//        int add_len = 0;
+//
+//        int m =  priceNum.length() - 4 >0 ? priceNum.length() - 4 : 0;
+//        if (name_len <= 8) {
+//            add_len = 8 - m - name_len;
+//        } else if (name_len <= 22) {
+//            add_len = 22 - name_len - m + 8;
+//        }
+//
+//        for(int i = 0; i < add_len; i++) {
+//            name += " ";									//循环得到的需要补充长度的空格，加在字符后边
+//        }
+
+        Integer name_len  = 0;								//字符串长度，给初始值0
         char[] char_name = name.toCharArray();				//将字符串转为char[]数组
-        name_len = char_name.length;
+        for (int i = 0; i < char_name.length; i++) {		//遍历数组判断字符是否为中文
+            if(isChinese(char_name[i])){
+                name_len += 2;								//中文字节长度为2
+            }else{
+                name_len ++;								//英文字节长度为1
+            }
+        }
+
+        int m =  priceNum.length() - 4 > 0 ? priceNum.length() - 4 : 0;          //价格 为 100.00 可能为5位数  数量默认两位数
         int add_len = 0;
 
-        int m =  priceNum.length() - 4 >0 ? priceNum.length() - 4 : 0;
-        if (name_len <= 8) {
-            add_len = 8 - m - name_len;
-        } else if (name_len <= 22) {
-            add_len = 22 - name_len - m + 8;
+        if (name_len > 16) {
+            add_len = 32 - name_len + 16 - m;           //一行默认最大32个字节     3是每行间缩进3个空格
+        } else {
+             add_len = 16 - name_len - m;						//即最多八个汉字，或16个英文字符，add_len是需要补充的长度
         }
 
         for(int i = 0; i < add_len; i++) {
             name += " ";									//循环得到的需要补充长度的空格，加在字符后边
         }
-       return name;
+
+        return name;
+
     }
 
     public static void FeiprintOrderWithLoading(final BaseActivity context, final TakingOrderBean bean) {
@@ -459,7 +485,7 @@ public class FeiEPrinterUtils {
             public void run() {
                 String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
                 String printData = getOrderPrintData(bean);
-                printOrder(printData,sn);
+                printOrder(bean.id, printData,sn,false);
                 context.dismissDialog();
             }
         },100);
@@ -477,7 +503,7 @@ public class FeiEPrinterUtils {
                 String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
                 for (int i = 0;i<bean.order_list.size();i++) {
                     String printData = getNewOrderPrintData(bean,i);
-                    printOrder(printData,sn);
+                    printOrder(bean.id, printData,sn,false);
                 }
                 context.dismissDialog();
             }
@@ -485,7 +511,15 @@ public class FeiEPrinterUtils {
 
     }
 
-    private static void printOrder(String orderData,String sn) {
+    /**
+     *
+     * @param orderData
+     * @param sn
+     * @param tryAgain  如果请求失败，重试一下
+     */
+
+
+    private static void printOrder(final int id, final String orderData,final String sn, boolean tryAgain) {
 
 //        String content = getOrderPrintData(bean);
 //        String content = "<CB>测试打印</CB><BR>";
@@ -519,16 +553,54 @@ public class FeiEPrinterUtils {
             response = httpClient.execute(post);
             int statecode = response.getStatusLine().getStatusCode();
             if(statecode == 200){
+                XlogUtils.printLog("打印订单成功,订单ID:"+ id);
                 HttpEntity httpentity = response.getEntity();
                 if (httpentity != null){
                     //服务器返回的JSON字符串，建议要当做日志记录起来
                     result = EntityUtils.toString(httpentity);
                 }
             }
+//            else {        //重试1次
+//                XlogUtils.printLog("打印订单失败，订单ID:"+ id+ "，失败码："+ statecode);
+//                tryAgain = !tryAgain;
+//                if (tryAgain) {
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                            try {
+//                                Thread.sleep(3000);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                            XlogUtils.printLog("打印订单失败，重试一次,订单ID:"+ id);
+//                            printOrder(id, orderData,sn,false);
+//                        }
+//                    }).start();
+//
+//                }
+//            }
         }
         catch (Exception e)
         {
             e.printStackTrace();
+            XlogUtils.printLog("打印订单失败，订单ID:"+ id+ "，异常原因："+e.getMessage());
+            tryAgain = !tryAgain;
+            if (tryAgain) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        printOrder(id, orderData,sn,false);
+                    }
+                }).start();
+            }
         }
         finally{
             try {

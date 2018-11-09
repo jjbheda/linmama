@@ -173,5 +173,10 @@ public interface HttpService {
     @POST("setOpenStatus/")
     Observable<BaseHttpResult> openOrClose(@Field("status") int status);
 
+    //控制当日营业状态   0：休息   1：正常接单
+    @FormUrlEncoded
+    @POST("setCurrentOpenStatus/")
+    Observable<BaseHttpResult> todayOrderOpenOrClose(@Field("status") int status);
+
 
 }

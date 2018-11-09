@@ -12,7 +12,7 @@ android {
         versionName "1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
-            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64'
         }
         manifestPlaceholders = [
                 JPUSH_PKGNAME : applicationId,
@@ -28,6 +28,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        doNotStrip '*/mips/*.so'
+        doNotStrip '*/mips64/*.so'
+    }
+
 }
 
 dependencies {
@@ -62,4 +67,5 @@ dependencies {
     //其中latest.release指代最新版本号，也可以指定明确的版
     compile files('libs/posprinterconnectandsendsdk.jar')
     compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+    compile 'com.elvishew:xlog:1.4.0'
 }

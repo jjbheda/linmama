@@ -116,6 +116,7 @@
     <string name="set_item8">版本更新</string>
     <string name="set_item9">自动接单</string>
     <string name="set_item10">自动打印</string>
+    <string name="set_item11">当日单营业状态</string>
     <string name="set_item0">店铺状态</string>
     <string name="set_open">开始营业</string>
     <string name="set_open_status">营业中</string>

@@ -27,7 +27,6 @@ import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.linmama.dinning.widget.MyAlertDialog;
 import com.linmama.dinning.widget.SettingItem;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -39,7 +38,8 @@ import pub.devrel.easypermissions.EasyPermissions;
  */
 
 public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter> implements
-        StoreInfoContract.StoreInfoView,StoreInfoContract.StoreStatusModifyView{
+        StoreInfoContract.StoreInfoView,StoreInfoContract.StoreStatusModifyView,
+        StoreInfoContract.TodayStatusModifyView  {
     public static String TAG = "SettingFragment";
     @BindView(R.id.content)
     LinearLayout llContent;
@@ -53,6 +53,10 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     SettingItem siAutoReceiveOrder;
     @BindView(R.id.siAutoPrint)
     SettingItem siAutoPrint;
+
+    @BindView(R.id.open_today_order)
+    SettingItem openTodayOrder;
+
     @BindView(R.id.tvLogout)
     TextView tvLogout;
     @BindView(R.id.openStatus)
@@ -64,6 +68,7 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     private static final int REQUEST_BT_CONNECTION = 1002;
     private static final int REQUEST_MODIFY_LOGINPASSWORD = 1003;
     private boolean isClosed;
+    private boolean isTodayOrderClosed;
 
     @Override
     protected StoreStatusPresenter loadPresenter() {
@@ -209,6 +214,18 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
         }
     }
 
+    @OnClick(R.id.open_today_order)
+    public void openOrCloseTodayOrder(View view) {
+        boolean isOpenOder = (boolean) SpUtils.get(Constants.OPEN_TODAY_ORDER, false);
+        showDialog("设置中...");
+        Log.d("http","加载中  Setting openStore .....。。。。。。。。。。。。。。。。。。。。。。");
+        if (isOpenOder) {
+            mPresenter.modifyTodayOrderStatus(1);
+        } else {
+            mPresenter.modifyTodayOrderStatus(0);
+        }
+    }
+
     @OnClick(R.id.tvLogout)
     public void logOut(View view) {
         new MyAlertDialog(mActivity).builder()
@@ -280,6 +297,17 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
             btnOpen.setBackgroundResource(R.drawable.order_refuse_bg);
             btnOpen.setTextColor(getResources().getColor(R.color.colorOrderAppoint));
         }
+
+        isTodayOrderClosed = bean.is_current_open.endsWith("0");
+
+        if (isTodayOrderClosed) {
+            openTodayOrder.setRightIcon(R.mipmap.icon_off);
+            SpUtils.put(Constants.OPEN_TODAY_ORDER, false);
+        } else {
+            openTodayOrder.setRightIcon(R.mipmap.icon_on);
+            SpUtils.put(Constants.OPEN_TODAY_ORDER, true);
+        }
+
     }
 
     @Override
@@ -291,5 +319,28 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+
+    @Override
+    public void setTodayOrderStatusModifySuccess(String bean) {
+        dismissDialog();
+        if (isTodayOrderClosed) {
+            ViewUtils.showSnack(llContent, "已打开当日单");
+            openTodayOrder.setRightIcon(R.mipmap.icon_on);
+            SpUtils.put(Constants.OPEN_TODAY_ORDER, true);
+            isTodayOrderClosed = false;
+        } else {
+            ViewUtils.showSnack(llContent, "已关闭当日单");
+            SpUtils.put(Constants.OPEN_TODAY_ORDER, false);
+            openTodayOrder.setRightIcon(R.mipmap.icon_off);
+            isTodayOrderClosed = true;
+        }
+    }
+
+    @Override
+    public void setTodayOrderStatusModifyFail(String failMsg) {
+        dismissDialog();
+        ViewUtils.showSnack(llContent, "改变状态失败，请稍后重试!");
     }
 }

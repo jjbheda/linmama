@@ -36,6 +36,7 @@ import com.linmama.dinning.setting.SettingFragment;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.SpUtils;
+import com.linmama.dinning.utils.XlogUtils;
 import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.tencent.bugly.crashreport.CrashReport;
 import org.json.JSONException;
@@ -107,7 +108,9 @@ public class MainActivity extends BaseActivity {
             args.putString("OrderType", mOrdertype);
             args.putInt("ID", mId);
             Log.e(TAG,"接收到推送下来的ID值"+mId);
-            mOrder.setNewOrder(args);
+
+           XlogUtils.printLog("接收到推送下来的ID值"+mId);
+           mOrder.setNewOrder(args);
         }
         switchContent(mOrder);
 

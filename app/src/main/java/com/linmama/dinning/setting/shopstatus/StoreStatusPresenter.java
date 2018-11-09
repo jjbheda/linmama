@@ -19,7 +19,9 @@ import static com.linmama.dinning.base.BaseModel.httpService;
  * Created by jingkang on 2017/3/16
  */
 
-public class StoreStatusPresenter extends BasePresenter<SettingFragment> implements StoreInfoContract.getStoreInfo,StoreInfoContract.modifyStoreStatus{
+public class StoreStatusPresenter extends BasePresenter<SettingFragment> implements
+        StoreInfoContract.getStoreInfo,StoreInfoContract.modifyStoreStatus,
+        StoreInfoContract.modifyTodayOrderStatus{
 
     @Override
     public void getStoreInfo() {
@@ -74,4 +76,26 @@ public class StoreStatusPresenter extends BasePresenter<SettingFragment> impleme
                     }
                 });
     }
+
+    @Override
+    public void modifyTodayOrderStatus(int status) {
+        if (null == getIView())
+            return;
+        httpService.todayOrderOpenOrClose(status)
+                .compose(new CommonTransformer())
+                .subscribe(new CommonSubscriber<String>(LmamaApplication.getInstance()) {
+                    @Override
+                    public void onNext(String msg) {
+                        getIView().setTodayOrderStatusModifySuccess(msg);
+                    }
+
+                    @Override
+                    public void onError(ApiException e) {
+                        super.onError(e);
+                        getIView().setTodayOrderStatusModifyFail(e.getMessage());
+                    }
+                });
+    }
+
+
 }

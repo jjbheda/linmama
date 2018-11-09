@@ -5,10 +5,14 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.elvishew.xlog.LogLevel;
+import com.elvishew.xlog.Logger;
+import com.elvishew.xlog.XLog;
 import com.linmama.dinning.base.BasePresenterActivity;
 import com.linmama.dinning.bean.LoginBean;
 import com.linmama.dinning.home.MainActivity;
@@ -19,6 +23,7 @@ import com.linmama.dinning.bean.UserServerBean;
 import com.linmama.dinning.utils.ActivityUtils;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.SpUtils;
+import com.linmama.dinning.utils.XlogUtils;
 import com.linmama.dinning.widget.ClearEditText;
 import com.linmama.dinning.widget.MyAlertDialog;
 
@@ -55,6 +60,7 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
             ActivityUtils.startActivity(this, MainActivity.class);
             finish();
         }
+
     }
 
     @Override
@@ -72,6 +78,8 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
        String username = (String) SpUtils.get(Constants.USERNAME, "");
         mLoginName.setText(username);
 //        mLoginName.setText("account123");
+        XlogUtils.printLog("limama");
+
     }
 
     @Override
@@ -138,7 +146,6 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
 
     @OnClick(R.id.login)
     public void login(View view) {
-
         showDialog("登录中...");
 
         if (!checkNull()) {

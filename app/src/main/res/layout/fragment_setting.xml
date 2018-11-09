@@ -139,6 +139,15 @@
                 app:setRightIcon="@mipmap/icon_on"
                 app:setTitle="@string/set_item10" />
 
+            <com.linmama.dinning.widget.SettingItem
+                android:id="@+id/open_today_order"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                app:setLeftIcon="@mipmap/open_pic"
+                app:setRightIcon="@mipmap/icon_on"
+                app:setTitle="@string/set_item11" />
+
 
             <TextView
                 android:id="@+id/tvLogout"

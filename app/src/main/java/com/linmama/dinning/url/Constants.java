@@ -18,6 +18,7 @@ public class Constants {
     public static String USER_SERVER = "userserver";
     public static String AUTO_RECEIVE_ORDER = "autoreceiveorder";
     public static String AUTO_PRINT = "autoprint";
+    public static String OPEN_TODAY_ORDER = "open_today_order";
     //Bundle
     public static String APPOINT_ORDER = "appointorder";
     public static String NEW_DETAIL_APPOINT_ORDER = "newdetailappointorder";

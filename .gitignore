@@ -9,3 +9,4 @@
 .externalNativeBuild
 libWheel/build
 libWheel/build/outputs
+.idea
