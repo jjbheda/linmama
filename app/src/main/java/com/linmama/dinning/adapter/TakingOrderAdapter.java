@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -101,6 +102,7 @@ public class TakingOrderAdapter extends BaseAdapter {
             holder1.ok = (TextView) view.findViewById(R.id.btnOrderCommit);
             holder1.cancel = (TextView) view.findViewById(R.id.btnNewCancel2);
             holder1.btnPrint = (TextView) view.findViewById(R.id.btnPrint);
+            holder1.checkbox = (CheckBox) view.findViewById(R.id.checkbox);
 
             view.setTag(holder1);
         } else {
@@ -193,6 +195,9 @@ public class TakingOrderAdapter extends BaseAdapter {
             }
         });
 
+
+        holder1.checkbox.setVisibility(mOrderStyle == 1 ? View.VISIBLE : View.GONE);
+
         holder1.ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -238,6 +243,8 @@ public class TakingOrderAdapter extends BaseAdapter {
         TextView cancel;
         TextView ok;
         TextView btnPrint;
+
+        CheckBox checkbox;
     }
 
     public void setCommitOrder(ICompleteOrder commitOrder){

@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.linmama.dinning.adapter.MenuCategoryAdapter;
@@ -55,6 +56,9 @@ public class OrderFragment extends BasePresenterFragment implements
     RadioGroup mOrderGroup;
     @BindView(R.id.newOrder)
     RadioButton mNewOrder;
+
+    @BindView(R.id.rt_print_total)
+    RelativeLayout mRtPrinterTotal;
 
     @BindView(R.id.icon_today_search)
     LinearLayout mIconTodaySearch;
@@ -95,6 +99,11 @@ public class OrderFragment extends BasePresenterFragment implements
     private TextView lastSelectView;
     private AppCompatActivity appCompatActivity;
 
+    //是否显示全部打印按钮
+    public interface PrinterTotalFlagCallBack {
+        void hidePrinterCheckBox(boolean flag); //是否隐藏 全部打印的选择框
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -119,6 +128,16 @@ public class OrderFragment extends BasePresenterFragment implements
         }
         if (null == mTakingFragment) {
             mTakingFragment = new TakingFragment();
+            mTakingFragment.setPrintTotalFlagCallback(new PrinterTotalFlagCallBack() {
+                @Override
+                public void hidePrinterCheckBox(boolean flag) {
+                    if (flag) {
+                        mRtPrinterTotal.setVisibility(View.GONE);
+                    } else {
+                        mRtPrinterTotal.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
         }
         if (null == mTodayFragment) {
             mTodayFragment = new TodayFragment();
@@ -365,6 +384,7 @@ public class OrderFragment extends BasePresenterFragment implements
     public void showTileTaking(){
         mToolBar_common.setVisibility(View.GONE);
         mToolBar_taking.setVisibility(View.VISIBLE);
+
     }
 
     public void hideTileTaking(boolean showSearchIcon){

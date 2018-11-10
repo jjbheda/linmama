@@ -56,7 +56,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implements
         NewOrderContract.NewOrderView, MyAlertDialog.ICallBack, NewOrderAdapter.ICommitOrder, NewOrderAdapter.ICancelOrder,GetMoreListView.OnGetMoreListener {
     private static String TAG = "NewFragment";
-    private long period = 1000*30;
+    private long period = 1000 * 30;
     private Timer timer = new Timer();
 
     @BindView(R.id.lvNewOrder)
@@ -225,9 +225,9 @@ public class NewFragment extends BasePresenterFragment<NewOrderPresenter> implem
                     for (LResultNewOrderBean model : mResults) {
                         autoCompleteOrder(model.id,model.order_type);
                         boolean isAutoPrint = (boolean) SpUtils.get(Constants.AUTO_PRINT, false);
-                        if (isAutoPrint) {               //自动打印
+                        if (isAutoPrint && model.order_type.equals("0")) {               //自动打印   2018/11/09修改 预约单不自动打印  今日单自动打印
                             printOrderWithFeiE(model);
-                            Log.e(TAG,model.order_no+"");
+                            Log.d(TAG,model.order_no + "");
                         }
                     }
                     EventBus.getDefault().post(new DataSynEvent(true));     //通知预约单、当日单刷新

@@ -40,4 +40,6 @@
     <color name="actionsheet_red">#FD4A2E</color>
     <color name="actionsheet_gray">#8F8F8F</color>
     <color name="menu_grey">#666666</color>
+
+    <color name="color_white_deep">#ffffff</color>
 </resources>

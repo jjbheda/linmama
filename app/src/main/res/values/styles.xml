@@ -617,5 +617,9 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="phone_download_checkbox" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_selector</item>
+    </style>
+
 
 </resources>

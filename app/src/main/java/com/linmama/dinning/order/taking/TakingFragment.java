@@ -17,6 +17,7 @@ import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.bean.TakingOrderMenuBean;
 import com.linmama.dinning.except.ApiException;
 import com.linmama.dinning.home.MainActivity;
+import com.linmama.dinning.order.order.OrderFragment;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteFragment;
 import com.linmama.dinning.subscriber.CommonSubscriber;
 import com.linmama.dinning.transformer.CommonTransformer;
@@ -128,6 +129,13 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         mRange = range;
     }
 
+    OrderFragment.PrinterTotalFlagCallBack mPrintFlagCallback;
+
+    //回调是否显示全部打印按钮
+    public void setPrintTotalFlagCallback(OrderFragment.PrinterTotalFlagCallBack printFlagCallback) {
+        mPrintFlagCallback = printFlagCallback;
+    }
+
     public void refresh() {
         if (null != mPresenter) {
 //            mPtrTaking.autoRefresh(true);
@@ -161,10 +169,19 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         if (currentPage == 1 && resultBean.data.size() == 0) {
             if (mPtrTaking.getHeader() != null)
                 mPtrTaking.getHeader().setVisibility(View.GONE);
+                mLvTakingOrder.setNoMore();
             if (mAdapter != null) {
                 mAdapter.notifyDataSetChanged();
             }
+
+            if (mPrintFlagCallback != null) {
+                mPrintFlagCallback.hidePrinterCheckBox(true);
+            }
             return;
+        }
+
+        if (mPrintFlagCallback != null) {
+            mPrintFlagCallback.hidePrinterCheckBox(false);
         }
 
         if (null != resultBean) {
