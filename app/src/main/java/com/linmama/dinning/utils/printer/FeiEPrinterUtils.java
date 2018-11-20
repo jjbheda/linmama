@@ -1,7 +1,7 @@
 package com.linmama.dinning.utils.printer;
 
-import android.content.Context;
 import android.os.HandlerThread;
+import android.util.Log;
 
 import com.linmama.dinning.base.BaseActivity;
 import com.linmama.dinning.bean.LResultNewOrderBean;
@@ -10,8 +10,7 @@ import com.linmama.dinning.bean.OrderOrderMenuBean;
 import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.SpUtils;
-import com.linmama.dinning.utils.XlogUtils;
-import com.linmama.dinning.utils.printer.DigestUtils;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -22,7 +21,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +28,6 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 
 public class FeiEPrinterUtils {
 
@@ -273,6 +270,93 @@ public class FeiEPrinterUtils {
             return false;
         } else {
             return msg.contains("在线");
+        }
+    }
+
+    //MainActity处 初始化打印机时，给出连接失败提示
+    public static String queryPrinterStatusForMainAc(){
+
+        String sn = (String) SpUtils.get(Constants.PRINT_DEVEICES_SELECTED, "");
+        if (sn.equals(""))
+            return "未选择打印机";
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setSocketTimeout(30000)//读取超时
+                .setConnectTimeout(30000)//连接超时
+                .build();
+
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .build();
+
+        HttpPost post = new HttpPost(URL);
+        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+        nvps.add(new BasicNameValuePair("user",USER));
+        String STIME = String.valueOf(System.currentTimeMillis()/1000);
+        nvps.add(new BasicNameValuePair("stime",STIME));
+        nvps.add(new BasicNameValuePair("sig",signature(USER,UKEY,STIME)));
+        nvps.add(new BasicNameValuePair("apiname","Open_queryPrinterStatus"));//固定值,不需要修改
+        nvps.add(new BasicNameValuePair("sn",sn));
+
+        CloseableHttpResponse response = null;
+        String result = "";
+        try
+        {
+            post.setEntity(new UrlEncodedFormEntity(nvps,"utf-8"));
+            response = httpClient.execute(post);
+            int statecode = response.getStatusLine().getStatusCode();
+            if(statecode == 200){
+                HttpEntity httpentity = response.getEntity();
+                if (httpentity != null){
+                    //服务器返回
+                    result = EntityUtils.toString(httpentity);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            if (e.getMessage() != null) {
+                return e.getMessage();
+            }
+
+        }
+        finally{
+            try {
+                if(response!=null){
+                    response.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                post.abort();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        String msg = "";
+        try {
+            JSONObject jsonObject = new JSONObject(result.toString());
+            msg = jsonObject.getString("data");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "解析打印机返回json异常!";
+        }
+        if (msg == null) {
+            return "解析打印机返回json异常!";
+        } else {
+
+            if (msg.contains("在线")) {
+                return "在线";
+            } else {
+                return "离线:" + msg;
+            }
+
         }
     }
 
@@ -553,7 +637,7 @@ public class FeiEPrinterUtils {
             response = httpClient.execute(post);
             int statecode = response.getStatusLine().getStatusCode();
             if(statecode == 200){
-                XlogUtils.printLog("打印订单成功,订单ID:"+ id);
+               Log.e("FeiEPrinterUtils","打印订单成功,订单ID:"+ id);
                 HttpEntity httpentity = response.getEntity();
                 if (httpentity != null){
                     //服务器返回的JSON字符串，建议要当做日志记录起来
@@ -584,7 +668,7 @@ public class FeiEPrinterUtils {
         catch (Exception e)
         {
             e.printStackTrace();
-            XlogUtils.printLog("打印订单失败，订单ID:"+ id+ "，异常原因："+e.getMessage());
+            Log.e("FeiEPrinterUtils","打印订单失败，订单ID:" + id + "，异常原因：" + e.getMessage());
             tryAgain = !tryAgain;
             if (tryAgain) {
                 new Thread(new Runnable() {

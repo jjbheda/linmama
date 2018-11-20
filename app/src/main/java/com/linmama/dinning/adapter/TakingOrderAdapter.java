@@ -196,7 +196,8 @@ public class TakingOrderAdapter extends BaseAdapter {
         });
 
 
-        holder1.checkbox.setVisibility(mOrderStyle == 1 ? View.VISIBLE : View.GONE);
+//        holder1.checkbox.setVisibility(mOrderStyle == 1 ? View.VISIBLE : View.GONE);
+//        holder1.checkbox.setChecked(bean.checkBoxFlag);
 
         holder1.ok.setOnClickListener(new View.OnClickListener() {
             @Override

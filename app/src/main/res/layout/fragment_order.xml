@@ -121,27 +121,45 @@
             android:layout_alignParentTop="true"
 
             >
+
             <TextView
+                android:id="@+id/check_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:layout_toLeftOf="@+id/checkbox"
-                android:textColor="@color/colorOrderNormal"
-                android:layout_marginRight="20dp"
+                android:textColor="@color/colorOrderText"
+                android:layout_marginRight="10dp"
                 android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"
                 android:text="全选"/>
+
             <CheckBox
-                android:id="@+id/checkbox"
+            android:id="@+id/print_all_checkbox"
+            android:layout_toLeftOf="@+id/all_print_tv"
+            style="@style/phone_download_checkbox"
+            android:layout_width="24dp"
+            android:visibility="gone"
+            android:layout_height="24dp"
+            android:padding="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:checked="false"
+            android:gravity="center" />
+
+            <TextView
+                android:id="@+id/all_print_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:layout_alignParentRight="true"
-                style="@style/phone_download_checkbox"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:padding="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:checked="false"
-                android:gravity="center" />
+                android:textColor="@color/colorOrderTake"
+                android:layout_marginRight="10dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="打印全部"/>
 
         </RelativeLayout>
 

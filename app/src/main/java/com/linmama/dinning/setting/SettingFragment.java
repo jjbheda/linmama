@@ -234,7 +234,7 @@ public class SettingFragment extends BasePresenterFragment<StoreStatusPresenter>
                 .setPositiveButton("确认", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        SpUtils.remove(Constants.USERNAME);
+//                        SpUtils.remove(Constants.USERNAME);
                         SpUtils.remove(Constants.TOKEN);
                         SpUtils.remove(Constants.PASSWORD);
                         SpUtils.remove(Constants.BT_ADDRESS);

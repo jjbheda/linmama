@@ -7,15 +7,12 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
-import com.elvishew.xlog.LogLevel;
-import com.elvishew.xlog.Logger;
-import com.elvishew.xlog.XLog;
 import com.linmama.dinning.base.BasePresenterActivity;
 import com.linmama.dinning.bean.LoginBean;
 import com.linmama.dinning.home.MainActivity;
+import com.linmama.dinning.receiver.TagAliasOperatorHelper;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.ViewUtils;
 import com.linmama.dinning.R;
@@ -23,12 +20,15 @@ import com.linmama.dinning.bean.UserServerBean;
 import com.linmama.dinning.utils.ActivityUtils;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.SpUtils;
-import com.linmama.dinning.utils.XlogUtils;
 import com.linmama.dinning.widget.ClearEditText;
 import com.linmama.dinning.widget.MyAlertDialog;
 
+import java.util.Set;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * Created by jingkang on 2017/3/5
@@ -77,8 +77,6 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
     protected void initView() {
        String username = (String) SpUtils.get(Constants.USERNAME, "");
         mLoginName.setText(username);
-//        mLoginName.setText("account123");
-        XlogUtils.printLog("limama");
 
     }
 
@@ -97,16 +95,6 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
 
             @Override
             public void afterTextChanged(Editable editable) {
-//                String text = editable.toString();
-//                if (text.length() > 0) {
-//                    if (!TextUtils.isEmpty(getPwd())) {
-//                        mLogin.setEnabled(true);
-//                    } else {
-//                        mLogin.setEnabled(false);
-//                    }
-//                } else {
-//                    mLogin.setEnabled(false);
-//                }
             }
         });
 
@@ -123,16 +111,6 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
 
             @Override
             public void afterTextChanged(Editable editable) {
-//                String text = editable.toString();
-//                if (text.length() > 0) {
-//                    if (!TextUtils.isEmpty(getUserName())) {
-//                        mLogin.setEnabled(true);
-//                    } else {
-//                        mLogin.setEnabled(false);
-//                    }
-//                } else {
-//                    mLogin.setEnabled(false);
-//                }
             }
         });
     }
@@ -202,8 +180,24 @@ public class LoginActivity extends BasePresenterActivity<LoginPresenter> impleme
         if (!TextUtils.isEmpty(loginBean.getSession_id())) {
             SpUtils.put(Constants.COOKIE, loginBean.getSession_id());
         }
+
         if (!TextUtils.isEmpty(loginBean.getToken())) {
             SpUtils.put(Constants.TOKEN, loginBean.getToken());
+            String alias = loginBean.userid;
+            boolean isAliasAction = true;
+
+            if(TextUtils.isEmpty(alias)){
+                return;
+            }
+            int action = TagAliasOperatorHelper.ACTION_SET;
+
+            TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+            tagAliasBean.action = action;
+            TagAliasOperatorHelper.sequence ++;
+            tagAliasBean.alias = alias;
+
+            tagAliasBean.isAliasAction = isAliasAction;
+            TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(),TagAliasOperatorHelper.sequence,tagAliasBean);
             ActivityUtils.startActivity(LoginActivity.this, MainActivity.class);
             this.finish();
         }

@@ -24,4 +24,6 @@ public class TakingOrderBean extends BaseBean {
     public String is_ensure_order="1"; //1已接单 0未接单
     public String fail_reson = "";  //订单金额或退款金额与之前请求不一致，请核实后再试"
     public int ordertype = 0;    //orderStyle  1 预约单 0 当日单          10 代表已完成 或者退款未成功
+
+    public boolean checkBoxFlag = false;    //只有预约单 才需要显示选择框   只有预约单中的当日单，次日单才有全选的逻辑
 }

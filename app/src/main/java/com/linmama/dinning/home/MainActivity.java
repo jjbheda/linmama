@@ -1,30 +1,20 @@
 package com.linmama.dinning.home;
 
-import android.app.ActivityManager;
-import android.app.ProgressDialog;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.linmama.dinning.base.BaseActivity;
-import com.linmama.dinning.bluetooth.CheckPrinterActivity;
 import com.linmama.dinning.order.ordercompletesearch.OrderCompleteFragment;
 import com.linmama.dinning.receiver.WarnAlarmReceiver;
 import com.linmama.dinning.shop.ShopManagerFragment;
@@ -36,7 +26,6 @@ import com.linmama.dinning.setting.SettingFragment;
 import com.linmama.dinning.url.Constants;
 import com.linmama.dinning.utils.LogUtils;
 import com.linmama.dinning.utils.SpUtils;
-import com.linmama.dinning.utils.XlogUtils;
 import com.linmama.dinning.utils.printer.FeiEPrinterUtils;
 import com.tencent.bugly.crashreport.CrashReport;
 import org.json.JSONException;
@@ -109,7 +98,7 @@ public class MainActivity extends BaseActivity {
             args.putInt("ID", mId);
             Log.e(TAG,"接收到推送下来的ID值"+mId);
 
-           XlogUtils.printLog("接收到推送下来的ID值"+mId);
+           Log.w("FeiEPrinterUtils","接收到推送下来的ID值"+mId);
            mOrder.setNewOrder(args);
         }
         switchContent(mOrder);
@@ -142,12 +131,13 @@ public class MainActivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             public void run() {
                 Log.d(TAG, "请求打印机接口");
-                if (FeiEPrinterUtils.queryPrinterStatus()) {
+                String result = FeiEPrinterUtils.queryPrinterStatusForMainAc();
+                if (result.equals("在线")) {
                     ViewUtils.showToast(MainActivity.this, "票据打印机连接成功");
                     Log.d(TAG, "票据打印机连接成功");
                 } else {
-                    ViewUtils.showToast(MainActivity.this, "票据打印机连接失败");
-                    Log.d(TAG, "票据打印机连接失败");
+                    ViewUtils.showToast(MainActivity.this, result);
+                    Log.d(TAG, result);
                 }
             }
         },100);

@@ -10,9 +10,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -25,6 +28,7 @@ import com.linmama.dinning.adapter.MenuCategoryAdapter;
 import com.linmama.dinning.adapter.OrderAdapter;
 import com.linmama.dinning.base.BasePresenter;
 import com.linmama.dinning.base.BasePresenterFragment;
+import com.linmama.dinning.bean.TakingOrderBean;
 import com.linmama.dinning.order.neu.NewFragment;
 import com.linmama.dinning.order.orderundosearch.OrderUndoSearchActivity;
 import com.linmama.dinning.order.taking.TakingFragment;
@@ -37,9 +41,12 @@ import com.linmama.dinning.widget.BadgeView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * Created by jingkang on 2017/2/25
@@ -59,6 +66,12 @@ public class OrderFragment extends BasePresenterFragment implements
 
     @BindView(R.id.rt_print_total)
     RelativeLayout mRtPrinterTotal;
+
+    @BindView(R.id.print_all_checkbox)
+    CheckBox mPrintCheckBox;
+
+    @BindView(R.id.all_print_tv)
+    TextView mAllPrintTv;
 
     @BindView(R.id.icon_today_search)
     LinearLayout mIconTodaySearch;
@@ -99,11 +112,6 @@ public class OrderFragment extends BasePresenterFragment implements
     private TextView lastSelectView;
     private AppCompatActivity appCompatActivity;
 
-    //是否显示全部打印按钮
-    public interface PrinterTotalFlagCallBack {
-        void hidePrinterCheckBox(boolean flag); //是否隐藏 全部打印的选择框
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -119,6 +127,10 @@ public class OrderFragment extends BasePresenterFragment implements
         void success(String orderType);     //0 当日单 1 预约单
     }
 
+    public interface PrintAllFlagCallback {
+        void showAllPrintTv(boolean flag);    //是否显示全部打印按钮
+    }
+
     @Override
     protected void initView() {
         OrderAdapter mAdapter = new OrderAdapter(getChildFragmentManager());
@@ -128,14 +140,13 @@ public class OrderFragment extends BasePresenterFragment implements
         }
         if (null == mTakingFragment) {
             mTakingFragment = new TakingFragment();
-            mTakingFragment.setPrintTotalFlagCallback(new PrinterTotalFlagCallBack() {
+            mTakingFragment.setPrintTotalFlagCallback(new PrintAllFlagCallback() {
                 @Override
-                public void hidePrinterCheckBox(boolean flag) {
-                    if (flag) {
-                        mRtPrinterTotal.setVisibility(View.GONE);
-                    } else {
+                public void showAllPrintTv(boolean flag) {
+                    if (flag && (mTakingFragment.getRange() == 0 || mTakingFragment.getRange() == 1))
                         mRtPrinterTotal.setVisibility(View.VISIBLE);
-                    }
+                    else
+                        mRtPrinterTotal.setVisibility(View.GONE);
                 }
             });
         }
@@ -199,7 +210,10 @@ public class OrderFragment extends BasePresenterFragment implements
         mIconTodaySearch.setOnClickListener(this);
         mIconTakingSearch.setOnClickListener(this);
 
+        mAllPrintTv.setOnClickListener(this);
+
         mViewPager.addOnPageChangeListener(this);
+
     }
 
     @Override
@@ -297,12 +311,14 @@ public class OrderFragment extends BasePresenterFragment implements
                 if (mTakingFragment!=null){
                     mTakingFragment.setRange(0);
                     mTakingFragment.getPresenter().getTakingOrder(1,1,0);
+//                    mRtPrinterTotal.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.order_tomorrow_title_tv:
                 if (mTakingFragment!=null){
                     mTakingFragment.setRange(1);
                     mTakingFragment.getPresenter().getTakingOrder(1,1,1);
+//                    mRtPrinterTotal.setVisibility(View.VISIBLE);
                 }
                 break;
 
@@ -310,6 +326,12 @@ public class OrderFragment extends BasePresenterFragment implements
                 if (mTakingFragment!=null){
                     mTakingFragment.setRange(2);
                     mTakingFragment.getPresenter().getTakingOrder(1,1,2);
+//                    mRtPrinterTotal.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.all_print_tv:
+                if (mTakingFragment!=null){
+                    mTakingFragment.getPresenter().printAll();
                 }
                 break;
             default:
@@ -384,12 +406,20 @@ public class OrderFragment extends BasePresenterFragment implements
     public void showTileTaking(){
         mToolBar_common.setVisibility(View.GONE);
         mToolBar_taking.setVisibility(View.VISIBLE);
+//        mRtPrinterTotal.setVisibility(View.VISIBLE);
 
+        //次日单  显示全部打印
+//        if (mTakingFragment.getRange() == 1 || mTakingFragment.getRange() == 0) {
+//            mRtPrinterTotal.setVisibility(View.VISIBLE);
+//        } else {
+//            mRtPrinterTotal.setVisibility(View.GONE);
+//        }
     }
 
     public void hideTileTaking(boolean showSearchIcon){
         mToolBar_common.setVisibility(View.VISIBLE);
         mToolBar_taking.setVisibility(View.GONE);
+        mRtPrinterTotal.setVisibility(View.GONE);
         if (showSearchIcon)
             mIconTodaySearch.setVisibility(View.VISIBLE);
         else

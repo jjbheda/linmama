@@ -7,6 +7,8 @@ public class LoginBean extends BaseBean{
     private String password;
     private String token;
     private String session_id;
+    public String userid = "";
+
 
     public String getSession_id() {
         return session_id;

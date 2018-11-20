@@ -70,4 +70,19 @@ public class TakingOrderPresenter extends BasePresenter<TakingFragment> implemen
                     }
                 });
     }
+
+    public void refresh(boolean flag) {
+        if (null == getIView())
+            return;
+
+        getIView().resetPrintBox(flag);
+    }
+
+    public void printAll() {
+        if (null == getIView())
+            return;
+
+        getIView().printAllOrder();
+    }
+
 }

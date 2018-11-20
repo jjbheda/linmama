@@ -61,7 +61,7 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
 
     private TakingOrderAdapter mAdapter;
     private MyAlertDialog mAlert;
-    private List<TakingOrderBean> mResults = new ArrayList<>();
+    public List<TakingOrderBean> mResults = new ArrayList<>();
     private int currentPage = 1;
     private int last_page = 1;
     private TakingOrderPresenter presenter;
@@ -129,11 +129,23 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
         mRange = range;
     }
 
-    OrderFragment.PrinterTotalFlagCallBack mPrintFlagCallback;
+    public int getRange() {
+        return mRange;
+    }
 
-    //回调是否显示全部打印按钮
-    public void setPrintTotalFlagCallback(OrderFragment.PrinterTotalFlagCallBack printFlagCallback) {
-        mPrintFlagCallback = printFlagCallback;
+    //是否有数据  当日单、次日单显示全部打印按钮
+    private boolean mHasDataFlag;
+
+    public void setHasDataFlag(boolean mHasData) {
+        mHasDataFlag = mHasData;
+    }
+
+    public boolean getHasDataFlag() {
+        return mHasDataFlag;
+    }
+    OrderFragment.PrintAllFlagCallback mCallback;
+    public void setPrintTotalFlagCallback(OrderFragment.PrintAllFlagCallback callback) {
+        mCallback = callback;
     }
 
     public void refresh() {
@@ -174,16 +186,12 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                 mAdapter.notifyDataSetChanged();
             }
 
-            if (mPrintFlagCallback != null) {
-                mPrintFlagCallback.hidePrinterCheckBox(true);
+            if (mCallback != null) {
+                mCallback.showAllPrintTv(false);
             }
             return;
         }
-
-        if (mPrintFlagCallback != null) {
-            mPrintFlagCallback.hidePrinterCheckBox(false);
-        }
-
+        setHasDataFlag(true);
         if (null != resultBean) {
             LogUtils.d("getTakingOrderSuccess", resultBean.toString());
             List<TakingOrderBean> results = resultBean.data;
@@ -202,6 +210,9 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                 mLvTakingOrder.setHasMore();
             }
             mAdapter.notifyDataSetChanged();
+            if (mCallback != null) {
+                mCallback.showAllPrintTv(true);
+            }
         }
 
     }
@@ -266,6 +277,30 @@ public class TakingFragment extends BasePresenterFragment<TakingOrderPresenter> 
                 mPtrTaking.getHeader().setVisibility(View.GONE);
         }
         CommonActivity.start(mActivity, OrderCompleteFragment.class, new Bundle());
+    }
+
+    //全选框 选择后，更新UI
+    public void resetPrintBox(boolean flag) {
+        if (mResults.size() == 0 || mAdapter == null) {
+            return;
+        }
+
+        for (TakingOrderBean bean : mResults) {
+            bean.checkBoxFlag = flag;
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+
+    //全选框 选择后，更新UI
+    public void printAllOrder() {
+        if (mResults.size() == 0 || mAdapter == null) {
+            return;
+        }
+
+        for (TakingOrderBean bean : mResults) {
+            onPrintOrder(bean);
+        }
     }
 
     @Override

@@ -42,6 +42,10 @@ public class ErrorTransformer<T> implements Observable.Transformer<BaseHttpResul
                             throw new ServerException(ErrorType.HTTP_ERROR, bean.errors_info);
                         }
 
+                    } else  if (httpResult.getData()!=null && httpResult.getData() instanceof Map
+                            && ((Map) httpResult.getData()).get("errors_info") != null){
+                            throw new ServerException(ErrorType.HTTP_ERROR, (String) ((Map) httpResult.getData()).get("errors_info"));
+
                     }  else {
                         throw new ServerException(ErrorType.HTTP_ERROR, "服务器连接异常");
                     }
